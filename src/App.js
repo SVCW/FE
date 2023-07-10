@@ -4,7 +4,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { AdminTemplate } from "./templates/AdminTemplate/AdminTemplate";
-import Test from './socimo-html-files/Test';
 import Achivement from './pages/Achivement/Achivement';
 import ProcessType from './pages/ProcessType/ProcessType';
 import ReportType from './pages/ReportType/ReportType';
