@@ -1,9 +1,36 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import Slider from 'react-slick';
+import styles from './style.module.css';
 export default function DetailActivity (props) {
     const { item, dateTime } = props;
-    console.log(props.item);
+    console.log(props.item.media);
 
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    };
+
+    const slides = props.item.media?.map((item, index) => {
+        return <div className={styles['carousel-item']} key={index}>
+            <img src={item.linkMedia} alt="Slide 1" />
+        </div>
+    })
+
+    // [
+    //     <div className={styles['carousel-item']} key={1}>
+    //         <img src="https://picsum.photos/id/1/200/200" alt="Slide 1" />
+    //     </div>,
+    //     <div className={styles['carousel-item']} key={2}>
+    //         <img src="https://picsum.photos/id/2/200/200" alt="Slide 2" />
+    //     </div>,
+    //     <div className={styles['carousel-item']} key={3}>
+    //         <img src="https://picsum.photos/id/3/200/200" alt="Slide 3" />
+    //     </div>,
+    //     // Add more slides as needed
+    // ];
     return (
         <div className="modal fade" id="img-comt">
             <div className="modal-dialog">
@@ -16,7 +43,7 @@ export default function DetailActivity (props) {
                     <div className="modal-body">
                         <div className="row merged">
                             <div className="col-lg-9">
-                                <div className="pop-image">
+                                <div className='pop-image'>
                                     <div className="pop-item">
                                         <div className="action-block">
                                             <a className="action-button">
@@ -45,7 +72,12 @@ export default function DetailActivity (props) {
                                                 </svg>
                                             </a>
                                         </div>
-                                        <figure><img src={props.item.media && props.item.media[0] && props.item.media[0].linkMedia} alt width={100} /></figure>
+
+                                        {/* <div>
+                                            <figure><img src={props.item.media && props.item.media[0] && props.item.media[0].linkMedia} alt width={100} /></figure>
+                                        </div> */}
+                                        <Slider {...settings} className={styles['slick-slider']}>{slides}</Slider>
+
                                         <div className="stat-tools">
                                             <div className="box">
                                                 <div className="Like"><a className="Like__link"><i className="icofont-like" />
