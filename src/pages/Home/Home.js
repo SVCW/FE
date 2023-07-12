@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { GetListActivityAction } from '../../redux/actions/ActivityAction';
+import { CreateActivityAction, GetListActivityAction } from '../../redux/actions/ActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import moment from 'moment';
@@ -21,11 +21,13 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import { storage_bucket } from '../../firebase';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import SimpleSlider from '../../component/SimpleSlider';
+import { getStorage, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useFormik } from 'formik';
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function Home () {
-
+    const storage = getStorage();
     const settings = {
         dots: true,
         infinite: true,
@@ -52,26 +54,140 @@ export default function Home () {
         visibility: isOpen ? "visible" : "hidden",
         overflow: isOpen ? "auto" : "hidden"
     };
-    const [files, setFiles] = useState([])
-
-    const handleFileUpload = async (fileItems) => {
-        try {
-            for (const fileItem of fileItems) {
-                const fileRef = storage_bucket.ref().child(fileItem.filename);
-                await fileRef.put(fileItem.file);
-                console.log(fileRef);
-                console.log("File uploaded:", fileItem.filename);
-            }
-            console.log("All files uploaded successfully");
-        } catch (error) {
-            console.error("Error uploading files:", error);
+    const [files, setFiles] = useState('');
+    console.log(files);
+    const currentTime = moment();
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            description: "",
+            startDate: "2023-07-12T17:23:37.754Z",
+            endDate: "2023-07-12T17:23:37.754Z",
+            // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
+            location: "",
+            targetDonation: 0,
+            userId: localStorage.getItem('userID'),
+            isFanpageAvtivity: true,
+            media: [
+                {
+                    linkMedia: files,
+                    type: "string"
+                }
+            ]
+        },
+        onSubmit: (value) => {
+            console.log(value);
+            const action = CreateActivityAction(value);
+            dispatch(action)
         }
+    })
+
+    // const handleFileUpload = async (file) => {
+    //     const fileRef = ref(storage, file.name);
+    //     const uploadTask = uploadBytesResumable(fileRef, file);
+
+    //     return new Promise((resolve, reject) => {
+    //         uploadTask.on(
+    //             "state_changed",
+    //             (snapshot) => {
+    //                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //                 console.log("Upload is " + progress + "% done");
+    //             },
+    //             (error) => {
+    //                 console.log(error);
+    //                 reject(error);
+    //             },
+    //             () => {
+    //                 getDownloadURL(uploadTask.snapshot.ref)
+    //                     .then((url) => {
+    //                         console.log("Upload completed. Download URL: " + url);
+    //                         if (url !== '') {
+    //                             resolve(url);
+    //                         } else {
+    //                             reject(new Error("Empty download URL"));
+    //                         }
+    //                     })
+    //                     .catch((error) => {
+    //                         console.log(error);
+    //                         reject(error);
+    //                     });
+    //             }
+    //         );
+    //     });
+    // };
+
+    // const handleFilePondUpdate = async (fileItems) => {
+    //     if (fileItems.length > 0) {
+    //         const file = fileItems[0].file;
+    //         try {
+    //             const url = await handleFileUpload(file);
+    //             setFiles((prevFiles) => [...prevFiles, url]);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    // };
+
+    const uploadFile = (e) => {
+        let file = e.target.files[0];
+        let fileRef = ref(storage_bucket, file.name);
+
+        const uploadTask = uploadBytesResumable(fileRef, file);
+
+        uploadTask.on('state_changed', (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            // console.log(snapshot);
+
+        },
+            (err) => console.log(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    console.log(url);
+                    setFiles(url)
+                    const previousMediaValue = formik.values.media;
+
+                    // Tạo một mảng mới của các đối tượng media với linkMedia mới
+                    const newMediaValue = previousMediaValue.map((media) => ({
+                        ...media,
+                        linkMedia: url,
+                    }));
+
+                    // Đặt giá trị mới cho media.linkMedia
+                    formik.setFieldValue("media", newMediaValue);
+                });
+            });
     };
+
+
+    // const handleFileUpload = async (e) => {
+    //     let file = e.target.files[0];
+    //     let fileRef = ref(storage_bucket, file.name);
+
+    //     const uploadTask = uploadBytesResumable(fileRef, file);
+
+    //     uploadTask.on('state_changed', (snapshot) => {
+    //         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //         console.log("Upload is " + progress + "% done");
+    //         // console.log(snapshot);
+    //         // setShowInput(false);
+
+    //     },
+    //         (err) => console.log(err),
+    //         () => {
+    //             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+    //                 console.log(url);
+    //                 // const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
+    //                 // setProduct(updatedProduct);
+    //             });
+    //         });
+
+    // };
     // console.log(files);
     const dispatch = useDispatch();
     const { arrActivity } = useSelector(root => root.ActivityReducer)
     const { arrFanpage } = useSelector(root => root.FanpageReducer)
-    console.log(arrActivity);
+    // console.log(arrActivity);
     const [cmt, setCmt] = useState([])
     const [time, setTime] = useState([])
     const [detail, setDetail] = useState({})
@@ -89,7 +205,7 @@ export default function Home () {
 
 
     const [commentData, setCommentData] = useState(initialCommentData);
-    console.log(commentData);
+    // console.log(commentData);
     const handleCommentClick = (id) => {
         const updatedComments = commentData?.map((comment) => {
             if (comment.id === id) {
@@ -2067,7 +2183,8 @@ export default function Home () {
                             <div className="post-new">
                                 <div className="post-newmeta">
                                     <ul className="post-categoroes">
-                                        <li><i className="icofont-camera" /> Photo / Video</li>
+
+                                        {/* <li><i className="icofont-camera" /> Photo / Video</li>
                                         <li><i className="icofont-google-map" /> Post Location</li>
                                         <li><i className="icofont-file-gif" /> Post Gif</li>
                                         <li><i className="icofont-ui-tag" /> Tag to Friend</li>
@@ -2076,7 +2193,7 @@ export default function Home () {
                                         <li><i className="icofont-video-cam" /> Go Live</li>
                                         <li><i className="icofont-sale-discount" /> Post Online Course</li>
                                         <li><i className="icofont-read-book" /> Post A Book</li>
-                                        <li><i className="icofont-globe" /> Post an Ad</li>
+                                        <li><i className="icofont-globe" /> Post an Ad</li> */}
                                     </ul>
                                     {/* <form method="post" className="dropzone dz-clickable" action="/upload-target">
                                         <div className="fallback">
@@ -2084,19 +2201,50 @@ export default function Home () {
                                         </div>
                                     </form> */}
                                     <div style={{ overflow: 'auto', cursor: 'pointer', minHeight: '100px', maxHeight: '300px' }}>
-                                        <FilePond
+                                        {/* <FilePond
                                             files={files}
-                                            onupdatefiles={handleFileUpload}
+                                            onupdatefiles={handleFilePondUpdate}
                                             allowMultiple={true}
                                             maxFiles={50}
                                             labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-                                        />
+
+                                        /> */}
+
+                                        {/* <FilePond
+                                            // ...
+                                            onChange={(e) => { handleFileUpload(e) }}
+                                        /> */}
+                                        {/* {downloadURL && <p>Download URL: {downloadURL}</p>} */}
                                     </div>
 
                                 </div>
-                                <form method="post" className="c-form">
-                                    <textarea id="emojionearea1" placeholder="What's On Your Mind?" defaultValue={""} />
-                                    <div className="activity-post">
+                                <form method="post" onSubmit={formik.handleSubmit} className="c-form">
+                                    <div style={{ display: 'flex' }}>
+                                        <div>
+                                            <div>
+                                                <h2>Tiêu Đề</h2>
+                                                <input type='text' name='title' onChange={formik.handleChange} />
+                                            </div>
+                                            <div>
+                                                <h2>Chi Tiết</h2>
+                                                <input type='text' name='description' onChange={formik.handleChange} />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <h2>Địa Điễm</h2>
+                                                <input type='text' name='location' onChange={formik.handleChange} />
+                                            </div>
+                                            <div>
+                                                <h2>Mục Tiêu</h2>
+                                                <input type='number' name='targetDonation' onChange={formik.handleChange} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type='file' onChange={uploadFile} />
+                                    {files !== '' ? <img src={files} style={{ height: '300px' }} /> : <div></div>}
+                                    {/* <textarea id="emojionearea1" placeholder="What's On Your Mind?" defaultValue={""} /> */}
+                                    {/* <div className="activity-post">
                                         <div className="checkbox">
                                             <input type="checkbox" id="checkbox" defaultChecked />
                                             <label htmlFor="checkbox"><span>Activity Feed</span></label>
@@ -2141,7 +2289,7 @@ export default function Home () {
                                         </ul>
                                     </div>
                                     <input className="schedule-btn" type="text" id="datetimepicker" readOnly />
-                                    <input type="text" placeholder="https://www.youtube.com/watch?v=vgvsuiFlA-Y&t=56s" />
+                                    <input type="text" placeholder="https://www.youtube.com/watch?v=vgvsuiFlA-Y&t=56s" /> */}
                                     <button type="submit" className="main-btn">Publish</button>
                                 </form>
                             </div>

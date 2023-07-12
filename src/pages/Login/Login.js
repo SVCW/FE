@@ -5,10 +5,12 @@ import { history } from '../../App';
 import { useState } from 'react';
 import { useFormik } from 'formik'
 import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GetListActivityAction } from '../../redux/actions/ActivityAction';
+import { LoginUserAction } from '../../redux/actions/LoginAction';
 export default function Login (props) {
     const dispatch = useDispatch()
+    const { msg } = useSelector(root => root.LoginReducer)
     useEffect(() => {
         const action = GetListActivityAction();
         dispatch(action)
@@ -22,15 +24,20 @@ export default function Login (props) {
             console.log(value);
         }
     })
-    const signInWithGoogle = () => {
+    const signInWithGoogle = async () => {
         signInWithPopup(auth, provider).then((result) => {
-
+            const email = {
+                "email": result.user?.email
+            }
+            console.log(email);
 
             console.log(result.user?.email);
+            const action1 = LoginUserAction(email);
+            dispatch(action1)
             const action = ConfigActivityAction(1)
             dispatch(action)
 
-            props.history.push('/home')
+            // props.history.push('/home')
             // console.log(result);
             // console.log(result.user.accessToken);
             // axios({
@@ -50,7 +57,9 @@ export default function Login (props) {
             // // <Redirect to="/admin/dashboard" />
 
             // props.history.push("/home");
-
+            if (msg !== '') {
+                props.history.push("/home");
+            }
         })
             .catch((error) => {
                 console.log(error);
@@ -100,9 +109,12 @@ export default function Login (props) {
                                 <input type="checkbox" id="checkbox" defaultChecked />
                                 <label htmlFor="checkbox"><span>Ghi Nhớ</span></label>
                             </div>
+
                             <button className="main-btn" type="submit" onClick={() => {
                                 props.history.push('/home')
                             }}><i className="icofont-key" /> Đăng nhập</button>
+
+                            {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
                             <p
                                 style={{
                                     marginTop: 20,
