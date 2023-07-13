@@ -1,6 +1,8 @@
 const stateDefault = {
-    configActivity: [],
-
+    // configActivity: localStorage.getItem('donation'),
+    configActivity: true,
+    // isValidCreate: localStorage.getItem('isValidCreate'),
+    isValidCreate: false,
 }
 
 

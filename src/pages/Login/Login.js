@@ -34,8 +34,7 @@ export default function Login (props) {
             console.log(result.user?.email);
             const action1 = LoginUserAction(email);
             dispatch(action1)
-            const action = ConfigActivityAction(1)
-            dispatch(action)
+
 
             // props.history.push('/home')
             // console.log(result);
@@ -57,9 +56,14 @@ export default function Login (props) {
             // // <Redirect to="/admin/dashboard" />
 
             // props.history.push("/home");
-            if (msg !== '') {
-                props.history.push("/home");
-            }
+            console.log(localStorage.getItem('userLogin'));
+            // if (localStorage.getItem('userLogin') !== 104) {
+            //     // const action = ConfigActivityAction(email)
+            //     // dispatch(action)
+            //     props.history.push("/home");
+            // } else {
+
+            // }
         })
             .catch((error) => {
                 console.log(error);

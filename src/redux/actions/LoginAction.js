@@ -1,5 +1,6 @@
 import { history } from "../../App";
 import { http } from "../../utils/reponse";
+import { ConfigActivityAction } from "./ConfigActivityAction";
 
 
 
@@ -12,9 +13,9 @@ export const LoginUserAction = (value) => {
                 type: "GET_USER_LOGIN",
                 userLogin: result.data.data,
             }
-            await dispatch(action)
-            await localStorage.setItem('userLogin', result.data.data.resultCode)
-            await localStorage.setItem('setError', result.data.data.resultMsg)
+            dispatch(action)
+            localStorage.setItem('userLogin', result.data.data.resultCode)
+            localStorage.setItem('setError', result.data.data.resultMsg)
             if (result.data.data.resultCode === 104) {
                 dispatch({
                     type: "CHECH_LOGIN",
@@ -26,10 +27,16 @@ export const LoginUserAction = (value) => {
                     type: "CHECH_LOGIN",
                     data: ""
                 })
+                const email = {
+                    "email": result.data.data.user?.email
+                }
+                const action = await ConfigActivityAction(email)
+                dispatch(action)
+                history.push("/home");
+
+
 
             }
-
-
         } catch (error) {
             console.log(error);
         }

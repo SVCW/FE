@@ -23,11 +23,47 @@ import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import SimpleSlider from '../../component/SimpleSlider';
 import { getStorage, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useFormik } from 'formik';
+import { DonationAction } from '../../redux/actions/DonationAction';
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function Home () {
+    const [isPopupOpen, setPopupOpen] = useState(false);
+    const { configActivity, isValidCreate } = useSelector(root => root.ConfigActivityReducer)
+    console.log(configActivity);
+    console.log(isValidCreate);
+    const [isTextInputVisible, setTextInputVisible] = useState(false);
+
+    const toggleTextInput = () => {
+        setTextInputVisible(!isTextInputVisible);
+    };
+    const openPopup = () => {
+        setPopupOpen(true);
+    };
+
+    const closePopup = () => {
+        setPopupOpen(false);
+    };
+
     const storage = getStorage();
+    const [acti, setActi] = useState('');
+    console.log(acti);
+    const formik1 = useFormik({
+        initialValues: {
+            title: "",
+            amount: 0,
+            email: "",
+            phone: "",
+            name: "",
+            isAnonymous: true,
+            activityId: ""
+        },
+        onSubmit: (value) => {
+            console.log(value);
+            const action = DonationAction(value);
+            dispatch(action)
+        }
+    })
     const settings = {
         dots: true,
         infinite: true,
@@ -66,7 +102,8 @@ export default function Home () {
             // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
             location: "",
             targetDonation: 0,
-            userId: localStorage.getItem('userID'),
+            userId: '1',
+            text: true,
             isFanpageAvtivity: true,
             media: [
                 {
@@ -416,35 +453,38 @@ export default function Home () {
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>{/* tab buttons */}
-                                        <div className="main-wraper" onClick={handleClick} style={{ cursor: 'pointer' }}>
-                                            <span className="new-title">Create New Post</span>
-                                            <div className="new-post">
-                                                <form method="post" onClick={handleClick}>
-                                                    <i className="icofont-pen-alt-1" />
-                                                    <input type="text" placeholder="Create New Post" />
-                                                </form>
-                                                <ul className="upload-media">
-                                                    <li>
-                                                        <a href="#" title>
-                                                            <i><img src="images/image.png" alt /></i>
-                                                            <span>Photo/Video</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" title>
-                                                            <i><img src="images/activity.png" alt /></i>
-                                                            <span>Feeling/Activity</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="live-stream.html" title>
-                                                            <i><img src="images/live-stream.png" alt /></i>
-                                                            <span>Live Stream</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
+                                        {isValidCreate === true ?
+                                            <div className="main-wraper" onClick={handleClick} style={{ cursor: 'pointer' }}>
+                                                <span className="new-title">Create New Post</span>
+                                                <div className="new-post">
+                                                    <form method="post" onClick={handleClick}>
+                                                        <i className="icofont-pen-alt-1" />
+                                                        <input type="text" placeholder="Create New Post" />
+                                                    </form>
+                                                    <ul className="upload-media">
+                                                        <li>
+                                                            <a href="#" title>
+                                                                <i><img src="images/image.png" alt /></i>
+                                                                <span>Photo/Video</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" title>
+                                                                <i><img src="images/activity.png" alt /></i>
+                                                                <span>Feeling/Activity</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="live-stream.html" title>
+                                                                <i><img src="images/live-stream.png" alt /></i>
+                                                                <span>Live Stream</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>{/* create new post */}
+                                            : <div></div>}
+                                        {/* create new post */}
                                         {/* <div className="story-card" style={{ marginLeft: '20px' }}>
                                             <div className="story-title">
                                                 <h5>Recent Stories</h5>
@@ -613,7 +653,11 @@ export default function Home () {
 
                                                             <figure style={{}}>
                                                                 <p style={{ width: '100%' }}>fetched-image</p>
-
+                                                                {item.targetDonation !== 0 ? <button className='btn btn-outline-danger mb-2' onClick={() => {
+                                                                    // setActi(item.activityId)
+                                                                    formik1.setFieldValue('activityId', item.activityId)
+                                                                    openPopup()
+                                                                }}>Ủng Hộ</button> : <div></div>}
                                                                 <div className="image-gallery">
                                                                     {/* {item.media?.map((image, index) => (
                                                                         <div key={index} className={`image-container ${calculateImageClass(image.length)}`}>
@@ -2167,9 +2211,7 @@ export default function Home () {
             </div>{/* side slide message & popup */}
 
             {create === true ?
-                <div className="post-new-popup" style={popupStyle}
-
-                >
+                <div className="post-new-popup" style={popupStyle}>
                     <div className="popup" style={{ width: 800 }}>
                         <span className="popup-closed" onClick={handleClick}><i className="icofont-close" /></span>
                         <div className="popup-meta">
@@ -2235,10 +2277,22 @@ export default function Home () {
                                                 <h2>Địa Điễm</h2>
                                                 <input type='text' name='location' onChange={formik.handleChange} />
                                             </div>
-                                            <div>
-                                                <h2>Mục Tiêu</h2>
-                                                <input type='number' name='targetDonation' onChange={formik.handleChange} />
-                                            </div>
+
+                                            {configActivity === true ?
+                                                <div>
+                                                    <input type="checkbox" onChange={toggleTextInput} /> Nhận Ủng Hộ
+                                                    {isTextInputVisible && <div>
+                                                        <h2>Mục Tiêu</h2>
+                                                        <input type='text' name='location' onChange={formik.handleChange} />
+                                                    </div>
+                                                    }
+                                                </div>
+                                                :
+
+                                                <div>
+
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                     <input type='file' onChange={uploadFile} />
@@ -2295,10 +2349,12 @@ export default function Home () {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div >
                 :
                 <div></div>
             }
+
+
 
             <div className="new-question-popup">
                 <div className="popup">
@@ -2744,7 +2800,76 @@ export default function Home () {
             </div>{/* create new room */}
             <DetailActivity item={detail} dateTime={DateTime} />
 
-
-        </Fragment>
+            <div className="modal fade" id="popupModal" tabIndex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <form className="modal-content" method='post' onSubmit={formik1.handleSubmit}>
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="popupModalLabel">Ủng Hộ</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <form >
+                                <div className="form-group">
+                                    <label htmlFor="name">Tiêu Đề:</label>
+                                    <input type="text" id="name" name="title" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Số Tiền:</label>
+                                    <input type="text" id="amount" name="amount" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Email:</label>
+                                    <input type="text" id="email" name="email" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Số Điện Thoại:</label>
+                                    <input type="text" id="phone" name="phone" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Họ Tên:</label>
+                                    <input type="text" id="name" name="name" />
+                                </div>
+                                <button type="submit" className="">Submit</button>
+                            </form>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {
+                isPopupOpen && (
+                    <div className="popup-overlay">
+                        <div className="popup-container">
+                            <h2>Popup Form</h2>
+                            <button className="close-button" onClick={closePopup}>&times;</button>
+                            <form onSubmit={formik1.handleSubmit} method='post'>
+                                <div className="form-group">
+                                    <label htmlFor="name">Tiêu Đề:</label>
+                                    <input type="text" id="name" name="title" onChange={formik1.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Số Tiền:</label>
+                                    <input type="number" id="amount" name="amount" onChange={formik1.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Email:</label>
+                                    <input type="text" id="email" name="email" onChange={formik1.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Số Điện Thoại:</label>
+                                    <input type="text" id="phone" name="phone" onChange={formik1.handleChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="name">Họ Tên:</label>
+                                    <input type="text" id="name" name="name" onChange={formik1.handleChange} />
+                                </div>
+                                <button type="submit" className="">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
+        </Fragment >
     )
 }
