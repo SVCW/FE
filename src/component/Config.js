@@ -4,8 +4,8 @@ import { Fragment } from 'react'
 export default function Config () {
     return (
         <Fragment>
-            {localStorage.getItem('config') !== "" ?
-                <div className='marquee'><span>{localStorage.getItem('config')}</span></div>
+            {localStorage.getItem('setError') === 'Đăng nhập thành công!' ?
+                <div className='marquee'><span>{localStorage.getItem('setError')}</span></div>
                 :
                 <div></div>
             }
