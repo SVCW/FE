@@ -4,7 +4,7 @@ export default function ResponsiveHeader () {
     return (
 
         <div className="responsive-header">
-            <div className="logo res"><img src="images/logo.png" alt /><span>Socimo</span></div>
+            <div className="logo res"><img src="images/logo.png" alt /><span>SVCW</span></div>
             <div className="user-avatar mobile">
                 <a href="profile.html" title="View Profile"><img alt src="images/resources/user.jpg" /></a>
                 <div className="name">
