@@ -16,3 +16,17 @@ export const GetListActivityAction = () => {
         }
     }
 }
+
+export const CreateActivityAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/Activity/Insert-Activity', value);
+            console.log(result.data.data);
+            const action = GetListActivityAction()
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
