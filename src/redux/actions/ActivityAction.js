@@ -1,5 +1,4 @@
 import { http } from "../../utils/reponse";
-import { VNPayAction } from "./VNPayAction";
 
 export const GetListActivityAction = () => {
     return async (dispatch) => {
@@ -24,6 +23,38 @@ export const CreateActivityAction = (value) => {
         try {
             let result = await http.post('/Activity/Insert-Activity', value);
             console.log(result.data.data);
+            const action = GetListActivityAction()
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const PostLikeAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/Like/simple-like', value);
+            const action = GetListActivityAction()
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const DeleteLikeAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.delete('/Like/simple-unlike', {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: value
+            });
+
             const action = GetListActivityAction()
             dispatch(action)
 
