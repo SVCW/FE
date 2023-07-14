@@ -12,9 +12,11 @@ export const LoginUserAction = (value, props) => {
             const action = {
                 type: "GET_USER_LOGIN",
                 userLogin: result.data.data,
+                userID: result.data.data.user?.userId
             }
             dispatch(action)
             localStorage.setItem('userLogin', result.data.data.resultCode)
+            localStorage.setItem('userID', result.data.data.user?.userId)
             localStorage.setItem('setError', result.data.data.resultMsg)
             if (result.data.data.resultCode === 104) {
                 dispatch({

@@ -1,5 +1,6 @@
 const stateDefault = {
     userLogin: {},
+    userID: localStorage.getItem('userID'),
     msg: '',
 }
 
@@ -9,6 +10,7 @@ export const LoginReducer = (state = stateDefault, action) => {
 
         case 'GET_USER_LOGIN': {
             state.userLogin = action.userLogin;
+            state.userID = action.userID;
             return { ...state }
         }
         case 'CHECH_LOGIN': {
