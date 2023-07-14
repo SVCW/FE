@@ -30,8 +30,10 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 export default function Home () {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const { configActivity, isValidCreate } = useSelector(root => root.ConfigActivityReducer)
+    const { userID } = useSelector(root => root.LoginReducer)
     console.log(configActivity);
     console.log(isValidCreate);
+    console.log(userID);
     const [isTextInputVisible, setTextInputVisible] = useState(false);
 
     const toggleTextInput = () => {
@@ -102,9 +104,9 @@ export default function Home () {
             // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
             location: "",
             targetDonation: 0,
-            userId: '1',
+            userId: userID,
             text: true,
-            isFanpageAvtivity: true,
+            isFanpageAvtivity: false,
             media: [
                 {
                     linkMedia: files,
@@ -453,7 +455,7 @@ export default function Home () {
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>{/* tab buttons */}
-                                        {isValidCreate === true ?
+                                        {isValidCreate === "true" ?
                                             <div className="main-wraper" onClick={handleClick} style={{ cursor: 'pointer' }}>
                                                 <span className="new-title">Create New Post</span>
                                                 <div className="new-post">
@@ -2281,9 +2283,9 @@ export default function Home () {
                                             {configActivity === true ?
                                                 <div>
                                                     <input type="checkbox" onChange={toggleTextInput} /> Nhận Ủng Hộ
-                                                    {isTextInputVisible && <div>
+                                                    {isTextInputVisible === "true" && <div>
                                                         <h2>Mục Tiêu</h2>
-                                                        <input type='text' name='location' onChange={formik.handleChange} />
+                                                        <input type='text' name='targetDonation' onChange={formik.handleChange} />
                                                     </div>
                                                     }
                                                 </div>
