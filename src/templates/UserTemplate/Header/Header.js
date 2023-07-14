@@ -1,7 +1,9 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom/cjs/react-router-dom'
 
 export default function Header () {
+    const dispatch = useDispatch()
     return (
         <header className>
             <div className="topbar stick">
@@ -132,7 +134,16 @@ export default function Header () {
                             <li><a href="privacy-n-policy.html" title><i className="icofont-notepad" /> Privacy</a>
                             </li>
                             <li><a className="dark-mod" href="#" title><i className="icofont-moon" /> Dark Mode</a></li>
-                            <li className="logout"><NavLink to="/" title><i className="icofont-power" /> Logout</NavLink>
+                            <li className="logout" onClick={() => {
+                                const action = {
+                                    type: "LOGOUT",
+                                }
+                                dispatch(action)
+                                const action1 = {
+                                    type: "LOGOUT1"
+                                }
+                                dispatch(action1)
+                            }}><NavLink to="/" title><i className="icofont-power" /> Logout</NavLink>
                             </li>
                         </ul>
                     </li>
