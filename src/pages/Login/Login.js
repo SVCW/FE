@@ -32,7 +32,7 @@ export default function Login (props) {
             console.log(email);
 
             console.log(result.user?.email);
-            const action1 = LoginUserAction(email);
+            const action1 = LoginUserAction(email, props);
             dispatch(action1)
 
 
