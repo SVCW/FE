@@ -29,7 +29,7 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function Home () {
     const [isPopupOpen, setPopupOpen] = useState(false);
-    const { configActivity, isValidCreate } = useSelector(root => root.ConfigActivityReducer)
+    const { configActivity, isValidCreate, isFanpage } = useSelector(root => root.ConfigActivityReducer)
     const { userID } = useSelector(root => root.LoginReducer)
     console.log(configActivity);
     console.log(isValidCreate);
@@ -106,7 +106,7 @@ export default function Home () {
             targetDonation: 0,
             userId: userID,
             text: true,
-            isFanpageAvtivity: false,
+            isFanpageAvtivity: isFanpage,
             media: [
                 {
                     linkMedia: files,
@@ -455,7 +455,7 @@ export default function Home () {
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>{/* tab buttons */}
-                                        {isValidCreate === "true" ?
+                                        {isValidCreate == true ?
                                             <div className="main-wraper" onClick={handleClick} style={{ cursor: 'pointer' }}>
                                                 <span className="new-title">Create New Post</span>
                                                 <div className="new-post">
