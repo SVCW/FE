@@ -4,7 +4,7 @@ import { ConfigActivityAction } from "./ConfigActivityAction";
 
 
 
-export const LoginUserAction = (value) => {
+export const LoginUserAction = (value, props) => {
     return async (dispatch) => {
         try {
             let result = await http.post(`/User/validate-login-user`, value);
@@ -32,7 +32,7 @@ export const LoginUserAction = (value) => {
                 }
                 const action = await ConfigActivityAction(email)
                 dispatch(action)
-                history.push("/home");
+                props.history.push("/home");
 
 
 
