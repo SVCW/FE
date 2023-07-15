@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { CreateActivityAction, GetListActivityAction } from '../../redux/actions/ActivityAction';
+import { CreateActivityAction, DeleteLikeAction, GetListActivityAction, PostLikeAction } from '../../redux/actions/ActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import moment from 'moment';
@@ -196,6 +196,33 @@ export default function Home () {
             }
             return comment;
         });
+        let alreadyLiked = false;
+
+        JSON.parse(localStorage.getItem('activity'))?.map((comment) => {
+            if (comment.activityId === id && comment.like.length > 0) {
+                comment.like.map(item => {
+                    console.log(item)
+                    if (item.userId === userID) {
+                        alreadyLiked = true
+                    }
+                })
+            }
+        });
+
+        let action = null;
+
+        if (alreadyLiked) {
+            action = DeleteLikeAction({
+                userId: userID,
+                activityId: id
+            });
+        } else {
+            action = PostLikeAction({
+                userId: userID,
+                activityId: id
+            });
+        }
+        dispatch(action)
 
         setCommentData(updatedComments);
     };
