@@ -32,3 +32,36 @@ export const CreateActivityAction = (value) => {
         }
     }
 }
+
+
+export const PostLikeAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/Like/simple-like', value);
+            const action = GetListActivityAction()
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const DeleteLikeAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.delete('/Like/simple-unlike', {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: value
+            });
+
+            const action = GetListActivityAction()
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
