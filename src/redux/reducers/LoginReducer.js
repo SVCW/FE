@@ -17,11 +17,6 @@ export const LoginReducer = (state = stateDefault, action) => {
             state.msg = action.data;
             return { ...state }
         }
-        case "LOGOUT1": {
-            localStorage.setItem('setError', "")
-            state.userID = localStorage.setItem('userID', "")
-            return { ...state }
-        }
 
         default: return state;
     }

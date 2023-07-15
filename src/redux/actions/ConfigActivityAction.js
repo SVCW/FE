@@ -10,14 +10,10 @@ export const ConfigActivityAction = (value) => {
             const action = {
                 type: "GET_CONFIG",
                 configActivity: result.data.data.isDonatable,
-                isValidCreate: result.data.data?.isValidCreate,
-                isFanpage: result.data.data.isFanpage,
-                msg: result.data.data.message
+                isValidCreate: result.data.data.isValidCreate,
             }
             localStorage.setItem('donation', result.data.data.isDonatable)
-            localStorage.setItem('isValidCreate', result.data.data?.isValidCreate)
-            localStorage.setItem('isFanpage', result.data.data.isFanpage)
-            localStorage.setItem('message', result.data.data.message)
+            localStorage.setItem('isValidCreate', result.data.data.isValidCreate)
             dispatch(action)
 
         } catch (error) {
