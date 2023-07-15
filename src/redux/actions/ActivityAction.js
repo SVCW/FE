@@ -1,5 +1,4 @@
 import { http } from "../../utils/reponse";
-import { VNPayAction } from "./VNPayAction";
 
 export const GetListActivityAction = () => {
     return async (dispatch) => {
@@ -32,8 +31,6 @@ export const CreateActivityAction = (value) => {
         }
     }
 }
-
-
 export const PostLikeAction = (value) => {
     return async (dispatch) => {
         try {
