@@ -24,13 +24,36 @@ import SimpleSlider from '../../component/SimpleSlider';
 import { getStorage, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useFormik } from 'formik';
 import { DonationAction } from '../../redux/actions/DonationAction';
-// Register the plugins
+
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function Home () {
     const [isPopupOpen, setPopupOpen] = useState(false);
-    const { configActivity, isValidCreate } = useSelector(root => root.ConfigActivityReducer)
+    const [isLoading, setIsLoading] = useState(false);
+    const [images, setImages] = useState([]);
+    console.log(images);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const { configActivity, isValidCreate, isFanpage } = useSelector(root => root.ConfigActivityReducer)
     const { userID } = useSelector(root => root.LoginReducer)
+
+    const dispatch = useDispatch();
+    const { arrActivity } = useSelector(root => root.ActivityReducer)
+    const { arrFanpage } = useSelector(root => root.FanpageReducer)
+    const [cmt, setCmt] = useState([])
+    const [time, setTime] = useState([])
+    const [detail, setDetail] = useState({})
+    const [create, setCreate] = useState(true)
+    const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map((comment) => ({
+        id: comment.activityId,
+        isCmt: true,
+        color: '#eae9ee'
+    }));
+    const [commentData, setCommentData] = useState(initialCommentData);
+    const currentTime = moment();
+
+    console.log(configActivity);
+    console.log(isValidCreate);
+    console.log(userID);
 
     const [isTextInputVisible, setTextInputVisible] = useState(false);
 
@@ -40,12 +63,9 @@ export default function Home () {
     const openPopup = () => {
         setPopupOpen(true);
     };
-
     const closePopup = () => {
         setPopupOpen(false);
     };
-
-    const storage = getStorage();
     const [acti, setActi] = useState('');
     console.log(acti);
     const formik1 = useFormik({
@@ -64,13 +84,6 @@ export default function Home () {
             dispatch(action)
         }
     })
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 3,
-    };
     function calculateImageClass (imageCount) {
         let imageClass = 'full-width';
         if (imageCount === 2) {
@@ -92,25 +105,28 @@ export default function Home () {
     };
     const [files, setFiles] = useState('');
     console.log(files);
-    const currentTime = moment();
+
+    useEffect(() => {
+        const arrMedia = images.map((image) => ({
+            linkMedia: image.url,
+            type: "image"
+        }));
+        formik.setFieldValue('media', arrMedia);
+    }, [images]);
+
     const formik = useFormik({
         initialValues: {
             title: "",
             description: "",
-            startDate: "2023-07-12T17:23:37.754Z",
-            endDate: "2023-07-12T17:23:37.754Z",
+            startDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
+            endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
             // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
             location: "",
             targetDonation: 0,
             userId: userID,
             text: true,
-            isFanpageAvtivity: false,
-            media: [
-                {
-                    linkMedia: files,
-                    type: "string"
-                }
-            ]
+            isFanpageAvtivity: isFanpage,
+            media: []
         },
         onSubmit: (value) => {
             console.log(value);
@@ -120,95 +136,43 @@ export default function Home () {
     })
 
 
-    const uploadFile = (e) => {
-        let file = e.target.files[0];
-        let fileRef = ref(storage_bucket, file.name);
+    const handleImageChange = async (e) => {
+        setIsLoading(true);
+        const fileList = e.target.files;
+        const newImages = [];
 
-        const uploadTask = uploadBytesResumable(fileRef, file);
+        for (let i = 0;i < fileList.length;i++) {
+            const file = fileList[i];
+            const imageUrl = URL.createObjectURL(file);
+            newImages.push({ file, url: imageUrl });
 
-        uploadTask.on('state_changed', (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-            // console.log(snapshot);
+            try {
+                const fileRef = ref(storage_bucket, file.name);
+                const uploadTask = uploadBytesResumable(fileRef, file);
 
-        },
-            (err) => console.log(err),
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url);
-                    setFiles(url)
-                    const previousMediaValue = formik.values.media;
-
-                    // Tạo một mảng mới của các đối tượng media với linkMedia mới
-                    const newMediaValue = previousMediaValue.map((media) => ({
-                        ...media,
-                        linkMedia: url,
-                    }));
-
-                    // Đặt giá trị mới cho media.linkMedia
-                    formik.setFieldValue("media", newMediaValue);
+                uploadTask.on('state_changed', (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setUploadProgress(progress);
                 });
-            });
-    };
 
+                const snapshot = await uploadTask;
 
-    // const handleFileUpload = async (e) => {
-    //     let file = e.target.files[0];
-    //     let fileRef = ref(storage_bucket, file.name);
-
-    //     const uploadTask = uploadBytesResumable(fileRef, file);
-
-    //     uploadTask.on('state_changed', (snapshot) => {
-    //         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //         console.log("Upload is " + progress + "% done");
-    //         // console.log(snapshot);
-    //         // setShowInput(false);
-
-    //     },
-    //         (err) => console.log(err),
-    //         () => {
-    //             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-    //                 console.log(url);
-    //                 // const updatedProduct = { ...product, achivementLogo: url }; // Update achivementLogo property in product object
-    //                 // setProduct(updatedProduct);
-    //             });
-    //         });
-
-    // };
-    // console.log(files);
-    const dispatch = useDispatch();
-    const { arrActivity } = useSelector(root => root.ActivityReducer)
-    const { arrFanpage } = useSelector(root => root.FanpageReducer)
-    // console.log(arrActivity);
-    const [cmt, setCmt] = useState([])
-    const [time, setTime] = useState([])
-    const [detail, setDetail] = useState({})
-    const [create, setCreate] = useState(true)
-    // console.log(create);
-    const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map((comment) => {
-        let alreadyLiked = false;
-
-        if (comment.like.length > 0) {
-            comment.like.map(item => {
-                if (item.userId === userID) {
-                    alreadyLiked = true
+                if (snapshot.state === 'success') {
+                    const downloadURL = await getDownloadURL(snapshot.ref);
+                    const updatedImages = [...newImages];
+                    updatedImages[i].url = downloadURL;
+                    setImages((prevImages) => [...prevImages, ...updatedImages]);
                 }
-            })
+
+            } catch (error) {
+                console.log(error);
+            }
         }
-        return {
-            id: comment.activityId,
-            isCmt: true,
-            color: alreadyLiked ? 'rgb(117, 189, 240)' : '#eae9ee'
-        }
-    });
-    const handleSetDetail = (media) => {
-        setDetail(media);
-        // Xử lý logic khác khi setDetail được gọi
+        setIsLoading(false);
+        setUploadProgress(0);
     };
 
-
-    const [commentData, setCommentData] = useState(initialCommentData);
-    // console.log(commentData);
+    };
     const handleCommentClick = (id) => {
         const updatedComments = commentData?.map((comment) => {
             if (comment.id === id) {
@@ -232,6 +196,7 @@ export default function Home () {
         });
         let alreadyLiked = false;
 
+
         JSON.parse(localStorage.getItem('activity'))?.map((comment) => { 
             if (comment.activityId === id && comment.like.length > 0) {
                 comment.like.map(item => {
@@ -250,7 +215,7 @@ export default function Home () {
                 userId: userID,
                 activityId: id
             });
-        } else {
+        } else  {
             action =PostLikeAction({
                 userId: userID,
                 activityId: id
@@ -268,15 +233,10 @@ export default function Home () {
         dispatch(action1)
     }, []);
     useEffect(() => {
-        // Cập nhật arrActivity với commentData mới
         const updatedArrActivity = arrActivity.map((activity) => {
-
             const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
             return { ...activity, commentData: matchingComments };
         });
-
-        // Cập nhật state của arrActivity
-        // ... tiếp tục với phương thức để cập nhật arrActivity trong Redux hoặc useState
         setCmt(updatedArrActivity)
     }, [commentData, arrActivity]);
 
@@ -285,9 +245,7 @@ export default function Home () {
         const inputTime = moment(item);
         const duration = moment.duration(currentTime.diff(inputTime));
         const hoursAgo = duration.asHours();
-
         let timeAgoString = '';
-
         if (hoursAgo < 1) {
             const daysAgo = Math.floor(duration.asMinutes());
             timeAgoString = `${daysAgo} minutes ago`;
@@ -477,103 +435,7 @@ export default function Home () {
                                                 </div>
                                             </div>
                                             : <div></div>}
-                                        {/* create new post */}
-                                        {/* <div className="story-card" style={{ marginLeft: '20px' }}>
-                                            <div className="story-title">
-                                                <h5>Recent Stories</h5>
-                                                <a href="#" title>See all</a>
-                                            </div>
-                                            <div className="story-wraper">
-                                                <img src="images/resources/story-card5.jpg" alt />
-                                                <div className="users-dp">
-                                                    <img src="images/resources/user3.jpg" alt />
-                                                </div>
-                                                <a className="add-new-stry" href="#" title><i className="icofont-plus" /></a>
-                                                <span>Add Your Story</span>
-                                            </div>
-                                            <div className="story-wraper">
-                                                <img src="images/resources/story-card.jpg" alt />
-                                                <div className="users-dp">
-                                                    <img src="images/resources/user6.jpg" alt />
-                                                </div>
-                                                <span>Tamana Bhatia</span>
-                                            </div>
-                                            <div className="story-wraper">
-                                                <img src="images/resources/story-card2.jpg" alt />
-                                                <div className="users-dp">
-                                                    <img src="images/resources/user7.jpg" alt />
-                                                </div>
-                                                <span>Emily Caros</span>
-                                            </div>
-                                            <div className="story-wraper">
-                                                <img src="images/resources/story-card3.jpg" alt />
-                                                <div className="users-dp">
-                                                    <img src="images/resources/user8.jpg" alt />
-                                                </div>
-                                                <span>Daniel Cardos</span>
-                                            </div>
 
-                                        </div> */}
-                                        {/* stories */}
-                                        {/* <div className="main-wraper">
-                                                <div className="chatroom-title">
-                                                    <i>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-tv">
-                                                            <rect x={2} y={7} width={20} height={15} rx={2} ry={2} />
-                                                            <polyline points="17 2 12 7 7 2" />
-                                                        </svg></i>
-                                                    <span>Chat Rooms <em>Video chat with friends</em></span>
-                                                    <a className="create-newroom" href="#" title>Create Room</a>
-                                                </div>
-                                                <ul className="chat-rooms">
-                                                    <li>
-                                                        <div className="room-avatar">
-                                                            <img src="images/resources/user2.jpg" alt />
-                                                            <span className="status online" />
-                                                        </div>
-                                                        <span>Sara's Room</span>
-                                                        <a className="join" href="#" title="Join Room">Join</a>
-                                                        <a className="say-hi send-mesg" href="#" title="Send Message"><i className="icofont-facebook-messenger" /></a>
-                                                    </li>
-                                                    <li>
-                                                        <div className="room-avatar">
-                                                            <img src="images/resources/user3.jpg" alt />
-                                                            <span className="status offline" />
-                                                        </div>
-                                                        <span>jawad's Room</span>
-                                                        <a className="join" href="#" title="Join Room">Join</a>
-                                                        <a className="say-hi send-mesg" href="#" title="Send Message"><i className="icofont-facebook-messenger" /></a>
-                                                    </li>
-                                                    <li>
-                                                        <div className="room-avatar">
-                                                            <img src="images/resources/user4.jpg" alt />
-                                                            <span className="status away" />
-                                                        </div>
-                                                        <span>Jack's Room</span>
-                                                        <a className="join" href="#" title="Join Room">Join</a>
-                                                        <a className="say-hi send-mesg" href="#" title="Send Message"><i className="icofont-facebook-messenger" /></a>
-                                                    </li>
-                                                    <li>
-                                                        <div className="room-avatar">
-                                                            <img src="images/resources/user5.jpg" alt />
-                                                            <span className="status online" />
-                                                        </div>
-                                                        <span>jobidn's Room</span>
-                                                        <a className="join" href="#" title="Join Room">Join</a>
-                                                        <a className="say-hi send-mesg" href="#" title="Send Message"><i className="icofont-facebook-messenger" /></a>
-                                                    </li>
-                                                    <li>
-                                                        <div className="room-avatar">
-                                                            <img src="images/resources/user6.jpg" alt />
-                                                            <span className="status offline" />
-                                                        </div>
-                                                        <span>Emily's Room</span>
-                                                        <a className="join" href="#" title="Join Room">Join</a>
-                                                        <a className="say-hi send-mesg" href="#" title="Send Message"><i className="icofont-facebook-messenger" /></a>
-                                                    </li>
-                                                </ul>
-                                            </div> */}
-                                        {/* chat rooms */}
                                         <div className="main-wraper">
                                             <div className="user-post">
                                                 <div className="friend-info">
@@ -587,14 +449,9 @@ export default function Home () {
                                                     </div>
 
                                                     <SimpleSlider arrFanpage={arrFanpage} />
-
-
-                                                    {/* </ul> */}
                                                 </div>
                                             </div>
                                         </div>{/* suggested friends */}
-
-
                                         {cmt.map((item, index) => {
                                             const detailItem = item
 
@@ -652,31 +509,9 @@ export default function Home () {
                                                                     openPopup()
                                                                 }}>Ủng Hộ</button> : <div></div>}
                                                                 <div className="image-gallery">
-                                                                    {/* {item.media?.map((image, index) => (
-                                                                        <div key={index} className={`image-container ${calculateImageClass(image.length)}`}>
-                                                                        <a data-toggle="modal" data-target="#img-comt"
-                                                                            href="images/resources/album1.jpg" onClick={() => {
-                                                                                setDetail(detailItem)
-                                                                            }}>
-                                                                            <img src={item.linkMedia} style={{ width: '100%', objectFit: 'cover', height: '400px' }} />
-                                                                    </div> */}
-                                                                    {/* ))} */}
-                                                                    {/* {item.media?.map((item, index) => {
-                                                                        return <a data-toggle="modal" data-target="#img-comt"
-                                                                            href="images/resources/album1.jpg" onClick={() => {
-                                                                                setDetail(detailItem)
-                                                                            }}>
-                                                                            <img src={item.linkMedia} style={{ width: '100%', objectFit: 'cover', height: '400px' }} />
-                                                                        </a>
-                                                                    })} */}
-                                                                    {/* <Media media={item?.media} item={detailItem} dateTime={DateTime} /> */}
                                                                     <div className="image-gallery">
                                                                         {item.media?.map((image, index) => {
-
-
                                                                             const imageClass = calculateImageClass(item.media.length);
-                                                                            // console.log(imageClass);
-                                                                            // console.log(item.media.length);
                                                                             return <div key={index} className={`image-container ${imageClass} `}>
                                                                                 <a data-toggle="modal" data-target="#img-comt" href="images/resources/album1.jpg" onClick={() => {
                                                                                     setDetail(detailItem)
@@ -756,26 +591,6 @@ export default function Home () {
                                                                     handleLikeClick(item.activityId)
                                                                 }}>
                                                                     <div className="Like "><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                        {/* <div className="Emojis">
-                                                                                <div className="Emoji Emoji--like">
-                                                                                    <div className="icon icon--like" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--love">
-                                                                                    <div className="icon icon--heart" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--haha">
-                                                                                    <div className="icon icon--haha" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--wow">
-                                                                                    <div className="icon icon--wow" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--sad">
-                                                                                    <div className="icon icon--sad" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--angry">
-                                                                                    <div className="icon icon--angry" />
-                                                                                </div>
-                                                                            </div> */}
                                                                     </div>
                                                                 </div>
                                                                 <div className="box">
@@ -1255,10 +1070,10 @@ export default function Home () {
                                                 <input type='text' name='location' onChange={formik.handleChange} />
                                             </div>
 
-                                            {configActivity === true ?
+                                            {configActivity === "true" ?
                                                 <div>
                                                     <input type="checkbox" onChange={toggleTextInput} /> Nhận Ủng Hộ
-                                                    {isTextInputVisible === "true" && <div>
+                                                    {isTextInputVisible === true && <div>
                                                         <h2>Mục Tiêu</h2>
                                                         <input type='text' name='targetDonation' onChange={formik.handleChange} />
                                                     </div>
@@ -1267,12 +1082,77 @@ export default function Home () {
                                                 :
 
                                                 <div>
-
                                                 </div>
                                             }
                                         </div>
                                     </div>
-                                    <input type='file' onChange={uploadFile} />
+                                    <div>
+                                        {/* <input type="file" multiple onChange={handleImageChange} className="inputfile" /> */}
+                                        <div>
+                                            <form>
+                                                <fieldset className="upload_dropZone text-center mb-3 p-4" >
+                                                    <legend className="visually-hidden">Image uploader</legend>
+                                                    <svg className="upload_svg" width={60} height={60} aria-hidden="true">
+                                                        <use href="#icon-imageUpload" />
+                                                    </svg>
+                                                    <p className="small my-2">Drag &amp; Drop background image(s) inside dashed region<br /><i>or</i></p>
+                                                    <input
+                                                        id="upload_image_background"
+                                                        // ref={fileInputRef}
+                                                        data-post-name="image_background"
+                                                        data-post-url="https://someplace.com/image/uploads/backgrounds/"
+                                                        className="position-absolute invisible"
+                                                        type="file"
+                                                        multiple
+                                                        onChange={handleImageChange}
+                                                        accept="image/jpeg, image/png, image/svg+xml"
+                                                    />
+                                                    <label className="btn btn-upload mb-3" htmlFor="upload_image_background">Choose file(s)</label>
+                                                    <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
+                                                </fieldset>
+
+                                            </form>
+                                            <svg style={{ display: 'none' }}>
+                                                <defs>
+                                                    <symbol id="icon-imageUpload" clipRule="evenodd" viewBox="0 0 96 96">
+                                                        <path d="M47 6a21 21 0 0 0-12.3 3.8c-2.7 2.1-4.4 5-4.7 7.1-5.8 1.2-10.3 5.6-10.3 10.6 0 6 5.8 11 13 11h12.6V22.7l-7.1 6.8c-.4.3-.9.5-1.4.5-1 0-2-.8-2-1.7 0-.4.3-.9.6-1.2l10.3-8.8c.3-.4.8-.6 1.3-.6.6 0 1 .2 1.4.6l10.2 8.8c.4.3.6.8.6 1.2 0 1-.9 1.7-2 1.7-.5 0-1-.2-1.3-.5l-7.2-6.8v15.6h14.4c6.1 0 11.2-4.1 11.2-9.4 0-5-4-8.8-9.5-9.4C63.8 11.8 56 5.8 47 6Zm-1.7 42.7V38.4h3.4v10.3c0 .8-.7 1.5-1.7 1.5s-1.7-.7-1.7-1.5Z M27 49c-4 0-7 2-7 6v29c0 3 3 6 6 6h42c3 0 6-3 6-6V55c0-4-3-6-7-6H28Zm41 3c1 0 3 1 3 3v19l-13-6a2 2 0 0 0-2 0L44 79l-10-5a2 2 0 0 0-2 0l-9 7V55c0-2 2-3 4-3h41Z M40 62c0 2-2 4-5 4s-5-2-5-4 2-4 5-4 5 2 5 4Z" />
+                                                    </symbol>
+                                                </defs>
+                                            </svg>
+                                        </div>
+
+                                        <div className="image-container">
+                                            {images.map((image, index) => (
+                                                <div className="image-item" key={index}>
+                                                    <img src={image.url} alt={`Image ${index}`} className="image-preview" />
+                                                    <button className="delete-button" onClick={() => handleImageDelete(index)}>
+                                                        <span>&times;</span>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {isLoading && (
+                                            <div>
+                                                <div className="progress-bar-container">
+                                                    <div className="progress-bar" style={{ width: `${uploadProgress}%` }}></div>
+                                                </div>
+                                                <div className="progress-percentage">{uploadProgress}%</div>
+                                            </div>
+                                        )}
+
+                                        {/* {images.length > 0 && (
+                <div>
+                    <h4>Image URLs:</h4>
+                    <ul>
+                        {images.map((image, index) => (
+                            <li key={index}>{image.url}</li>
+                        ))}
+                    </ul>
+                </div>
+            )} */}
+                                    </div>
+                                    {/* <input type='file' onChange={uploadFile} /> */}
                                     {files !== '' ? <img src={files} style={{ height: '300px' }} /> : <div></div>}
                                     {/* <textarea id="emojionearea1" placeholder="What's On Your Mind?" defaultValue={""} /> */}
                                     {/* <div className="activity-post">
