@@ -19,4 +19,20 @@ export const DonationAction = (value) => {
     }
 }
 
+export const HistoryDonationAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.get('/Donation/get-Donation-User?id=' + value);
+            const action = {
+                type: "GET_LIST_HISTORYDONATION",
+                arrDonation: result.data.data
+            }
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
 
