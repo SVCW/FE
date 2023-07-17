@@ -11601,6 +11601,11 @@ svgo@^1.0.0, svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+sweetalert2@^11.7.18:
+  version "11.7.18"
+  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.7.18.tgz"
+  integrity sha512-Njl5JTDasSP8yRX9cpLdy2fdxHZYPYNmiIGNZykF2Zt1UHIvurwt/W2LmlGe5RbyMDHYDXuHqlD1Q8Vr5/mqlA==
+
 symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"

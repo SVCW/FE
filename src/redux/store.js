@@ -9,6 +9,8 @@ import { baiTapGameXucXacReducer } from './reducers/baiTapGameXucXacReducer';
 import { ConfigActivityReducer } from './reducers/ConfigActivityReducer';
 import { FanpageReducer } from './reducers/FanpageReducer';
 import { LoginReducer } from './reducers/LoginReducer';
+import { HistoryReducer } from './reducers/HistoryReducer';
+import { DonationReducer } from './reducers/DonatonReducer';
 
 
 const rootReducer = combineReducers({
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
     ConfigActivityReducer,
     FanpageReducer,
     LoginReducer,
+    HistoryReducer,
+    DonationReducer,
 })
 
 let middleWare = applyMiddleware(reduxThunk);

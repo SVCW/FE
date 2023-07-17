@@ -122,11 +122,12 @@ export default function Header () {
                         </a>
                         <ul className="dropdown">
                             <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Your Profile</a></li>
+                            <li><NavLink to="/history" title><i className="icofont-flash" /> History</NavLink></li>
                             <li><a href="add-new-course.html" title><i className="icofont-plus" /> New Course</a></li>
                             <li><a className="invite-new" href="#" title><i className="icofont-brand-slideshare" /> Invite
                                 Collegue</a></li>
                             <li><a href="pay-out.html" title><i className="icofont-price" /> Payout</a></li>
-                            <li><a href="price-plan.html" title><i className="icofont-flash" /> Upgrade</a></li>
+
                             <li><a href="help-faq.html" title><i className="icofont-question-circle" /> Help</a></li>
                             <li><a href="settings.html" title><i className="icofont-gear" /> Setting</a></li>
                             <li><a href="privacy-n-policy.html" title><i className="icofont-notepad" /> Privacy</a>
