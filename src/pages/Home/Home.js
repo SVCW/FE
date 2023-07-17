@@ -438,8 +438,8 @@ export default function Home () {
                                     <div className="col-lg-3">
                                         <aside className="sidebar static left">
                                             <div className="widget whitish low-opacity">
-                                                <img src="images/time-clock.png" alt />
-                                                <div className="bg-image" style={{ backgroundImage: 'url(images/resources/time-bg.jpg)' }} />
+                                                {/* <img src="images/time-clock.png" alt /> */}
+                                                <div className="bg-image" style={{ backgroundImage: 'url(images/avatar/12.jpg)' }} />
                                                 <div className="date-time">
                                                     <div className="realtime">
                                                         <span id="hours">00</span>
@@ -450,8 +450,8 @@ export default function Home () {
                                                 </div>
                                             </div>
                                             <div className="widget">
-                                                <h4 className="widget-title">Complete Your Profile</h4>
-                                                <span>Your Profile is missing followings!</span>
+                                                <h4 className="widget-title">Thông Tin Cá Nhân Bạn</h4>
+                                                <span>Tiến trình hoàn thiện thông tin cá nhân</span>
                                                 <div data-progress="tip" className="progress__outer" data-value="0.67">
                                                     <div className="progress__inner">82%</div>
                                                 </div>
@@ -566,18 +566,18 @@ export default function Home () {
                                         </aside>
                                     </div>
                                     <div className="col-lg-6">
-                                        <ul className="filtr-tabs">
+                                        {/* <ul className="filtr-tabs">
                                             <li><a className="active" href="#" title>Home</a></li>
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
-                                        </ul>{/* tab buttons */}
+                                        </ul>tab buttons */}
                                         {isValidCreate === "true" ?
-                                            <div className="main-wraper" onClick={handleClick} style={{ cursor: 'pointer' }}>
-                                                <span className="new-title">Create New Post</span>
+                                            <div className="main-wraper" onClick={handleClick}  style={{ cursor: 'pointer' }}>
+                                                <span className="new-title">Bạn Muốn Tạo Chiến Dịch Mới</span>
                                                 <div className="new-post">
                                                     <form method="post" onClick={handleClick}>
                                                         <i className="icofont-pen-alt-1" />
-                                                        <input type="text" placeholder="Create New Post" />
+                                                        <input onClick={handleClick} type="text" placeholder="Tạo Chiến Dịch" />
                                                     </form>
                                                     <ul className="upload-media">
                                                         <li>
@@ -631,7 +631,7 @@ export default function Home () {
                                                                     <path fill="#7fba00" stroke="#7fba00" d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z">
                                                                     </path>
                                                                 </svg></em>
-                                                            <img alt src="images/resources/user5.jpg" />
+                                                            <img style={{height: '3rem', width: '3.5rem'}} alt src="images/avatar/uocAvatar.jpg" />
                                                         </figure>
                                                         <div className="friend-name">
                                                             <div className="more">
@@ -666,10 +666,17 @@ export default function Home () {
                                                             <span><i className="icofont-globe" /> published: {DateTime(item.createAt)}</span>
                                                         </div>
                                                         <div className="post-meta">
-                                                            <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em>
+                                                            {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
 
+                                             
+                                                            {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
+                                                            <p>
+                                                                {item.description}
+                                                            </p>
+                                                           
+                                                            {/* hình ảnh */}
                                                             <figure style={{}}>
-                                                                <p style={{ width: '100%' }}>fetched-image</p>
+                                                                {/* <p style={{ width: '100%' }}>fetched-image</p> */}
                                                                 {item.targetDonation !== 0 ? <button className='btn btn-outline-danger mb-2' onClick={() => {
                                                                     // setActi(item.activityId)
                                                                     formik1.setFieldValue('activityId', item.activityId)
@@ -2191,36 +2198,36 @@ export default function Home () {
                 <span className="popup-closed"><i className="icofont-close" /></span>
                 <div className="slide-meta">
                     <ul className="nav nav-tabs slide-btns">
-                        <li className="nav-item"><a className="active" href="#messages" data-toggle="tab">Messages</a></li>
-                        <li className="nav-item"><a className href="#notifications" data-toggle="tab">Notifications</a></li>
+                        <li className="nav-item"><a className="active" href="#messages" data-toggle="tab">Tin nhắn</a></li>
+                        <li className="nav-item"><a className href="#notifications" data-toggle="tab">Tin nhắn mới</a></li>
                     </ul>
                     <div className="tab-content">
                         <div className="tab-pane active fade show" id="messages">
-                            <h4><i className="icofont-envelope" /> messages</h4>
+                            <h4><i className="icofont-envelope" /> Tin Nhắn</h4>
                             <a href="#" className="send-mesg" title="New Message" data-toggle="tooltip"><i className="icofont-edit" /></a>
                             <ul className="new-messages">
                                 <li>
-                                    <figure><img src="images/resources/user1.jpg" alt /></figure>
+                                    <figure><img className='img-new-messages' src="images/avatar/2.jpg" alt /></figure>
                                     <div className="mesg-info">
-                                        <span>Ibrahim Ahmed</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
+                                        <span>Thịnh Nguyễn</span>
+                                        <a href="#" title>Hệ Thống mình cần làm gì để tạo một chiến dịch ạ?</a>
                                     </div>
                                 </li>
                                 <li>
-                                    <figure><img src="images/resources/user2.jpg" alt /></figure>
+                                    <figure><img className='img-new-messages' src="images/avatar/10.jpg" alt /></figure>
                                     <div className="mesg-info">
-                                        <span>Fatima J.</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
+                                        <span>Quyền Trần</span>
+                                        <a href="#" title>Tôi có thể lấy lại tiền donate không</a>
                                     </div>
                                 </li>
                                 <li>
-                                    <figure><img src="images/resources/user3.jpg" alt /></figure>
+                                    <figure><img className='img-new-messages' src="images/avatar/20.jpg" alt /></figure>
                                     <div className="mesg-info">
-                                        <span>Fawad Ahmed</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
+                                        <span>Huỳnh Phát Tấn</span>
+                                        <a href="#" title>Hệ Thống Thật Tuyệt vời</a>
                                     </div>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <figure><img src="images/resources/user4.jpg" alt /></figure>
                                     <div className="mesg-info">
                                         <span>Saim Turan</span>
@@ -2233,9 +2240,9 @@ export default function Home () {
                                         <span>Alis wells</span>
                                         <a href="#" title>Helo dear i wanna talk to you</a>
                                     </div>
-                                </li>
+                                </li> */}
                             </ul>
-                            <a href="#" title className="main-btn" data-ripple>view all</a>
+                            <a href="#" title className="main-btn" data-ripple>Xem Tất Cả</a>
                         </div>
                         <div className="tab-pane fade" id="notifications">
                             <h4><i className="icofont-bell-alt" /> notifications</h4>
@@ -2292,7 +2299,7 @@ export default function Home () {
                                     <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
                                         <line x1={12} y1={5} x2={12} y2={19} />
                                         <line x1={5} y1={12} x2={19} y2={12} />
-                                    </svg></i>Create New Post</h5>
+                                    </svg></i>Tạo Chiến Dịch</h5>
                             </div>
                             <div className="post-new">
                                 <div className="post-newmeta">
@@ -2336,17 +2343,17 @@ export default function Home () {
                                     <div style={{ display: 'flex' }}>
                                         <div>
                                             <div>
-                                                <h2>Tiêu Đề</h2>
+                                                <h2>Tên Chiến Dịch</h2>
                                                 <input type='text' name='title' onChange={formik.handleChange} />
                                             </div>
                                             <div>
-                                                <h2>Chi Tiết</h2>
+                                                <h2>Mô Tả Khái Quát</h2>
                                                 <input type='text' name='description' onChange={formik.handleChange} />
                                             </div>
                                         </div>
                                         <div>
                                             <div>
-                                                <h2>Địa Điễm</h2>
+                                                <h2>Nơi Diễn Ra</h2>
                                                 <input type='text' name='location' onChange={formik.handleChange} />
                                             </div>
 
