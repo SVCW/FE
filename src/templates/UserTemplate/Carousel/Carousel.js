@@ -27,7 +27,7 @@ export default function Carousel () {
                                                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                                                 </svg>
                                             </i>
-                                            <p>Newsfeed</p>
+                                            <p>Trang Chủ</p>
                                         </a>
                                     </div>
                                     <div className="link-item">
@@ -40,7 +40,7 @@ export default function Carousel () {
                                                     </polygon>
                                                 </svg>
                                             </i>
-                                            <p>Videos</p>
+                                            <p>Lịch Sử Quyên Góp</p>
                                         </a>
                                     </div>
                                     {/* <div className="link-item">
@@ -84,7 +84,7 @@ export default function Carousel () {
                                                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                                 </svg>
                                             </i>
-                                            <p>Group</p>
+                                            <p>Nhóm</p>
                                         </NavLink>
                                     </div>
 
@@ -92,7 +92,7 @@ export default function Carousel () {
                             </div>
                             <div className="col-lg-2">
                                 <div className="user-inf">
-                                    <div className="folowerz">Followers: 204</div>
+                                    <div className="folowerz">Người Theo Dõi: 204</div>
                                     <ul className="stars">
                                         <li><i className="icofont-star" /></li>
                                         <li><i className="icofont-star" /></li>

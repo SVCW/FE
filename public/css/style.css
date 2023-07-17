@@ -2948,6 +2948,7 @@ aside .widget {
 }
 
 .mesg-info {
+
   display: inline-block;
   font-size: 13px;
   padding-left: 8px;
@@ -16379,4 +16380,16 @@ a.classic-btn:hover {
   opacity: 0;
   position: absolute;
   z-index: -1;
+}
+
+.long-text{
+  color: black;
+  margin: 1rem;
+}
+
+
+/* Home.js */
+.img-new-messages{
+  width: 3.5rem;
+  height: 3.5rem;
 }
