@@ -501,7 +501,7 @@ export default function Home () {
                                                         <div style={{display:'flex',
                                                         justifyContent:'space-around'}} className="">
                                                             <div>
-                                                                <button className='main-btn' style={{
+                                                                <button className='main-btn2' style={{
                                                                 width:'100px',
                                                                 height:'30px'}}>Chi Tiết</button>
                                                             </div>
@@ -995,55 +995,64 @@ export default function Home () {
                                     <div className="col-lg-3">
                                         <aside className="sidebar static right">
                                             <div className="widget">
-                                                <h4 className="widget-title">Your Groups</h4>
+                                                <h4 className="widget-title">Nhóm Bạn đã tham gia</h4>
                                                 <ul className="ak-groups">
                                                     <li>
-                                                        <figure><img src="images/resources/your-group1.jpg" alt /></figure>
+                                                        <figure><img style={{width:'50px',
+                                                        height:'50px',
+                                                        objectfit: 'cover',}} src="images/company/amazonComany.jpg" alt /></figure>
                                                         <div className="your-grp">
-                                                            <h5><a href="group-detail.html" title>Good Group</a></h5>
-                                                            <a href="#" title><i className="icofont-bell-alt" />Notifilactions
+                                                            <h5><a href="group-detail.html" title>Tổ Chức Amazone</a></h5>
+                                                            <a href="#" title><i className="icofont-bell-alt" />Thông báo
                                                                 <span>13</span></a>
-                                                            <a href="group-feed.html" title className="promote">view feed</a>
+                                                            <a href="group-feed.html" title className="promote">Truy cập</a>
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <figure><img src="images/resources/your-group2.jpg" alt /></figure>
+                                                        <figure><img style={{width:'50px',
+                                                        height:'50px',
+                                                        objectfit: 'cover',}} src="images/company/nab.png" alt /></figure>
                                                         <div className="your-grp">
-                                                            <h5><a href="group-detail.html" title>E-course Group</a></h5>
-                                                            <a href="#" title><i className="icofont-bell-alt" />Notifilactions
-                                                                <span>13</span></a>
-                                                            <a href="group-feed.html" title className="promote">view feed</a>
+                                                            <h5><a href="group-detail.html" title>Ngân Hàng Úc</a></h5>
+                                                            <a href="#" title><i className="icofont-bell-alt" />Thông báo
+                                                                <span>2</span></a>
+                                                            <a href="group-feed.html" title className="promote">Truy cập</a>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>{/* Your groups */}
                                             <div className="widget">
-                                                <h4 className="widget-title">Suggested Group</h4>
+                                                <h4 className="widget-title">Nhóm phù hợp với bạn</h4>
                                                 <div className="sug-caro">
                                                     <div className="friend-box">
                                                         <figure>
-                                                            <img alt src="images/resources/sidebar-info.jpg" />
-                                                            <span>Members: 505K</span>
+                                                            <img className='friend-box-img' alt src="images/avatar/9.jpg" />
+                                                            <span>Theo Dõi: 505K</span>
                                                         </figure>
                                                         <div className="frnd-meta">
-                                                            <img alt src="images/resources/frnd-figure2.jpg" />
+                                                            <img className='friend-box-img' alt src="images/company/nab.png" />
                                                             <div className="frnd-name">
-                                                                <a title href="#">Social Research</a>
-                                                                <span>@biolabest</span>
+                                                                <a title href="#">Ngân Hàng Úc</a>
+                                                                <span></span>
                                                             </div>
-                                                            <a className="main-btn2" href="#" title>Join Community</a>
+                                                            <a className="main-btn2" href="#" title>Tham Gia Ngay</a>
                                                         </div>
                                                     </div>
                                                     <div className="friend-box">
                                                         <figure>
-                                                            <img alt src="images/resources/sidebar-info2.jpg" />
-                                                            <span>Members: 505K</span>
+                                                            <img className='friend-box-img' alt src="images/avatar/14.jpg" />
+                                                            <span>Theo Dõi: 200K</span>
                                                         </figure>
                                                         <div className="frnd-meta">
-                                                            <img alt src="images/resources/frnd-figure3.jpg" />
+                                                            <img style={{
+                                                                width:'70px',
+                                                                height:'70px',
+                                                                objectfit: 'cover',
+                                                                display:'block',
+                                                            }}alt src="images/company/amazonComany.jpg" />
                                                             <div className="frnd-name">
-                                                                <a title href="#">Bio Labest Group</a>
-                                                                <span>@biolabest</span>
+                                                                <a  title href="#">Amzone Company </a>
+                                                                <span></span>
                                                             </div>
                                                             <a className="main-btn2" href="#" title>Join Community</a>
                                                         </div>
@@ -1076,7 +1085,7 @@ export default function Home () {
                                                     <img alt src="images/clock.png" />
                                                 </div>
                                             </div>{/* event widget */}
-                                            <div className="widget">
+                                            {/* <div className="widget">
                                                 <span><i className="icofont-globe" /> Sponsored</span>
                                                 <ul className="sponsors-ad">
                                                     <li>
@@ -1094,9 +1103,9 @@ export default function Home () {
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div>{/* sponsord */}
-                                            <div className="widget stick-widget">
-                                                <h4 className="widget-title">Who's follownig</h4>
+                                            </div>sponsord */}
+                                            {/* <div className="widget stick-widget">
+                                                <h4 className="widget-title">Thành tích của bạn</h4>
                                                 <ul className="followers">
                                                     <li>
                                                         <figure><img alt src="images/resources/friend-avatar.jpg" />
@@ -1154,7 +1163,7 @@ export default function Home () {
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div>{/* whos following */}
+                                            </div>whos following */}
                                         </aside>
                                     </div>
                                 </div>
