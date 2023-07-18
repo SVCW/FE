@@ -116,7 +116,7 @@ export default function Login (props) {
                             </div>
 
                             <button className="main-btn" type="submit" onClick={() => {
-                                props.history.push('/home')
+                                props.history.push('/achivement')
                             }}><i className="icofont-key" /> Đăng nhập</button>
 
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}

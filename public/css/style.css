@@ -1466,14 +1466,14 @@ header.transparent .topbar {
 }
 
 .user-dp {
-  
+
   background: #fff none repeat scroll 0 0;
   border: 1px solid #088dcd;
   border-radius: 30px;
   cursor: pointer;
   display: inline-block;
   line-height: initial;
-  padding: 3px 10px 3px 4px;
+  padding: 0 3px 0 0px;
   vertical-align: middle;
 }
 
