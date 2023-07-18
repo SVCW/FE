@@ -474,84 +474,79 @@ export default function Home () {
                                                 <h4 className="widget-title">Thông Tin Cá Nhân Bạn</h4>
                                                 <span>Tiến trình hoàn thiện thông tin cá nhân</span>
                                                 <div data-progress="tip" className="progress__outer" data-value="0.67">
-                                                    <div className="progress__inner">82%</div>
+                                                    <div className="progress__inner">70%</div>
                                                 </div>
                                                 <ul className="prof-complete">
-                                                    <li><i className="icofont-plus-square" /> <a href="#" title>Upload Your
-                                                        Picture</a><em>10%</em></li>
-                                                    <li><i className="icofont-plus-square" /> <a href="#" title>Your
-                                                        University?</a><em>20%</em></li>
-                                                    <li><i className="icofont-plus-square" /> <a href="#" title>Add Payment
-                                                        Method</a><em>20%</em></li>
+                                                    <li><i className="icofont-plus-square" /> <a href="#" title>Cập nhật hình đại diện</a><em>10%</em></li>
+                                                    <li><i className="icofont-plus-square" /> <a href="#" title>Cập nhật ngày tháng năm sinh</a><em>10%</em></li>
+                                                    <li><i className="icofont-plus-square" /> <a href="#" title>Cập nhật giới tính bạn
+                                                        </a><em>10%</em></li>
                                                 </ul>
                                             </div>{/* complete profile widget */}
-                                            <div className="advertisment-box">
+                                            {/* <div className="advertisment-box">
                                                 <h4 className><i className="icofont-info-circle" /> advertisment</h4>
                                                 <figure>
                                                     <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
                                                 </figure>
-                                            </div>{/* adversment widget */}
+                                            </div>adversment widget */}
                                             <div className="widget">
-                                                <h4 className="widget-title"><i className="icofont-flame-torch" /> Popular Activity
+                                                <h4 className="widget-title"><i className="icofont-flame-torch" /> Hiến Máu Nhân Đạo
                                                 </h4>
                                                 <ul className="premium-course">
                                                     <li>
                                                         <figure>
-                                                            <img src="images/resources/course-5.jpg" alt />
-                                                            <span className="tag">Free</span>
+                                                            <img style={{width:'480px', height:'200px'}} src="images/avatar/hienMau.jpg" alt />
+                                                            <span style={{background:'#1dd1a1'}} className="tag">Sắp Diễn Ra</span>
                                                         </figure>
-                                                        <div className="vid-course">
-                                                            <h5><a href="course-detail.html" title>Wordpress Online video
-                                                                course</a></h5>
-                                                            <ins className="price">$19/M</ins>
+                                                        <div style={{display:'flex',
+                                                        justifyContent:'space-around'}} className="">
+                                                            <div>
+                                                                <button className='main-btn' style={{
+                                                                width:'100px',
+                                                                height:'30px'}}>Chi Tiết</button>
+                                                            </div>
+                                                            <div>
+                                                                <button className='main-btn' style={{backgroundColor:'#2e86de',
+                                                                width:'100px',
+                                                                height:'30px'}}>Tham gia ngay</button>
+                                                            </div>
                                                         </div>
                                                     </li>
-                                                    <li>
-                                                        <figure>
-                                                            <img src="images/resources/course-3.jpg" alt />
-                                                            <span className="tag">Premium</span>
-                                                        </figure>
-                                                        <div className="vid-course">
-                                                            <h5><a href="course-detail.html" title>Node JS Online video
-                                                                course</a></h5>
-                                                            <ins className="price">$29/M</ins>
-                                                        </div>
-                                                    </li>
+                                                    
                                                 </ul>
                                             </div>{/* popular courses */}
                                             <div className="widget">
-                                                <h4 className="widget-title">Recent Blogs <a className="see-all" href="#" title>See All</a></h4>
+                                                <h4 className="widget-title">Tổ Chức <a className="see-all" href="#" title>See All</a></h4>
                                                 <ul className="recent-links">
                                                     <li>
-                                                        <figure><img alt src="images/resources/recentlink-1.jpg" />
+                                                        <figure><img alt src="images/company/amazonComany.jpg" />
                                                         </figure>
                                                         <div className="re-links-meta">
-                                                            <h6><a title href="#">Moira's fade reach much farther...</a>
+                                                            <h6><a title href="#">Đây là tổ chức có trụ sở tại mỹ....</a>
                                                             </h6>
-                                                            <span>2 weeks ago </span>
+                                                            
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <figure><img alt src="images/resources/recentlink-2.jpg" />
+                                                        <figure><img alt src="images/company/ctyFPT.png" />
                                                         </figure>
                                                         <div className="re-links-meta">
-                                                            <h6><a title href="#">Daniel asks The voice of
-                                                                doomfist...</a></h6>
-                                                            <span>3 months ago </span>
+                                                            <h6><a title href="#">Đây là tập đoàn chuyên về công nghệ</a></h6>
+                                                            
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <figure><img alt src="images/resources/recentlink-3.jpg" />
+                                                        <figure><img alt src="images/company/ctyTGDD.png" />
                                                         </figure>
                                                         <div className="re-links-meta">
-                                                            <h6><a title href="#">The socimo over watch scandals.</a>
+                                                            <h6><a title href="#">Tập đoàn chuyên về các đồ dùng thông minh như điện thoại, máy tính,...</a>
                                                             </h6>
-                                                            <span>1 day before</span>
+                                                            
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>{/* recent blog */}
-                                            <div className="widget">
+                                            {/* <div className="widget">
                                                 <h4 className="widget-title">Your profile has a new Experience section</h4>
                                                 <p>
                                                     Showcase your professional experience and education to help potential
@@ -560,8 +555,8 @@ export default function Home () {
                                                 </p>
                                                 <a className="main-btn" href="profile.html" title data-ripple>view
                                                     profile</a>
-                                            </div>{/* your profile */}
-                                            <div className="widget web-links stick-widget">
+                                            </div>your profile */}
+                                            {/* <div className="widget web-links stick-widget">
                                                 <h4 className="widget-title">Useful Links <a title href="#" className="see-all">See All</a></h4>
                                                 <ul>
                                                     <li><i className="icofont-dotted-right" /> <a title href="#">about</a>
@@ -583,7 +578,7 @@ export default function Home () {
                                                         Policy</a></li>
                                                 </ul>
                                                 <p>© Socimo 2020. All Rights Reserved.</p>
-                                            </div>{/* links */}
+                                            </div>links */}
                                         </aside>
                                     </div>
                                     <div className="col-lg-6">
@@ -1058,8 +1053,12 @@ export default function Home () {
                                             <div className="widget">
                                                 <h4 className="widget-title">Giải Trí</h4>
                                                 <div className="ask-question">
-                                                    <i className="icofont-question-circle" />
-                                                    <h6>Trò Chơi Xúc Xắc</h6>
+                                                    
+                                                    <div className="rec-events bg-purple">
+                                                    <i className="icofont-gift" />
+                                                    <h6><a title href>Game xúc xắc</a></h6>
+                                                    <img alt src="images/clock.png" />
+                                                </div>
                                                     <NavLink to='/game' >Chơi Game</NavLink>
                                                 </div>
                                             </div>{/* ask question widget */}

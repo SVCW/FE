@@ -31,7 +31,7 @@ export default function GroupsDetail () {
                                                 </ul>
                                             </div>
                                             <div className="widget">
-                                                <h4 className="widget-title">Your Groups</h4>
+                                                <h4 className="widget-title">Tổ Chức Bạn Tham Gia</h4>
                                                 <ul className="ak-groups">
                                                     <li>
                                                         <figure><img alt src="images/resources/your-group1.jpg" /></figure>
