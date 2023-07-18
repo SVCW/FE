@@ -31,7 +31,7 @@ export default function Login (props) {
             }
             console.log(result);
 
-            console.log(result.user?.email);
+            localStorage.setItem('username', result.user?.displayName)
             const action1 = LoginUserAction(email, props);
             dispatch(action1)
 

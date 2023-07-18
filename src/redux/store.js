@@ -11,6 +11,7 @@ import { FanpageReducer } from './reducers/FanpageReducer';
 import { LoginReducer } from './reducers/LoginReducer';
 import { HistoryReducer } from './reducers/HistoryReducer';
 import { DonationReducer } from './reducers/DonatonReducer';
+import { LoadingReducer } from './reducers/LoadingReducer';
 
 
 const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     LoginReducer,
     HistoryReducer,
     DonationReducer,
+    LoadingReducer,
 })
 
 let middleWare = applyMiddleware(reduxThunk);

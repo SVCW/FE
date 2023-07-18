@@ -26,6 +26,7 @@ import { useFormik } from 'formik';
 import { DonationAction } from '../../redux/actions/DonationAction';
 import { FollowAction, JoinAction, UnFollowAction, UnJoinAction } from '../../redux/actions/FollowJoinAction';
 import { CommentAction, CommentRepllyAction } from '../../redux/actions/CommentAction';
+import Loading from '../../component/Loading';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
@@ -46,6 +47,7 @@ export default function Home () {
     const dispatch = useDispatch();
     const { arrActivity } = useSelector(root => root.ActivityReducer)
     const { arrFanpage } = useSelector(root => root.FanpageReducer)
+    const { isLoadingM } = useSelector(root => root.LoadingReducer)
     const [cmt, setCmt] = useState([])
     const [time, setTime] = useState([])
     const [detail, setDetail] = useState({})
@@ -209,10 +211,11 @@ export default function Home () {
             isAnonymous: true,
             activityId: ""
         },
-        onSubmit: (value) => {
+        onSubmit: async (value) => {
             console.log(value);
-            const action = DonationAction(value);
-            dispatch(action)
+            const action = await DonationAction(value);
+            await dispatch(action)
+            setPopupOpen(false);
         }
     })
 
@@ -291,10 +294,27 @@ export default function Home () {
             isFanpageAvtivity: isFanpage,
             media: []
         },
-        onSubmit: (value) => {
+        onSubmit: async (value) => {
             console.log(value);
-            const action = CreateActivityAction(value);
-            dispatch(action)
+            const action = await CreateActivityAction(value);
+            await dispatch(action)
+            setIsOpen((prevIsOpen) => !prevIsOpen);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: `Tạo Mới Thành Công Sự Kiện `
+            })
         }
     })
 
@@ -415,20 +435,21 @@ export default function Home () {
         let timeAgoString = '';
         if (hoursAgo < 1) {
             const daysAgo = Math.floor(duration.asMinutes());
-            timeAgoString = `${daysAgo} minutes ago`;
+            timeAgoString = `${daysAgo} phút trước`;
         }
         else if (hoursAgo >= 24) {
             const daysAgo = Math.floor(duration.asDays());
-            timeAgoString = `${daysAgo} days ago`;
+            timeAgoString = `${daysAgo} ngày trước`;
         } else {
             const hoursAgo = Math.floor(duration.asHours());
-            timeAgoString = `${hoursAgo} hours ago`;
+            timeAgoString = `${hoursAgo} giờ trước`;
         }
         return timeAgoString
     }
 
     return (
         <Fragment>
+            {isLoadingM ? <Loading /> : <Fragment></Fragment>}
             <section>
                 <div className="gap">
                     <div className="container">
@@ -572,7 +593,7 @@ export default function Home () {
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>tab buttons */}
                                         {isValidCreate === "true" ?
-                                            <div className="main-wraper" onClick={handleClick}  style={{ cursor: 'pointer' }}>
+                                            <div className="main-wraper" onClick={handleClick} style={{ cursor: 'pointer' }}>
                                                 <span className="new-title">Bạn Muốn Tạo Chiến Dịch Mới</span>
                                                 <div className="new-post">
                                                     <form method="post" onClick={handleClick}>
@@ -610,9 +631,8 @@ export default function Home () {
                                                         <i className="icofont-learn" />
                                                     </figure>
                                                     <div className="friend-name">
-                                                        <ins><a title href="time-line.html">Suggested</a></ins>
-                                                        <span><i className="icofont-runner-alt-1" /> Follow similar
-                                                            Fanpage</span>
+                                                        <ins><a title href="time-line.html">Đề Xuất</a></ins>
+                                                        <span><i className="icofont-runner-alt-1" /> Theo dõi Fanpage tương tự</span>
                                                     </div>
 
                                                     <SimpleSlider arrFanpage={arrFanpage} />
@@ -631,7 +651,7 @@ export default function Home () {
                                                                     <path fill="#7fba00" stroke="#7fba00" d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z">
                                                                     </path>
                                                                 </svg></em>
-                                                            <img style={{height: '3rem', width: '3.5rem'}} alt src="images/avatar/uocAvatar.jpg" />
+                                                            <img style={{ height: '3rem', width: '3.5rem' }} alt src="images/avatar/uocAvatar.jpg" />
                                                         </figure>
                                                         <div className="friend-name">
                                                             <div className="more">
@@ -663,17 +683,17 @@ export default function Home () {
                                                                 </div>
                                                             </div>
                                                             <ins><a title href="time-line.html">{item.user?.username}</a> </ins>
-                                                            <span><i className="icofont-globe" /> published: {DateTime(item.createAt)}</span>
+                                                            <span>  {DateTime(item.createAt)} <i className="icofont-globe" /></span>
                                                         </div>
                                                         <div className="post-meta">
                                                             {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
 
-                                             
+
                                                             {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
                                                             <p>
                                                                 {item.description}
                                                             </p>
-                                                           
+
                                                             {/* hình ảnh */}
                                                             <figure style={{}}>
                                                                 {/* <p style={{ width: '100%' }}>fetched-image</p> */}
@@ -709,7 +729,7 @@ export default function Home () {
 
                                                             {item.targetDonation !== 0 ?
                                                                 <div className='mb-4'>
-                                                                    <div> <span style={{ fontWeight: 'bold', fontSize: '15px' }}> - Mục Tiêu : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.targetDonation} %</span> </div>
+                                                                    <div> <span style={{ fontWeight: 'bold', fontSize: '15px' }}> - Mục Tiêu : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.targetDonation} vnđ</span> </div>
                                                                     <div className='mb-3'> <span style={{ fontWeight: 'bold', fontSize: '15px' }}>- Tổng Tiền Đã Nhận : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.realDonation} vnđ</span> </div>
                                                                     <input
                                                                         type="range"
@@ -776,7 +796,27 @@ export default function Home () {
                                                                         </span>
                                                                     </li>
                                                                 </ul>
-                                                                <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
+                                                                <div className="emoji-state" style={{ display: 'flex', alignContent: 'center', paddingTop: '20px' }}>
+                                                                    <div className="popover_wrapper" >
+                                                                        <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
+                                                                        <div className="popover_content">
+                                                                            <span><img alt src="images/smiles/thumb.png" />
+                                                                                Thích</span>
+                                                                            <ul className="namelist">
+                                                                                <li>Jhon Doe</li>
+                                                                                <li>Amara Sin</li>
+                                                                                <li>Sarah K.</li>
+                                                                                <li><span>20+ more</span></li>
+                                                                            </ul>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <p>{item.numberLike}+</p>
+                                                                    <div style={{ marginLeft: '20px' }}>
+                                                                        <div style={{ color: 'blue', fontSize: '15px' }}><span>{item.comment.length} bình luận</span></div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div className="stat-tools">
                                                                 <div className="" style={{
@@ -792,7 +832,7 @@ export default function Home () {
                                                                 }} onClick={() => {
                                                                     handleLikeClick(item.activityId)
                                                                 }}>
-                                                                    <div className="Like "><a className="Like__link"><i className="icofont-like" /> Like</a>
+                                                                    <div className="Like "><a className="Like__link"><i className="icofont-like" /> Thích</a>
                                                                     </div>
                                                                 </div>
                                                                 <div className="box">
@@ -817,10 +857,10 @@ export default function Home () {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="comment-to bg " onClick={() => handleCommentClick(item.activityId)}><i className="icofont-comment" /> Comment</div>
-                                                                <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                                <div className="emoji-state">
-                                                                    <div className="popover_wrapper">
+                                                                <div className="comment-to bg " onClick={() => handleCommentClick(item.activityId)}><i className="icofont-comment" /> Bình Luận</div>
+                                                                <a title href="#" className="share-to"><i className="icofont-share-alt" /> Chia Sẽ</a>
+                                                                {/* <div className="emoji-state" style={{ display: 'flex', alignContent: 'center' }}>
+                                                                    <div className="popover_wrapper" >
                                                                         <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
                                                                         <div className="popover_content">
                                                                             <span><img alt src="images/smiles/thumb.png" />
@@ -832,10 +872,14 @@ export default function Home () {
                                                                                 <li><span>20+ more</span></li>
                                                                             </ul>
                                                                         </div>
+
                                                                     </div>
 
                                                                     <p>{item.numberLike}+</p>
-                                                                </div>
+                                                                    <div style={{ marginLeft: '20px' }}>
+                                                                        <div style={{ color: 'blue', fontSize: '15px' }}><span>{item.comment.length} bình luận</span></div>
+                                                                    </div>
+                                                                </div> */}
 
                                                             </div>
                                                             <div className="new-comment" style={{ display: 'block' }}>
@@ -945,1021 +989,7 @@ export default function Home () {
                                             </div>
                                         })}
 
-                                        <div className="main-wraper">
-                                            <div className="user-post">
-                                                <div className="friend-info">
-                                                    <figure>
-                                                        <em>
-                                                            <svg style={{ verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg" width={15} height={15} viewBox="0 0 24 24">
-                                                                <path fill="#82828e" stroke="#82828e" d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z">
-                                                                </path>
-                                                            </svg></em>
-                                                        <img alt src="images/resources/user4.jpg" />
-                                                    </figure>
-                                                    <div className="friend-name">
-                                                        <div className="more">
-                                                            <div className="more-post-optns">
-                                                                <i className>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal">
-                                                                        <circle cx={12} cy={12} r={1} />
-                                                                        <circle cx={19} cy={12} r={1} />
-                                                                        <circle cx={5} cy={12} r={1} />
-                                                                    </svg></i>
-                                                                <ul>
-                                                                    <li>
-                                                                        <i className="icofont-pen-alt-1" />Edit Post
-                                                                        <span>Edit This Post within a Hour</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ban" />Hide Post
-                                                                        <span>Hide This Post</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ui-delete" />Delete Post
-                                                                        <span>If inappropriate Post By Mistake</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-flag" />Report
-                                                                        <span>Inappropriate content</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <ins><a title href="time-line.html">Saim turan</a> added image
-                                                            album</ins>
-                                                        <span><i className="icofont-globe" /> published: Sep,15 2020</span>
-                                                    </div>
-                                                    <div className="post-meta">
-                                                        <figure>
-                                                            <div className="img-bunch">
-                                                                <div className="row">
-                                                                    <div className="col-lg-6 col-md-6 col-sm-6">
-                                                                        <figure>
-                                                                            <a data-toggle="modal" data-target="#img-comt" href="images/resources/album1.jpg">
-                                                                                <img src="images/resources/album1.jpg" alt />
-                                                                            </a>
-                                                                        </figure>
-                                                                        <figure>
-                                                                            <a data-toggle="modal" data-target="#img-comt" href="images/resources/album2.jpg"><img src="images/resources/album2.jpg" alt />
-                                                                            </a>
-                                                                        </figure>
-                                                                    </div>
-                                                                    <div className="col-lg-6 col-md-6 col-sm-6">
-                                                                        <figure>
-                                                                            <a data-toggle="modal" data-target="#img-comt" href="images/resources/album6.jpg"><img src="images/resources/album6.jpg" alt />
-                                                                            </a>
-                                                                        </figure>
-                                                                        <figure>
-                                                                            <a data-toggle="modal" data-target="#img-comt" href="images/resources/album5.jpg"><img src="images/resources/album5.jpg" alt />
-                                                                            </a>
-                                                                        </figure>
-                                                                        <figure>
-                                                                            <a data-toggle="modal" data-target="#img-comt" href="images/resources/album4.jpg"><img src="images/resources/album4.jpg" alt />
-                                                                            </a>
-                                                                            <div className="more-photos">
-                                                                                <span>+15</span>
-                                                                            </div>
-                                                                        </figure>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </figure>
-                                                        <a href="post-detail.html" className="post-title">Supervision as a
-                                                            Personnel Development Device</a>
-                                                        <p>
-                                                            Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
-                                                            condimentum rhoncus, sem quam semper libero.
-                                                        </p>
-                                                        <div className="we-video-info">
-                                                            <ul>
-                                                                <li>
-                                                                    <span title="views" className="views">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-eye">
-                                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
-                                                                                </path>
-                                                                                <circle cx={12} cy={12} r={3} />
-                                                                            </svg></i>
-                                                                        <ins>1.2k</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span title="Comments" className="Recommend">
-                                                                        <i>
-                                                                            <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                                                            </svg></i>
-                                                                        <ins>54</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span title="follow" className="Follow">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star">
-                                                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                                                </polygon>
-                                                                            </svg></i>
-                                                                        <ins>5k</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span className="share-pst" title="Share">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2">
-                                                                                <circle cx={18} cy={5} r={3} />
-                                                                                <circle cx={6} cy={12} r={3} />
-                                                                                <circle cx={18} cy={19} r={3} />
-                                                                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                                                                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                                                                            </svg></i>
-                                                                        <ins>205</ins>
-                                                                    </span>
-                                                                </li>
-                                                            </ul>
-                                                            <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
-                                                        </div>
-                                                        <div className="stat-tools">
-                                                            <div className="box">
-                                                                <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                    <div className="Emojis">
-                                                                        <div className="Emoji Emoji--like">
-                                                                            <div className="icon icon--like" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--love">
-                                                                            <div className="icon icon--heart" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--haha">
-                                                                            <div className="icon icon--haha" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--wow">
-                                                                            <div className="icon icon--wow" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--sad">
-                                                                            <div className="icon icon--sad" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--angry">
-                                                                            <div className="icon icon--angry" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="box">
-                                                                <div className="Emojis">
-                                                                    <div className="Emoji Emoji--like">
-                                                                        <div className="icon icon--like" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--love">
-                                                                        <div className="icon icon--heart" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--haha">
-                                                                        <div className="icon icon--haha" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--wow">
-                                                                        <div className="icon icon--wow" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--sad">
-                                                                        <div className="icon icon--sad" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--angry">
-                                                                        <div className="icon icon--angry" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a title href="#" className="comment-to"><i className="icofont-comment" /> Comment</a>
-                                                            <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                            <div className="emoji-state">
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/thumb.png" />
-                                                                            Likes</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Jhon Doe</li>
-                                                                            <li>Amara Sin</li>
-                                                                            <li>Sarah K.</li>
-                                                                            <li><span>20+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
 
-                                                                <p>50+</p>
-                                                            </div>
-                                                            <div className="new-comment" style={{ display: 'none' }}>
-                                                                <form method="post">
-                                                                    <input type="text" placeholder="write comment" />
-                                                                    <button type="submit"><i className="icofont-paper-plane" /></button>
-                                                                </form>
-                                                                <div className="comments-area">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <figure><img alt src="images/resources/user1.jpg" />
-                                                                            </figure>
-                                                                            <div className="commenter">
-                                                                                <h5><a title href="#">Jack Carter</a>
-                                                                                </h5>
-                                                                                <span>2 hours ago</span>
-                                                                                <p>
-                                                                                    i think that some how, we learn who we
-                                                                                    really are and then live with that
-                                                                                    decision, great post!
-                                                                                </p>
-                                                                                <span>you can view the more detail via
-                                                                                    link</span>
-                                                                                <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a>
-                                                                            </div>
-                                                                            <a title="Like" href="#"><i className="icofont-heart" /></a>
-                                                                            <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <figure><img alt src="images/resources/user2.jpg" />
-                                                                            </figure>
-                                                                            <div className="commenter">
-                                                                                <h5><a title href="#">Ching xang</a></h5>
-                                                                                <span>2 hours ago</span>
-                                                                                <p>
-                                                                                    i think that some how, we learn who we
-                                                                                    really are and then live with that
-                                                                                    decision, great post!
-                                                                                </p>
-                                                                            </div>
-                                                                            <a title="Like" href="#"><i className="icofont-heart" /></a>
-                                                                            <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>{/* share image album */}
-
-                                        <div className="main-wraper">
-                                            <div className="user-post">
-                                                <div className="friend-info">
-                                                    <figure>
-                                                        <em>
-                                                            <svg style={{ verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg" width={15} height={15} viewBox="0 0 24 24">
-                                                                <path fill="#7fba00" stroke="#7fba00" d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z">
-                                                                </path>
-                                                            </svg></em>
-                                                        <img alt src="images/resources/user2.jpg" />
-                                                    </figure>
-                                                    <div className="friend-name">
-                                                        <div className="more">
-                                                            <div className="more-post-optns">
-                                                                <i className>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal">
-                                                                        <circle cx={12} cy={12} r={1} />
-                                                                        <circle cx={19} cy={12} r={1} />
-                                                                        <circle cx={5} cy={12} r={1} />
-                                                                    </svg></i>
-                                                                <ul>
-                                                                    <li>
-                                                                        <i className="icofont-pen-alt-1" />Edit Post
-                                                                        <span>Edit This Post within a Hour</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ban" />Hide Post
-                                                                        <span>Hide This Post</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ui-delete" />Delete Post
-                                                                        <span>If inappropriate Post By Mistake</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-flag" />Report
-                                                                        <span>Inappropriate content</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <ins><a title href="time-line.html">Maria k.</a> Shared
-                                                            Link</ins>
-                                                        <span><i className="icofont-globe" /> published: Sep,15 2020</span>
-                                                    </div>
-                                                    <div className="post-meta">
-                                                        <em><a href="https://www.youtube.com/embed/zdow47FQRfQ" title target="_blank">https://www.youtube.com/embed/zdow47FQRfQ</a>
-                                                        </em>
-                                                        <iframe height={285} src="https://www.youtube.com/embed/zdow47FQRfQ" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-                                                        <p>
-                                                            Cookie? Biscuit? Bikkie? They all mean the same thing! Our
-                                                            lovely English teachers will quickly show you some pronunciation
-                                                            and vocabulary differences from Australia, America, and England!
-                                                        </p>
-                                                        <div className="we-video-info">
-                                                            <ul>
-                                                                <li>
-                                                                    <span title="views" className="views">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-eye">
-                                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
-                                                                                </path>
-                                                                                <circle cx={12} cy={12} r={3} />
-                                                                            </svg></i>
-                                                                        <ins>1.2k</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span title="Comments" className="Recommend">
-                                                                        <i>
-                                                                            <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                                                            </svg></i>
-                                                                        <ins>54</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span title="follow" className="Follow">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star">
-                                                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                                                </polygon>
-                                                                            </svg></i>
-                                                                        <ins>5k</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span className="share-pst" title="Share">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2">
-                                                                                <circle cx={18} cy={5} r={3} />
-                                                                                <circle cx={6} cy={12} r={3} />
-                                                                                <circle cx={18} cy={19} r={3} />
-                                                                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                                                                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                                                                            </svg></i>
-                                                                        <ins>205</ins>
-                                                                    </span>
-                                                                </li>
-                                                            </ul>
-                                                            <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
-                                                        </div>
-                                                        <div className="stat-tools">
-                                                            <div className="box">
-                                                                <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                    <div className="Emojis">
-                                                                        <div className="Emoji Emoji--like">
-                                                                            <div className="icon icon--like" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--love">
-                                                                            <div className="icon icon--heart" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--haha">
-                                                                            <div className="icon icon--haha" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--wow">
-                                                                            <div className="icon icon--wow" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--sad">
-                                                                            <div className="icon icon--sad" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--angry">
-                                                                            <div className="icon icon--angry" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="box">
-                                                                <div className="Emojis">
-                                                                    <div className="Emoji Emoji--like">
-                                                                        <div className="icon icon--like" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--love">
-                                                                        <div className="icon icon--heart" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--haha">
-                                                                        <div className="icon icon--haha" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--wow">
-                                                                        <div className="icon icon--wow" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--sad">
-                                                                        <div className="icon icon--sad" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--angry">
-                                                                        <div className="icon icon--angry" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a title href="#" className="comment-to"><i className="icofont-comment" /> Comment</a>
-                                                            <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                            <div className="emoji-state">
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/thumb.png" />
-                                                                            Likes</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Jhon Doe</li>
-                                                                            <li>Amara Sin</li>
-                                                                            <li>Sarah K.</li>
-                                                                            <li><span>20+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/heart.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/heart.png" />
-                                                                            Love</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Amara Sin</li>
-                                                                            <li>Jhon Doe</li>
-                                                                            <li><span>10+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/smile.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/smile.png" />
-                                                                            Happy</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Sarah K.</li>
-                                                                            <li>Jhon Doe</li>
-                                                                            <li>Amara Sin</li>
-                                                                            <li><span>100+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/weep.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/weep.png" />
-                                                                            Dislike</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Danial Carbal</li>
-                                                                            <li>Amara Sin</li>
-                                                                            <li>Sarah K.</li>
-                                                                            <li><span>15+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <p>20+</p>
-                                                            </div>
-                                                            <div className="new-comment" style={{ display: 'none' }}>
-                                                                <form method="post">
-                                                                    <input type="text" placeholder="write comment" />
-                                                                    <button type="submit"><i className="icofont-paper-plane" /></button>
-                                                                </form>
-                                                                <div className="comments-area">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <figure><img alt src="images/resources/user1.jpg" />
-                                                                            </figure>
-                                                                            <div className="commenter">
-                                                                                <h5><a title href="#">Jack Carter</a>
-                                                                                </h5>
-                                                                                <span>2 hours ago</span>
-                                                                                <p>
-                                                                                    i think that some how, we learn who we
-                                                                                    really are and then live with that
-                                                                                    decision, great post!
-                                                                                </p>
-                                                                                <span>you can view the more detail via
-                                                                                    link</span>
-                                                                                <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a>
-                                                                            </div>
-                                                                            <a title="Like" href="#"><i className="icofont-heart" /></a>
-                                                                            <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <figure><img alt src="images/resources/user2.jpg" />
-                                                                            </figure>
-                                                                            <div className="commenter">
-                                                                                <h5><a title href="#">Ching xang</a></h5>
-                                                                                <span>2 hours ago</span>
-                                                                                <p>
-                                                                                    i think that some how, we learn who we
-                                                                                    really are and then live with that
-                                                                                    decision, great post!
-                                                                                </p>
-                                                                            </div>
-                                                                            <a title="Like" href="#"><i className="icofont-heart" /></a>
-                                                                            <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>{/* share video */}
-                                        <div className="main-wraper">
-                                            <div className="user-post">
-                                                <div className="friend-info">
-                                                    <figure>
-                                                        <em>
-                                                            <svg style={{ verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg" width={15} height={15} viewBox="0 0 24 24">
-                                                                <path fill="#7fba00" stroke="#7fba00" d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z">
-                                                                </path>
-                                                            </svg></em>
-                                                        <img alt src="images/resources/user2.jpg" />
-                                                    </figure>
-                                                    <div className="friend-name">
-                                                        <div className="more">
-                                                            <div className="more-post-optns">
-                                                                <i className>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal">
-                                                                        <circle cx={12} cy={12} r={1} />
-                                                                        <circle cx={19} cy={12} r={1} />
-                                                                        <circle cx={5} cy={12} r={1} />
-                                                                    </svg></i>
-                                                                <ul>
-                                                                    <li>
-                                                                        <i className="icofont-pen-alt-1" />Edit Post
-                                                                        <span>Edit This Post within a Hour</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ban" />Hide Post
-                                                                        <span>Hide This Post</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ui-delete" />Delete Post
-                                                                        <span>If inappropriate Post By Mistake</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-flag" />Report
-                                                                        <span>Inappropriate content</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <ins><a title href="time-line.html">Maria k.</a> Shared
-                                                            Link</ins>
-                                                        <span><i className="icofont-globe" /> published: Sep,15 2020</span>
-                                                    </div>
-                                                    <div className="post-meta">
-                                                        <img className="gif" src="images/giphy.png" data-gif="images/giphy-sample.gif" alt />
-                                                        <div className="we-video-info">
-                                                            <ul>
-                                                                <li>
-                                                                    <span title="views" className="views">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-eye">
-                                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
-                                                                                </path>
-                                                                                <circle cx={12} cy={12} r={3} />
-                                                                            </svg></i>
-                                                                        <ins>1.2k</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span title="Comments" className="Recommend">
-                                                                        <i>
-                                                                            <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                                                            </svg></i>
-                                                                        <ins>54</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span title="follow" className="Follow">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star">
-                                                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                                                </polygon>
-                                                                            </svg></i>
-                                                                        <ins>5k</ins>
-                                                                    </span>
-                                                                </li>
-                                                                <li>
-                                                                    <span className="share-pst" title="Share">
-                                                                        <i>
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2">
-                                                                                <circle cx={18} cy={5} r={3} />
-                                                                                <circle cx={6} cy={12} r={3} />
-                                                                                <circle cx={18} cy={19} r={3} />
-                                                                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                                                                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                                                                            </svg></i>
-                                                                        <ins>205</ins>
-                                                                    </span>
-                                                                </li>
-                                                            </ul>
-                                                            <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
-                                                        </div>
-                                                        <div className="stat-tools">
-                                                            <div className="box">
-                                                                <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                    <div className="Emojis">
-                                                                        <div className="Emoji Emoji--like">
-                                                                            <div className="icon icon--like" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--love">
-                                                                            <div className="icon icon--heart" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--haha">
-                                                                            <div className="icon icon--haha" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--wow">
-                                                                            <div className="icon icon--wow" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--sad">
-                                                                            <div className="icon icon--sad" />
-                                                                        </div>
-                                                                        <div className="Emoji Emoji--angry">
-                                                                            <div className="icon icon--angry" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="box">
-                                                                <div className="Emojis">
-                                                                    <div className="Emoji Emoji--like">
-                                                                        <div className="icon icon--like" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--love">
-                                                                        <div className="icon icon--heart" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--haha">
-                                                                        <div className="icon icon--haha" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--wow">
-                                                                        <div className="icon icon--wow" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--sad">
-                                                                        <div className="icon icon--sad" />
-                                                                    </div>
-                                                                    <div className="Emoji Emoji--angry">
-                                                                        <div className="icon icon--angry" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <a title href="#" className="comment-to"><i className="icofont-comment" /> Comment</a>
-                                                            <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                            <div className="emoji-state">
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/thumb.png" />
-                                                                            Likes</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Jhon Doe</li>
-                                                                            <li>Amara Sin</li>
-                                                                            <li>Sarah K.</li>
-                                                                            <li><span>20+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/heart.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/heart.png" />
-                                                                            Love</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Amara Sin</li>
-                                                                            <li>Jhon Doe</li>
-                                                                            <li><span>10+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/smile.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/smile.png" />
-                                                                            Happy</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Sarah K.</li>
-                                                                            <li>Jhon Doe</li>
-                                                                            <li>Amara Sin</li>
-                                                                            <li><span>100+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="popover_wrapper">
-                                                                    <a className="popover_title" href="#" title><img alt src="images/smiles/weep.png" /></a>
-                                                                    <div className="popover_content">
-                                                                        <span><img alt src="images/smiles/weep.png" />
-                                                                            Dislike</span>
-                                                                        <ul className="namelist">
-                                                                            <li>Danial Carbal</li>
-                                                                            <li>Amara Sin</li>
-                                                                            <li>Sarah K.</li>
-                                                                            <li><span>15+ more</span></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <p>20+</p>
-                                                            </div>
-                                                            <div className="new-comment" style={{ display: 'none' }}>
-                                                                <form method="post">
-                                                                    <input type="text" placeholder="write comment" />
-                                                                    <button type="submit"><i className="icofont-paper-plane" /></button>
-                                                                </form>
-                                                                <div className="comments-area">
-                                                                    <ul>
-                                                                        <li>
-                                                                            <figure><img alt src="images/resources/user1.jpg" />
-                                                                            </figure>
-                                                                            <div className="commenter">
-                                                                                <h5><a title href="#">Jack Carter</a>
-                                                                                </h5>
-                                                                                <span>2 hours ago</span>
-                                                                                <p>
-                                                                                    i think that some how, we learn who we
-                                                                                    really are and then live with that
-                                                                                    decision, great post!
-                                                                                </p>
-                                                                                <span>you can view the more detail via
-                                                                                    link</span>
-                                                                                <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a>
-                                                                            </div>
-                                                                            <a title="Like" href="#"><i className="icofont-heart" /></a>
-                                                                            <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
-                                                                        </li>
-                                                                        <li>
-                                                                            <figure><img alt src="images/resources/user2.jpg" />
-                                                                            </figure>
-                                                                            <div className="commenter">
-                                                                                <h5><a title href="#">Ching xang</a></h5>
-                                                                                <span>2 hours ago</span>
-                                                                                <p>
-                                                                                    i think that some how, we learn who we
-                                                                                    really are and then live with that
-                                                                                    decision, great post!
-                                                                                </p>
-                                                                            </div>
-                                                                            <a title="Like" href="#"><i className="icofont-heart" /></a>
-                                                                            <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>{/* gif image post */}
-                                        <div className="main-wraper">
-                                            <div className="user-post">
-                                                <div className="friend-info">
-                                                    <figure>
-                                                        <img alt src="images/resources/sponsor.png" />
-                                                    </figure>
-                                                    <div className="friend-name">
-                                                        <div className="more">
-                                                            <div className="more-post-optns">
-                                                                <i className>
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal">
-                                                                        <circle cx={12} cy={12} r={1} />
-                                                                        <circle cx={19} cy={12} r={1} />
-                                                                        <circle cx={5} cy={12} r={1} />
-                                                                    </svg></i>
-                                                                <ul>
-                                                                    <li>
-                                                                        <i className="icofont-pen-alt-1" />Edit Post
-                                                                        <span>Edit This Post within a Hour</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ban" />Hide Post
-                                                                        <span>Hide This Post</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-ui-delete" />Delete Post
-                                                                        <span>If inappropriate Post By Mistake</span>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i className="icofont-flag" />Report
-                                                                        <span>Inappropriate content</span>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <ins><a title href="time-line.html">Sponsors Ads</a></ins>
-                                                        <span><i className="icofont-globe" /> Sponsor</span>
-                                                    </div>
-                                                    <div className="post-meta">
-                                                        <ul className="sponsored-caro">
-                                                            <li>
-                                                                <figure><img src="images/resources/sponsor-prod1.jpg" alt /></figure>
-                                                                <div className="sponsor-prod-name">
-                                                                    <a href="#" title>Aloevera Juice 1 liter</a>
-                                                                    <span>$24</span>
-                                                                </div>
-                                                                <a href="#" title className="shop-btn">Shop Now</a>
-                                                                <div className="share-info">
-                                                                    <span>50 shares</span>
-                                                                    <span>20k Likes</span>
-                                                                </div>
-                                                                <div className="stat-tools">
-                                                                    <div className="box">
-                                                                        <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                            <div className="Emojis">
-                                                                                <div className="Emoji Emoji--like">
-                                                                                    <div className="icon icon--like" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--love">
-                                                                                    <div className="icon icon--heart" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="box">
-                                                                        <div className="Emojis">
-                                                                            <div className="Emoji Emoji--like">
-                                                                                <div className="icon icon--like" />
-                                                                            </div>
-                                                                            <div className="Emoji Emoji--love">
-                                                                                <div className="icon icon--heart" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <figure><img src="images/resources/sponsor-prod5.jpg" alt /></figure>
-                                                                <div className="sponsor-prod-name">
-                                                                    <a href="#" title>Beauty Cosmetics</a>
-                                                                    <span>$24</span>
-                                                                </div>
-                                                                <a href="#" title className="shop-btn">Shop Now</a>
-                                                                <div className="share-info">
-                                                                    <span>50 shares</span>
-                                                                    <span>20k Likes</span>
-                                                                </div>
-                                                                <div className="stat-tools">
-                                                                    <div className="box">
-                                                                        <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                            <div className="Emojis">
-                                                                                <div className="Emoji Emoji--like">
-                                                                                    <div className="icon icon--like" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--love">
-                                                                                    <div className="icon icon--heart" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="box">
-                                                                        <div className="Emojis">
-                                                                            <div className="Emoji Emoji--like">
-                                                                                <div className="icon icon--like" />
-                                                                            </div>
-                                                                            <div className="Emoji Emoji--love">
-                                                                                <div className="icon icon--heart" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <figure><img src="images/resources/sponsor-prod4.jpg" alt /></figure>
-                                                                <div className="sponsor-prod-name">
-                                                                    <a href="#" title>Overtime For Men</a>
-                                                                    <span>$24</span>
-                                                                </div>
-                                                                <a href="#" title className="shop-btn">Shop Now</a>
-                                                                <div className="share-info">
-                                                                    <span>50 shares</span>
-                                                                    <span>20k Likes</span>
-                                                                </div>
-                                                                <div className="stat-tools">
-                                                                    <div className="box">
-                                                                        <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                            <div className="Emojis">
-                                                                                <div className="Emoji Emoji--like">
-                                                                                    <div className="icon icon--like" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--love">
-                                                                                    <div className="icon icon--heart" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="box">
-                                                                        <div className="Emojis">
-                                                                            <div className="Emoji Emoji--like">
-                                                                                <div className="icon icon--like" />
-                                                                            </div>
-                                                                            <div className="Emoji Emoji--love">
-                                                                                <div className="icon icon--heart" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <figure><img src="images/resources/sponsor-prod3.jpg" alt /></figure>
-                                                                <div className="sponsor-prod-name">
-                                                                    <a href="#" title>Redish Baby Items</a>
-                                                                    <span>$24</span>
-                                                                </div>
-                                                                <a href="#" title className="shop-btn">Shop Now</a>
-                                                                <div className="share-info">
-                                                                    <span>50 shares</span>
-                                                                    <span>20k Likes</span>
-                                                                </div>
-                                                                <div className="stat-tools">
-                                                                    <div className="box">
-                                                                        <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                            <div className="Emojis">
-                                                                                <div className="Emoji Emoji--like">
-                                                                                    <div className="icon icon--like" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--love">
-                                                                                    <div className="icon icon--heart" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="box">
-                                                                        <div className="Emojis">
-                                                                            <div className="Emoji Emoji--like">
-                                                                                <div className="icon icon--like" />
-                                                                            </div>
-                                                                            <div className="Emoji Emoji--love">
-                                                                                <div className="icon icon--heart" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <figure><img src="images/resources/sponsor-prod2.jpg" alt /></figure>
-                                                                <div className="sponsor-prod-name">
-                                                                    <a href="#" title>Potato Baby Fider</a>
-                                                                    <span>$24</span>
-                                                                </div>
-                                                                <a href="#" title className="shop-btn">Shop Now</a>
-                                                                <div className="share-info">
-                                                                    <span>50 shares</span>
-                                                                    <span>20k Likes</span>
-                                                                </div>
-                                                                <div className="stat-tools">
-                                                                    <div className="box">
-                                                                        <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                            <div className="Emojis">
-                                                                                <div className="Emoji Emoji--like">
-                                                                                    <div className="icon icon--like" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--love">
-                                                                                    <div className="icon icon--heart" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="box">
-                                                                        <div className="Emojis">
-                                                                            <div className="Emoji Emoji--like">
-                                                                                <div className="icon icon--like" />
-                                                                            </div>
-                                                                            <div className="Emoji Emoji--love">
-                                                                                <div className="icon icon--heart" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <figure><img src="images/resources/sponsor-prod3.jpg" alt /></figure>
-                                                                <div className="sponsor-prod-name">
-                                                                    <a href="#" title>Baby items fider</a>
-                                                                    <span>$24</span>
-                                                                </div>
-                                                                <a href="#" title className="shop-btn">Shop Now</a>
-                                                                <div className="share-info">
-                                                                    <span>50 shares</span>
-                                                                    <span>20k Likes</span>
-                                                                </div>
-                                                                <div className="stat-tools">
-                                                                    <div className="box">
-                                                                        <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
-                                                                            <div className="Emojis">
-                                                                                <div className="Emoji Emoji--like">
-                                                                                    <div className="icon icon--like" />
-                                                                                </div>
-                                                                                <div className="Emoji Emoji--love">
-                                                                                    <div className="icon icon--heart" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="box">
-                                                                        <div className="Emojis">
-                                                                            <div className="Emoji Emoji--like">
-                                                                                <div className="icon icon--like" />
-                                                                            </div>
-                                                                            <div className="Emoji Emoji--love">
-                                                                                <div className="icon icon--heart" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>{/* advertisment carousel */}
                                         <div className="loadmore">
                                             <div className="sp sp-bars" />
                                             <a href="#" title data-ripple>Load More..</a>
@@ -2301,199 +1331,132 @@ export default function Home () {
                                         <line x1={5} y1={12} x2={19} y2={12} />
                                     </svg></i>Tạo Chiến Dịch</h5>
                             </div>
-                            <div className="post-new">
-                                <div className="post-newmeta">
-                                    <ul className="post-categoroes">
+                        </div>
 
-                                        {/* <li><i className="icofont-camera" /> Photo / Video</li>
-                                        <li><i className="icofont-google-map" /> Post Location</li>
-                                        <li><i className="icofont-file-gif" /> Post Gif</li>
-                                        <li><i className="icofont-ui-tag" /> Tag to Friend</li>
-                                        <li><i className="icofont-users" /> Share in Group</li>
-                                        <li><i className="icofont-link" /> Share Link</li>
-                                        <li><i className="icofont-video-cam" /> Go Live</li>
-                                        <li><i className="icofont-sale-discount" /> Post Online Course</li>
-                                        <li><i className="icofont-read-book" /> Post A Book</li>
-                                        <li><i className="icofont-globe" /> Post an Ad</li> */}
-                                    </ul>
-                                    {/* <form method="post" className="dropzone dz-clickable" action="/upload-target">
-                                        <div className="fallback">
-                                            <input name="file" type="file" />
+                        <div className="">
+                            <header className="header">
+
+                            </header>
+                            <div className="form-wrap">
+                                <form id="survey-form" method="post" onSubmit={formik.handleSubmit}>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="name-label" htmlFor="name">Tên Sự Kiện</label>
+                                                <input type="text" name='title' onChange={formik.handleChange} id="name" placeholder="Nhập Tên Sự Kiện" className="form-control" required />
+                                            </div>
                                         </div>
-                                    </form> */}
-                                    <div style={{ overflow: 'auto', cursor: 'pointer', minHeight: '100px', maxHeight: '300px' }}>
-                                        {/* <FilePond
-                                            files={files}
-                                            onupdatefiles={handleFilePondUpdate}
-                                            allowMultiple={true}
-                                            maxFiles={50}
-                                            labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-
-                                        /> */}
-
-                                        {/* <FilePond
-                                            // ...
-                                            onChange={(e) => { handleFileUpload(e) }}
-                                        /> */}
-                                        {/* {downloadURL && <p>Download URL: {downloadURL}</p>} */}
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="email-label" htmlFor="email">Mô Tả Sự Kiện</label>
+                                                <input type="text" name='description' onChange={formik.handleChange} id="email" placeholder="Nhập Tô Tả" className="form-control" required />
+                                            </div>
+                                        </div>
                                     </div>
-
-                                </div>
-                                <form method="post" onSubmit={formik.handleSubmit} className="c-form">
-                                    <div style={{ display: 'flex' }}>
-                                        <div>
-                                            <div>
-                                                <h2>Tên Chiến Dịch</h2>
-                                                <input type='text' name='title' onChange={formik.handleChange} />
-                                            </div>
-                                            <div>
-                                                <h2>Mô Tả Khái Quát</h2>
-                                                <input type='text' name='description' onChange={formik.handleChange} />
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="name-label" htmlFor="name">Nơi Diễn Ra</label>
+                                                <input type="text" name='location' onChange={formik.handleChange} id="name" placeholder="Nhập Nơi Diễn Ra" className="form-control" required />
                                             </div>
                                         </div>
-                                        <div>
-                                            <div>
-                                                <h2>Nơi Diễn Ra</h2>
-                                                <input type='text' name='location' onChange={formik.handleChange} />
-                                            </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                {configActivity === "true" ?
+                                                    <div>
+                                                        <div className="form-group" style={{ display: 'flex' }}>
+                                                            <label id="name-label" style={{ marginRight: '20px' }} htmlFor="name">Nhận Ủng Hộ</label><input type="checkbox" onChange={toggleTextInput} />
+                                                        </div>
+                                                        {isTextInputVisible === true && <div>
+                                                            <div className="form-group">
+                                                                <label id="name-label" htmlFor="name">Mục Tiêu</label>
+                                                                <input type="number" name='targetDonation' onChange={formik.handleChange} id="name" placeholder="Nhập Muc Tiêu" className="form-control" required />
+                                                            </div>
 
-                                            {configActivity === "true" ?
-                                                <div>
-                                                    <input type="checkbox" onChange={toggleTextInput} /> Nhận Ủng Hộ
-                                                    {isTextInputVisible === true && <div>
-                                                        <h2>Mục Tiêu</h2>
-                                                        <input type='text' name='targetDonation' onChange={formik.handleChange} />
+                                                        </div>
+                                                        }
                                                     </div>
-                                                    }
-                                                </div>
-                                                :
+                                                    :
 
+                                                    <div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            <div className="form-group">
+                                                <label>Hình Ảnh</label>
                                                 <div>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div>
-                                        {/* <input type="file" multiple onChange={handleImageChange} className="inputfile" /> */}
-                                        <div>
-                                            <form>
-                                                <fieldset className="upload_dropZone text-center mb-3 p-4" >
-                                                    <legend className="visually-hidden">Image uploader</legend>
-                                                    <svg className="upload_svg" width={60} height={60} aria-hidden="true">
-                                                        <use href="#icon-imageUpload" />
+                                                    <form>
+                                                        <fieldset className="upload_dropZone text-center mb-3 p-4" >
+                                                            <legend className="visually-hidden">Tải Lên Hình Ảnh</legend>
+                                                            <svg className="upload_svg" width={60} height={60} aria-hidden="true">
+                                                                <use href="#icon-imageUpload" />
+                                                            </svg>
+                                                            <p className="small my-2">Kéo &amp; Thả (các) hình nền bên trong vùng nét đứt<br /><i>hoặc</i></p>
+                                                            <input
+                                                                id="upload_image_background"
+                                                                // ref={fileInputRef}
+                                                                data-post-name="image_background"
+                                                                data-post-url="https://someplace.com/image/uploads/backgrounds/"
+                                                                className="position-absolute invisible"
+                                                                type="file"
+                                                                multiple
+                                                                onChange={handleImageChange}
+                                                                accept="image/jpeg, image/png, image/svg+xml"
+                                                            />
+                                                            <label className="btn btn-upload mb-3" htmlFor="upload_image_background">Chọn Hình Ảnh</label>
+                                                            <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
+                                                        </fieldset>
+
+                                                    </form>
+                                                    <svg style={{ display: 'none' }}>
+                                                        <defs>
+                                                            <symbol id="icon-imageUpload" clipRule="evenodd" viewBox="0 0 96 96">
+                                                                <path d="M47 6a21 21 0 0 0-12.3 3.8c-2.7 2.1-4.4 5-4.7 7.1-5.8 1.2-10.3 5.6-10.3 10.6 0 6 5.8 11 13 11h12.6V22.7l-7.1 6.8c-.4.3-.9.5-1.4.5-1 0-2-.8-2-1.7 0-.4.3-.9.6-1.2l10.3-8.8c.3-.4.8-.6 1.3-.6.6 0 1 .2 1.4.6l10.2 8.8c.4.3.6.8.6 1.2 0 1-.9 1.7-2 1.7-.5 0-1-.2-1.3-.5l-7.2-6.8v15.6h14.4c6.1 0 11.2-4.1 11.2-9.4 0-5-4-8.8-9.5-9.4C63.8 11.8 56 5.8 47 6Zm-1.7 42.7V38.4h3.4v10.3c0 .8-.7 1.5-1.7 1.5s-1.7-.7-1.7-1.5Z M27 49c-4 0-7 2-7 6v29c0 3 3 6 6 6h42c3 0 6-3 6-6V55c0-4-3-6-7-6H28Zm41 3c1 0 3 1 3 3v19l-13-6a2 2 0 0 0-2 0L44 79l-10-5a2 2 0 0 0-2 0l-9 7V55c0-2 2-3 4-3h41Z M40 62c0 2-2 4-5 4s-5-2-5-4 2-4 5-4 5 2 5 4Z" />
+                                                            </symbol>
+                                                        </defs>
                                                     </svg>
-                                                    <p className="small my-2">Drag &amp; Drop background image(s) inside dashed region<br /><i>or</i></p>
-                                                    <input
-                                                        id="upload_image_background"
-                                                        // ref={fileInputRef}
-                                                        data-post-name="image_background"
-                                                        data-post-url="https://someplace.com/image/uploads/backgrounds/"
-                                                        className="position-absolute invisible"
-                                                        type="file"
-                                                        multiple
-                                                        onChange={handleImageChange}
-                                                        accept="image/jpeg, image/png, image/svg+xml"
-                                                    />
-                                                    <label className="btn btn-upload mb-3" htmlFor="upload_image_background">Choose file(s)</label>
-                                                    <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
-                                                </fieldset>
-
-                                            </form>
-                                            <svg style={{ display: 'none' }}>
-                                                <defs>
-                                                    <symbol id="icon-imageUpload" clipRule="evenodd" viewBox="0 0 96 96">
-                                                        <path d="M47 6a21 21 0 0 0-12.3 3.8c-2.7 2.1-4.4 5-4.7 7.1-5.8 1.2-10.3 5.6-10.3 10.6 0 6 5.8 11 13 11h12.6V22.7l-7.1 6.8c-.4.3-.9.5-1.4.5-1 0-2-.8-2-1.7 0-.4.3-.9.6-1.2l10.3-8.8c.3-.4.8-.6 1.3-.6.6 0 1 .2 1.4.6l10.2 8.8c.4.3.6.8.6 1.2 0 1-.9 1.7-2 1.7-.5 0-1-.2-1.3-.5l-7.2-6.8v15.6h14.4c6.1 0 11.2-4.1 11.2-9.4 0-5-4-8.8-9.5-9.4C63.8 11.8 56 5.8 47 6Zm-1.7 42.7V38.4h3.4v10.3c0 .8-.7 1.5-1.7 1.5s-1.7-.7-1.7-1.5Z M27 49c-4 0-7 2-7 6v29c0 3 3 6 6 6h42c3 0 6-3 6-6V55c0-4-3-6-7-6H28Zm41 3c1 0 3 1 3 3v19l-13-6a2 2 0 0 0-2 0L44 79l-10-5a2 2 0 0 0-2 0l-9 7V55c0-2 2-3 4-3h41Z M40 62c0 2-2 4-5 4s-5-2-5-4 2-4 5-4 5 2 5 4Z" />
-                                                    </symbol>
-                                                </defs>
-                                            </svg>
-                                        </div>
-
-                                        <div className="image-container">
-                                            {images.map((image, index) => (
-                                                <div className="image-item" key={index}>
-                                                    <img src={image.url} alt={`Image ${index}`} className="image-preview" />
-                                                    <button className="delete-button" onClick={() => handleImageDelete(index)}>
-                                                        <span>&times;</span>
-                                                    </button>
                                                 </div>
-                                            ))}
-                                        </div>
 
-                                        {isLoading && (
-                                            <div>
-                                                <div className="progress-bar-container">
-                                                    <div className="progress-bar" style={{ width: `${uploadProgress}%` }}></div>
+                                                <div className="image-container">
+                                                    {images.map((image, index) => (
+                                                        <div className="image-item" key={index}>
+                                                            <img src={image.url} alt={`Image ${index}`} className="image-preview" />
+                                                            <button className="delete-button" onClick={() => handleImageDelete(index)}>
+                                                                <span>&times;</span>
+                                                            </button>
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                                <div className="progress-percentage">{uploadProgress}%</div>
-                                            </div>
-                                        )}
 
-                                        {/* {images.length > 0 && (
-                <div>
-                    <h4>Image URLs:</h4>
-                    <ul>
-                        {images.map((image, index) => (
-                            <li key={index}>{image.url}</li>
-                        ))}
-                    </ul>
-                </div>
-            )} */}
-                                    </div>
-                                    {/* <input type='file' onChange={uploadFile} /> */}
-                                    {files !== '' ? <img src={files} style={{ height: '300px' }} /> : <div></div>}
-                                    {/* <textarea id="emojionearea1" placeholder="What's On Your Mind?" defaultValue={""} /> */}
-                                    {/* <div className="activity-post">
-                                        <div className="checkbox">
-                                            <input type="checkbox" id="checkbox" defaultChecked />
-                                            <label htmlFor="checkbox"><span>Activity Feed</span></label>
-                                        </div>
-                                        <div className="checkbox">
-                                            <input type="checkbox" id="checkbox2" defaultChecked />
-                                            <label htmlFor="checkbox2"><span>My Story</span></label>
+                                                {isLoading && (
+                                                    <div>
+                                                        <div className="progress-bar-container">
+                                                            <div className="progress-bar" style={{ width: `${uploadProgress}%` }}></div>
+                                                        </div>
+                                                        <div className="progress-percentage">{uploadProgress}%</div>
+                                                    </div>
+                                                )}
+
+                                                {files !== '' ? <img src={files} style={{ height: '300px' }} /> : <div></div>}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="select-box">
-                                        <div className="select-box__current" tabIndex={1}>
-                                            <div className="select-box__value"><input className="select-box__input" type="radio" id={0} defaultValue={1} name="Ben" defaultChecked="checked" />
-                                                <p className="select-box__input-text"><i className="icofont-globe-alt" /> Public</p>
-                                            </div>
-                                            <div className="select-box__value"><input className="select-box__input" type="radio" id={1} defaultValue={2} name="Ben" defaultChecked="checked" />
-                                                <p className="select-box__input-text"><i className="icofont-lock" /> Private</p>
-                                            </div>
-                                            <div className="select-box__value"><input className="select-box__input" type="radio" id={2} defaultValue={3} name="Ben" defaultChecked="checked" />
-                                                <p className="select-box__input-text"><i className="icofont-user" /> Specific Friend
-                                                </p>
-                                            </div>
-                                            <div className="select-box__value"><input className="select-box__input" type="radio" id={3} defaultValue={4} name="Ben" defaultChecked="checked" />
-                                                <p className="select-box__input-text"><i className="icofont-star" /> Only Friends</p>
-                                            </div>
-                                            <div className="select-box__value"><input className="select-box__input" type="radio" id={4} defaultValue={5} name="Ben" defaultChecked="checked" />
-                                                <p className="select-box__input-text"><i className="icofont-users-alt-3" /> Joined
-                                                    Groups</p>
-                                            </div>
-                                            <img className="select-box__icon" src="images/arrow-down.svg" alt="Arrow Icon" aria-hidden="true" />
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <button type="submit" id="submit" className="btn btn-primary btn-block">Hoàn Thành</button>
                                         </div>
-                                        <ul className="select-box__list">
-                                            <li><label className="select-box__option" htmlFor={0}><i className="icofont-globe-alt" />
-                                                Public</label></li>
-                                            <li><label className="select-box__option" htmlFor={1}><i className="icofont-lock" />
-                                                Private</label></li>
-                                            <li><label className="select-box__option" htmlFor={2}><i className="icofont-user" /> Specific
-                                                Friend</label></li>
-                                            <li><label className="select-box__option" htmlFor={3}><i className="icofont-star" /> Only
-                                                Friends</label></li>
-                                            <li><label className="select-box__option" htmlFor={4}><i className="icofont-users-alt-3" />
-                                                Joined Groups</label></li>
-                                        </ul>
                                     </div>
-                                    <input className="schedule-btn" type="text" id="datetimepicker" readOnly />
-                                    <input type="text" placeholder="https://www.youtube.com/watch?v=vgvsuiFlA-Y&t=56s" /> */}
-                                    <button type="submit" className="main-btn">Publish</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div >
+                </div>
+
                 :
                 <div></div>
             }
@@ -2984,33 +1947,68 @@ export default function Home () {
             {
                 isPopupOpen && (
                     <div className="popup-overlay">
-                        <div className="popup-container">
-                            <h2>Popup Form</h2>
-                            <button className="close-button" onClick={closePopup}>&times;</button>
-                            <form onSubmit={formik1.handleSubmit} method='post'>
-                                <div className="form-group">
-                                    <label htmlFor="name">Tiêu Đề:</label>
-                                    <input type="text" id="name" name="title" onChange={formik1.handleChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Số Tiền:</label>
-                                    <input type="number" id="amount" name="amount" onChange={formik1.handleChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Email:</label>
-                                    <input type="text" id="email" name="email" onChange={formik1.handleChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Số Điện Thoại:</label>
-                                    <input type="text" id="phone" name="phone" onChange={formik1.handleChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Họ Tên:</label>
-                                    <input type="text" id="name" name="name" onChange={formik1.handleChange} />
-                                </div>
-                                <button type="submit" className="">Submit</button>
-                            </form>
+                        {/* <div className="popup-container"> */}
+                        {/* <h2>Popup Form</h2> */}
+
+                        <div className="container">
+                            <header className="header">
+                                {/* <h1 id="title" className="text-center">Survey Form</h1>
+                                <p id="description" className="text-center">
+                                    Thank you for taking the time to help us improve the platform
+                                </p>
+                                <button className="close-button" onClick={closePopup}>&times;</button> */}
+                            </header>
+                            <div className="form-wrap">
+                                <form id="survey-form" onSubmit={formik1.handleSubmit} method='post'>
+                                    <h1 id="title" className="text-center">Nhập Thông Tin</h1>
+                                    <button className="close-button" onClick={closePopup}>&times;</button>
+                                    <div className="row ">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="name-label" htmlFor="name">Tiêu Đề:</label>
+                                                <input type="text" name="title" onChange={formik1.handleChange} id="name" placeholder="Nhập Tiêu Đề" className="form-control" required />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="email-label" htmlFor="email">Số Tiền:</label>
+                                                <input type="number" name="amount" onChange={formik1.handleChange} id="email" placeholder="Nhập Số Tiền" className="form-control" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row ">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="name-label" htmlFor="name">Email:</label>
+                                                <input type="email" name="email" onChange={formik1.handleChange} id="name" placeholder="Nhập Email" className="form-control" required />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="email-label" htmlFor="email">Số Điện Thoại:</label>
+                                                <input type="text" name="phone" onChange={formik1.handleChange} id="email" placeholder="Nhập Số Điện Thoại" className="form-control" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row ">
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label id="name-label" htmlFor="name">Họ Tên:</label>
+                                                <input type="text" name="name" onChange={formik1.handleChange} id="name" placeholder="Nhập Họ Tên" className="form-control" required />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-4">
+                                            <button type="submit" id="submit" className="btn btn-primary btn-block">Hoàn Thành</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
+
+                        {/* </div> */}
                     </div>
                 )
             }

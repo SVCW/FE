@@ -3287,7 +3287,7 @@ ul.welcome-caro li.welcome-box figure img {
 }
 
 .loader:after {
-  content: "SOCIMO....";
+  content: "SVCW....";
   font-size: 16px;
   font-family: "Roboto";
   color: #ffffff;
@@ -16382,14 +16382,14 @@ a.classic-btn:hover {
   z-index: -1;
 }
 
-.long-text{
+.long-text {
   color: black;
   margin: 1rem;
 }
 
 
 /* Home.js */
-.img-new-messages{
+.img-new-messages {
   width: 3.5rem;
   height: 3.5rem;
 }

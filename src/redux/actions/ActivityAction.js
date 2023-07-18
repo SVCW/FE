@@ -3,6 +3,7 @@ import { http } from "../../utils/reponse";
 export const GetListActivityAction = () => {
     return async (dispatch) => {
         try {
+            dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get('/Activity/get-activity?pageSize=5&PageLoad=1');
             console.log(result.data.data);
             const action = {
@@ -12,6 +13,7 @@ export const GetListActivityAction = () => {
             dispatch(action)
 
             localStorage.setItem('activity', JSON.stringify(result.data.data))
+            dispatch({ type: "HIDE_LOADING" })
         } catch (error) {
             console.log(error);
         }
