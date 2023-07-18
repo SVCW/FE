@@ -15,7 +15,9 @@ import { UserTemplate } from './templates/UserTemplate/UserTemplate';
 import Group from './pages/Groups/Group';
 import GroupsDetail from './pages/GroupsDetail/GroupsDetail';
 import Profile from './pages/Profile/Profile';
+import Result from './pages/Result/Result';
 import BaiTapGameXucXac from './pages/BaiTapGameXucXac/BaiTapGameXucXac';
+import Test from './Test';
 export const history = createBrowserHistory()
 
 function App () {
@@ -36,6 +38,8 @@ function App () {
         <UserTemplate exact path="/groups" Component={Group} />
         <UserTemplate exact path="/groupsdetail" Component={GroupsDetail} />
         <UserTemplate exact path="/profile" Component={Profile} />
+        <UserTemplate exact path="/history" Component={Result} />
+        <Route exact path="/test" component={Test} />
         <UserTemplate exact path="/game" Component={BaiTapGameXucXac} />
         <Route exact path="/" component={Login} />
 

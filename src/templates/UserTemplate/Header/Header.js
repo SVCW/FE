@@ -105,13 +105,15 @@ export default function Header () {
                         </a>
                         
                         <ul className="dropdown">
-                            <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Cá Nhân</a></li>
-                            <li><a href="add-new-course.html" title><i className="icofont-plus" /> Quyên Góp</a></li>
-                            <li><a className="invite-new" href="#" title><i className="icofont-brand-slideshare" /> Theo Dõi</a></li>
-                            <li><a href="pay-out.html" title><i className="icofont-price" /> Lịch Sử</a></li>
-                            <li><a href="price-plan.html" title><i className="icofont-flash" /> Cập nhật </a></li>
-                            <li><a href="help-faq.html" title><i className="icofont-notepad" /> Thành Tích</a></li>
-                            {/* <li><a href="settings.html" title><i className="icofont-gear" /> Setting</a></li>
+                            <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Your Profile</a></li>
+                            <li><NavLink to="/history" title><i className="icofont-flash" /> History</NavLink></li>
+                            <li><a href="add-new-course.html" title><i className="icofont-plus" /> New Course</a></li>
+                            <li><a className="invite-new" href="#" title><i className="icofont-brand-slideshare" /> Invite
+                                Collegue</a></li>
+                            <li><a href="pay-out.html" title><i className="icofont-price" /> Payout</a></li>
+
+                            <li><a href="help-faq.html" title><i className="icofont-question-circle" /> Help</a></li>
+                            <li><a href="settings.html" title><i className="icofont-gear" /> Setting</a></li>
                             <li><a href="privacy-n-policy.html" title><i className="icofont-notepad" /> Privacy</a>
                             </li> */}
                             <li><a className="dark-mod" href="#" title><i className="icofont-moon" /> Dark Mode</a></li>

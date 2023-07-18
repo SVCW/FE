@@ -29,7 +29,7 @@ export default function Login (props) {
             const email = {
                 "email": result.user?.email
             }
-            console.log(email);
+            console.log(result);
 
             console.log(result.user?.email);
             const action1 = LoginUserAction(email, props);
@@ -78,25 +78,25 @@ export default function Login (props) {
                 <div className="bg-image" style={{ backgroundImage: 'url(images/resources/login-bg3.jpg)' }} />
                 <ul className="welcome-caro">
                     <li className="welcome-box">
-                        <figure><img style={{width: 600, height: 400}} src="images/tu thien 1.jpg" alt /></figure>
+                        <figure><img style={{ width: 600, height: 400 }} src="images/tu thien 1.jpg" alt /></figure>
                         <h4>Trường Học Tình Thương</h4>
                         <p>
                             Dự án này được lên xây dựng lên nhầm kêu gọi cộng đồng chung tay đưa những con chữ đến với trẻ em vùng cao.
                         </p>
                     </li>
                     <li className="welcome-box">
-                        <figure><img style={{width: 600, height: 400}}  src="images/tu thien_4.jpg" alt /></figure>
+                        <figure><img style={{ width: 600, height: 400 }} src="images/tu thien_4.jpg" alt /></figure>
                         <h4>Cho Đi Là Còn Mãi</h4>
                         <p>
-                            Dự án nhầm kêu gọi cộng đồng gây quỹ từ thiện cho những cựu chiến binh, bà mẹ Việt Nam anh hùng và những người bị dính chất độc màu da cam,.... 
-                            Qũy này giúp cho cựu chiến binh, bà mẹ việt nam anh hùng,.... sẽ cảm thấy được an ủi một phần mất mác đã trải qua. 
+                            Dự án nhầm kêu gọi cộng đồng gây quỹ từ thiện cho những cựu chiến binh, bà mẹ Việt Nam anh hùng và những người bị dính chất độc màu da cam,....
+                            Qũy này giúp cho cựu chiến binh, bà mẹ việt nam anh hùng,.... sẽ cảm thấy được an ủi một phần mất mác đã trải qua.
                         </p>
                     </li>
                     <li className="welcome-box">
-                        <figure><img style={{width: 600, height: 400}} src="images/tu thien_2.jpg" alt /></figure>
+                        <figure><img style={{ width: 600, height: 400 }} src="images/tu thien_2.jpg" alt /></figure>
                         <h4>Miền Trung Thân Thương</h4>
                         <p>
-                            Hoạt động nhầm kêu gọi mọi người hướng về miền trung    
+                            Hoạt động nhầm kêu gọi mọi người hướng về miền trung
                         </p>
                     </li>
                 </ul>

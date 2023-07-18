@@ -8,7 +8,7 @@ import DetailActivity from '../../component/DetailActivity';
 import { Fragment } from 'react';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 import { FilePond, registerPlugin } from 'react-filepond'
-
+import Swal from 'sweetalert2'
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css'
 
@@ -24,6 +24,8 @@ import SimpleSlider from '../../component/SimpleSlider';
 import { getStorage, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useFormik } from 'formik';
 import { DonationAction } from '../../redux/actions/DonationAction';
+import { FollowAction, JoinAction, UnFollowAction, UnJoinAction } from '../../redux/actions/FollowJoinAction';
+import { CommentAction, CommentRepllyAction } from '../../redux/actions/CommentAction';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
@@ -31,6 +33,12 @@ export default function Home () {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [images, setImages] = useState([]);
+    const [tcss, setTcss] = useState('css');
+    const dandleCSS = () => {
+        if (tcss === "css") {
+
+        }
+    }
     console.log(images);
     const [uploadProgress, setUploadProgress] = useState(0);
     const { configActivity, isValidCreate, isFanpage } = useSelector(root => root.ConfigActivityReducer)
@@ -42,11 +50,136 @@ export default function Home () {
     const [time, setTime] = useState([])
     const [detail, setDetail] = useState({})
     const [create, setCreate] = useState(true)
+    const textOptions = ['Theo Dõi', 'Bỏ Theo Dõi'];
+    const [text, setText] = useState(0);
+
+    const handleYesClick = (activity, title) => {
+        setText((prevIndex) => (prevIndex + 1) % textOptions.length);
+        const currentText = textOptions[text];
+        console.log(activity);
+        console.log(userID);
+        callAPI(currentText, activity, title);
+    };
+
+    const callAPI = (text, activity, title) => {
+        // Gọi API ở đây, sử dụng giá trị của `text`
+        if (text === 'Theo Dõi') {
+            // Gọi API Theo Dõi
+
+            const action = FollowAction(activity, userID);
+            dispatch(action)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: `Theo Dõi Thành Công Sự Kiện ${title}`
+            })
+            // ...
+        } else {
+            // Gọi API Bỏ Theo Dõi
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: `Bỏ Theo Dõi Thành Công Sự Kiện ${title}`
+            })
+            console.log('Gọi API Bỏ Theo Dõi');
+            // ...
+            const action = UnFollowAction(activity, userID);
+            dispatch(action)
+        }
+    };
+
+    const currentText = textOptions[text];
+
+
+    const textOptions2 = ['Tham Gia', 'Hủy Theo Dõi'];
+    const [text2, setText2] = useState(0);
+
+    const handleJoinClick = (activity, title) => {
+        setText2((prevIndex) => (prevIndex + 1) % textOptions2.length);
+        const currentText = textOptions2[text2];
+        console.log(activity);
+        console.log(userID);
+        callAPI2(currentText, activity, title);
+    };
+
+    const callAPI2 = (text, activity, title) => {
+        // Gọi API ở đây, sử dụng giá trị của `text`
+        if (text === 'Tham Gia') {
+            // Gọi API Theo Dõi
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: `Tham Gia Thành Công Sự Kiện ${title}`
+            })
+            const action = JoinAction(activity, userID);
+            dispatch(action)
+            // ...
+        } else {
+            // Gọi API Bỏ Theo Dõi
+            // console.log('Gọi API Bỏ Theo Dõi');
+            // ...
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: `Bỏ Tham Gia Sự Kiện ${title}`
+            })
+            const action = UnJoinAction(activity, userID);
+            dispatch(action)
+        }
+    };
+
+    const currentText2 = textOptions2[text2];
+
     const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map((comment) => ({
         id: comment.activityId,
         isCmt: true,
         color: '#eae9ee'
     }));
+    console.log(cmt);
     const [commentData, setCommentData] = useState(initialCommentData);
     const currentTime = moment();
 
@@ -80,6 +213,38 @@ export default function Home () {
             console.log(value);
             const action = DonationAction(value);
             dispatch(action)
+        }
+    })
+
+    const [commentI, setCommentI] = useState('commentContent')
+    const [content, setContent] = useState('')
+    const [onID, setOnID] = useState('')
+    const formik2 = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            userId: userID,
+            activityId: "",
+            commentContent: "",
+            status: true,
+            commentIdReply: ""
+        },
+        onSubmit: (value) => {
+            console.log(value);
+            if (value.commentIdReply === "") {
+                const action = CommentAction(value);
+                dispatch(action)
+                formik2.setFieldValue('commentContent', '');
+            }
+            else {
+                const action = CommentRepllyAction(value);
+                dispatch(action)
+                // formik2.setFieldValue('commentIdReply', '');
+                // setCommentI('commentContent')
+                // setContent(true)
+                formik2.setFieldValue('commentContent', '');
+                formik2.setFieldValue('commentIdReply', '');
+            }
+
         }
     })
     function calculateImageClass (imageCount) {
@@ -533,8 +698,38 @@ export default function Home () {
                                                                 </div>
 
                                                             </figure>
+                                                            <div style={{ display: 'flex', alignContent: 'center' }}>
+                                                                <a href="" target="_blank" style={{ fontSize: '25px', fontWeight: 'bold' }}>{item.title}</a>
+                                                                <div className=" ml-3 mt-3" style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }} onClick={() => { handleYesClick(item.activityId, item.title) }}>{currentText} </div>
+                                                            </div>
+                                                            <p className='mt-3'>
+                                                                <span style={{ color: 'black', fontWeight: 'bold', fontSize: '15px' }}>Chi Tiết :</span> {item.description}
+                                                            </p>
 
-                                                            {/* lượt tương tác  */}
+
+                                                            {item.targetDonation !== 0 ?
+                                                                <div className='mb-4'>
+                                                                    <div> <span style={{ fontWeight: 'bold', fontSize: '15px' }}> - Mục Tiêu : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.targetDonation} %</span> </div>
+                                                                    <div className='mb-3'> <span style={{ fontWeight: 'bold', fontSize: '15px' }}>- Tổng Tiền Đã Nhận : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.realDonation} vnđ</span> </div>
+                                                                    <input
+                                                                        type="range"
+                                                                        min="0"
+                                                                        max={item.targetDonation}
+                                                                        value={item.realDonation}
+                                                                        // onChange={handleChange}
+                                                                        className="range-slider"
+                                                                        style={{ background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation / item.targetDonation) * 100}%, #ddd ${(item.realDonation / item.targetDonation) * 100}%, #ddd 100%)` }}
+                                                                    />
+                                                                    {item.realDonation === 0 ? <div></div> : <div className="range-value" style={{ position: 'absolute' }}>0</div>}
+                                                                    {item.realDonation === 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>}
+                                                                    <div className="range-value" style={{ position: 'absolute', right: '10px' }}>100%</div>
+
+                                                                </div>
+                                                                :
+                                                                <div></div>
+                                                            }
+
+                                                            <button className=' btn btn-success ml-3 mb-4 mt-4' onClick={() => { handleJoinClick(item.activityId, item.title) }}>{currentText2}</button>
                                                             <div className="we-video-info">
                                                                 <ul>
                                                                     <li>
@@ -643,38 +838,107 @@ export default function Home () {
                                                                 </div>
 
                                                             </div>
-                                                            {item?.commentData[0]?.isCmt ? <div></div> :
-                                                                item.comment.map((item, index) => {
-                                                                    return <div className="new-comment" style={{ display: 'block' }}>
-                                                                        <form method="post">
-                                                                            <input type="text" placeholder="write comment" />
-                                                                            <button type="submit"><i className="icofont-paper-plane" /></button>
-                                                                        </form>
-                                                                        <div className="comments-area">
-                                                                            <ul>
-                                                                                <li>
-                                                                                    <figure><img alt src="images/resources/user1.jpg" />
-                                                                                    </figure>
-                                                                                    <div className="commenter">
-                                                                                        <h5><a title href="#">{item.userId}</a>
-                                                                                        </h5>
-                                                                                        <span>{DateTime(item.datetime)}</span>
-                                                                                        <p>
-                                                                                            {item.commentContent}
-                                                                                        </p>
-                                                                                        {/* <span>you can view the more detail via
+                                                            <div className="new-comment" style={{ display: 'block' }}>
+                                                                <form method="post" onSubmit={formik2.handleSubmit} style={{ position: 'relative' }}>
+                                                                    <div style={{ paddingBottom: '10px' }}>{onID === item.activityId ?
+                                                                        <div className='commentT' style={{ display: 'flex', alignContent: 'center' }}>
+                                                                            <span style={{ paddingTop: '6px' }}>Trả Lời Bình Luận : </span>
+                                                                            <div style={{ marginLeft: '10px' }} className='textcmt'> @{content}
+                                                                                {setOnID === item.activityId ?
+                                                                                    <span style={{ color: 'red', fontSize: '18px', cursor: 'pointer', paddingLeft: '4px' }} onClick={() => {
+                                                                                        setOnID('')
+                                                                                        setTcss('35px')
+                                                                                    }}>x</span>
+                                                                                    :
+                                                                                    <span style={{ color: 'red', fontSize: '18px', cursor: 'pointer', paddingLeft: '4px' }} onClick={() => {
+                                                                                        setOnID('')
+                                                                                        setTcss('10px')
+                                                                                    }}>x</span>}
+                                                                            </div>
+                                                                        </div>
+                                                                        :
+                                                                        <div style={{ paddingTop: '6px', paddingBottom: '10px' }}></div>}
+                                                                    </div>
+                                                                    <input type="text" placeholder="" value={formik2.values.commentContent} name={commentI} onChange={formik2.handleChange} className='input-comment' />
+                                                                    {onID === item.activityId ?
+                                                                        <button style={{ position: 'absolute', top: '52px' }} type="submit" onClick={async () => {
+                                                                            console.log(item.activityId);
+                                                                            // await setTextI(item.activityId)
+                                                                            formik2.setFieldValue('activityId', item.activityId)
+                                                                        }}><i className="icofont-paper-plane" /></button>
+                                                                        :
+                                                                        <button style={{ position: 'absolute', top: '40px' }} type="submit" onClick={async () => {
+                                                                            console.log(item.activityId);
+                                                                            // await setTextI(item.activityId)
+                                                                            formik2.setFieldValue('activityId', item.activityId)
+                                                                        }}><i className="icofont-paper-plane" /></button>
+                                                                    }
+
+                                                                    {item?.commentData[0]?.isCmt ? <div></div> :
+                                                                        item.comment.map((item, index) => {
+                                                                            return <div className="comments-area">
+                                                                                <ul>
+                                                                                    <li>
+                                                                                        <figure><img alt src="images/resources/user1.jpg" />
+                                                                                        </figure>
+                                                                                        <div className="commenter">
+                                                                                            <h5><a title href="#">{item.user?.username}</a>
+                                                                                            </h5>
+                                                                                            <span>{DateTime(item.datetime)}</span>
+                                                                                            <p>
+                                                                                                {item.commentContent}
+                                                                                            </p>
+                                                                                            {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
-                                                                                    </div>
-                                                                                    <a title="Like" href="#"><i className="icofont-heart" /></a>
-                                                                                    <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
-                                                                                </li>
+                                                                                        </div>
+                                                                                        {/* <span title="Like" onClick={() => {
+                                                                                            console.log(item);
+                                                                                        }}><i className="icofont-heart" /></span> */}
+                                                                                        <a title="Reply" onClick={() => {
+                                                                                            console.log(item);
+                                                                                            formik2.setFieldValue('commentIdReply', item.commentId)
+                                                                                            // setCommentI('commentIdReply')
+                                                                                            setContent(item.user?.username)
+                                                                                            setOnID(item.activityId)
 
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                })
-                                                            }
+                                                                                        }} className="reply-coment"><i className="icofont-reply" /></a>
+                                                                                    </li>
+                                                                                    <li >{item.inverseReply?.map((item, index) => {
+                                                                                        return <div key={index} className='ml-5'>
+                                                                                            <figure><img alt src="images/resources/user1.jpg" />
+                                                                                            </figure>
+                                                                                            <div className="commenter">
+                                                                                                <h5><a title href="#">{item.user?.username}</a>
+                                                                                                </h5>
+                                                                                                <span>{DateTime(item.datetime)}</span>
+                                                                                                <p>
+                                                                                                    {item.commentContent}
+                                                                                                </p>
+                                                                                                {/* <span>you can view the more detail via
+                                                                                                link</span>
+                                                                                            <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
+                                                                                            </div>
+                                                                                            {/* <span title="Like" onClick={() => {
+                                                                                            console.log(item);
+                                                                                        }}><i className="icofont-heart" /></span> */}
+                                                                                            {/* <a title="Reply" onClick={() => {
+                                                                                                console.log(item);
+                                                                                                formik2.setFieldValue('commentIdReply', item.commentId)
+                                                                                                // setCommentI('commentIdReply')
+                                                                                                setContent(item.user?.username)
+                                                                                                setOnID(item.activityId)
+
+                                                                                            }} className="reply-coment"><i className="icofont-reply" /></a> */}
+                                                                                        </div>
+                                                                                    })}</li>
+                                                                                </ul>
+                                                                            </div>
+
+                                                                        })
+                                                                    }
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
