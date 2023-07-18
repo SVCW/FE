@@ -42,7 +42,7 @@ export default function Header () {
                     <li>
                         <div className="user-dp">
                             <NavLink to="/profile" title>
-                                <img style={{ width: '30px', height: '30px' }} alt src="images/avatar/uocAvatar.jpg" />
+                                <img  alt src="images/avatar/uocAvatar.jpg" />
                                 <div className="name">
                                     <h4>{localStorage.getItem('username')}</h4>
                                 </div>
