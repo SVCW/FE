@@ -49,16 +49,16 @@ export default function Result () {
                                 <div className="post-subject">
                                     <div className="university-tag">
                                         <div className="Search-result">
-                                            <h4>Search Result for <strong>"History"</strong></h4>
+                                            <h4>Kết quả tìm kiếm cho  <strong>"Lịch Sử"</strong></h4>
                                         </div>
                                     </div>
                                     <ul className="nav nav-tabs post-detail-btn">
                                         <li className="nav-item"><a className="active" href="#allposts" data-toggle="tab">Sự Kiện Tham Gia</a></li>
                                         <li className="nav-item"><a className href="#members" data-toggle="tab">Sự Kiện Theo Dõi</a></li>
                                         <li className="nav-item"><a className href="#depart" data-toggle="tab">Số Tiền Ủng Hộ</a></li>
-                                        <li className="nav-item"><a className href="#photos" data-toggle="tab">Photos</a></li>
+                                        {/* <li className="nav-item"><a className href="#photos" data-toggle="tab">Photos</a></li>
                                         <li className="nav-item"><a className href="#videos" data-toggle="tab">Videos</a></li>
-                                        <li className="nav-item"><a className href="#groups" data-toggle="tab">Groups</a></li>
+                                        <li className="nav-item"><a className href="#groups" data-toggle="tab">Groups</a></li> */}
                                     </ul>
                                 </div>
                             </div>
@@ -81,7 +81,9 @@ export default function Result () {
                                                         :
                                                         <div> {arrFollowJoin.filter(item => item.isJoin === true).map((item, index) => {
                                                             return <div className="blog-posts mb-3">
-                                                                <figure><img src="images/resources/blog-list-1.jpg" alt /></figure>
+                                                                {item.media?.map((item, index) => {
+                                                                    return <figure><img src="https://picsum.photos/200" alt /></figure>
+                                                                })}
                                                                 <div className="blog-post-meta">
                                                                     <ul>
                                                                         <li><i className="icofont-read-book" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
@@ -122,7 +124,7 @@ export default function Result () {
                                                     <div className="dept-info">
                                                         <ul>
                                                             {arrDonation.length === 0 ?
-                                                                <div>Chưa Thanh Toán Cho Sự Kiện Nào</div>
+                                                                <div>Chưa Ủng Hộ Cho Sự Kiện Nào</div>
                                                                 :
                                                                 <Fragment>
                                                                     {arrDonation.map((item, index) => {
@@ -404,29 +406,19 @@ export default function Result () {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="main-wraper">
-                                            <h4 className="main-title">Related Searches</h4>
-                                            <ul className="related-searches">
-                                                <li><a title href="#">jack carter jr.</a></li>
-                                                <li><a title href="#">jack carter Pool</a></li>
-                                                <li><a title href="#">jack carter fdny </a></li>
-                                                <li><a title href="#">jack carter chevrolet cadillac </a></li>
-                                                <li><a title href="#">jack jack </a></li>
-                                            </ul>
-                                        </div>
+
                                     </div>
                                     <div className="col-lg-4">
                                         <aside className="sidebar static right">
                                             <div className="widget">
-                                                <h4 className="widget-title">Post Analytics</h4>
+                                                <h4 className="widget-title">Lịch Sử</h4>
                                                 <ul className="widget-analytics">
-                                                    <li>Reads <span>56</span></li>
-                                                    <li>Recommendations <span>3</span></li>
-                                                    <li>Shares <span>22</span></li>
-                                                    <li>References <span>17</span></li>
+                                                    <li>Sự Kiện Tham Gia <span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
+                                                    <li>Sự Kiện Theo Dõi <span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
+                                                    <li>Số Lần Ủng Hộ <span>{arrDonation.length}</span></li>
                                                 </ul>
                                             </div>
-                                            <div className="widget">
+                                            {/* <div className="widget">
                                                 <h4 className="widget-title">Ask Research Question?</h4>
                                                 <div className="ask-question">
                                                     <i className="icofont-question-circle" />
@@ -501,7 +493,7 @@ export default function Result () {
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div>
+                                            </div> */}
                                         </aside>
                                     </div>
                                 </div>
@@ -511,327 +503,7 @@ export default function Result () {
                 </div>
             </section>
             <figure className="bottom-mockup"><img src="images/footer.png" alt /></figure>
-            <div className="bottombar">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <span className>© copyright All rights reserved by Socimo 2020</span>
-                        </div>
-                    </div>
-                </div>
-            </div>{/* bottombar */}
-            <div className="wraper-invite">
-                <div className="popup">
-                    <span className="popup-closed"><i className="icofont-close" /></span>
-                    <div className="popup-meta">
-                        <div className="popup-head">
-                            <h5><i>
-                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg></i> Invite Colleagues</h5>
-                        </div>
-                        <div className="invitation-meta">
-                            <p>
-                                Enter an email address to invite a colleague or co-author to join you on socimo. They will receive an email and, in some cases, up to two reminders.
-                            </p>
-                            <form method="post" className="c-form">
-                                <input type="text" placeholder="Enter Email" />
-                                <button type="submit" className="main-btn">Invite</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>{/* invite colleague popup */}
-            <div className="popup-wraper">
-                <div className="popup">
-                    <span className="popup-closed"><i className="icofont-close" /></span>
-                    <div className="popup-meta">
-                        <div className="popup-head">
-                            <h5><i>
-                                <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></i> Send Message</h5>
-                        </div>
-                        <div className="send-message">
-                            <form method="post" className="c-form">
-                                <input type="text" placeholder="Enter Name.." />
-                                <input type="text" placeholder="Subject" />
-                                <textarea placeholder="Write Message" defaultValue={""} />
-                                <div className="uploadimage">
-                                    <i className="icofont-file-jpg" />
-                                    <label className="fileContainer">
-                                        <input type="file" />Attach file
-                                    </label>
-                                </div>
-                                <button type="submit" className="main-btn">Send</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>{/* send message popup */}
-            <div className="side-slide">
-                <span className="popup-closed"><i className="icofont-close" /></span>
-                <div className="slide-meta">
-                    <ul className="nav nav-tabs slide-btns">
-                        <li className="nav-item"><a className="active" href="#messages" data-toggle="tab">Messages</a></li>
-                        <li className="nav-item"><a className href="#notifications" data-toggle="tab">Notifications</a></li>
-                    </ul>
-                    <div className="tab-content">
-                        <div className="tab-pane active fade show" id="messages">
-                            <h4><i className="icofont-envelope" /> messages</h4>
-                            <a href="#" className="send-mesg" title="New Message" data-toggle="tooltip"><i className="icofont-edit" /></a>
-                            <ul className="new-messages">
-                                <li>
-                                    <figure><img src="images/resources/user1.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Ibrahim Ahmed</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user2.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Fatima J.</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user3.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Fawad Ahmed</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user4.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Saim Turan</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user5.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Alis wells</span>
-                                        <a href="#" title>Helo dear i wanna talk to you</a>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a href="#" title className="main-btn" data-ripple>view all</a>
-                        </div>
-                        <div className="tab-pane fade" id="notifications">
-                            <h4><i className="icofont-bell-alt" /> notifications</h4>
-                            <ul className="notificationz">
-                                <li>
-                                    <figure><img src="images/resources/user5.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Alis wells</span>
-                                        <a href="#" title>recommend your post</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user4.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Alis wells</span>
-                                        <a href="#" title>share your post <strong>a good time today!</strong></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user2.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Alis wells</span>
-                                        <a href="#" title>recommend your post</a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user1.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Alis wells</span>
-                                        <a href="#" title>share your post <strong>a good time today!</strong></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <figure><img src="images/resources/user3.jpg" alt /></figure>
-                                    <div className="mesg-info">
-                                        <span>Alis wells</span>
-                                        <a href="#" title>recommend your post</a>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a href="#" title className="main-btn" data-ripple>view all</a>
-                        </div>
-                    </div>
-                </div>
-            </div>{/* side slide message & popup */}
-            <div className="post-new-popup">
-                <div className="popup" style={{ width: 800 }}>
-                    <span className="popup-closed"><i className="icofont-close" /></span>
-                    <div className="popup-meta">
-                        <div className="popup-head">
-                            <h5><i>
-                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus"><line x1={12} y1={5} x2={12} y2={19} /><line x1={5} y1={12} x2={19} y2={12} /></svg></i>Create New Post</h5>
-                        </div>
-                        <div className="post-new">
-                            <div className="post-newmeta">
-                                <ul className="post-categoroes">
-                                    <li><i className="icofont-camera" /> Photo / Video</li>
-                                    <li><i className="icofont-google-map" /> Post Location</li>
-                                    <li><i className="icofont-file-gif" /> Post Gif</li>
-                                    <li><i className="icofont-ui-tag" /> Tag to Friend</li>
-                                    <li><i className="icofont-users" /> Share in Group</li>
-                                    <li><i className="icofont-link" /> Share Link</li>
-                                    <li><i className="icofont-video-cam" /> Go Live</li>
-                                    <li><i className="icofont-sale-discount" /> Post Online Course</li>
-                                    <li><i className="icofont-read-book" /> Post A Book</li>
-                                    <li><i className="icofont-globe" /> Post an Ad</li>
-                                </ul>
-                                <form method="post" className="dropzone" action="/upload-target">
-                                    <div className="fallback">
-                                        <input name="file" type="file" multiple />
-                                    </div>
-                                </form>
-                            </div>
-                            <form method="post" className="c-form">
-                                <textarea id="emojionearea1" placeholder="What's On Your Mind?" defaultValue={""} />
-                                <div className="activity-post">
-                                    <div className="checkbox">
-                                        <input type="checkbox" id="checkbox" defaultChecked />
-                                        <label htmlFor="checkbox"><span>Activity Feed</span></label>
-                                    </div>
-                                    <div className="checkbox">
-                                        <input type="checkbox" id="checkbox2" defaultChecked />
-                                        <label htmlFor="checkbox2"><span>My Story</span></label>
-                                    </div>
-                                </div>
-                                <div className="select-box">
-                                    <div className="select-box__current" tabIndex={1}>
-                                        <div className="select-box__value"><input className="select-box__input" type="radio" id={0} defaultValue={1} name="Ben" defaultChecked="checked" />
-                                            <p className="select-box__input-text"><i className="icofont-globe-alt" /> Public</p>
-                                        </div>
-                                        <div className="select-box__value"><input className="select-box__input" type="radio" id={1} defaultValue={2} name="Ben" defaultChecked="checked" />
-                                            <p className="select-box__input-text"><i className="icofont-lock" /> Private</p>
-                                        </div>
-                                        <div className="select-box__value"><input className="select-box__input" type="radio" id={2} defaultValue={3} name="Ben" defaultChecked="checked" />
-                                            <p className="select-box__input-text"><i className="icofont-user" /> Specific Friend</p>
-                                        </div>
-                                        <div className="select-box__value"><input className="select-box__input" type="radio" id={3} defaultValue={4} name="Ben" defaultChecked="checked" />
-                                            <p className="select-box__input-text"><i className="icofont-star" /> Only Friends</p>
-                                        </div>
-                                        <div className="select-box__value"><input className="select-box__input" type="radio" id={4} defaultValue={5} name="Ben" defaultChecked="checked" />
-                                            <p className="select-box__input-text"><i className="icofont-users-alt-3" /> Joined Groups</p>
-                                        </div>
-                                        <img className="select-box__icon" src="images/arrow-down.svg" alt="Arrow Icon" aria-hidden="true" />
-                                    </div>
-                                    <ul className="select-box__list">
-                                        <li><label className="select-box__option" htmlFor={0}><i className="icofont-globe-alt" /> Public</label></li>
-                                        <li><label className="select-box__option" htmlFor={1}><i className="icofont-lock" /> Private</label></li>
-                                        <li><label className="select-box__option" htmlFor={2}><i className="icofont-user" /> Specific Friend</label></li>
-                                        <li><label className="select-box__option" htmlFor={3}><i className="icofont-star" /> Only Friends</label></li>
-                                        <li><label className="select-box__option" htmlFor={4}><i className="icofont-users-alt-3" /> Joined Groups</label></li>
-                                    </ul>
-                                </div>
-                                <input className="schedule-btn" type="text" id="datetimepicker" readOnly />
-                                <input type="text" placeholder="https://www.youtube.com/watch?v=vgvsuiFlA-Y&t=56s" />
-                                <button type="submit" className="main-btn">Publish</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>{/* New post popup */}
-            <div className="new-question-popup">
-                <div className="popup">
-                    <span className="popup-closed"><i className="icofont-close" /></span>
-                    <div className="popup-meta">
-                        <div className="popup-head">
-                            <h5><i>
-                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-help-circle"><circle cx={12} cy={12} r={10} /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1={12} y1={17} x2="12.01" y2={17} /></svg></i> Ask Question</h5>
-                        </div>
-                        <div className="post-new">
-                            <form method="post" className="c-form">
-                                <input type="text" placeholder="Question Title" />
-                                <textarea placeholder="Write Question" defaultValue={""} />
-                                <select>
-                                    <option>Select Your Question Type</option>
-                                    <option>Article</option>
-                                    <option>Book</option>
-                                    <option>Chapter</option>
-                                    <option>Code</option>
-                                    <option>conference Paper</option>
-                                    <option>Cover Page</option>
-                                    <option>Data</option>
-                                    <option>Exprement Finding</option>
-                                    <option>Method</option>
-                                    <option>Poster</option>
-                                    <option>Preprint</option>
-                                    <option>Technicial Report</option>
-                                    <option>Thesis</option>
-                                    <option>Research</option>
-                                </select>
-                                <div className="uploadimage">
-                                    <i className="icofont-eye-alt-alt" />
-                                    <label className="fileContainer">
-                                        <input type="file" />Upload File
-                                    </label>
-                                </div>
-                                <button type="submit" className="main-btn">Post</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>{/* ask question */}
-            <div className="share-wraper">
-                <div className="share-options">
-                    <span className="close-btn"><i className="icofont-close-circled" /></span>
-                    <h5><i>
-                        <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1={12} y1={2} x2={12} y2={15} /></svg></i>Share To!</h5>
-                    <form method="post">
-                        <textarea placeholder="Write Something" defaultValue={""} />
-                    </form>
-                    <ul>
-                        <li><a title href="#">Your Timeline</a></li>
-                        <li className="friends"><a title href="#">To Friends</a></li>
-                        <li className="socialz"><a className="active" title href="#">Social Media</a></li>
-                    </ul>
-                    <div style={{ display: 'block' }} className="social-media">
-                        <ul>
-                            <li><a title href="#" className="facebook"><i className="icofont-facebook" /></a></li>
-                            <li><a title href="#" className="twitter"><i className="icofont-twitter" /></a></li>
-                            <li><a title href="#" className="instagram"><i className="icofont-instagram" /></a></li>
-                            <li><a title href="#" className="pinterest"><i className="icofont-pinterest" /></a></li>
-                            <li><a title href="#" className="youtube"><i className="icofont-youtube" /></a></li>
-                            <li><a title href="#" className="dribble"><i className="icofont-dribbble" /></a></li>
-                            <li><a title href="#" className="behance"><i className="icofont-behance-original" /></a></li>
-                        </ul>
-                    </div>
-                    <div style={{ display: 'none' }} className="friends-to">
-                        <div className="follow-men">
-                            <figure><img className="mCS_img_loaded" src="images/resources/user1.jpg" alt /></figure>
-                            <div className="follow-meta">
-                                <h5><a href="#" title>Jack Carter</a></h5>
-                                <span>family member</span>
-                            </div>
-                            <a href="#" title>Share</a>
-                        </div>
-                        <div className="follow-men">
-                            <figure><img className="mCS_img_loaded" src="images/resources/user2.jpg" alt /></figure>
-                            <div className="follow-meta">
-                                <h5><a href="#" title>Xang Ching</a></h5>
-                                <span>Close Friend</span>
-                            </div>
-                            <a href="#" title>Share</a>
-                        </div>
-                        <div className="follow-men">
-                            <figure><img className="mCS_img_loaded" src="images/resources/user3.jpg" alt /></figure>
-                            <div className="follow-meta">
-                                <h5><a href="#" title>Emma Watson</a></h5>
-                                <span>Matul Friend</span>
-                            </div>
-                            <a href="#" title>Share</a>
-                        </div>
-                    </div>
-                    <button type="submit" className="main-btn">Publish</button>
-                </div>
-            </div>{/* share post */}
-            <div className="cart-product">
-                <a href="product-cart.html" title="View Cart" data-toggle="tooltip"><i className="icofont-cart-alt" /></a>
-                <span>03</span>
-            </div>{/* view cart button */}
+
             <div className="chat-live">
                 <a className="chat-btn" href="#" title="Start Live Chat" data-toggle="tooltip"><i className="icofont-facebook-messenger" /></a>
                 <span>07</span>

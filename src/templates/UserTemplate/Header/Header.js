@@ -1,10 +1,12 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom/cjs/react-router-dom'
 
 
 
 
 export default function Header () {
+    const dispatch = useDispatch()
     return (
         <header className>
             <div className="topbar stick">
@@ -19,7 +21,7 @@ export default function Header () {
                             <ul className="so-history">
                                 <li>
                                     <div className="searched-user">
-                                        <figure><img style={{height:'2.5rem', width:'2.5rem'}} src="images/avatar/uocAvatar.jpg" alt /></figure>
+                                        <figure><img style={{ height: '2.5rem', width: '2.5rem' }} src="images/avatar/uocAvatar.jpg" alt /></figure>
                                         <span className="long-text">Miền Trung</span>
                                     </div>
                                     <span className="trash"><i className="icofont-close-circled" /></span>
@@ -31,7 +33,7 @@ export default function Header () {
                                     </div>
                                     <span className="trash"><i className="icofont-close-circled" /></span>
                                 </li> */}
-                                
+
                             </ul>
                         </div>
                     </form>
@@ -40,9 +42,9 @@ export default function Header () {
                     <li>
                         <div className="user-dp">
                             <NavLink to="/profile" title>
-                                <img style={{width: '30px', height: '30px'}} alt src="images/avatar/uocAvatar.jpg" />
+                                <img style={{ width: '30px', height: '30px' }} alt src="images/avatar/uocAvatar.jpg" />
                                 <div className="name">
-                                    <h4>Nguyễn Ngọc Ước</h4>
+                                    <h4>{localStorage.getItem('username')}</h4>
                                 </div>
                             </NavLink>
                         </div>
@@ -103,7 +105,7 @@ export default function Header () {
                                 </svg>
                             </i>
                         </a>
-                        
+
                         <ul className="dropdown">
                             <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Your Profile</a></li>
                             <li><NavLink to="/history" title><i className="icofont-flash" /> History</NavLink></li>
@@ -115,9 +117,18 @@ export default function Header () {
                             <li><a href="help-faq.html" title><i className="icofont-question-circle" /> Help</a></li>
                             <li><a href="settings.html" title><i className="icofont-gear" /> Setting</a></li>
                             <li><a href="privacy-n-policy.html" title><i className="icofont-notepad" /> Privacy</a>
-                            </li> */}
+                            </li>
                             <li><a className="dark-mod" href="#" title><i className="icofont-moon" /> Dark Mode</a></li>
-                            <li className="logout"><NavLink to="/" title><i className="icofont-power" /> Logout</NavLink>
+                            <li className="logout" onClick={() => {
+                                const action = {
+                                    type: "LOGOUT",
+                                }
+                                dispatch(action)
+                                const action1 = {
+                                    type: "LOGOUT1"
+                                }
+                                dispatch(action1)
+                            }}><NavLink to="/" title><i className="icofont-power" /> Logout</NavLink>
                             </li>
                         </ul>
                     </li>
