@@ -725,7 +725,7 @@ export default function Home () {
                                                             {item.targetDonation !== 0 ?
                                                                 <div className='mb-4'>
                                                                     <div> <span style={{ fontWeight: 'bold', fontSize: '15px' }}> - Mục Tiêu : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.targetDonation} vnđ</span> </div>
-                                                                    <div className='mb-3'> <span style={{ fontWeight: 'bold', fontSize: '15px' }}>- Tổng Tiền Đã Nhận : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.realDonation} vnđ</span> </div>
+                                                                    <div className='mb-3'> <span style={{ fontWeight: 'bold', fontSize: '15px' }}>- Tổng Tiền Đã Nhận : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{(item.realDonation).toLocaleString()} vnđ</span> </div>
                                                                     <input
                                                                         type="range"
                                                                         min="0"
@@ -735,8 +735,10 @@ export default function Home () {
                                                                         className="range-slider"
                                                                         style={{ background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation / item.targetDonation) * 100}%, #ddd ${(item.realDonation / item.targetDonation) * 100}%, #ddd 100%)` }}
                                                                     />
-                                                                    {item.realDonation === 0 ? <div></div> : <div className="range-value" style={{ position: 'absolute' }}>0</div>}
-                                                                    {item.realDonation === 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>}
+                                                                    {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
+                                                                    {/* {item.realDonation === 0 ? <div></div> : <div className="range-value" style={{ position: 'absolute' }}>0</div>} */}
+                                                                    <div className="range-value" style={{ position: 'absolute' }}>0</div>
+                                                                    {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
                                                                     <div className="range-value" style={{ position: 'absolute', right: '10px' }}>100%</div>
 
                                                                 </div>

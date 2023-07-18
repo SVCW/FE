@@ -81,8 +81,10 @@ export default function Result () {
                                                         :
                                                         <div> {arrFollowJoin.filter(item => item.isJoin === true).map((item, index) => {
                                                             return <div className="blog-posts mb-3">
-                                                                {item.media?.map((item, index) => {
-                                                                    return <figure><img src="https://picsum.photos/200" alt /></figure>
+                                                                {/* <figure><img src={item?.media?.linkMedia} alt /></figure> */}
+
+                                                                {item.activity?.media?.map((item, index) => {
+                                                                    return <figure key={index}><img src={item.linkMedia} alt /></figure>
                                                                 })}
                                                                 <div className="blog-post-meta">
                                                                     <ul>
@@ -150,7 +152,9 @@ export default function Result () {
                                                         <div>
                                                             {arrFollowJoin.filter(item => item.isFollow === true).map((item, index) => {
                                                                 return <div className="blog-posts mt-4">
-                                                                    <figure><img src="images/resources/blog-list-1.jpg" alt /></figure>
+                                                                    {item.activity?.media?.map((item, index) => {
+                                                                        return <figure key={index}><img src={item.linkMedia} alt /></figure>
+                                                                    })}
                                                                     <div className="blog-post-meta">
                                                                         <ul>
                                                                             <li><i className="icofont-read-book" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
