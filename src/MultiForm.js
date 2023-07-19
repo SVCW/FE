@@ -7,7 +7,18 @@ import { storage_bucket } from './firebase';
 
 const initialValues = {
     forms: [
-        { name: '', email: '', media: [] },
+        // { name: '', email: '', selectField: '', media: [] },
+        {
+            processTitle: "",
+            description: "",
+            startDate: "2023-07-19T15:53:37.464Z",
+            endDate: "2023-07-19T15:53:37.464Z",
+            activityId: "1234",
+            processTypeId: "",
+            isKeyProcess: true,
+            processNo: 0,
+            media: []
+        }
     ],
 };
 
@@ -23,7 +34,7 @@ const validationSchema = Yup.object().shape({
 
 const MultiForm = () => {
     const [number, setNumber] = useState(0);
-
+    const [num, setNum] = useState(0);
     const handleButtonClick1 = () => {
         setNumber(1);
     };
@@ -48,7 +59,20 @@ const MultiForm = () => {
     };
 
     const handleCreateNewForm = () => {
-        setFormData((prevData) => [...prevData, { name: '', email: '', media: [] }]);
+        // const newIndex = formData.length;
+        // setNum((prevNum) => prevNum + 1);
+
+        setFormData((prevData) => [...prevData, {
+            processTitle: "",
+            description: "",
+            startDate: "2023-07-19T15:53:37.464Z",
+            endDate: "2023-07-19T15:53:37.464Z",
+            activityId: "",
+            processTypeId: "",
+            isKeyProcess: true,
+            processNo: 0,
+            media: []
+        }]);
         setCurrentForm((prevForm) => prevForm + 1);
     };
 
@@ -56,23 +80,52 @@ const MultiForm = () => {
         if (formData.length > 1) {
             setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
             setFormData((prevData) => prevData.filter((form, index) => index !== currentForm));
+            console.log(currentForm);
+            console.log(formData);
             handleButtonClick2()
+
         }
     };
+    // const update =async ()=>{
+    //     const dataToSubmit = [...values.forms];
+    //     console.log(dataToSubmit);
+    //     await dataToSubmit.forEach((form, index) => {
+    //         console.log(`Form ${index + 1} - Name: ${form.name}`);
+    //         formData[index].name = form.name;
+    //         formData[index].email = form.email;
+    //     });
+    //     console.log(formData);
+    //     handleButtonClick1()
+    // }
 
+    const handleSelectChange = (event, formIndex) => {
+        const { value } = event.target;
+        console.log(value);
+        // Update the selectField value in formData at the specified formIndex
+        setFormData((prevData) =>
+            prevData.map((form, index) =>
+                index === formIndex ? { ...form, selectField: value } : form
+            )
+        );
+    };
+
+    console.log(formData);
     const handleSubmit = async (values) => {
         const dataToSubmit = [...values.forms];
-
         console.log(dataToSubmit);
-
         await dataToSubmit.forEach((form, index) => {
-            console.log(`Form ${index + 1} - Name: ${form.name}`);
-            formData[index].name = form.name;
-            formData[index].email = form.email;
+            // console.log(`Form ${index + 1} - Name: ${form.name}`);
+            formData[index].processTitle = form.processTitle;
+            formData[index].description = form.description;
+            formData[index].processTypeId = form.processTypeId;
+            formData[index].processNo = index + 1;
         });
         console.log(formData);
         handleButtonClick1()
     }
+
+
+
 
 
 
@@ -153,14 +206,33 @@ const MultiForm = () => {
                                 <div key={index} className={`form-group ${index === currentForm ? '' : 'hidden'}`}>
                                     <h3>Form {index + 1}</h3>
                                     <div className="form-group">
-                                        <label htmlFor={`name_${index}`}>Name</label>
-                                        <Field type="text" name={`forms[${index}].name`} className="form-control" />
-                                        <ErrorMessage name={`forms[${index}].name`} component="div" className="text-danger" />
+                                        <label htmlFor={`processTitle_${index}`}>Title</label>
+                                        <Field type="text" name={`forms[${index}].processTitle`} className="form-control" />
+
                                     </div>
                                     <div className="form-group">
-                                        <label htmlFor={`email_${index}`}>Email</label>
-                                        <Field type="email" name={`forms[${index}].email`} className="form-control" />
-                                        <ErrorMessage name={`forms[${index}].email`} component="div" className="text-danger" />
+                                        <label htmlFor={`description_${index}`}>Description</label>
+                                        <Field type="text" name={`forms[${index}].description`} className="form-control" />
+
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor={`processTypeId_${index}`}>processTypeId</label>
+                                        <select
+                                            name={`forms[${index}].processTypeId`}
+                                            value={form.processTypeId} // Bind the select value to the formData value
+                                            onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
+                                            className="form-control"
+                                        >
+                                            <option value="">Select an option</option>
+                                            <option value="1">Option 1</option>
+                                            <option value="2">Option 2</option>
+                                            <option value="3">Option 3</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+
+                                        <Field type="text" hidden name={`forms[${index}].processNo`} value={index + 1} className="form-control" />
+
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor={`media_${index}`}>Media</label>

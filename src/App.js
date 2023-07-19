@@ -17,8 +17,10 @@ import GroupsDetail from './pages/GroupsDetail/GroupsDetail';
 import Profile from './pages/Profile/Profile';
 import Result from './pages/Result/Result';
 import BaiTapGameXucXac from './pages/BaiTapGameXucXac/BaiTapGameXucXac';
-import FormComponent from './FormStep';
+// import FormComponent from './FormStep';
 import MultiForm from './MultiForm';
+// import MultiStepForm from './MultiStepForm';
+// import MultiStepForm1 from './MultiStepForm1';
 export const history = createBrowserHistory()
 
 function App () {
@@ -41,6 +43,7 @@ function App () {
         <UserTemplate exact path="/profile" Component={Profile} />
         <UserTemplate exact path="/history" Component={Result} />
         <Route exact path="/test" component={MultiForm} />
+        {/* <Route exact path="/test1" component={MultiStepForm1} /> */}
         <UserTemplate exact path="/game" Component={BaiTapGameXucXac} />
         <Route exact path="/" component={Login} />
 
