@@ -55,6 +55,7 @@ export default function Home () {
     const textOptions = ['Theo Dõi', 'Bỏ Theo Dõi'];
     const [text, setText] = useState(0);
 
+    console.log(arrFanpage);
     const handleYesClick = (activity, title) => {
         setText((prevIndex) => (prevIndex + 1) % textOptions.length);
         const currentText = textOptions[text];
@@ -480,7 +481,7 @@ export default function Home () {
                                                     <li><i className="icofont-plus-square" /> <a href="#" title>Cập nhật hình đại diện</a><em>10%</em></li>
                                                     <li><i className="icofont-plus-square" /> <a href="#" title>Cập nhật ngày tháng năm sinh</a><em>10%</em></li>
                                                     <li><i className="icofont-plus-square" /> <a href="#" title>Cập nhật giới tính bạn
-                                                        </a><em>10%</em></li>
+                                                    </a><em>10%</em></li>
                                                 </ul>
                                             </div>{/* complete profile widget */}
                                             {/* <div className="advertisment-box">
@@ -495,24 +496,30 @@ export default function Home () {
                                                 <ul className="premium-course">
                                                     <li>
                                                         <figure>
-                                                            <img style={{width:'480px', height:'200px'}} src="images/avatar/hienMau.jpg" alt />
-                                                            <span style={{background:'#1dd1a1'}} className="tag">Sắp Diễn Ra</span>
+                                                            <img style={{ width: '480px', height: '180px' }} src="images/avatar/hienMau.jpg" alt />
+                                                            <span style={{ background: '#1dd1a1' }} className="tag">Sắp Diễn Ra</span>
                                                         </figure>
-                                                        <div style={{display:'flex',
-                                                        justifyContent:'space-around'}} className="">
+                                                        <div style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'space-around'
+                                                        }} className="">
                                                             <div>
-                                                                <button className='main-btn2' style={{
-                                                                width:'100px',
-                                                                height:'30px'}}>Chi Tiết</button>
+                                                                <button className='main-btn' style={{
+                                                                    backgroundColor: '#2e86de',
+                                                                    width: '100px',
+                                                                    padding: '5px 4px'
+                                                                }}>Chi Tiết</button>
                                                             </div>
                                                             <div>
-                                                                <button className='main-btn' style={{backgroundColor:'#2e86de',
-                                                                width:'100px',
-                                                                height:'30px'}}>Tham gia ngay</button>
+                                                                <button className='main-btn' style={{
+                                                                    backgroundColor: '#2e86de',
+                                                                    width: '100px',
+                                                                    padding: '5px 2px'
+                                                                }}>Tham gia ngay</button>
                                                             </div>
                                                         </div>
                                                     </li>
-                                                    
+
                                                 </ul>
                                             </div>{/* popular courses */}
                                             <div className="widget">
@@ -524,7 +531,7 @@ export default function Home () {
                                                         <div className="re-links-meta">
                                                             <h6><a title href="#">Đây là tổ chức có trụ sở tại mỹ....</a>
                                                             </h6>
-                                                            
+
                                                         </div>
                                                     </li>
                                                     <li>
@@ -532,7 +539,7 @@ export default function Home () {
                                                         </figure>
                                                         <div className="re-links-meta">
                                                             <h6><a title href="#">Đây là tập đoàn chuyên về công nghệ</a></h6>
-                                                            
+
                                                         </div>
                                                     </li>
                                                     <li>
@@ -541,7 +548,7 @@ export default function Home () {
                                                         <div className="re-links-meta">
                                                             <h6><a title href="#">Tập đoàn chuyên về các đồ dùng thông minh như điện thoại, máy tính,...</a>
                                                             </h6>
-                                                            
+
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -685,14 +692,14 @@ export default function Home () {
 
 
                                                             {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
-                                                            <p>
+                                                            {/* <p>
                                                                 {item.description}
-                                                            </p>
+                                                            </p> */}
 
                                                             {/* hình ảnh */}
                                                             <figure style={{}}>
                                                                 {/* <p style={{ width: '100%' }}>fetched-image</p> */}
-                                                                {item.targetDonation !== 0 ? <button className='btn btn-outline-danger mb-2' onClick={() => {
+                                                                {item.targetDonation !== 0 ? <button className='btn btn-primary mb-2' onClick={() => {
                                                                     // setActi(item.activityId)
                                                                     formik1.setFieldValue('activityId', item.activityId)
                                                                     openPopup()
@@ -724,7 +731,7 @@ export default function Home () {
 
                                                             {item.targetDonation !== 0 ?
                                                                 <div className='mb-4'>
-                                                                    <div> <span style={{ fontWeight: 'bold', fontSize: '15px' }}> - Mục Tiêu : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{item.targetDonation} vnđ</span> </div>
+                                                                    <div> <span style={{ fontWeight: 'bold', fontSize: '15px' }}> - Mục Tiêu : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{(item.targetDonation).toLocaleString()} vnđ</span> </div>
                                                                     <div className='mb-3'> <span style={{ fontWeight: 'bold', fontSize: '15px' }}>- Tổng Tiền Đã Nhận : </span> <span style={{ color: 'blue', fontSize: '15px' }}>{(item.realDonation).toLocaleString()} vnđ</span> </div>
                                                                     <input
                                                                         type="range"
@@ -736,9 +743,10 @@ export default function Home () {
                                                                         style={{ background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation / item.targetDonation) * 100}%, #ddd ${(item.realDonation / item.targetDonation) * 100}%, #ddd 100%)` }}
                                                                     />
                                                                     {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
-                                                                    {/* {item.realDonation === 0 ? <div></div> : <div className="range-value" style={{ position: 'absolute' }}>0</div>} */}
-                                                                    <div className="range-value" style={{ position: 'absolute' }}>0</div>
+                                                                    {item.realDonation !== 0 ? <div></div> : <div className="range-value" style={{ position: 'absolute' }}>0</div>}
+                                                                    {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
                                                                     {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
+                                                                    {item.realDonation === 0 ? <div></div> : <div className="range-value" style={{ position: 'absolute', left: `${(item.realDonation / item.targetDonation) * 100}%` }}> {(item.realDonation / item.targetDonation) * 100}%</div>}
                                                                     <div className="range-value" style={{ position: 'absolute', right: '10px' }}>100%</div>
 
                                                                 </div>
@@ -995,17 +1003,17 @@ export default function Home () {
                                     <div className="col-lg-3">
                                         <aside className="sidebar static right">
                                             <div className="widget">
-                                                <h4 className="widget-title">Nhóm Bạn đã tham gia</h4>
+                                                <h4 className="widget-title">Nhóm Của Bạn</h4>
                                                 <ul className="ak-groups">
                                                     <li>
                                                         <figure><img style={{width:'50px',
                                                         height:'50px',
                                                         objectfit: 'cover',}} src="images/company/amazonComany.jpg" alt /></figure>
                                                         <div className="your-grp">
-                                                            <h5><a href="group-detail.html" title>Tổ Chức Amazone</a></h5>
-                                                            <a href="#" title><i className="icofont-bell-alt" />Thông báo
+                                                            <h5><a href="group-detail.html" title>FPT Students</a></h5>
+                                                            <a href="#" title><i className="icofont-bell-alt" />Thông Báo
                                                                 <span>13</span></a>
-                                                            <a href="group-feed.html" title className="promote">Truy cập</a>
+                                                            <a href="group-feed.html" title className="promote">Chi Tiết</a>
                                                         </div>
                                                     </li>
                                                     <li>
@@ -1013,35 +1021,35 @@ export default function Home () {
                                                         height:'50px',
                                                         objectfit: 'cover',}} src="images/company/nab.png" alt /></figure>
                                                         <div className="your-grp">
-                                                            <h5><a href="group-detail.html" title>Ngân Hàng Úc</a></h5>
-                                                            <a href="#" title><i className="icofont-bell-alt" />Thông báo
-                                                                <span>2</span></a>
-                                                            <a href="group-feed.html" title className="promote">Truy cập</a>
+                                                            <h5><a href="group-detail.html" title>FPT HCM</a></h5>
+                                                            <a href="#" title><i className="icofont-bell-alt" />Thông Báo
+                                                                <span>13</span></a>
+                                                            <a href="group-feed.html" title className="promote">Chi Tiết</a>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>{/* Your groups */}
                                             <div className="widget">
-                                                <h4 className="widget-title">Nhóm phù hợp với bạn</h4>
+                                                <h4 className="widget-title">Đề Xuất</h4>
                                                 <div className="sug-caro">
                                                     <div className="friend-box">
                                                         <figure>
-                                                            <img className='friend-box-img' alt src="images/avatar/9.jpg" />
-                                                            <span>Theo Dõi: 505K</span>
+                                                            <img alt src="images/resources/sidebar-info.jpg" />
+                                                            <span>Thành Viên: 505K</span>
                                                         </figure>
                                                         <div className="frnd-meta">
                                                             <img className='friend-box-img' alt src="images/company/nab.png" />
                                                             <div className="frnd-name">
-                                                                <a title href="#">Ngân Hàng Úc</a>
-                                                                <span></span>
+                                                                <a title href="#">Tìm Kiếm</a>
+                                                                <span>@biolabest</span>
                                                             </div>
-                                                            <a className="main-btn2" href="#" title>Tham Gia Ngay</a>
+                                                            <a className="main-btn2" href="#" title>Tham Gia</a>
                                                         </div>
                                                     </div>
                                                     <div className="friend-box">
                                                         <figure>
-                                                            <img className='friend-box-img' alt src="images/avatar/14.jpg" />
-                                                            <span>Theo Dõi: 200K</span>
+                                                            <img alt src="images/resources/sidebar-info2.jpg" />
+                                                            <span>Thành Viên: 505K</span>
                                                         </figure>
                                                         <div className="frnd-meta">
                                                             <img style={{
@@ -1051,10 +1059,10 @@ export default function Home () {
                                                                 display:'block',
                                                             }}alt src="images/company/amazonComany.jpg" />
                                                             <div className="frnd-name">
-                                                                <a  title href="#">Amzone Company </a>
-                                                                <span></span>
+                                                                <a title href="#">Tìm Kiếm</a>
+                                                                <span>@biolabest</span>
                                                             </div>
-                                                            <a className="main-btn2" href="#" title>Join Community</a>
+                                                            <a className="main-btn2" href="#" title>Tham Gia</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1062,17 +1070,17 @@ export default function Home () {
                                             <div className="widget">
                                                 <h4 className="widget-title">Giải Trí</h4>
                                                 <div className="ask-question">
-                                                    
+
                                                     <div className="rec-events bg-purple">
-                                                    <i className="icofont-gift" />
-                                                    <h6><a title href>Game xúc xắc</a></h6>
-                                                    <img alt src="images/clock.png" />
-                                                </div>
+                                                        <i className="icofont-gift" />
+                                                        <h6><a title href>Game xúc xắc</a></h6>
+                                                        <img alt src="images/clock.png" />
+                                                    </div>
                                                     <NavLink to='/game' >Chơi Game</NavLink>
                                                 </div>
                                             </div>{/* ask question widget */}
-                                            <div className="widget">
-                                                <h4 className="widget-title">Explor Events <a className="see-all" href="#" title>See All</a></h4>
+                                            {/* <div className="widget">
+                                                <h4 className="widget-title">Explor Events <a className="see-all" href="#" title>Xem Tất Cả</a></h4>
                                                 <div className="rec-events bg-purple">
                                                     <i className="icofont-gift" />
                                                     <h6><a title href>BZ University good night event in columbia</a>
@@ -1084,7 +1092,8 @@ export default function Home () {
                                                     <h6><a title href>The 3rd International Conference 2020</a></h6>
                                                     <img alt src="images/clock.png" />
                                                 </div>
-                                            </div>{/* event widget */}
+                                            </div> */}
+                                            {/* event widget */}
                                             {/* <div className="widget">
                                                 <span><i className="icofont-globe" /> Sponsored</span>
                                                 <ul className="sponsors-ad">
@@ -1103,9 +1112,10 @@ export default function Home () {
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div>sponsord */}
+                                            </div> */}
+                                            {/* sponsord */}
                                             {/* <div className="widget stick-widget">
-                                                <h4 className="widget-title">Thành tích của bạn</h4>
+                                                <h4 className="widget-title">Who's follownig</h4>
                                                 <ul className="followers">
                                                     <li>
                                                         <figure><img alt src="images/resources/friend-avatar.jpg" />

@@ -18,7 +18,7 @@ export default function Result () {
         let timeAgoString = '';
         if (hoursAgo < 1) {
             const daysAgo = Math.floor(duration.asMinutes());
-            timeAgoString = `${daysAgo} minutes ago`;
+            timeAgoString = `${daysAgo} Phút Trước`;
         }
         else if (hoursAgo >= 24) {
             const daysAgo = Math.floor(duration.asDays());
@@ -96,7 +96,7 @@ export default function Result () {
                                                                         {item.activity?.description}
                                                                     </p>
                                                                     <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
-                                                                    <a href="blog-detail.html" title className="button primary circle">read more</a>
+                                                                    <a href="blog-detail.html" title className="button primary circle">Chi Tiết</a>
                                                                 </div>
                                                             </div>
                                                         })
@@ -165,7 +165,7 @@ export default function Result () {
                                                                             {item.activity?.description}
                                                                         </p>
                                                                         <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
-                                                                        <a href="blog-detail.html" title className="button primary circle">read more</a>
+                                                                        <a href="blog-detail.html" title className="button primary circle">Chi Tiết</a>
                                                                     </div>
                                                                 </div>
                                                             })}

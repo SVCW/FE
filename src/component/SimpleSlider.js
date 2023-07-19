@@ -33,11 +33,11 @@ function SimpleSlider (props) {
             {props.arrFanpage.map((item, index) => {
                 return <div className='suggested-caro'>
                     <li >
-                        <figure><img src="images/resources/speak-1.jpg" alt /></figure>
-                        <span>Amy Watson</span>
-                        <ins>Department of Socilolgy</ins>
+                        <figure><img src={item.avatar} style={{ height: '80px' }} alt /></figure>
+                        <span>{item.fanpageName}</span>
+                        {/* <ins>{(item.description).slice(0, 200)}</ins> */}
                         <a href="#" title data-ripple><i className="icofont-star" />
-                            Follow</a>
+                            Theo Dõi</a>
                     </li>
                 </div>
             })}
