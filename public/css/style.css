@@ -16394,3 +16394,15 @@ a.classic-btn:hover {
   width: 3.5rem;
   height: 3.5rem;
 }
+.friend-box-img{
+    width:217px;
+    height:88px;
+    object-fit: cover;
+    display:block;
+}
+.frnd-meta .frnd-meta-img img{
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: cover;
+  display: block;
+}

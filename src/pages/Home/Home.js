@@ -1006,7 +1006,9 @@ export default function Home () {
                                                 <h4 className="widget-title">Nhóm Của Bạn</h4>
                                                 <ul className="ak-groups">
                                                     <li>
-                                                        <figure><img src="images/resources/your-group1.jpg" alt /></figure>
+                                                        <figure><img style={{width:'50px',
+                                                        height:'50px',
+                                                        objectfit: 'cover',}} src="images/company/amazonComany.jpg" alt /></figure>
                                                         <div className="your-grp">
                                                             <h5><a href="group-detail.html" title>FPT Students</a></h5>
                                                             <a href="#" title><i className="icofont-bell-alt" />Thông Báo
@@ -1015,7 +1017,9 @@ export default function Home () {
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <figure><img src="images/resources/your-group2.jpg" alt /></figure>
+                                                        <figure><img style={{width:'50px',
+                                                        height:'50px',
+                                                        objectfit: 'cover',}} src="images/company/nab.png" alt /></figure>
                                                         <div className="your-grp">
                                                             <h5><a href="group-detail.html" title>FPT HCM</a></h5>
                                                             <a href="#" title><i className="icofont-bell-alt" />Thông Báo
@@ -1034,7 +1038,7 @@ export default function Home () {
                                                             <span>Thành Viên: 505K</span>
                                                         </figure>
                                                         <div className="frnd-meta">
-                                                            <img alt src="images/resources/frnd-figure2.jpg" />
+                                                            <img className='friend-box-img' alt src="images/company/nab.png" />
                                                             <div className="frnd-name">
                                                                 <a title href="#">Tìm Kiếm</a>
                                                                 <span>@biolabest</span>
@@ -1048,7 +1052,12 @@ export default function Home () {
                                                             <span>Thành Viên: 505K</span>
                                                         </figure>
                                                         <div className="frnd-meta">
-                                                            <img alt src="images/resources/frnd-figure3.jpg" />
+                                                            <img style={{
+                                                                width:'70px',
+                                                                height:'70px',
+                                                                objectfit: 'cover',
+                                                                display:'block',
+                                                            }}alt src="images/company/amazonComany.jpg" />
                                                             <div className="frnd-name">
                                                                 <a title href="#">Tìm Kiếm</a>
                                                                 <span>@biolabest</span>
@@ -1164,8 +1173,7 @@ export default function Home () {
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div> */}
-                                            {/* whos following */}
+                                            </div>whos following */}
                                         </aside>
                                     </div>
                                 </div>
