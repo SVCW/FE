@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom'
 export default function Header () {
     const dispatch = useDispatch()
     return (
-        <header className>
+        <header className >
             <div className="topbar stick">
                 <NavLink to='/home' className="logo"><img src="images/logo.png" alt /><span>SVCW</span></NavLink>
                 <div className="searches">
@@ -42,7 +42,7 @@ export default function Header () {
                     <li>
                         <div className="user-dp">
                             <NavLink to="/profile" title>
-                                <img  alt src="images/avatar/uocAvatar.jpg" />
+                                <img alt src="images/avatar/uocAvatar.jpg" />
                                 <div className="name">
                                     <h4>{localStorage.getItem('username')}</h4>
                                 </div>

@@ -27,7 +27,9 @@ import { DonationAction } from '../../redux/actions/DonationAction';
 import { FollowAction, JoinAction, UnFollowAction, UnJoinAction } from '../../redux/actions/FollowJoinAction';
 import { CommentAction, CommentRepllyAction } from '../../redux/actions/CommentAction';
 import Loading from '../../component/Loading';
-
+import MultiForm from '../../MultiForm';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function Home () {
@@ -40,7 +42,141 @@ export default function Home () {
 
         }
     }
-    console.log(images);
+
+    const initialValues = {
+        forms: [
+            // { name: '', email: '', selectField: '', media: [] },
+            {
+                processTitle: "",
+                description: "",
+                startDate: "2023-07-19T15:53:37.464Z",
+                endDate: "2023-07-19T15:53:37.464Z",
+                activityId: "1234",
+                processTypeId: "",
+                isKeyProcess: true,
+                processNo: 0,
+                media: []
+            }
+        ],
+    };
+
+
+    const validationSchema = Yup.object().shape({
+        forms: Yup.array().of(
+            Yup.object().shape({
+                // name: Yup.string().required('Name is required'),
+                // email: Yup.string().email('Invalid email').required('Email is required'),
+            })
+        ),
+    });
+    const [currentForm, setCurrentForm] = useState(0);
+    const [formData, setFormData] = useState(initialValues.forms);
+    const handleNext = () => {
+        if (currentForm < formData.length - 1) {
+            setCurrentForm((prevForm) => prevForm + 1);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentForm > 0) {
+            setCurrentForm((prevForm) => prevForm - 1);
+        }
+    };
+
+    const handleCreateNewForm = () => {
+        setFormData((prevData) => [...prevData, {
+            processTitle: "",
+            description: "",
+            startDate: "2023-07-19T15:53:37.464Z",
+            endDate: "2023-07-19T15:53:37.464Z",
+            activityId: "",
+            processTypeId: "",
+            isKeyProcess: true,
+            processNo: 0,
+            media: []
+        }]);
+        setCurrentForm((prevForm) => prevForm + 1);
+    };
+    const [arrDelete, setArrDelete] = useState([0]);
+
+    useEffect(() => {
+        console.log(arrDelete);
+    }, [arrDelete]);
+    const handleDeleteForm = () => {
+        if (formData.length > 1) {
+            setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
+            setFormData((prevData) => prevData.filter((form, index) => index !== currentForm));
+            console.log(currentForm);
+            setArrDelete((prevArr) => [...prevArr, currentForm]);
+            console.log(formData);
+            // handleButtonClick2()
+
+        }
+    };
+
+    const handleSelectChange = (event, formIndex) => {
+        const { value } = event.target;
+        setFormData((prevData) =>
+            prevData.map((form, index) =>
+                index === formIndex ? { ...form, processTypeId: value } : form
+            )
+        );
+    };;
+    const handleSubmit1 = async (values) => {
+        const dataToSubmit = [...values.forms];
+        console.log(dataToSubmit);
+        await dataToSubmit.forEach((form, index) => {
+            formData[index].processTitle = form.processTitle;
+            formData[index].description = form.description;
+            formData[index].processNo = index;
+        });
+        console.log(formData);
+        const filteredData = formData.filter((item) => !arrDelete.includes(item.processNo));
+        console.log(filteredData);
+    }
+
+    const [isLoading1, setIsLoading1] = useState(false);
+
+
+    const handleImageChange1 = async (e, formIndex) => {
+        setIsLoading1(true);
+        const fileList = e.target.files;
+        const newImages = [];
+
+        for (let i = 0;i < fileList.length;i++) {
+            const file = fileList[i];
+            const imageUrl = URL.createObjectURL(file);
+            newImages.push({ linkMedia: imageUrl, type: file.type });
+
+            try {
+                const fileRef = ref(storage_bucket, file.name);
+                const uploadTask = uploadBytesResumable(fileRef, file);
+
+                uploadTask.on('state_changed', (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    // setUploadProgress(progress);
+                });
+
+                const snapshot = await uploadTask;
+
+                if (snapshot.state === 'success') {
+                    const downloadURL = await getDownloadURL(snapshot.ref);
+                    newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        setFormData((prevData) =>
+            prevData.map((form, index) =>
+                index === formIndex ? { ...form, media: [...form.media, ...newImages] } : form
+            )
+        );
+
+        setIsLoading1(false);
+        // setUploadProgress(0);
+    };
+
     const [uploadProgress, setUploadProgress] = useState(0);
     const { configActivity, isValidCreate, isFanpage } = useSelector(root => root.ConfigActivityReducer)
     const { userID } = useSelector(root => root.LoginReducer)
@@ -261,14 +397,32 @@ export default function Home () {
         return imageClass;
     }
     const [isOpen, setIsOpen] = useState(false);
+    const [isDisplay, setIsDisplay] = useState(true);
+
+    const [isOpen1, setIsOpen1] = useState(true);
+    // const [isDisplay, setIsDisplay] = useState(true);
 
     const handleClick = () => {
         setIsOpen((prevIsOpen) => !prevIsOpen);
+        setIsDisplay(true)
     };
+
+    const handleClick1 = () => {
+        setIsOpen1((prevIsOpen) => !prevIsOpen);
+        // setIsDisplay(true)
+    };
+    const [openpro, setOpenPro] = useState(false)
     const popupStyle = {
         opacity: isOpen ? 1 : 0,
         visibility: isOpen ? "visible" : "hidden",
-        overflow: isOpen ? "auto" : "hidden"
+        overflow: isOpen ? "auto" : "hidden",
+        display: isDisplay ? "block" : "none"
+    };
+    const popupStyle1 = {
+        opacity: isOpen1 ? 1 : 0,
+        visibility: isOpen1 ? "visible" : "hidden",
+        overflow: isOpen1 ? "auto" : "hidden",
+
     };
     const [files, setFiles] = useState('');
     console.log(files);
@@ -297,24 +451,62 @@ export default function Home () {
         },
         onSubmit: async (value) => {
             console.log(value);
-            const action = await CreateActivityAction(value);
-            await dispatch(action)
-            setIsOpen((prevIsOpen) => !prevIsOpen);
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
+            setIsDisplay(false)
+            // const action = await CreateActivityAction(value);
+            // await dispatch(action)
+            // setIsOpen((prevIsOpen) => !prevIsOpen);
+            // const Toast = Swal.mixin({
+            //     toast: true,
+            //     position: 'top-end',
+            //     showConfirmButton: false,
+            //     timer: 3000,
+            //     timerProgressBar: true,
+            //     didOpen: (toast) => {
+            //         toast.addEventListener('mouseenter', Swal.stopTimer)
+            //         toast.addEventListener('mouseleave', Swal.resumeTimer)
+            //     }
+            // })
+
+            // Toast.fire({
+            //     icon: 'success',
+            //     title: `Tạo Mới Thành Công Sự Kiện `
+            // })
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
             })
 
-            Toast.fire({
-                icon: 'success',
-                title: `Tạo Mới Thành Công Sự Kiện `
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    handleCreateNewForm()
+                    setOpenPro(true)
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                    )
+                }
             })
         }
     })
@@ -623,6 +815,7 @@ export default function Home () {
                                                         </li>
                                                     </ul>
                                                 </div>
+
                                             </div>
                                             : <div></div>}
 
@@ -1006,9 +1199,11 @@ export default function Home () {
                                                 <h4 className="widget-title">Nhóm Của Bạn</h4>
                                                 <ul className="ak-groups">
                                                     <li>
-                                                        <figure><img style={{width:'50px',
-                                                        height:'50px',
-                                                        objectfit: 'cover',}} src="images/company/amazonComany.jpg" alt /></figure>
+                                                        <figure><img style={{
+                                                            width: '50px',
+                                                            height: '50px',
+                                                            objectfit: 'cover',
+                                                        }} src="images/company/amazonComany.jpg" alt /></figure>
                                                         <div className="your-grp">
                                                             <h5><a href="group-detail.html" title>FPT Students</a></h5>
                                                             <a href="#" title><i className="icofont-bell-alt" />Thông Báo
@@ -1017,9 +1212,11 @@ export default function Home () {
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <figure><img style={{width:'50px',
-                                                        height:'50px',
-                                                        objectfit: 'cover',}} src="images/company/nab.png" alt /></figure>
+                                                        <figure><img style={{
+                                                            width: '50px',
+                                                            height: '50px',
+                                                            objectfit: 'cover',
+                                                        }} src="images/company/nab.png" alt /></figure>
                                                         <div className="your-grp">
                                                             <h5><a href="group-detail.html" title>FPT HCM</a></h5>
                                                             <a href="#" title><i className="icofont-bell-alt" />Thông Báo
@@ -1053,11 +1250,11 @@ export default function Home () {
                                                         </figure>
                                                         <div className="frnd-meta">
                                                             <img style={{
-                                                                width:'70px',
-                                                                height:'70px',
+                                                                width: '70px',
+                                                                height: '70px',
                                                                 objectfit: 'cover',
-                                                                display:'block',
-                                                            }}alt src="images/company/amazonComany.jpg" />
+                                                                display: 'block',
+                                                            }} alt src="images/company/amazonComany.jpg" />
                                                             <div className="frnd-name">
                                                                 <a title href="#">Tìm Kiếm</a>
                                                                 <span>@biolabest</span>
@@ -1341,7 +1538,7 @@ export default function Home () {
 
             {create === true ?
                 <div className="post-new-popup" style={popupStyle}>
-                    <div className="popup" style={{ width: 800 }}>
+                    <div className="popup" style={{ width: 800, marginTop: '100px', zIndex: 80 }}>
                         <span className="popup-closed" onClick={handleClick}><i className="icofont-close" /></span>
                         <div className="popup-meta">
                             <div className="popup-head">
@@ -1353,7 +1550,7 @@ export default function Home () {
                             </div>
                         </div>
 
-                        <div className="">
+                        <div className="form1">
                             <header className="header">
 
                             </header>
@@ -1472,8 +1669,11 @@ export default function Home () {
                                         </div>
                                     </div>
                                 </form>
+
                             </div>
+
                         </div>
+
                     </div>
                 </div>
 
@@ -1481,6 +1681,115 @@ export default function Home () {
                 <div></div>
             }
 
+            {openpro ?
+                <div className="post-new-popup1" style={popupStyle1}>
+                    <div className="popup" style={{ width: 800, marginTop: '100px', zIndex: 80 }}>
+                        <span className="popup-closed" onClick={handleClick1}><i className="icofont-close" /></span>
+                        <div className="popup-meta">
+                            <div className="popup-head">
+                                <h5><i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
+                                        <line x1={12} y1={5} x2={12} y2={19} />
+                                        <line x1={5} y1={12} x2={19} y2={12} />
+                                    </svg></i>Tạo Chiến Dịch</h5>
+                            </div>
+                        </div>
+                        <div className="multi-form">
+                            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit1}>
+                                <Form>
+                                    <div className="form">
+                                        {formData.map((form, index) => (
+                                            <div key={index} className={`form-group  hidden`} style={{ display: index === 0 ? 'none' : 'block' }}>
+                                                <h3>Form {index}</h3>
+                                                <div className="form-group">
+                                                    <label htmlFor={`processTitle_${index}`}>Title</label>
+                                                    <Field type="text" name={`forms[${index}].processTitle`} className="form-control" />
+
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor={`description_${index}`}>Description</label>
+                                                    <Field type="text" name={`forms[${index}].description`} className="form-control" />
+
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor={`processTypeId_${index}`}>processTypeId</label>
+                                                    <select
+                                                        name={`forms[${index}].processTypeId`}
+                                                        value={form.processTypeId} // Bind the select value to the formData value
+                                                        onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
+                                                        className="form-control"
+                                                    >
+                                                        <option value="">Select an option</option>
+                                                        <option value="1">Option 1</option>
+                                                        <option value="2">Option 2</option>
+                                                        <option value="3">Option 3</option>
+                                                    </select>
+                                                </div>
+                                                <div className="form-group">
+
+                                                    <Field type="text" hidden name={`forms[${index}].processNo`} value={index + 1} className="form-control" />
+
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor={`media_${index}`}>Media</label>
+                                                    <div>
+                                                        <Field
+                                                            name={`forms[${index}].media`}
+                                                            id={`media_${index}`}
+                                                            type="file"
+                                                            multiple
+                                                            onChange={(e) => handleImageChange1(e, index)} // Truyền formIndex khi xử lý handleImageChange1
+                                                        />
+                                                        <div className="image-container">
+                                                            {form.media.map((image, imageIndex) => (
+                                                                <div className="image-item" key={imageIndex}>
+                                                                    <img src={image.linkMedia} alt={`Image ${imageIndex}`} className="image-preview" />
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {index === currentForm && (
+                                                    <div className="form-buttons">
+                                                        {index > 0 && (
+                                                            <button type="button" className="btn btn-secondary" onClick={handlePrevious}>
+                                                                Previous
+                                                            </button>
+                                                        )}
+                                                        {index < formData.length - 1 && (
+                                                            <button type="button" className="btn btn-primary" onClick={handleNext}>
+                                                                Next
+                                                            </button>
+                                                        )}
+                                                        {index > 0 && (
+                                                            <button type="button" className="btn btn-danger delete" onClick={handleDeleteForm}>
+                                                                Delete
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {currentForm === formData.length - 1 && (
+                                        <div className="form-buttons">
+                                            <button type="button" className="btn btn-primary" onClick={handleCreateNewForm}>
+                                                Create New Form
+                                            </button>
+                                            {currentForm >= 1 && (
+                                                <button type="submit" className="btn btn-success">
+                                                    Submit
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
+                                </Form>
+                            </Formik>
+                        </div>
+                    </div>
+                </div>
+                : <div></div>
+            }
 
 
             <div className="new-question-popup">
