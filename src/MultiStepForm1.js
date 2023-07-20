@@ -30,7 +30,7 @@ export default function MultiStepForm1 () {
                     <div className="form">
                         {values.forms.map((form, index) => (
                             <div key={index} className={`form-group ${index === currentForm ? '' : 'hidden'}`}>
-                                <h3>Form {index + 1}</h3>
+                                <h3>Form {index}</h3>
                                 <div className="form-group">
                                     <label htmlFor={`name_${index}`}>Name</label>
                                     <input type="text" name={`forms[${index}].name`} className="form-control" />
