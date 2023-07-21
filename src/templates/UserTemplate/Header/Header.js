@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom/cjs/react-router-dom'
 
 
 
 
-export default function Header () {
-    const dispatch = useDispatch()
+export default function Header (props) {
+    const dispatch = useDispatch([])
     return (
         <header className >
             <div className="topbar stick">
@@ -41,7 +41,7 @@ export default function Header () {
                 <ul className="web-elements">
                     <li>
                         <div className="user-dp">
-                            <NavLink to="/profile" title>
+                            <NavLink to={`/profile/${localStorage.getItem('userID')}`} title>
                                 <img alt src="images/avatar/uocAvatar.jpg" />
                                 <div className="name">
                                     <h4>{localStorage.getItem('username')}</h4>

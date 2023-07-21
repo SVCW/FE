@@ -21,12 +21,16 @@ import BaiTapGameXucXac from './pages/BaiTapGameXucXac/BaiTapGameXucXac';
 import MultiForm from './MultiForm';
 // import MultiStepForm from './MultiStepForm';
 // import MultiStepForm1 from './MultiStepForm1';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const history = createBrowserHistory()
 
 function App () {
 
   return (
-    <Router history={history}>
+    <>
+      <Router history={history}>
       <Switch>
         {/* <AboutUniversity /> */}
         {/* <SignIn /> */}
@@ -40,7 +44,7 @@ function App () {
         <UserTemplate exact path="/home" Component={Home} />
         <UserTemplate exact path="/groups" Component={Group} />
         <UserTemplate exact path="/groupsdetail" Component={GroupsDetail} />
-        <UserTemplate exact path="/profile" Component={Profile} />
+        <UserTemplate exact path="/profile/:id" Component={Profile} />
         <UserTemplate exact path="/history" Component={Result} />
         <Route exact path="/test" component={MultiForm} />
         {/* <Route exact path="/test1" component={MultiStepForm1} /> */}
@@ -49,6 +53,8 @@ function App () {
 
       </Switch>
     </Router>
+    <ToastContainer/>
+    </>
   );
 }
 
