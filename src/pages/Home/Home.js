@@ -49,31 +49,33 @@ export default function Home () {
     }
     useEffect(() => {
         const existingData = JSON.parse(localStorage.getItem("activity"));
-        const action = GetListActivityAction();
-        dispatch(action)
+        // const action = GetListActivityAction();
+        // dispatch(action)
         const action1 = GetListFanpageAction();
+
         dispatch(action1)
         const action2 = GetListProcessTypeAction();
         dispatch(action2)
         console.log(existingData);
-        // if (existingData) {
-        setCmt(existingData);
-        dispatch({ type: "HIDE_LOADING" });
-        const user = localStorage.getItem('userID')
-        if (user) {
-            console.log('có user');
-            const action = GetUserByIdAction(localStorage.getItem('userID'));
-            dispatch(action)
+        if (existingData) {
+            setCmt(existingData);
+            dispatch({ type: "HIDE_LOADING" });
+            const user = localStorage.getItem('userID')
+            if (user) {
+                console.log('có user');
+                const action = GetUserByIdAction(localStorage.getItem('userID'));
+                dispatch(action)
+            } else {
+                console.log('không có user');
+            }
+            return;
         } else {
-            console.log('không có user');
+            const action = GetListActivityAction();
+            dispatch(action)
+
         }
-        return;
-        // } else {
-
-
-        // }
     }, []);
-    const { processType, activityProcess, processactivity } = useSelector(root => root.ProcessTypeReducer)
+    const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
 
     console.log(processType);
 
@@ -220,6 +222,7 @@ export default function Home () {
 
     const [uploadProgress, setUploadProgress] = useState(0);
     const { configActivity, isValidCreate, isFanpage } = useSelector(root => root.ConfigActivityReducer)
+    console.log(isFanpage);
     const { userID } = useSelector(root => root.LoginReducer)
     const dispatch = useDispatch();
     const { arrActivity } = useSelector(root => root.ActivityReducer)
@@ -475,11 +478,11 @@ export default function Home () {
     const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map((comment) => ({
         id: comment.activityId,
         isCmt: true,
-        color: '#eae9ee',
-
+        color: '#eae9ee'
     }));
     console.log(cmt);
     const [commentData, setCommentData] = useState(initialCommentData);
+    console.log(commentData);
     const currentTime = moment();
 
     console.log(configActivity);
@@ -621,7 +624,7 @@ export default function Home () {
             targetDonation: 0,
             userId: userID,
             text: true,
-            isFanpageAvtivity: isFanpage,
+            isFanpageAvtivity: localStorage.getItem('isFanpage') === "true" ? true : false,
             media: []
         },
         // enableReinitialize: true,
@@ -748,16 +751,21 @@ export default function Home () {
             return updatedImages;
         });
     };
-    const handleCommentClick = (id) => {
-        const updatedComments = commentData?.map((comment) => {
+    const handleCommentClick = async (id) => {
+        console.log(id);
+        const updatedComments = await commentData?.map((comment) => {
             if (comment.id === id) {
                 return { ...comment, isCmt: !comment.isCmt };
             }
             return comment;
+        }, () => {
+            console.log(updatedComments);
         });
 
         setCommentData(updatedComments);
+        console.log(commentData);
     };
+
     const handleLikeClick = (id) => {
         const updatedComments = commentData.map((comment) => {
             if (comment.id === id) {
@@ -803,19 +811,20 @@ export default function Home () {
 
 
     useEffect(() => {
-        const updatedArrActivity = arrActivity.map((activity) => {
+        const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
             const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
             return { ...activity, commentData: matchingComments };
         });
         setCmt(updatedArrActivity)
     }, [commentData, arrActivity]);
-    useEffect(() => {
-        const updatedArrActivity = JSON.parse(localStorage.getItem('activity')).map((activity) => {
-            const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
-            return { ...activity, commentData: matchingComments };
-        });
-        setCmt(updatedArrActivity)
-    }, [arrActivity]);
+    // useEffect(() => {
+    //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
+    //     // .map((activity) => {
+    //     //     // const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
+    //     //     // return { ...activity, commentData: matchingComments };
+    //     // });
+    //     // setCmt(updatedArrActivity)
+    // }, [arrActivity]);
 
     const DateTime = (item) => {
         const currentTime = moment();
@@ -1401,7 +1410,7 @@ export default function Home () {
                                     </div>
                                     <div className="col-lg-3">
                                         <aside className="sidebar static right">
-                                            {localStorage.getItem('userID') && userByID?.fanpage !== '' ?
+                                            {localStorage.getItem('userID') && userByID?.fanpage !== null ?
                                                 <div className="widget">
                                                     <h4 className="widget-title">Nhóm Của Bạn</h4>
                                                     <ul className="ak-groups">

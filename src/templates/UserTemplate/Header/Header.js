@@ -115,7 +115,7 @@ export default function Header (props) {
                                 : <Fragment></Fragment>
                             }
                             <li><NavLink to="/history" title><i className="icofont-flash" /> Lịch Sử</NavLink></li>
-                            {userByID.fanpage === "" ?
+                            {userByID.fanpage === null ?
                                 <li><NavLink to="/createfanpage" title><i className="icofont-plus" /> Tạo Fanpage</NavLink></li>
                                 :
                                 <Fragment></Fragment>
