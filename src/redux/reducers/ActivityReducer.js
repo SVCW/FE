@@ -1,5 +1,11 @@
+let activi = [];
+
+if (JSON.parse(localStorage.getItem('activity'))) {
+    activi = JSON.parse(localStorage.getItem('activity'))
+}
+
 const stateDefault = {
-    arrActivity: [],
+    arrActivity: activi,
 
 }
 

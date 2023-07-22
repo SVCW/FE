@@ -83,9 +83,11 @@ export default function Result () {
                                                             return <div className="blog-posts mb-3">
                                                                 {/* <figure><img src={item?.media?.linkMedia} alt /></figure> */}
 
-                                                                {item.activity?.media?.map((item, index) => {
+                                                                {/* {item.activity?.media?.map((item, index) => {
                                                                     return <figure key={index}><img src={item.linkMedia} alt /></figure>
-                                                                })}
+                                                                })} */}
+                                                                <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt /></figure>
+
                                                                 <div className="blog-post-meta">
                                                                     <ul>
                                                                         <li><i className="icofont-read-book" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
@@ -152,9 +154,10 @@ export default function Result () {
                                                         <div>
                                                             {arrFollowJoin.filter(item => item.isFollow === true).map((item, index) => {
                                                                 return <div className="blog-posts mt-4">
-                                                                    {item.activity?.media?.map((item, index) => {
+                                                                    {/* {item.activity?.media?.map((item, index) => {
                                                                         return <figure key={index}><img src={item.linkMedia} alt /></figure>
-                                                                    })}
+                                                                    })} */}
+                                                                    <figure key={index}><img src={item.activity?.media[0]?.linkMedia} alt /></figure>
                                                                     <div className="blog-post-meta">
                                                                         <ul>
                                                                             <li><i className="icofont-read-book" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
@@ -417,8 +420,8 @@ export default function Result () {
                                             <div className="widget">
                                                 <h4 className="widget-title">Lịch Sử</h4>
                                                 <ul className="widget-analytics">
-                                                    <li>Sự Kiện Tham Gia <span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
-                                                    <li>Sự Kiện Theo Dõi <span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
+                                                    <li>Sự Kiện Theo Dõi<span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
+                                                    <li>Sự Kiện Tham Gia<span>{arrFollowJoin.filter(item => item.isJoin === true).length}</span></li>
                                                     <li>Số Lần Ủng Hộ <span>{arrDonation.length}</span></li>
                                                 </ul>
                                             </div>
