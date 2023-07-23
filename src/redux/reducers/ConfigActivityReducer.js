@@ -2,7 +2,7 @@ const stateDefault = {
     configActivity: localStorage.getItem('donation'),
     // configActivity: true,
     isValidCreate: localStorage.getItem('isValidCreate'),
-    isFanpage: localStorage.getItem('isFanpage'),
+    isFanpage: localStorage.getItem('isValidCreate') === "true" ? true : false,
     message: localStorage.getItem('message'),
     // isValidCreate: false,
 }

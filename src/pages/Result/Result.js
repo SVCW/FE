@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { HistoryFollowJoinAction } from '../../redux/actions/HistoryAction';
 import moment from 'moment';
 import { HistoryDonationAction } from '../../redux/actions/DonationAction';
+import { useState } from 'react';
+import DetailActivity from '../../component/DetailActivity';
 export default function Result () {
-
+    const [detail, setDetail] = useState({})
     const { arrFollowJoin } = useSelector(root => root.HistoryReducer)
     const { arrDonation } = useSelector(root => root.DonationReducer)
     const { userID } = useSelector(root => root.LoginReducer)
@@ -19,16 +21,26 @@ export default function Result () {
         if (hoursAgo < 1) {
             const daysAgo = Math.floor(duration.asMinutes());
             timeAgoString = `${daysAgo} Phút Trước`;
-        }
-        else if (hoursAgo >= 24) {
+        } else if (hoursAgo >= 24) {
             const daysAgo = Math.floor(duration.asDays());
-            timeAgoString = `${daysAgo} days ago`;
-        } else {
-            const hoursAgo = Math.floor(duration.asHours());
-            timeAgoString = `${hoursAgo} hours ago`;
+            timeAgoString = `${daysAgo} ngày trước`;
+        } else if (hoursAgo > 48) {
+            const formattedDate = inputTime.format('DD-MM-YYYY HH:mm:ss');
+            timeAgoString = formattedDate;
         }
-        return timeAgoString
-    }
+
+        else {
+            const hoursAgo = Math.floor(duration.asHours());
+            timeAgoString = `${hoursAgo} giờ trước`;
+        }
+
+        // Remove periods and convert words after spaces to lowercase
+        timeAgoString = timeAgoString
+            .replace(/\./g, '')
+            .replace(/(?:^|\s)\S/g, (char) => char.toLowerCase());
+
+        return timeAgoString;
+    };
     useEffect(() => {
         const action = HistoryFollowJoinAction(userID)
         dispatch(action)
@@ -97,7 +109,7 @@ export default function Result () {
                                                                     <p>
                                                                         {item.activity?.description}
                                                                     </p>
-                                                                    <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
+                                                                    <span><i className="icofont-clock-time" />{(DateTime(item.activity?.createAt)).toLowerCase()}</span>
                                                                     <a href="blog-detail.html" title className="button primary circle">Chi Tiết</a>
                                                                 </div>
                                                             </div>
@@ -153,6 +165,7 @@ export default function Result () {
                                                         :
                                                         <div>
                                                             {arrFollowJoin.filter(item => item.isFollow === true).map((item, index) => {
+                                                                const detailItem = item
                                                                 return <div className="blog-posts mt-4">
                                                                     {/* {item.activity?.media?.map((item, index) => {
                                                                         return <figure key={index}><img src={item.linkMedia} alt /></figure>
@@ -168,7 +181,9 @@ export default function Result () {
                                                                             {item.activity?.description}
                                                                         </p>
                                                                         <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
-                                                                        <a href="blog-detail.html" title className="button primary circle">Chi Tiết</a>
+                                                                        <a data-toggle="modal" data-target="#img-comt" title className="button primary circle" onClick={() => {
+                                                                            setDetail(detailItem)
+                                                                        }}>Chi Tiết</a>
                                                                     </div>
                                                                 </div>
                                                             })}
@@ -762,6 +777,7 @@ export default function Result () {
                     </div>
                 </div>
             </div>{/* chat box */}
+            <DetailActivity item={detail} dateTime={DateTime} />
         </div>
     )
 }

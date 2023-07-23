@@ -19,6 +19,7 @@ export const CreateProcessAction = (value) => {
 export const GetProcessByActivityAction = (id) => {
     return async (dispatch) => {
         try {
+            dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get(`/Process/get-process-activity?activityId=${id}`);
             console.log(result.data.data);
             const action1 = {
@@ -30,8 +31,10 @@ export const GetProcessByActivityAction = (id) => {
             localStorage.setItem('activityprocess', JSON.stringify(result.data.data))
             // const action = GetListActivityAction()
             // dispatch(action)
+            dispatch({ type: "HIDE_LOADING" })
         } catch (error) {
             console.log(error);
+            dispatch({ type: "HIDE_LOADING" })
         }
     }
 }

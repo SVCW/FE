@@ -6,7 +6,7 @@ import { useState } from 'react';
 import moment from 'moment';
 import DetailActivity from '../../component/DetailActivity';
 import { Fragment } from 'react';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom';
+import { NavLink } from 'react-router-dom'
 import { FilePond, registerPlugin } from 'react-filepond'
 import Swal from 'sweetalert2'
 // Import FilePond styles
@@ -49,31 +49,31 @@ export default function Home () {
     }
     useEffect(() => {
         const existingData = JSON.parse(localStorage.getItem("activity"));
-        // const action = GetListActivityAction();
-        // dispatch(action)
+        const action = GetListActivityAction();
+        dispatch(action)
         const action1 = GetListFanpageAction();
 
         dispatch(action1)
         const action2 = GetListProcessTypeAction();
         dispatch(action2)
-        console.log(existingData);
-        if (existingData) {
-            setCmt(existingData);
-            dispatch({ type: "HIDE_LOADING" });
-            const user = localStorage.getItem('userID')
-            if (user) {
-                console.log('có user');
-                const action = GetUserByIdAction(localStorage.getItem('userID'));
-                dispatch(action)
-            } else {
-                console.log('không có user');
-            }
-            return;
-        } else {
-            const action = GetListActivityAction();
+        // console.log(existingData);
+        // if (existingData) {
+        //     setCmt(existingData);
+        //     dispatch({ type: "HIDE_LOADING" });
+        const user = localStorage.getItem('userID')
+        if (user) {
+            console.log('có user');
+            const action = GetUserByIdAction(localStorage.getItem('userID'));
             dispatch(action)
-
+        } else {
+            console.log('không có user');
         }
+        //     return;
+        // } else {
+        //     const action = GetListActivityAction();
+        //     dispatch(action)
+
+        // }
     }, []);
     const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
 
@@ -623,8 +623,7 @@ export default function Home () {
             location: "",
             targetDonation: 0,
             userId: userID,
-            text: true,
-            isFanpageAvtivity: localStorage.getItem('isFanpage') === "true" ? true : false,
+            isFanpageAvtivity: isFanpage,
             media: []
         },
         // enableReinitialize: true,
@@ -1421,7 +1420,7 @@ export default function Home () {
                                                                 objectfit: 'cover',
                                                             }} src={userByID?.fanpage?.avatar} alt /></figure>
                                                             <div className="your-grp">
-                                                                <h5><NavLink to="/" title style={{ fontSize: '20px', width: '200px', wordWrap: 'break-word', }}>{userByID?.fanpage?.fanpageName}</NavLink></h5>
+                                                                <h5><NavLink to={`/fanpage/${localStorage.getItem('userID')}`} title style={{ fontSize: '20px', width: '200px', wordWrap: 'break-word', }}>{userByID?.fanpage?.fanpageName}</NavLink></h5>
                                                                 <NavLink to="/" title><i className="icofont-bell-alt" />Thông Báo
                                                                     <span>13</span></NavLink>
                                                                 <NavLink to="" href="group-feed.html" title className="promote" onClick={() => {

@@ -42,6 +42,7 @@ function App () {
         {/* <AdminTemplate exact path="/table" Component={Admin} /> */}
         <UserTemplate exact path="/home" Component={Home} />
         <UserTemplate exact path="/groups" Component={Group} />
+        <UserTemplate exact path="/fanpage/:id" Component={GroupsDetail} />
         <UserTemplate exact path="/groupsdetail" Component={GroupsDetail} />
         <UserTemplate exact path="/profile/:id" Component={Profile} />
         <UserTemplate exact path="/history" Component={Result} />

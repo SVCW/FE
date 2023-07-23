@@ -6,7 +6,7 @@ import { storage_bucket } from './../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useEffect } from 'react';
 import { CreateFanpageAction } from '../../redux/actions/FanpageAction';
-export default function CreateFanpage () {
+export default function CreateFanpage (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector(root => root.LoginReducer)
     const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function CreateFanpage () {
         },
         onSubmit: (value) => {
             console.log(value);
-            const action = CreateFanpageAction(value);
+            const action = CreateFanpageAction(value, props);
             dispatch(action)
         }
     })

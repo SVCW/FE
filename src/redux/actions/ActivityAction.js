@@ -44,8 +44,8 @@ export const GetListActivityAction = () => {
         try {
             dispatch({ type: "DISPLAY_LOADING" })
             let result = await http.get('/Activity/get-activity?pageSize=5&PageLoad=1');
-            console.log(result.data.data);
-            const newArray = await (result.data.data).map((item) => ({
+            console.log(result.data.data.result);
+            const newArray = await (result.data.data.result).map((item) => ({
                 ...item,
                 isFollow: false,
                 isJoin: false,
@@ -57,7 +57,7 @@ export const GetListActivityAction = () => {
             }
             dispatch(action)
 
-            localStorage.setItem('activity', JSON.stringify(result.data.data))
+            localStorage.setItem('activity', JSON.stringify(result.data.data.result))
             dispatch({ type: "HIDE_LOADING" })
         } catch (error) {
             console.log(error);
