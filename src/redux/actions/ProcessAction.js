@@ -74,7 +74,8 @@ export const DeleteProcessByIdAction = (id) => {
         try {
             let result = await http.delete(`/Process/delete-process?id=${id}`);
             console.log(result.data.data);
-
+            const action = GetListActivityAction();
+            dispatch(action)
         } catch (error) {
             console.log(error);
         }

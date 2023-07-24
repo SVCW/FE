@@ -5,12 +5,18 @@ export const GetListFanpageAction = () => {
         try {
             let result = await http.get('/Fanpage/getall-fanpage');
             console.log(result.data.data);
+            const newArray = await (result.data.data).map((item) => ({
+                ...item,
+                isFollow: false,
+
+            }));
             const action = {
                 type: "GET_LIST_FANPAGE",
-                arrFanpage: result.data.data
+                arrFanpage: newArray
             }
             dispatch(action)
-
+            console.log(newArray);
+            localStorage.setItem('arrFanpage', JSON.stringify(newArray))
         } catch (error) {
             console.log(error);
         }
@@ -51,6 +57,36 @@ export const GetFanpageByIDAction = (id) => {
         } catch (error) {
             console.log(error);
             dispatch({ type: "HIDE_LOADING" })
+        }
+    }
+}
+
+export const UnFollowFanpageAction = (user, fanpage) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.put(`/Fanpage/unfollow-fanpage?userId=${user}&fanpageId=${fanpage}`);
+            console.log(result.data.data);
+            // const action = GetListFanpageAction()
+            // dispatch(action)
+            // localStorage.setItem('isFanpage', true)
+            // props.history.push('/home')
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const FollowFanpageAction = (user, fanpage) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post(`/Fanpage/follow-fanpage?userId=${user}&fanpageId=${fanpage}`);
+            console.log(result.data.data);
+            // const action = GetListFanpageAction()
+            // dispatch(action)
+            // localStorage.setItem('isFanpage', true)
+            // props.history.push('/home')
+        } catch (error) {
+            console.log(error);
         }
     }
 }

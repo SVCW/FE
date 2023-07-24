@@ -48,7 +48,7 @@ export default function Home () {
         }
     }
     useEffect(() => {
-        const existingData = JSON.parse(localStorage.getItem("activity"));
+        // const existingData = JSON.parse(localStorage.getItem("activity"));
         const action = GetListActivityAction();
         dispatch(action)
         const action1 = GetListFanpageAction();
@@ -810,7 +810,7 @@ export default function Home () {
 
 
     useEffect(() => {
-        const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
+        const updatedArrActivity = arrActivity?.map((activity) => {
             const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
             return { ...activity, commentData: matchingComments };
         });
