@@ -2,7 +2,7 @@ const stateDefault = {
     configActivity: localStorage.getItem('donation'),
     // configActivity: true,
     isValidCreate: localStorage.getItem('isValidCreate'),
-    isFanpage: localStorage.getItem('isValidCreate') === "true" ? true : false,
+    isFanpage: localStorage.getItem('isFanpage'),
     message: localStorage.getItem('message'),
     // isValidCreate: false,
 }
@@ -15,7 +15,7 @@ export const ConfigActivityReducer = (state = stateDefault, action) => {
             state.configActivity = localStorage.getItem('donation');
             state.isValidCreate = localStorage.getItem('isValidCreate');
             state.message = localStorage.getItem('message');
-            state.isFanpage = action.isFanpage;
+            state.isFanpage = localStorage.getItem('isFanpage');
             return { ...state }
         }
         case 'LOGOUT': {

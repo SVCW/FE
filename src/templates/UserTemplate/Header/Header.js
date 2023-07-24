@@ -107,16 +107,9 @@ export default function Header (props) {
                         </a>
 
                         <ul className="dropdown">
-                            {localStorage.getItem('userID') ?
-                                <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Trang Cá Nhân</a></li>
-                                : <Fragment></Fragment>
-                            }
-                            <li><NavLink to="/history" title><i className="icofont-flash" /> Lịch Sử</NavLink></li>
-                            {userByID.fanpage === null ?
-                                <li><NavLink to="/createfanpage" title><i className="icofont-plus" /> Tạo Fanpage</NavLink></li>
-                                :
-                                <Fragment></Fragment>
-                            }
+                            <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Your Profile</a></li>
+                            <li><NavLink to="/history" title><i className="icofont-flash" /> History</NavLink></li>
+                            <li><a href="add-new-course.html" title><i className="icofont-plus" /> New Course</a></li>
                             <li><a className="invite-new" href="#" title><i className="icofont-brand-slideshare" /> Invite
                                 Collegue</a></li>
                             <li><a href="pay-out.html" title><i className="icofont-price" /> Payout</a></li>
@@ -135,7 +128,7 @@ export default function Header (props) {
                                     type: "LOGOUT1"
                                 }
                                 dispatch(action1)
-                            }}><NavLink to="/" title><i className="icofont-power" /> {localStorage.getItem('userID') ? "Logout" : "Login"}</NavLink>
+                            }}><NavLink to="/" title><i className="icofont-power" /> Logout</NavLink>
                             </li>
                         </ul>
                     </li>

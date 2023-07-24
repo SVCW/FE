@@ -2,8 +2,6 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { GetFanpageByIDAction } from '../redux/actions/FanpageAction';
-import { NavLink } from 'react-router-dom'
 
 function SimpleSlider (props) {
     const settings = {
@@ -35,10 +33,7 @@ function SimpleSlider (props) {
             {props.arrFanpage.map((item, index) => {
                 return <div className='suggested-caro'>
                     <li >
-                        {/* <figure style={{ cursor: 'pointer' }} ><img src={item.avatar} style={{ height: '80px' }} /></figure> */}
-                        <NavLink to={`/fanpage/${item.fanpageId}`} style={{ cursor: 'pointer', backgroundColor: "white" }}  >
-                            <figure ><img src={item.avatar} style={{ height: '80px' }} /></figure>
-                        </NavLink>
+                        <figure><img src={item.avatar} style={{ height: '80px' }} alt /></figure>
                         <span>{item.fanpageName}</span>
                         {/* <ins>{(item.description).slice(0, 200)}</ins> */}
                         <a href="#" title data-ripple><i className="icofont-star" />
@@ -47,7 +42,7 @@ function SimpleSlider (props) {
                 </div>
             })}
 
-        </Slider >
+        </Slider>
     );
 }
 
