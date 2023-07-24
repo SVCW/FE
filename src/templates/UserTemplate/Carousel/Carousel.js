@@ -21,23 +21,34 @@ export default function Carousel () {
                             <div className="col-lg-8 pl-5">
                                 <div className="page-caro">
                                     <div className="link-item">
-                                        <a className="active" href="feed.html" title>
-                                            <i className>
+                                        <a className="active" href="http://localhost:3000/home" title>
+                                            {/* <i className>
                                                 <svg className="feather feather-zap" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg">
                                                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                                                 </svg>
-                                            </i>
+                                            </i> */}
+                                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg"height={24} width={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-home">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                </svg>
+                                </i>
                                             <p>Trang Chủ</p>
                                         </a>
                                     </div>
                                     <div className="link-item">
                                         <a href="videos.html" title>
-                                            <i className>
+                                            {/* <i className>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-youtube">
                                                     <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
                                                     </path>
                                                     <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02">
                                                     </polygon>
+                                                </svg>
+                                            </i> */}
+                                            <i className>
+                                                <svg className="feather feather-zap" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg">
+                                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                                                 </svg>
                                             </i>
                                             <p>Lịch Sử Quyên Góp</p>
