@@ -6,7 +6,7 @@ import { useState } from 'react';
 import moment from 'moment';
 import DetailActivity from '../../component/DetailActivity';
 import { Fragment } from 'react';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom';
+import { NavLink } from 'react-router-dom'
 import { FilePond, registerPlugin } from 'react-filepond'
 import Swal from 'sweetalert2'
 // Import FilePond styles
@@ -30,18 +30,54 @@ import Loading from '../../component/Loading';
 import MultiForm from '../../MultiForm';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction';
+import { CreateProcessAction, GetProcessByActivityAction } from '../../redux/actions/ProcessAction';
+import { GetUserByIdAction } from '../../redux/actions/UserAction';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function Home () {
+    const { userByID } = useSelector(root => root.UserReducer)
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [images, setImages] = useState([]);
     const [tcss, setTcss] = useState('css');
+    const [vprocess, setVProcess] = useState(false)
     const dandleCSS = () => {
         if (tcss === "css") {
 
         }
     }
+    useEffect(() => {
+        const existingData = JSON.parse(localStorage.getItem("activity"));
+        const action = GetListActivityAction();
+        dispatch(action)
+        const action1 = GetListFanpageAction();
+
+        dispatch(action1)
+        const action2 = GetListProcessTypeAction();
+        dispatch(action2)
+        // console.log(existingData);
+        // if (existingData) {
+        //     setCmt(existingData);
+        //     dispatch({ type: "HIDE_LOADING" });
+        const user = localStorage.getItem('userID')
+        if (user) {
+            console.log('có user');
+            const action = GetUserByIdAction(localStorage.getItem('userID'));
+            dispatch(action)
+        } else {
+            console.log('không có user');
+        }
+        //     return;
+        // } else {
+        //     const action = GetListActivityAction();
+        //     dispatch(action)
+
+        // }
+    }, []);
+    const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
+
+    console.log(processType);
 
     const initialValues = {
         forms: [
@@ -49,9 +85,9 @@ export default function Home () {
             {
                 processTitle: "",
                 description: "",
-                startDate: "2023-07-19T15:53:37.464Z",
-                endDate: "2023-07-19T15:53:37.464Z",
-                activityId: "1234",
+                startDate: "",
+                endDate: "",
+                activityId: activityProcess,
                 processTypeId: "",
                 isKeyProcess: true,
                 processNo: 0,
@@ -87,9 +123,9 @@ export default function Home () {
         setFormData((prevData) => [...prevData, {
             processTitle: "",
             description: "",
-            startDate: "2023-07-19T15:53:37.464Z",
-            endDate: "2023-07-19T15:53:37.464Z",
-            activityId: "",
+            startDate: "",
+            endDate: "",
+            activityId: localStorage.getItem('activityProcess'),
             processTypeId: "",
             isKeyProcess: true,
             processNo: 0,
@@ -116,6 +152,7 @@ export default function Home () {
 
     const handleSelectChange = (event, formIndex) => {
         const { value } = event.target;
+
         setFormData((prevData) =>
             prevData.map((form, index) =>
                 index === formIndex ? { ...form, processTypeId: value } : form
@@ -126,13 +163,19 @@ export default function Home () {
         const dataToSubmit = [...values.forms];
         console.log(dataToSubmit);
         await dataToSubmit.forEach((form, index) => {
+            formData[index].activityId = activityProcess;
             formData[index].processTitle = form.processTitle;
             formData[index].description = form.description;
+            formData[index].startDate = form.startDate;
+            formData[index].endDate = form.endDate;
             formData[index].processNo = index;
         });
         console.log(formData);
         const filteredData = formData.filter((item) => !arrDelete.includes(item.processNo));
         console.log(filteredData);
+        const action = await CreateProcessAction(filteredData);
+        await dispatch(action)
+        setIsOpen1((prevIsOpen) => !prevIsOpen);
     }
 
     const [isLoading1, setIsLoading1] = useState(false);
@@ -179,6 +222,7 @@ export default function Home () {
 
     const [uploadProgress, setUploadProgress] = useState(0);
     const { configActivity, isValidCreate, isFanpage } = useSelector(root => root.ConfigActivityReducer)
+    console.log(isFanpage);
     const { userID } = useSelector(root => root.LoginReducer)
     const dispatch = useDispatch();
     const { arrActivity } = useSelector(root => root.ActivityReducer)
@@ -199,7 +243,7 @@ export default function Home () {
         console.log(userID);
         callAPI(currentText, activity, title);
     };
-
+    const [data, setData] = useState(cmt);
     const callAPI = (text, activity, title) => {
         // Gọi API ở đây, sử dụng giá trị của `text`
         if (text === 'Theo Dõi') {
@@ -252,21 +296,113 @@ export default function Home () {
     const currentText = textOptions[text];
 
 
-    const textOptions2 = ['Tham Gia', 'Hủy Theo Dõi'];
-    const [text2, setText2] = useState(0);
+    // const textOptions2 = ['Tham Gia', 'Hủy Tham Gia'];
+    // const [text2, setText2] = useState(0);
 
-    const handleJoinClick = (activity, title) => {
-        setText2((prevIndex) => (prevIndex + 1) % textOptions2.length);
-        const currentText = textOptions2[text2];
-        console.log(activity);
-        console.log(userID);
-        callAPI2(currentText, activity, title);
-    };
+    // const handleJoinClick = (activity, title, index) => {
+    //     setCmt((prevArray) => {
+    //         const newArray = [...prevArray];
+    //         newArray[index].isJoin = !newArray[index].isJoin; // Toggle the state when clicking the button
+    //         return newArray;
+    //     });
+    //     setText2((prevIndex) => (prevIndex + 1) % textOptions2.length);
+    //     const currentText = textOptions2[text2];
+    //     console.log(activity);
+    //     console.log(userID);
 
-    const callAPI2 = (text, activity, title) => {
-        // Gọi API ở đây, sử dụng giá trị của `text`
-        if (text === 'Tham Gia') {
-            // Gọi API Theo Dõi
+    //     callAPI2(currentText, activity, title);
+    // };
+    // console.log(cmt);
+
+    // const callAPI2 = (text, activity, title) => {
+    //     // Gọi API ở đây, sử dụng giá trị của `text`
+    //     if (text === 'Tham Gia') {
+    //         // Gọi API Theo Dõi
+    //         const Toast = Swal.mixin({
+    //             toast: true,
+    //             position: 'top-end',
+    //             showConfirmButton: false,
+    //             timer: 3000,
+    //             timerProgressBar: true,
+    //             didOpen: (toast) => {
+    //                 toast.addEventListener('mouseenter', Swal.stopTimer)
+    //                 toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //             }
+    //         })
+
+    //         Toast.fire({
+    //             icon: 'success',
+    //             title: `Tham Gia Thành Công Sự Kiện ${title}`
+    //         })
+    //         const action = JoinAction(activity, userID);
+    //         dispatch(action)
+    //         // ...
+    //     } else {
+    //         // Gọi API Bỏ Theo Dõi
+    //         // console.log('Gọi API Bỏ Theo Dõi');
+    //         // ...
+    //         const Toast = Swal.mixin({
+    //             toast: true,
+    //             position: 'top-end',
+    //             showConfirmButton: false,
+    //             timer: 3000,
+    //             timerProgressBar: true,
+    //             didOpen: (toast) => {
+    //                 toast.addEventListener('mouseenter', Swal.stopTimer)
+    //                 toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //             }
+    //         })
+
+    //         Toast.fire({
+    //             icon: 'error',
+    //             title: `Bỏ Tham Gia Sự Kiện ${title}`
+    //         })
+    //         const action = UnJoinAction(activity, userID);
+    //         dispatch(action)
+    //     }
+    // };
+
+    // const [text2Array, setText2Array] = useState(
+    //     new Array(textOptions2.length).fill(0)
+    // );
+    // const currentText2 = textOptions2[text2];
+
+
+    const handleJoinClick = (index, activity, isJoin, title) => {
+        setCmt((prevArray) => {
+            const newArray = JSON.parse(JSON.stringify(prevArray));
+            newArray[index].isJoin = !newArray[index].isJoin;
+            localStorage.setItem(`activity`, JSON.stringify(newArray));
+
+            return newArray;
+        });
+        if (isJoin) {
+            console.log('Hủy Tham Gia');
+            const action = UnJoinAction(activity, userID);
+            dispatch(action)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: `Bỏ Tham Gia Thành Công Sự Kiện ${title}`
+            })
+
+
+        }
+        else {
+            console.log('Tham Gia');
+            const action = JoinAction(activity, userID);
+            dispatch(action)
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -283,13 +419,20 @@ export default function Home () {
                 icon: 'success',
                 title: `Tham Gia Thành Công Sự Kiện ${title}`
             })
-            const action = JoinAction(activity, userID);
+        }
+    };
+    const handleFollowClick = (index, activity, isFollow, title) => {
+        setCmt((prevArray) => {
+            const newArray = JSON.parse(JSON.stringify(prevArray));
+            newArray[index].isFollow = !newArray[index].isFollow;
+            localStorage.setItem(`activity`, JSON.stringify(newArray));
+
+            return newArray;
+        });
+        if (isFollow) {
+            console.log('Hủy Theo Dõi');
+            const action = UnFollowAction(activity, userID);
             dispatch(action)
-            // ...
-        } else {
-            // Gọi API Bỏ Theo Dõi
-            // console.log('Gọi API Bỏ Theo Dõi');
-            // ...
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -304,14 +447,33 @@ export default function Home () {
 
             Toast.fire({
                 icon: 'error',
-                title: `Bỏ Tham Gia Sự Kiện ${title}`
+                title: `Bỏ Theo Dõi Thành Công Sự Kiện ${title}`
             })
-            const action = UnJoinAction(activity, userID);
+
+
+        }
+        else {
+            console.log('Theo Dõi');
+            const action = FollowAction(activity, userID);
             dispatch(action)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: `Theo Dõi Thành Công Sự Kiện ${title}`
+            })
         }
     };
-
-    const currentText2 = textOptions2[text2];
 
     const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map((comment) => ({
         id: comment.activityId,
@@ -320,6 +482,7 @@ export default function Home () {
     }));
     console.log(cmt);
     const [commentData, setCommentData] = useState(initialCommentData);
+    console.log(commentData);
     const currentTime = moment();
 
     console.log(configActivity);
@@ -400,15 +563,24 @@ export default function Home () {
     const [isDisplay, setIsDisplay] = useState(true);
 
     const [isOpen1, setIsOpen1] = useState(true);
+    const [isOpen2, setIsOpen2] = useState(false);
     // const [isDisplay, setIsDisplay] = useState(true);
 
     const handleClick = () => {
         setIsOpen((prevIsOpen) => !prevIsOpen);
         setIsDisplay(true)
+        formik.setFieldValue('title', '')
+        formik.setFieldValue('description', '')
+        formik.setFieldValue('location', '')
     };
 
     const handleClick1 = () => {
         setIsOpen1((prevIsOpen) => !prevIsOpen);
+        // setIsDisplay(true)
+    };
+    const handleClick2 = () => {
+        setIsOpen2((prevIsOpen) => !prevIsOpen);
+        // setVProcess((prevIsOpen) => !prevIsOpen)
         // setIsDisplay(true)
     };
     const [openpro, setOpenPro] = useState(false)
@@ -422,6 +594,12 @@ export default function Home () {
         opacity: isOpen1 ? 1 : 0,
         visibility: isOpen1 ? "visible" : "hidden",
         overflow: isOpen1 ? "auto" : "hidden",
+
+    };
+    const popupStyle2 = {
+        opacity: isOpen2 ? 1 : 0,
+        visibility: isOpen2 ? "visible" : "hidden",
+        overflow: isOpen2 ? "auto" : "hidden",
 
     };
     const [files, setFiles] = useState('');
@@ -445,15 +623,23 @@ export default function Home () {
             location: "",
             targetDonation: 0,
             userId: userID,
-            text: true,
             isFanpageAvtivity: isFanpage,
             media: []
         },
+        // enableReinitialize: true,
+        enableReinitialize: false,
         onSubmit: async (value) => {
             console.log(value);
+
+            const action = await CreateActivityAction(value);
+            await dispatch(action)
+            formik.setFieldValue('title', '')
+            formik.setFieldValue('description', '')
+            formik.setFieldValue('location', '')
+            formik.setFieldValue('targetDonation', 0)
+            formik.setFieldValue('media', [])
+            setIsOpen((prevIsOpen) => !prevIsOpen);
             setIsDisplay(false)
-            // const action = await CreateActivityAction(value);
-            // await dispatch(action)
             // setIsOpen((prevIsOpen) => !prevIsOpen);
             // const Toast = Swal.mixin({
             //     toast: true,
@@ -481,31 +667,42 @@ export default function Home () {
             })
 
             swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
+                title: 'Tạo Mới  Hoạt Động Thành Công',
+                text: "Bạn Muốn Thêm Tiến Trình Cho Hoạt Động",
+                icon: 'success',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
+                confirmButtonText: 'Thêm Tiến trình',
+                cancelButtonText: 'Không!',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
                     handleCreateNewForm()
                     setOpenPro(true)
+                    swalWithBootstrapButtons.fire(
+                        'Thành Công!',
+                        'Thêm Tiến Trình Thành Công.',
+                        'success'
+                    )
+                    formik.setFieldValue('title', '')
+                    formik.setFieldValue('description', '')
+                    formik.setFieldValue('location', '')
+                    formik.setFieldValue('targetDonation', 0)
+                    formik.setFieldValue('media', [])
                 } else if (
                     /* Read more about handling dismissals below */
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
                     swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Your imaginary file is safe :)',
-                        'error'
+                        'Thành Công',
+                        'Thêm Hoạt Động Thành  Công',
+                        'success'
                     )
+                    formik.setFieldValue('title', '')
+                    formik.setFieldValue('description', '')
+                    formik.setFieldValue('location', '')
+                    formik.setFieldValue('targetDonation', 0)
+                    formik.setFieldValue('media', [])
+                    setImages([])
                 }
             })
         }
@@ -553,16 +750,21 @@ export default function Home () {
             return updatedImages;
         });
     };
-    const handleCommentClick = (id) => {
-        const updatedComments = commentData?.map((comment) => {
+    const handleCommentClick = async (id) => {
+        console.log(id);
+        const updatedComments = await commentData?.map((comment) => {
             if (comment.id === id) {
                 return { ...comment, isCmt: !comment.isCmt };
             }
             return comment;
+        }, () => {
+            console.log(updatedComments);
         });
 
         setCommentData(updatedComments);
+        console.log(commentData);
     };
+
     const handleLikeClick = (id) => {
         const updatedComments = commentData.map((comment) => {
             if (comment.id === id) {
@@ -606,19 +808,22 @@ export default function Home () {
         setCommentData(updatedComments);
     };
 
+
     useEffect(() => {
-        const action = GetListActivityAction();
-        dispatch(action)
-        const action1 = GetListFanpageAction();
-        dispatch(action1)
-    }, []);
-    useEffect(() => {
-        const updatedArrActivity = arrActivity.map((activity) => {
+        const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
             const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
             return { ...activity, commentData: matchingComments };
         });
         setCmt(updatedArrActivity)
     }, [commentData, arrActivity]);
+    // useEffect(() => {
+    //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
+    //     // .map((activity) => {
+    //     //     // const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
+    //     //     // return { ...activity, commentData: matchingComments };
+    //     // });
+    //     // setCmt(updatedArrActivity)
+    // }, [arrActivity]);
 
     const DateTime = (item) => {
         const currentTime = moment();
@@ -877,7 +1082,7 @@ export default function Home () {
                                                                     </ul>
                                                                 </div>
                                                             </div>
-                                                            <ins><a title href="time-line.html">{item.user?.username}</a> </ins>
+                                                            <ins><a title href="">{item.user?.username}</a> </ins>
                                                             <span>  {DateTime(item.createAt)} <i className="icofont-globe" /></span>
                                                         </div>
                                                         <div className="post-meta">
@@ -890,6 +1095,11 @@ export default function Home () {
                                                             </p> */}
 
                                                             {/* hình ảnh */}
+                                                            {item.process.length !== 0 ? <NavLink to={`/detailprocess/${item.activityId}`} style={{ fontSize: '20px', fontWeight: 'bold', color: '#3f6ad8', marginBottom: '20px', cursor: 'pointer' }} onClick={() => {
+                                                                // handleClick2()
+                                                                // const action = GetProcessByActivityAction(item.activityId);
+                                                                // dispatch(action)
+                                                            }}>Xem Tiến Trình</NavLink> : <div></div>}
                                                             <figure style={{}}>
                                                                 {/* <p style={{ width: '100%' }}>fetched-image</p> */}
                                                                 {item.targetDonation !== 0 ? <button className='btn btn-primary mb-2' onClick={() => {
@@ -913,9 +1123,13 @@ export default function Home () {
                                                                 </div>
 
                                                             </figure>
-                                                            <div style={{ display: 'flex', alignContent: 'center' }}>
-                                                                <a href="" target="_blank" style={{ fontSize: '25px', fontWeight: 'bold' }}>{item.title}</a>
-                                                                <div className=" ml-3 mt-3" style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }} onClick={() => { handleYesClick(item.activityId, item.title) }}>{currentText} </div>
+                                                            <div className='row'>
+                                                                <div style={{ display: 'flex', alignContent: 'center' }} className='col-lg-12'>
+
+
+                                                                    <a href="" target="_blank" style={{ fontSize: '25px', fontWeight: 'bold', width: '450px', wordWrap: 'break-word', color: '#3f6ad8' }} className='col-lg-8'>{item.title}</a>
+                                                                    <div className=" ml-3 mt-3 col-lg-4" style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline', textAlign: 'right' }} onClick={() => { handleFollowClick(index, item.activityId, item.isFollow, item.title) }}>{item?.isFollow ? "Hủy Theo Dõi" : "Theo Dõi"}</div>
+                                                                </div>
                                                             </div>
                                                             <p className='mt-3'>
                                                                 <span style={{ color: 'black', fontWeight: 'bold', fontSize: '15px' }}>Chi Tiết :</span> {item.description}
@@ -947,7 +1161,7 @@ export default function Home () {
                                                                 <div></div>
                                                             }
 
-                                                            <button className=' btn btn-success ml-3 mb-4 mt-4' onClick={() => { handleJoinClick(item.activityId, item.title) }}>{currentText2}</button>
+                                                            <button className=' btn btn-success ml-3 mb-4 mt-4' onClick={() => { handleJoinClick(index, item.activityId, item.isJoin, item.title) }}>{item?.isJoin ? "Hủy Tham Gia" : "Tham Gia"}</button>
                                                             <div className="we-video-info">
                                                                 <ul>
                                                                     <li>
@@ -1195,37 +1409,31 @@ export default function Home () {
                                     </div>
                                     <div className="col-lg-3">
                                         <aside className="sidebar static right">
-                                            <div className="widget">
-                                                <h4 className="widget-title">Nhóm Của Bạn</h4>
-                                                <ul className="ak-groups">
-                                                    <li>
-                                                        <figure><img style={{
-                                                            width: '50px',
-                                                            height: '50px',
-                                                            objectfit: 'cover',
-                                                        }} src="images/company/amazonComany.jpg" alt /></figure>
-                                                        <div className="your-grp">
-                                                            <h5><a href="group-detail.html" title>FPT Students</a></h5>
-                                                            <a href="#" title><i className="icofont-bell-alt" />Thông Báo
-                                                                <span>13</span></a>
-                                                            <a href="group-feed.html" title className="promote">Chi Tiết</a>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <figure><img style={{
-                                                            width: '50px',
-                                                            height: '50px',
-                                                            objectfit: 'cover',
-                                                        }} src="images/company/nab.png" alt /></figure>
-                                                        <div className="your-grp">
-                                                            <h5><a href="group-detail.html" title>FPT HCM</a></h5>
-                                                            <a href="#" title><i className="icofont-bell-alt" />Thông Báo
-                                                                <span>13</span></a>
-                                                            <a href="group-feed.html" title className="promote">Chi Tiết</a>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>{/* Your groups */}
+                                            {localStorage.getItem('userID') && userByID?.fanpage !== null ?
+                                                <div className="widget">
+                                                    <h4 className="widget-title">Nhóm Của Bạn</h4>
+                                                    <ul className="ak-groups">
+                                                        <li>
+                                                            <figure><img style={{
+                                                                width: '50px',
+                                                                height: '50px',
+                                                                objectfit: 'cover',
+                                                            }} src={userByID?.fanpage?.avatar} alt /></figure>
+                                                            <div className="your-grp">
+                                                                <h5><NavLink to={`/fanpage/${localStorage.getItem('userID')}`} title style={{ fontSize: '20px', width: '200px', wordWrap: 'break-word', }}>{userByID?.fanpage?.fanpageName}</NavLink></h5>
+                                                                <NavLink to="/" title><i className="icofont-bell-alt" />Thông Báo
+                                                                    <span>13</span></NavLink>
+                                                                <NavLink to="" href="group-feed.html" title className="promote" onClick={() => {
+
+                                                                }}>Chi Tiết</NavLink>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                                : <div></div>
+
+                                            }
                                             <div className="widget">
                                                 <h4 className="widget-title">Đề Xuất</h4>
                                                 <div className="sug-caro">
@@ -1560,13 +1768,13 @@ export default function Home () {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label id="name-label" htmlFor="name">Tên Sự Kiện</label>
-                                                <input type="text" name='title' onChange={formik.handleChange} id="name" placeholder="Nhập Tên Sự Kiện" className="form-control" required />
+                                                <input type="text" name='title' onChange={formik.handleChange} value={formik.values.title} id="name" placeholder="Nhập Tên Sự Kiện" className="form-control" required />
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label id="email-label" htmlFor="email">Mô Tả Sự Kiện</label>
-                                                <input type="text" name='description' onChange={formik.handleChange} id="email" placeholder="Nhập Tô Tả" className="form-control" required />
+                                                <input type="text" name='description' onChange={formik.handleChange} value={formik.values.description} id="email" placeholder="Nhập Tô Tả" className="form-control" required />
                                             </div>
                                         </div>
                                     </div>
@@ -1574,7 +1782,7 @@ export default function Home () {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label id="name-label" htmlFor="name">Nơi Diễn Ra</label>
-                                                <input type="text" name='location' onChange={formik.handleChange} id="name" placeholder="Nhập Nơi Diễn Ra" className="form-control" required />
+                                                <input type="text" name='location' onChange={formik.handleChange} value={formik.values.location} id="name" placeholder="Nhập Nơi Diễn Ra" className="form-control" required />
                                             </div>
                                         </div>
                                         <div className="col-md-6">
@@ -1587,7 +1795,7 @@ export default function Home () {
                                                         {isTextInputVisible === true && <div>
                                                             <div className="form-group">
                                                                 <label id="name-label" htmlFor="name">Mục Tiêu</label>
-                                                                <input type="number" name='targetDonation' onChange={formik.handleChange} id="name" placeholder="Nhập Muc Tiêu" className="form-control" required />
+                                                                <input type="number" name='targetDonation' onChange={formik.handleChange} value={formik.values.targetDonation} id="name" placeholder="Nhập Muc Tiêu" className="form-control" required />
                                                             </div>
 
                                                         </div>
@@ -1615,6 +1823,7 @@ export default function Home () {
                                                             </svg>
                                                             <p className="small my-2">Kéo &amp; Thả (các) hình nền bên trong vùng nét đứt<br /><i>hoặc</i></p>
                                                             <input
+
                                                                 id="upload_image_background"
                                                                 // ref={fileInputRef}
                                                                 data-post-name="image_background"
@@ -1683,7 +1892,7 @@ export default function Home () {
 
             {openpro ?
                 <div className="post-new-popup1" style={popupStyle1}>
-                    <div className="popup" style={{ width: 800, marginTop: '100px', zIndex: 80 }}>
+                    <div className="popup" style={{ width: 800, zIndex: 80, height: '800px', overflowY: 'scroll', marginTop: '50px', padding: '10px' }}>
                         <span className="popup-closed" onClick={handleClick1}><i className="icofont-close" /></span>
                         <div className="popup-meta">
                             <div className="popup-head">
@@ -1691,7 +1900,7 @@ export default function Home () {
                                     <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
                                         <line x1={12} y1={5} x2={12} y2={19} />
                                         <line x1={5} y1={12} x2={19} y2={12} />
-                                    </svg></i>Tạo Chiến Dịch</h5>
+                                    </svg></i>Tạo Tiến Trình</h5>
                             </div>
                         </div>
                         <div className="multi-form">
@@ -1712,6 +1921,16 @@ export default function Home () {
 
                                                 </div>
                                                 <div className="form-group">
+                                                    <label htmlFor={`startDate_${index}`}>StartDate</label>
+                                                    <Field type="datetime-local" name={`forms[${index}].startDate`} className="form-control" />
+
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor={`endDate_${index}`}>EndDate</label>
+                                                    <Field type="datetime-local" name={`forms[${index}].endDate`} className="form-control" />
+
+                                                </div>
+                                                <div className="form-group">
                                                     <label htmlFor={`processTypeId_${index}`}>processTypeId</label>
                                                     <select
                                                         name={`forms[${index}].processTypeId`}
@@ -1720,9 +1939,10 @@ export default function Home () {
                                                         className="form-control"
                                                     >
                                                         <option value="">Select an option</option>
-                                                        <option value="1">Option 1</option>
-                                                        <option value="2">Option 2</option>
-                                                        <option value="3">Option 3</option>
+                                                        {processType.map((item, index) => {
+                                                            return <option value={item.processTypeId} key={index}>{item.processTypeName}</option>
+                                                        })}
+
                                                     </select>
                                                 </div>
                                                 <div className="form-group">
@@ -1790,6 +2010,38 @@ export default function Home () {
                 </div>
                 : <div></div>
             }
+            {/* {isOpen2 === true ?
+                <div className="post-new-popup2" style={popupStyle2}>
+                    <div className="popup" style={{ width: 800, marginTop: '100px', zIndex: 80 }}>
+                        <span className="popup-closed" onClick={handleClick2}><i className="icofont-close" /></span>
+                        <div className="popup-meta">
+                            <div className="popup-head">
+                                <h5><i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
+                                        <line x1={12} y1={5} x2={12} y2={19} />
+                                        <line x1={5} y1={12} x2={19} y2={12} />
+                                    </svg></i>Xem Tiến Trình</h5>
+                            </div>
+                        </div>
+
+                        <div className="form">
+                            <header className="header">
+
+                            </header>
+                            <div className="form-wrap">
+                                {processactivity.map((item, index) => {
+                                    return <div>
+                                    </div>
+                                }
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                :
+                <div></div>
+            } */}
 
 
             <div className="new-question-popup">

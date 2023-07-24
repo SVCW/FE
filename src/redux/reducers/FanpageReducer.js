@@ -1,6 +1,7 @@
 const stateDefault = {
     arrFanpage: [],
-
+    fanpageId: {},
+    fanpageActivity: []
 }
 
 
@@ -9,6 +10,11 @@ export const FanpageReducer = (state = stateDefault, action) => {
 
         case 'GET_LIST_FANPAGE': {
             state.arrFanpage = action.arrFanpage;
+            return { ...state }
+        }
+        case 'GET_LIST_FANPAGE_ID': {
+            state.fanpageId = action.fanpageId;
+            state.fanpageActivity = action.fanpageActivity;
             return { ...state }
         }
 
