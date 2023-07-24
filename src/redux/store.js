@@ -12,6 +12,7 @@ import { LoginReducer } from './reducers/LoginReducer';
 import { HistoryReducer } from './reducers/HistoryReducer';
 import { DonationReducer } from './reducers/DonatonReducer';
 import { LoadingReducer } from './reducers/LoadingReducer';
+import { UserReducer } from './reducers/UserReducer';
 import { ProfileReducer } from './reducers/ProfileReducer';
 
 
