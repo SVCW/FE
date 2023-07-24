@@ -4,7 +4,7 @@ import styles from './style.module.css';
 export default function DetailActivity (props) {
     const { item, dateTime } = props;
     console.log(props.item.media);
-
+    console.log(props.item);
     const settings = {
         dots: true,
         infinite: true,
