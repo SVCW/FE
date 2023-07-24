@@ -1654,7 +1654,7 @@ export default function Home () {
                 <div className="slide-meta">
                     <ul className="nav nav-tabs slide-btns">
                         <li className="nav-item"><a className="active" href="#messages" data-toggle="tab">Tin nhắn</a></li>
-                        <li className="nav-item"><a className href="#notifications" data-toggle="tab">Tin nhắn mới</a></li>
+                        <li className="nav-item"><a className href="#notifications" data-toggle="tab">Thông báo</a></li>
                     </ul>
                     <div className="tab-content">
                         <div className="tab-pane active fade show" id="messages">
