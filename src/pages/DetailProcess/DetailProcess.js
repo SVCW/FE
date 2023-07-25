@@ -181,7 +181,7 @@ export default function DetailProcess (props) {
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Đồng Ý!',
-            cancelButtonText: 'Hủy Bỏ!',
+            cancelButtonText: 'Hủy bỏ!',
             reverseButtons: true
         }).then(async (result) => {
             if (result.isConfirmed) {
@@ -202,8 +202,8 @@ export default function DetailProcess (props) {
                 result.dismiss === Swal.DismissReason.cancel
             ) {
                 swalWithBootstrapButtons.fire(
-                    'Hủy Bỏ',
-                    'Hủy Bỏ Xóa Tiến Trình',
+                    'Hủy bỏ',
+                    'Hủy bỏ xóa tiến trình',
                     'error'
                 )
             }
@@ -235,18 +235,18 @@ export default function DetailProcess (props) {
                                         </svg></i>
                                     <ul>
                                         <li onClick={handleClick1}>
-                                            <i className="icofont-pen-alt-1" />Thêm Mới
-                                            <span>Thêm Mới Tiến Trình</span>
+                                            <i className="icofont-pen-alt-1" />Thêm mới
+                                            <span>Thêm mới tiến trình</span>
                                         </li>
                                         <li onClick={handleClick}>
-                                            <i className="icofont-pen-alt-1" />Chỉnh Sửa
-                                            <span>Chỉnh Sửa Tiến Trình</span>
+                                            <i className="icofont-pen-alt-1" />Chỉnh sửa
+                                            <span>Chỉnh sửa tiến trình</span>
                                         </li>
                                         <li onClick={() => {
                                             DeleteProcess(currentObject.processId)
                                         }}>
                                             <i className="icofont-ban" />Xóa
-                                            <span>Xóa Tiến Trình</span>
+                                            <span>Xóa tiến trình</span>
                                         </li>
 
                                     </ul>
@@ -254,7 +254,7 @@ export default function DetailProcess (props) {
                             </div>
                         </div>
                         {processactivity.length === 0 ?
-                            <h2 style={{ textAlign: 'center', paddingTop: '50px', fontWeight: 'bold', color: '#3f6ad8' }}>Chưa Có Tiến Trình</h2>
+                            <h2 style={{ textAlign: 'center', paddingTop: '50px', fontWeight: 'bold', color: '#3f6ad8' }}>Chưa có tiến trình</h2>
                             :
                             <div className="row">
                                 <div className="offset-lg-1 col-lg-10">
@@ -280,7 +280,7 @@ export default function DetailProcess (props) {
                                             </div>
                                         </div>
                                         <div className="blog-title" style={{ display: 'flex', alignContent: 'center', fontSize: '40px', textAlign: 'center', paddingBottom: '50px', color: '#00a6d3' }}>
-                                            <h2>Tiến Trình : {currentObject?.processNo}</h2>
+                                            <h2>Tiến trình : {currentObject?.processNo}</h2>
                                         </div>
                                         <div className="blog-title" style={{ textAlign: 'center' }}>
                                             {/* <h2 style={{ width: '250px', fontWeight: 'bold' }}>Tiêu Đề : </h2> */}
@@ -311,7 +311,7 @@ export default function DetailProcess (props) {
                                                             <line x1={3} y1={10} x2={21} y2={10} />
                                                         </svg></i> {DateTime(currentObject?.startDate)}</li>
                                                 <li style={{ display: 'flex', fontSize: '20px' }}>
-                                                    <div style={{ paddingRight: '10px', color: 'black' }}>- Ngày Kết Thúc:</div>
+                                                    <div style={{ paddingRight: '10px', color: 'black' }}>- Ngày kết thúc:</div>
                                                     <i style={{ fontSize: '20px' }}>
 
                                                         <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-calendar">
@@ -322,7 +322,7 @@ export default function DetailProcess (props) {
                                                         </svg></i> {DateTime(currentObject?.endDate)}</li>
                                             </ul>
 
-                                            <h3 style={{ fontWeight: 'bold' }}>Thông Tin Chi Tiết :</h3>
+                                            <h3 style={{ fontWeight: 'bold' }}>Thông tin chi tiết :</h3>
                                             <p style={{ paddingLeft: '20px' }}>
                                                 - {currentObject?.description}
                                             </p>
@@ -589,7 +589,7 @@ export default function DetailProcess (props) {
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="email-label" htmlFor="email">Mô Tả Tiến Trình</label>
+                                                <label id="email-label" htmlFor="email">Mô tả tiến trình</label>
                                                 <input type="text" name='description' onChange={formik.handleChange} value={formik.values.description} id="email" placeholder="Nhập Mô Tả" className="form-control" required />
                                             </div>
                                         </div>
@@ -597,13 +597,13 @@ export default function DetailProcess (props) {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Ngày Bắt Đầu</label>
+                                                <label id="name-label" htmlFor="name">Ngày bắt đầu</label>
                                                 <input type="datetime-local" name='startDate' onChange={formik.handleChange} value={formik.values.startDate} id="name" className="form-control" required />
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Ngày Kết Thúc</label>
+                                                <label id="name-label" htmlFor="name">Ngày kết thúc</label>
                                                 <input type="datetime-local" name='endDate' onChange={formik.handleChange} value={formik.values.endDate} id="name" placeholder="Nhập Nơi Diễn Ra" className="form-control" required />
                                             </div>
                                         </div>
@@ -611,7 +611,7 @@ export default function DetailProcess (props) {
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Loại Tiến Trình</label>
+                                                <label id="name-label" htmlFor="name">Loại tiến trình</label>
                                                 <select data-te-select-init data-te-select-visible-options="3" name='processTypeId' onChange={formik.handleChange} value={formik.values.processTypeId} id="name" className="form-control">
                                                     <option value={currentObject.processTypeId}>abc</option>
                                                     {processType.map((item, index) => {
@@ -625,7 +625,7 @@ export default function DetailProcess (props) {
 
                                     <div className="row">
                                         <div className="col-md-4">
-                                            <button type="submit" id="submit" className="btn btn-primary btn-block">Hoàn Thành</button>
+                                            <button type="submit" id="submit" className="btn btn-primary btn-block">Hoàn thành</button>
                                         </div>
                                     </div>
                                 </form>
@@ -665,13 +665,13 @@ export default function DetailProcess (props) {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Tên Tiến Trình</label>
+                                                <label id="name-label" htmlFor="name">Tên tiến trình</label>
                                                 <input type="text" name='processTitle' onChange={formik1.handleChange} id="name" placeholder="Nhập Tên Tiến Trình" className="form-control" required />
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="email-label" htmlFor="email">Mô Tả Tiến Trình</label>
+                                                <label id="email-label" htmlFor="email">Mô tả tiến trình</label>
                                                 <input type="text" name='description' onChange={formik1.handleChange} id="email" placeholder="Nhập Mô Tả" className="form-control" required />
                                             </div>
                                         </div>
@@ -679,13 +679,13 @@ export default function DetailProcess (props) {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Ngày Bắt Đầu</label>
+                                                <label id="name-label" htmlFor="name">Ngày bắt đầu</label>
                                                 <input type="datetime-local" name='startDate' onChange={formik1.handleChange} id="name" className="form-control" required />
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Ngày Kết Thúc</label>
+                                                <label id="name-label" htmlFor="name">Ngày kết thúc</label>
                                                 <input type="datetime-local" name='endDate' onChange={formik1.handleChange} id="name" placeholder="Nhập Nơi Diễn Ra" className="form-control" required />
                                             </div>
                                         </div>
@@ -693,7 +693,7 @@ export default function DetailProcess (props) {
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Loại Tiến Trình</label>
+                                                <label id="name-label" htmlFor="name">Loại tiến trình</label>
                                                 <select data-te-select-init data-te-select-visible-options="3" name='processTypeId' onChange={formik1.handleChange} id="name" className="form-control">
                                                     <option value={""} >Chọn loại tiến trình</option>
                                                     {processType.map((item, index) => {
@@ -711,7 +711,7 @@ export default function DetailProcess (props) {
                                                 <div>
                                                     <form>
                                                         <fieldset className="upload_dropZone text-center mb-3 p-4" >
-                                                            <legend className="visually-hidden">Tải Lên Hình Ảnh</legend>
+                                                            <legend className="visually-hidden">Tải lên hình ảnh</legend>
                                                             <svg className="upload_svg" width={60} height={60} aria-hidden="true">
                                                                 <use href="#icon-imageUpload" />
                                                             </svg>

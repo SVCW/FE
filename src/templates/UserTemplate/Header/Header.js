@@ -10,6 +10,8 @@ export default function Header (props) {
 
     const dispatch = useDispatch()
     const { userByID } = useSelector(root => root.UserReducer)
+
+    if (!userByID) return <p>Loading...</p>
     return (
         <header className >
             <div className="topbar stick">
@@ -44,7 +46,7 @@ export default function Header (props) {
                 <ul className="web-elements">
                     <li>
                         <div className="user-dp">
-                            <NavLink to="/profile" title>
+                            <NavLink to={`/profile/${localStorage.getItem('userID')}`} title>
                                 <img alt src="images/avatar/uocAvatar.jpg" />
                                 <div className="name">
                                     <h4>{localStorage.getItem('username')}</h4>
@@ -111,10 +113,10 @@ export default function Header (props) {
 
                         <ul className="dropdown">
                             {localStorage.getItem('userID') ?
-                                <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Trang Cá Nhân</a></li>
+                                <li><a href="profile.html" title><i className="icofont-user-alt-3" /> Trang cá nhân</a></li>
                                 : <Fragment></Fragment>
                             }
-                            <li><NavLink to="/history" title><i className="icofont-flash" /> Lịch Sử</NavLink></li>
+                            <li><NavLink to="/history" title><i className="icofont-flash" /> Lịch sử</NavLink></li>
                             {userByID.fanpage === null ?
                                 <li><NavLink to="/createfanpage" title><i className="icofont-plus" /> Tạo Fanpage</NavLink></li>
                                 :

@@ -234,14 +234,14 @@ export default function Role () {
     const leftToolbarTemplate = () => {
         return (
             <div className="flex flex-wrap gap-2">
-                <Button label="Thêm Mới" icon="pi pi-plus" severity="success" onClick={openNew} />
+                <Button label="Thêm mới" icon="pi pi-plus" severity="success" onClick={openNew} />
                 {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
             </div>
         );
     };
 
     const rightToolbarTemplate = () => {
-        return <Button label="Tải Xuống" icon="pi pi-upload" style={{ marginRight: '50px' }} className="p-button-help" onClick={exportCSV} />;
+        return <Button label="Tải xuống" icon="pi pi-upload" style={{ marginRight: '50px' }} className="p-button-help" onClick={exportCSV} />;
     };
 
     const imageBodyTemplate = (rowData) => {
@@ -288,7 +288,7 @@ export default function Role () {
 
     const header = (
         <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0 mb-4">Quản Lý Vai Trò</h4>
+            <h4 className="m-0 mb-4">Quản lý chức vụ</h4>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm Kiếm..." />
@@ -327,8 +327,8 @@ export default function Role () {
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
                         <Column field="roleId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="roleName" header="Tên Vai Trò" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="description" header="Miêu Tả" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field="roleName" header="Tên vai trò" sortable style={{ minWidth: '11rem' }}></Column>
+                        <Column field="description" header="Miêu tả" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Day" sortable style={{ minWidth: '12rem' }}></Column> */}
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
@@ -341,7 +341,7 @@ export default function Role () {
                 <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
 
                     <label htmlFor="description" className="font-bold">
-                        Name
+                        Tên
                     </label>
                     {product.roleId === '0' ? <InputText id="roleName" value={product.roleName} onChange={(e) => onInputChange(e, 'roleName')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.roleName })} />
                         :
@@ -372,7 +372,7 @@ export default function Role () {
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                         {product && (
                             <span>
-                                Are you sure you want to delete <b>{product.name}</b>?
+                                Bạn chắc chắn muốn xóa nó? <b>{product.name}</b>?
                             </span>
                         )}
                     </div>
@@ -381,7 +381,7 @@ export default function Role () {
                 <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
                     <div className="confirmation-content">
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        {product && <span>Are you sure you want to delete the selected products?</span>}
+                        {product && <span>Bạn chắc chắn muốn xóa những sản phảm trên?</span>}
                     </div>
                 </Dialog>
             </div>
