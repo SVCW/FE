@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect } from 'react'
+import React from 'react'
+import { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom/cjs/react-router-dom'
 
@@ -6,8 +7,9 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom'
 
 
 export default function Header (props) {
-    const {userByID} = useSelector(root => root.UserReducer)
-    const dispatch = useDispatch([])
+
+    const dispatch = useDispatch()
+    const { userByID } = useSelector(root => root.UserReducer)
     return (
         <header className >
             <div className="topbar stick">

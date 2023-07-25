@@ -8,12 +8,15 @@ import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetListActivityAction } from '../../redux/actions/ActivityAction';
 import { LoginUserAction } from '../../redux/actions/LoginAction';
+import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 export default function Login (props) {
     const dispatch = useDispatch()
     const { msg } = useSelector(root => root.LoginReducer)
     useEffect(() => {
         const action = GetListActivityAction();
         dispatch(action)
+        const action1 = GetListFanpageAction();
+        dispatch(action1)
     }, []);
 
     const formik = useFormik({

@@ -15,6 +15,21 @@ export const CreateProcessAction = (value) => {
 
 }
 
+export const CreateProcess1Action = (value, id) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/Process/Insert-process', value);
+            console.log(result.data);
+            // const action = GetListActivityAction()
+            // dispatch(action)
+            const action1 = GetProcessByActivityAction(id)
+            dispatch(action1)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+}
 
 export const GetProcessByActivityAction = (id) => {
     return async (dispatch) => {
@@ -74,7 +89,8 @@ export const DeleteProcessByIdAction = (id) => {
         try {
             let result = await http.delete(`/Process/delete-process?id=${id}`);
             console.log(result.data.data);
-
+            const action = GetListActivityAction();
+            dispatch(action)
         } catch (error) {
             console.log(error);
         }

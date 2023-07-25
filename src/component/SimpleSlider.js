@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { GetFanpageByIDAction } from '../redux/actions/FanpageAction';
+import { FollowFanpageAction, GetFanpageByIDAction, UnFollowFanpageAction } from '../redux/actions/FanpageAction';
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 function SimpleSlider (props) {
+    const { userID } = useSelector(root => root.LoginReducer)
+    const dispatch = useDispatch()
     const settings = {
         dots: false,
         infinite: true,
@@ -28,11 +32,70 @@ function SimpleSlider (props) {
                 }
             }
         ]
+
     };
 
+    const [cmt, setCmt] = useState(JSON.parse(localStorage.getItem('arrFanpage')))
+    const handleFollowClick = (index, activity, isFollow, title) => {
+        console.log(index, activity, isFollow, title);
+        console.log(userID);
+        setCmt((prevArray) => {
+            const newArray = JSON.parse(JSON.stringify(prevArray));
+            newArray[index].isFollow = !newArray[index].isFollow;
+            localStorage.setItem(`arrFanpage`, JSON.stringify(newArray));
+
+            return newArray;
+        });
+        if (isFollow) {
+            console.log('Hủy Theo Dõi');
+            const action = UnFollowFanpageAction(userID, activity);
+            dispatch(action)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: `Bỏ Theo Dõi Thành Công Sự Kiện ${title}`
+            })
+
+
+        }
+        else {
+            console.log('Theo Dõi');
+            const action = FollowFanpageAction(userID, activity);
+            dispatch(action)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: `Theo Dõi Thành Công Sự Kiện ${title}`
+            })
+        }
+    };
+
+    console.log(cmt);
     return (
         <Slider {...settings}>
-            {props.arrFanpage.map((item, index) => {
+            {cmt.map((item, index) => {
                 return <div className='suggested-caro'>
                     <li >
                         {/* <figure style={{ cursor: 'pointer' }} ><img src={item.avatar} style={{ height: '80px' }} /></figure> */}
@@ -41,10 +104,20 @@ function SimpleSlider (props) {
                         </NavLink>
                         <span>{item.fanpageName}</span>
                         {/* <ins>{(item.description).slice(0, 200)}</ins> */}
-                        <a href="#" title data-ripple><i className="icofont-star" />
-                            Theo Dõi</a>
+                        <div style={{
+                            background: '#088dcd none repeat scroll 0 0',
+                            borderRadius: '16px',
+                            color: '#fff',
+                            display: 'inline-block',
+                            fontSize: '12px',
+                            marginTop: '10px',
+                            padding: ' 5px 10px',
+                            cursor: 'pointer'
+                        }} title data-ripple onClick={() => { handleFollowClick(index, item.fanpageId, item.isFollow, item.fanpageName) }} >
+                            <i className="icofont-star" />
+                            {item?.isFollow ? "Hủy Theo Dõi" : "Theo Dõi"}</div>
                     </li>
-                </div>
+                </div >
             })}
 
         </Slider >
