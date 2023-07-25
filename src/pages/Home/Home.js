@@ -72,7 +72,6 @@ export default function Home () {
         // } else {
         //     const action = GetListActivityAction();
         //     dispatch(action)
-
         // }
     }, []);
     const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
