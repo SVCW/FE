@@ -7,6 +7,7 @@ import moment from 'moment';
 import DetailActivity from '../../component/DetailActivity';
 import { Fragment } from 'react';
 import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { FilePond, registerPlugin } from 'react-filepond'
 import Swal from 'sweetalert2'
 // Import FilePond styles
@@ -37,10 +38,12 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export default function Home () {
     const { userByID } = useSelector(root => root.UserReducer)
+    const { userByID } = useSelector(root => root.UserReducer)
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [images, setImages] = useState([]);
     const [tcss, setTcss] = useState('css');
+    const [vprocess, setVProcess] = useState(false)
     const [vprocess, setVProcess] = useState(false)
     const dandleCSS = () => {
         if (tcss === "css") {
@@ -48,7 +51,7 @@ export default function Home () {
         }
     }
     useEffect(() => {
-        const existingData = JSON.parse(localStorage.getItem("activity"));
+        // const existingData = JSON.parse(localStorage.getItem("activity"));
         const action = GetListActivityAction();
         dispatch(action)
         const action1 = GetListFanpageAction();
@@ -72,7 +75,6 @@ export default function Home () {
         // } else {
         //     const action = GetListActivityAction();
         //     dispatch(action)
-
         // }
     }, []);
     const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
@@ -810,7 +812,7 @@ export default function Home () {
 
 
     useEffect(() => {
-        const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
+        const updatedArrActivity = arrActivity?.map((activity) => {
             const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
             return { ...activity, commentData: matchingComments };
         });
