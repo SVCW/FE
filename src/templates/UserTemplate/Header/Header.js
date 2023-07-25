@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { Fragment, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom/cjs/react-router-dom'
 
 
 
 
 export default function Header (props) {
+    const {userByID} = useSelector(root => root.UserReducer)
     const dispatch = useDispatch([])
     return (
         <header className >
