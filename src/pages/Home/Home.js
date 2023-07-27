@@ -1239,14 +1239,14 @@ export default function Home() {
                                           đăng
                                         </span>
                                       </li>
-                                      <li>
+                                      {/* <li>
                                         <i className="icofont-ban" />
                                         Ẩn bài đăng
                                         <span>
                                           Giusp bạn ẩn bài đăng nếu chiến dịch
                                           có vấn đề
                                         </span>
-                                      </li>
+                                      </li> */}
                                       <li>
                                         <i className="icofont-ui-delete" />
                                         Xóa bài đăng
@@ -1541,7 +1541,7 @@ export default function Home() {
                                 </div>
 
                                 <div className="we-video-info">
-                                  <ul>
+                                  {/* <ul>
                                     <li>
                                       <span title="views" className="views">
                                         <i>
@@ -1644,7 +1644,7 @@ export default function Home() {
                                         <ins>205</ins>
                                       </span>
                                     </li>
-                                  </ul>
+                                  </ul> */}
                                   <div
                                     className="emoji-state"
                                     style={{
@@ -1672,14 +1672,14 @@ export default function Home() {
                                           />
                                           Thích
                                         </span>
-                                        <ul className="namelist">
+                                        {/* <ul className="namelist">
                                           <li>Jhon Doe</li>
                                           <li>Amara Sin</li>
                                           <li>Sarah K.</li>
                                           <li>
                                             <span>20+ more</span>
                                           </li>
-                                        </ul>
+                                        </ul> */}
                                       </div>
                                     </div>
 
