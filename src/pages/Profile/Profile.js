@@ -1,13 +1,10 @@
 import React, { useEffect } from "react";
 import { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { GetProfileByIdAction } from "../../redux/actions/ProfileAction";
 import PersonalDetail from "./PersonalDetail";
 
 export default function Profile(props) {
-  const {getUserId} = useSelector((root) => root.ProfileReducer); //có data xong mới thêm
-  console.log(getUserId);
-
   //viết trước
   const dispatch = useDispatch();
 
@@ -2479,7 +2476,7 @@ export default function Profile(props) {
                               <div className="tab-pane fade" id="about">
                                 <div className="row merged20">
                                   <div className="col-lg-8">
-                                    <PersonalDetail userDetails={getUserId}/>
+                                    <PersonalDetail/>
                                     <div className="main-wraper">
                                       <h5 className="main-title">Interests</h5>
                                       <div className="info-block-list">

@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { UpdateProfileById } from "../../redux/actions/ProfileAction";
+import { GetProfileByIdAction, UpdateProfileById } from "../../redux/actions/ProfileAction";
 import {  toast } from 'react-toastify';
 
-const PersonalDetail = ({ userDetails }) => {
+const PersonalDetail = () => {
+  const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem('getuserid')));
     const notify = () => toast("Wow so easy!", {
         theme: 'dark'
     });
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [info, setInfo] = useState({
-    userId: userDetails.userId,
-    username: userDetails.username,
-    fullName: userDetails.fullName,
-    phone: userDetails.phone,
-    email: userDetails.email,
-    dataOfBirth: userDetails.dataOfBirth,
-    gender: userDetails.gender === true ? "Nam" : "Nu",
+    userId: userDetails?.userId,
+    username: userDetails?.username,
+    fullName: userDetails?.fullName,
+    phone: userDetails?.phone,
+    email: userDetails?.email,
+    dataOfBirth: userDetails?.dataOfBirth,
+    gender: userDetails?.gender === true ? "Nam" : "Nu",
   });
 
   const handleChange = (e) => {
@@ -26,20 +27,18 @@ const PersonalDetail = ({ userDetails }) => {
       [name]: value,
     });
   };
-  const handleSubmit = (e) => {
-    console.log(info);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const action = UpdateProfileById(info);
-    console.log(action);
+    const action1 = UpdateProfileById(info);
     notify();
-    dispatch(action);
+    await dispatch(action1);
+    const action2 = GetProfileByIdAction(userDetails?.userId);
+    await dispatch(action2);
 
+    setUserDetails(JSON.parse(localStorage.getItem('getuserid')));
     setIsEditing(false);
   };
-
-  if (!userDetails) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="main-wraper">

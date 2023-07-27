@@ -8,12 +8,15 @@ import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetListActivityAction } from '../../redux/actions/ActivityAction';
 import { LoginUserAction } from '../../redux/actions/LoginAction';
+import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 export default function Login (props) {
     const dispatch = useDispatch()
     const { msg } = useSelector(root => root.LoginReducer)
     useEffect(() => {
         const action = GetListActivityAction();
         dispatch(action)
+        const action1 = GetListFanpageAction();
+        dispatch(action1)
     }, []);
 
     const formik = useFormik({
@@ -75,18 +78,18 @@ export default function Login (props) {
     return (
         <div className="theme-layout">
             <div className="authtication bluesh high-opacity">
-                <div className="bg-image" style={{ backgroundImage: 'url(images/resources/login-bg3.jpg)' }} />
+                <div className="bg-image" style={{ backgroundImage: 'url(images/avatar/20.jpg)' }} />
                 <ul className="welcome-caro">
                     <li className="welcome-box">
                         <figure><img style={{ width: 600, height: 400 }} src="images/tu thien 1.jpg" alt /></figure>
-                        <h4>Trường Học Tình Thương</h4>
+                        <h4>Trường học tình thương</h4>
                         <p>
                             Dự án này được lên xây dựng lên nhầm kêu gọi cộng đồng chung tay đưa những con chữ đến với trẻ em vùng cao.
                         </p>
                     </li>
                     <li className="welcome-box">
                         <figure><img style={{ width: 600, height: 400 }} src="images/tu thien_4.jpg" alt /></figure>
-                        <h4>Cho Đi Là Còn Mãi</h4>
+                        <h4>Cho đi là còn mãi</h4>
                         <p>
                             Dự án nhầm kêu gọi cộng đồng gây quỹ từ thiện cho những cựu chiến binh, bà mẹ Việt Nam anh hùng và những người bị dính chất độc màu da cam,....
                             Qũy này giúp cho cựu chiến binh, bà mẹ việt nam anh hùng,.... sẽ cảm thấy được an ủi một phần mất mác đã trải qua.
@@ -94,7 +97,7 @@ export default function Login (props) {
                     </li>
                     <li className="welcome-box">
                         <figure><img style={{ width: 600, height: 400 }} src="images/tu thien_2.jpg" alt /></figure>
-                        <h4>Miền Trung Thân Thương</h4>
+                        <h4>Miền trung thân thương</h4>
                         <p>
                             Hoạt động nhầm kêu gọi mọi người hướng về miền trung
                         </p>
@@ -106,13 +109,13 @@ export default function Login (props) {
                 <div className="mockup left-bottom"><img src="images/mockup.png" alt /></div>
                 <div className="verticle-center">
                     <div className="login-form">
-                        <h4><i className="icofont-key-hole" /> Đăng Nhập</h4>
+                        <h4><i className="icofont-key-hole" /> Đăng nhập</h4>
                         <form method="post" className="c-form" onSubmit={formik.handleSubmit}>
-                            <input type="text" placeholder="Tài Khoản" />
-                            <input type="password" placeholder="Mật Khẩu" />
+                            <input type="text" placeholder="Tài khoản" />
+                            <input type="password" placeholder="Mật khẩu" />
                             <div className="checkbox">
                                 <input type="checkbox" id="checkbox" defaultChecked />
-                                <label htmlFor="checkbox"><span>Ghi Nhớ</span></label>
+                                <label htmlFor="checkbox"><span>Nhớ tài khoản</span></label>
                             </div>
 
                             <button className="main-btn" type="submit" onClick={() => {
