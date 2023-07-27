@@ -1,19 +1,14 @@
-import React from "react";
-import { useEffect } from "react";
-import {
-  CreateActivityAction,
-  DeleteLikeAction,
-  GetListActivityAction,
-  PostLikeAction,
-} from "../../redux/actions/ActivityAction";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import moment from "moment";
-import DetailActivity from "../../component/DetailActivity";
-import { Fragment } from "react";
-import { NavLink } from "react-router-dom";
-import { FilePond, registerPlugin } from "react-filepond";
-import Swal from "sweetalert2";
+import React from 'react'
+import { useEffect } from 'react'
+import { CreateActivityAction, DeleteLikeAction, GetListActivityAction, PostLikeAction } from '../../redux/actions/ActivityAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import moment from 'moment';
+import DetailActivity from '../../component/DetailActivity';
+import { Fragment } from 'react';
+import { NavLink } from 'react-router-dom'
+import { FilePond, registerPlugin } from 'react-filepond'
+import Swal from 'sweetalert2'
 // Import FilePond styles
 import "filepond/dist/filepond.min.css";
 
@@ -56,44 +51,47 @@ import {
 import { GetUserByIdAction } from "../../redux/actions/UserAction";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-export default function Home() {
-  const { userByID } = useSelector((root) => root.UserReducer);
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [images, setImages] = useState([]);
-  const [tcss, setTcss] = useState("css");
-  const [vprocess, setVProcess] = useState(false);
-  const dandleCSS = () => {
-    if (tcss === "css") {
-    }
-  };
-  useEffect(() => {
-    // const existingData = JSON.parse(localStorage.getItem("activity"));
-    const action = GetListActivityAction();
-    dispatch(action);
-    const action1 = GetListFanpageAction();
+export default function Home () {
+    const { userByID } = useSelector(root => root.UserReducer)
+    const [isPopupOpen, setPopupOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [images, setImages] = useState([]);
+    const [tcss, setTcss] = useState('css');
+    const [vprocess, setVProcess] = useState(false)
+    const dandleCSS = () => {
+        if (tcss === "css") {
 
-    dispatch(action1);
-    const action2 = GetListProcessTypeAction();
-    dispatch(action2);
-    // if (existingData) {
-    //     setCmt(existingData);
-    //     dispatch({ type: "HIDE_LOADING" });
-    const user = localStorage.getItem("userID");
-    if (user) {
-      const action = GetUserByIdAction(localStorage.getItem("userID"));
-      dispatch(action);
-    } else {
+        }
     }
-    //     return;
-    // } else {
-    //     const action = GetListActivityAction();
-    //     dispatch(action)
-    // }
-  }, []);
-  const { processType, activityProcess } = useSelector(
-    (root) => root.ProcessTypeReducer
-  );
+    useEffect(() => {
+        const existingData = JSON.parse(localStorage.getItem("activity"));
+        const action = GetListActivityAction();
+        dispatch(action)
+        const action1 = GetListFanpageAction();
+
+        dispatch(action1)
+        const action2 = GetListProcessTypeAction();
+        dispatch(action2)
+        // console.log(existingData);
+        // if (existingData) {
+        //     setCmt(existingData);
+        //     dispatch({ type: "HIDE_LOADING" });
+        const user = localStorage.getItem('userID')
+        if (user) {
+            console.log('có user');
+            const action = GetUserByIdAction(localStorage.getItem('userID'));
+            dispatch(action)
+        } else {
+            console.log('không có user');
+        }
+        //     return;
+        // } else {
+        //     const action = GetListActivityAction();
+        //     dispatch(action)
+
+        // }
+    }, []);
+    const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
 
 
   const initialValues = {
@@ -846,24 +844,21 @@ export default function Home() {
     setCommentData(updatedComments);
   };
 
-  useEffect(() => {
-    const updatedArrActivity = arrActivity?.map((activity) => {
-      const matchingComments = commentData?.filter(
-        (comment) => comment.id === activity.activityId
-      );
-      //TODO
-      return { ...activity, commentData: matchingComments };
-    });
-    setCmt(updatedArrActivity);
-  }, [commentData, arrActivity]);
-  // useEffect(() => {
-  //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
-  //     // .map((activity) => {
-  //     //     // const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
-  //     //     // return { ...activity, commentData: matchingComments };
-  //     // });
-  //     // setCmt(updatedArrActivity)
-  // }, [arrActivity]);
+    useEffect(() => {
+        const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
+            const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
+            return { ...activity, commentData: matchingComments };
+        });
+        setCmt(updatedArrActivity)
+    }, [commentData, arrActivity]);
+    // useEffect(() => {
+    //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
+    //     // .map((activity) => {
+    //     //     // const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
+    //     //     // return { ...activity, commentData: matchingComments };
+    //     // });
+    //     // setCmt(updatedArrActivity)
+    // }, [arrActivity]);
 
   const DateTime = (item) => {
     const currentTime = moment();
