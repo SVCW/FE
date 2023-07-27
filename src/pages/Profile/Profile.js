@@ -222,7 +222,6 @@ export default function Profile(props) {
                             </li>
                           </ul>
                         </div>
-                        
                         <div className="main-wraper">
                           <div className="grp-about">
                             <div className="row">

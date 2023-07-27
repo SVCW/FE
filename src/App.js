@@ -24,12 +24,16 @@ import DetailProcess from './pages/DetailProcess/DetailProcess';
 import CreateFanpage from './pages/Fanpage/CreateFanpage';
 // import MultiStepForm from './MultiStepForm';
 // import MultiStepForm1 from './MultiStepForm1';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const history = createBrowserHistory()
 
 function App () {
 
   return (
-    <Router history={history}>
+    <>
+      <Router history={history}>
       <Switch>
         {/* <AboutUniversity /> */}
         {/* <SignIn /> */}
@@ -56,6 +60,8 @@ function App () {
 
       </Switch>
     </Router>
+    <ToastContainer/>
+    </>
   );
 }
 
