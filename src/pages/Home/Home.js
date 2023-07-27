@@ -913,7 +913,7 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="widget">
-                        <h4 className="widget-title">Thông Tin Cá Nhân Bạn</h4>
+                        <h4 className="widget-title">Thông tin cá nhân bạn</h4>
                         <span>Tiến trình hoàn thiện thông tin cá nhân</span>
                         <div
                           data-progress="tip"
@@ -1147,7 +1147,6 @@ export default function Home() {
                     ) : (
                       <div></div>
                     )}
-
                     <div className="main-wraper">
                       <div className="user-post">
                         <div className="friend-info">
@@ -1165,7 +1164,6 @@ export default function Home() {
                               fanpage tương tự
                             </span>
                           </div>
-
                           <SimpleSlider arrFanpage={arrFanpage} />
                         </div>
                       </div>
@@ -1175,10 +1173,10 @@ export default function Home() {
                       const detailItem = item;
                       let isAlreadyLiked = false;
                         console.log(item);
-
-                        item.like.map((user) => {
+                        item?.like?.map((user) => {
                           if( user.userId === userByID.userId) {
                             console.log(user.userId === userByID.userId);
+                            //item?.like?
                             isAlreadyLiked = true;
                           }
                         })
@@ -2584,7 +2582,7 @@ export default function Home() {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
-                          Tên sự kiện
+                          Tên chiến dịch
                         </label>
                         <input
                           type="text"
@@ -2601,7 +2599,7 @@ export default function Home() {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="email-label" htmlFor="email">
-                          Mô tả sự kiện
+                          Mô tả chiến dịch
                         </label>
                         <input
                           type="text"
@@ -2609,7 +2607,7 @@ export default function Home() {
                           onChange={formik.handleChange}
                           value={formik.values.description}
                           id="email"
-                          placeholder="Nhập Tô Tả"
+                          placeholder="Nhập mô tả"
                           className="form-control"
                           required
                         />
@@ -2628,7 +2626,7 @@ export default function Home() {
                           onChange={formik.handleChange}
                           value={formik.values.location}
                           id="name"
-                          placeholder="Nhập Nơi Diễn Ra"
+                          placeholder="Nhập nơi diễn ra"
                           className="form-control"
                           required
                         />
@@ -2655,23 +2653,22 @@ export default function Home() {
                               />
                             </div>
                             {isTextInputVisible === true && (
-                              <div>
+                              
                                 <div className="form-group">
-                                  <label id="name-label" htmlFor="name">
-                                    Mục tiêu
-                                  </label>
+                                  
                                   <input
                                     type="number"
                                     name="targetDonation"
                                     onChange={formik.handleChange}
                                     value={formik.values.targetDonation}
                                     id="name"
-                                    placeholder="Nhập Muc Tiêu"
+                                    placeholder="Nhập số tiền cần nhận"
                                     className="form-control"
+                                   style={{marginTop:'-2rem'}}
                                     required
                                   />
                                 </div>
-                              </div>
+                         
                             )}
                           </div>
                         ) : (

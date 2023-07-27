@@ -574,7 +574,7 @@ export default function DetailProcess (props) {
                             </div>
                         </div>
 
-                        <div className="form1">
+                        <div className="Chiến dịch 1">
                             <header className="header">
 
                             </header>
@@ -597,13 +597,13 @@ export default function DetailProcess (props) {
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Ngày bắt đầu</label>
+                                                <label id="name-label" htmlFor="name">Bắt đầu</label>
                                                 <input type="datetime-local" name='startDate' onChange={formik.handleChange} value={formik.values.startDate} id="name" className="form-control" required />
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="form-group">
-                                                <label id="name-label" htmlFor="name">Ngày kết thúc</label>
+                                                <label id="name-label" htmlFor="name">Kết thúc</label>
                                                 <input type="datetime-local" name='endDate' onChange={formik.handleChange} value={formik.values.endDate} id="name" placeholder="Nhập Nơi Diễn Ra" className="form-control" required />
                                             </div>
                                         </div>
@@ -656,7 +656,7 @@ export default function DetailProcess (props) {
                             </div>
                         </div>
 
-                        <div className="form1">
+                        <div className="Chiến dịch 1">
                             <header className="header">
 
                             </header>
@@ -686,7 +686,7 @@ export default function DetailProcess (props) {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label id="name-label" htmlFor="name">Ngày kết thúc</label>
-                                                <input type="datetime-local" name='endDate' onChange={formik1.handleChange} id="name" placeholder="Nhập Nơi Diễn Ra" className="form-control" required />
+                                                <input type="datetime-local" name='endDate' onChange={formik1.handleChange} id="name" placeholder="Nhập nơi diễn ra" className="form-control" required />
                                             </div>
                                         </div>
                                     </div>
