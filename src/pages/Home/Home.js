@@ -52,46 +52,46 @@ import { GetUserByIdAction } from "../../redux/actions/UserAction";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 export default function Home () {
-    const { userByID } = useSelector(root => root.UserReducer)
-    const [isPopupOpen, setPopupOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [images, setImages] = useState([]);
-    const [tcss, setTcss] = useState('css');
-    const [vprocess, setVProcess] = useState(false)
-    const dandleCSS = () => {
-        if (tcss === "css") {
+  const { userByID } = useSelector(root => root.UserReducer)
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [images, setImages] = useState([]);
+  const [tcss, setTcss] = useState('css');
+  const [vprocess, setVProcess] = useState(false)
+  const dandleCSS = () => {
+    if (tcss === "css") {
 
-        }
     }
-    useEffect(() => {
-        const existingData = JSON.parse(localStorage.getItem("activity"));
-        const action = GetListActivityAction();
-        dispatch(action)
-        const action1 = GetListFanpageAction();
+  }
+  useEffect(() => {
+    const existingData = JSON.parse(localStorage.getItem("activity"));
+    const action = GetListActivityAction();
+    dispatch(action)
+    const action1 = GetListFanpageAction();
 
-        dispatch(action1)
-        const action2 = GetListProcessTypeAction();
-        dispatch(action2)
-        // console.log(existingData);
-        // if (existingData) {
-        //     setCmt(existingData);
-        //     dispatch({ type: "HIDE_LOADING" });
-        const user = localStorage.getItem('userID')
-        if (user) {
-            console.log('có user');
-            const action = GetUserByIdAction(localStorage.getItem('userID'));
-            dispatch(action)
-        } else {
-            console.log('không có user');
-        }
-        //     return;
-        // } else {
-        //     const action = GetListActivityAction();
-        //     dispatch(action)
+    dispatch(action1)
+    const action2 = GetListProcessTypeAction();
+    dispatch(action2)
+    // console.log(existingData);
+    // if (existingData) {
+    //     setCmt(existingData);
+    //     dispatch({ type: "HIDE_LOADING" });
+    const user = localStorage.getItem('userID')
+    if (user) {
+      console.log('có user');
+      const action = GetUserByIdAction(localStorage.getItem('userID'));
+      dispatch(action)
+    } else {
+      console.log('không có user');
+    }
+    //     return;
+    // } else {
+    //     const action = GetListActivityAction();
+    //     dispatch(action)
 
-        // }
-    }, []);
-    const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
+    // }
+  }, []);
+  const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
 
 
   const initialValues = {
@@ -199,7 +199,7 @@ export default function Home () {
     const fileList = e.target.files;
     const newImages = [];
 
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ linkMedia: imageUrl, type: file.type });
@@ -375,19 +375,20 @@ export default function Home () {
   // const currentText2 = textOptions2[text2];
 
 
-//   const updatedComments = commentData.map((comment) => {
-//     if (comment.id === id) {
-//       if (comment.color === "rgb(117, 189, 240)") {
-//         return { ...comment, color: "#eae9ee" };
-//       } else {
-//         return { ...comment, color: "rgb(117, 189, 240)" };
-//       }
-//     }
-//     return comment;
-//   });
+  //   const updatedComments = commentData.map((comment) => {
+  //     if (comment.id === id) {
+  //       if (comment.color === "rgb(117, 189, 240)") {
+  //         return { ...comment, color: "#eae9ee" };
+  //       } else {
+  //         return { ...comment, color: "rgb(117, 189, 240)" };
+  //       }
+  //     }
+  //     return comment;
+  //   });
+  const [joinedIndex, setJoinedIndex] = useState(null);
   const handleJoinClick = (index, activity, isJoin, title) => {
     setCmt((prevArray) => {
-       
+
       const newArray = JSON.parse(JSON.stringify(prevArray));
       newArray[index].isJoin = !newArray[index].isJoin;
       localStorage.setItem(`activity`, JSON.stringify(newArray));
@@ -395,6 +396,7 @@ export default function Home () {
       return newArray;
     });
     if (isJoin) {
+      setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -403,7 +405,7 @@ export default function Home () {
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
-        
+
         didOpen: (toast) => {
           toast.addEventListener("mouseenter", Swal.stopTimer);
           toast.addEventListener("mouseleave", Swal.resumeTimer);
@@ -415,6 +417,7 @@ export default function Home () {
         title: `Hủy tham gia sự kiện ${title} thành công`,
       });
     } else {
+      setJoinedIndex(index);
       const action = JoinAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -435,46 +438,47 @@ export default function Home () {
       });
     }
   };
-//   const handleLikeClick = (id) => {
-//     const updatedComments = commentData.map((comment) => {
-//       if (comment.id === id) {
-//         if (comment.color === "rgb(117, 189, 240)") {
-//           return { ...comment, color: "#eae9ee" };
-//         } else {
-//           return { ...comment, color: "rgb(117, 189, 240)" };
-//         }
-//       }
-//       return comment;
-//     });
-//     let alreadyLiked = false;
+  //   const handleLikeClick = (id) => {
+  //     const updatedComments = commentData.map((comment) => {
+  //       if (comment.id === id) {
+  //         if (comment.color === "rgb(117, 189, 240)") {
+  //           return { ...comment, color: "#eae9ee" };
+  //         } else {
+  //           return { ...comment, color: "rgb(117, 189, 240)" };
+  //         }
+  //       }
+  //       return comment;
+  //     });
+  //     let alreadyLiked = false;
 
-//     JSON.parse(localStorage.getItem("activity"))?.map((comment) => {
-//       if (comment.activityId === id && comment.like.length > 0) {
-//         comment.like.map((item) => {
-//           if (item.userId === userID) {
-//             alreadyLiked = true;
-//           }
-//         });
-//       }
-//     });
+  //     JSON.parse(localStorage.getItem("activity"))?.map((comment) => {
+  //       if (comment.activityId === id && comment.like.length > 0) {
+  //         comment.like.map((item) => {
+  //           if (item.userId === userID) {
+  //             alreadyLiked = true;
+  //           }
+  //         });
+  //       }
+  //     });
 
-//     let action = null;
+  //     let action = null;
 
-//     if (alreadyLiked) {
-//       action = DeleteLikeAction({
-//         userId: userID,
-//         activityId: id,
-//       });
-//     } else {
-//       action = PostLikeAction({
-//         userId: userID,
-//         activityId: id,
-//       });
-//     }
-//     dispatch(action);
+  //     if (alreadyLiked) {
+  //       action = DeleteLikeAction({
+  //         userId: userID,
+  //         activityId: id,
+  //       });
+  //     } else {
+  //       action = PostLikeAction({
+  //         userId: userID,
+  //         activityId: id,
+  //       });
+  //     }
+  //     dispatch(action);
 
-//     setCommentData(updatedComments);
-//   };
+  //     setCommentData(updatedComments);
+  //   };
+  const [followIndex, setFollowIndex] = useState(null);
   const handleFollowClick = (index, activity, isFollow, title) => {
     setCmt((prevArray) => {
       const newArray = JSON.parse(JSON.stringify(prevArray));
@@ -484,6 +488,7 @@ export default function Home () {
       return newArray;
     });
     if (isFollow) {
+      setFollowIndex(null)
       const action = UnFollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -503,6 +508,7 @@ export default function Home () {
         title: `Bỏ theo dõi chiến dịch ${title} thành công `,
       });
     } else {
+      setFollowIndex(index)
       const action = FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -591,7 +597,7 @@ export default function Home () {
       }
     },
   });
-  function calculateImageClass(imageCount) {
+  function calculateImageClass (imageCount) {
     let imageClass = "full-width";
     if (imageCount === 2) {
       imageClass = "half-width";
@@ -752,7 +758,7 @@ export default function Home () {
     const fileList = e.target.files;
     const newImages = [];
 
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -844,21 +850,21 @@ export default function Home () {
     setCommentData(updatedComments);
   };
 
-    useEffect(() => {
-        const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
-            const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
-            return { ...activity, commentData: matchingComments };
-        });
-        setCmt(updatedArrActivity)
-    }, [commentData, arrActivity]);
-    // useEffect(() => {
-    //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
-    //     // .map((activity) => {
-    //     //     // const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
-    //     //     // return { ...activity, commentData: matchingComments };
-    //     // });
-    //     // setCmt(updatedArrActivity)
-    // }, [arrActivity]);
+  useEffect(() => {
+    const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
+      const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
+      return { ...activity, commentData: matchingComments };
+    });
+    setCmt(updatedArrActivity)
+  }, [commentData, arrActivity]);
+  // useEffect(() => {
+  //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
+  //     // .map((activity) => {
+  //     //     // const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
+  //     //     // return { ...activity, commentData: matchingComments };
+  //     // });
+  //     // setCmt(updatedArrActivity)
+  // }, [arrActivity]);
 
   const DateTime = (item) => {
     const currentTime = moment();
@@ -1167,15 +1173,15 @@ export default function Home () {
                     {cmt.map((item, index) => {
                       const detailItem = item;
                       let isAlreadyLiked = false;
-                        console.log(item);
-                        item?.like?.map((user) => {
-                          if( user.userId === userByID.userId) {
-                            console.log(user.userId === userByID.userId);
-                            //item?.like?
-                            isAlreadyLiked = true;
-                          }
-                        })
-                        console.log(isAlreadyLiked);
+                      console.log(item);
+                      item?.like?.map((user) => {
+                        if (user.userId === userByID.userId) {
+                          console.log(user.userId === userByID.userId);
+                          //item?.like?
+                          isAlreadyLiked = true;
+                        }
+                      })
+                      console.log(isAlreadyLiked);
                       return (
                         <div className="main-wraper">
                           <div className="user-post">
@@ -1357,7 +1363,7 @@ export default function Home () {
                                       {item.title}
                                     </a>
                                     {/* bla bla bla theo dõi */}
-                                    
+
                                   </div>
                                 </div>
                                 <p className="mt-3">
@@ -1423,15 +1429,13 @@ export default function Home () {
                                       // onChange={handleChange}
                                       className="range-slider"
                                       style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                          (item.realDonation /
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
+                                          item.targetDonation) *
+                                          100
+                                          }%, #ddd ${(item.realDonation /
                                             item.targetDonation) *
                                           100
-                                        }%, #ddd ${
-                                          (item.realDonation /
-                                            item.targetDonation) *
-                                          100
-                                        }%, #ddd 100%)`,
+                                          }%, #ddd 100%)`,
                                       }}
                                     />
                                     {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
@@ -1454,11 +1458,10 @@ export default function Home () {
                                         className="range-value"
                                         style={{
                                           position: "absolute",
-                                          left: `${
-                                            (item.realDonation /
-                                              item.targetDonation) *
+                                          left: `${(item.realDonation /
+                                            item.targetDonation) *
                                             100
-                                          }%`,
+                                            }%`,
                                         }}
                                       >
                                         {" "}
@@ -1482,10 +1485,12 @@ export default function Home () {
                                   <div></div>
                                 )}
 
-                                <div style={{display:'flex',
-                                justifyContent:'space-around'}}>
+                                <div style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-around'
+                                }}>
                                   <button
-                                    className=" btn btn-success ml-3 mb-4 mt-4"
+                                    className={`btn ${item.isJoin && joinedIndex === index ? "btn-danger" : "btn-success"} mb-4 mt-4`}
                                     onClick={() => {
                                       handleJoinClick(
                                         index,
@@ -1499,21 +1504,21 @@ export default function Home () {
                                   </button>
 
                                   <button
-                                      className=" btn btn-success ml-3 mb-4 mt-4"
-                                      
-                                      onClick={() => {
-                                        handleFollowClick(
-                                          index,
-                                          item.activityId,
-                                          item.isFollow,
-                                          item.title
-                                        );
-                                      }}
-                                    >
-                                      {item?.isFollow
-                                        ? "Hủy theo dõi"
-                                        : "Theo dõi"}
-                                    </button>
+                                    className={`btn ${item.isFollow && followIndex === index ? "btn-danger" : "btn-success"} mb-4 mt-4`}
+
+                                    onClick={() => {
+                                      handleFollowClick(
+                                        index,
+                                        item.activityId,
+                                        item.isFollow,
+                                        item.title
+                                      );
+                                    }}
+                                  >
+                                    {item?.isFollow
+                                      ? "Hủy theo dõi"
+                                      : "Theo dõi"}
+                                  </button>
                                   {item.targetDonation !== 0 ? (
                                     <button
                                       className="btn btn-primary ml-3 mb-4 mt-4"
@@ -2008,7 +2013,7 @@ export default function Home () {
                   <div className="col-lg-3">
                     <aside className="sidebar static right">
                       {localStorage.getItem("userID") &&
-                      userByID?.fanpage !== null ? (
+                        userByID?.fanpage !== null ? (
                         <div className="widget">
                           <h4 className="widget-title">Nhóm của bạn</h4>
                           <ul className="ak-groups">
@@ -2050,7 +2055,7 @@ export default function Home () {
                                   href="group-feed.html"
                                   title
                                   className="promote"
-                                  onClick={() => {}}
+                                  onClick={() => { }}
                                 >
                                   Chi tiết
                                 </NavLink>
@@ -2067,11 +2072,11 @@ export default function Home () {
                           <div className="friend-box">
                             <figure>
                               <img
-                              style={{
-                                width: '310px',
-                                height:'110px',
-                                objectFit:'cover',
-                              }}
+                                style={{
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
+                                }}
                                 alt
                                 src="images/avatar/5.jpg"
                               />
@@ -2079,7 +2084,7 @@ export default function Home () {
                             </figure>
                             <div className="frnd-meta">
                               <img
-                              style={{
+                                style={{
                                   width: "70px",
                                   height: "70px",
                                   objectfit: "cover",
@@ -2103,11 +2108,11 @@ export default function Home () {
                           <div className="friend-box">
                             <figure>
                               <img
-                              style={{
-                                width: '310px',
-                                height:'110px',
-                                objectFit:'cover',
-                              }}
+                                style={{
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
+                                }}
                                 alt
                                 src="images/avatar/19.jpg"
                               />
@@ -2648,22 +2653,22 @@ export default function Home () {
                               />
                             </div>
                             {isTextInputVisible === true && (
-                              
-                                <div className="form-group">
-                                  
-                                  <input
-                                    type="number"
-                                    name="targetDonation"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.targetDonation}
-                                    id="name"
-                                    placeholder="Nhập số tiền cần nhận"
-                                    className="form-control"
-                                   style={{marginTop:'-2rem'}}
-                                    required
-                                  />
-                                </div>
-                         
+
+                              <div className="form-group">
+
+                                <input
+                                  type="number"
+                                  name="targetDonation"
+                                  onChange={formik.handleChange}
+                                  value={formik.values.targetDonation}
+                                  id="name"
+                                  placeholder="Nhập số tiền cần nhận"
+                                  className="form-control"
+                                  style={{ marginTop: '-2rem' }}
+                                  required
+                                />
+                              </div>
+
                             )}
                           </div>
                         ) : (
