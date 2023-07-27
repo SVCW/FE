@@ -294,7 +294,7 @@ export default function GroupsDetail (props) {
                                 <div id="page-contents" className="row merged20">
                                     <div className="col-lg-3">
                                         <aside className="sidebar static left">
-                                            <div className="widget">
+                                            {/* <div className="widget">
                                                 <span><i className="icofont-globe" /> Sponsored</span>
                                                 <ul className="sponsors-ad">
                                                     <li>
@@ -312,14 +312,14 @@ export default function GroupsDetail (props) {
                                                         </div>
                                                     </li>
                                                 </ul>
-                                            </div>
+                                            </div> */}
                                             <div className="widget">
-                                                <h4 className="widget-title">Tổ Chức Bạn Tham Gia</h4>
+                                                <h4 className="widget-title">Sự kiện gần đây</h4>
                                                 <ul className="ak-groups">
                                                     <li>
                                                         <figure><img alt src="images/resources/your-group1.jpg" /></figure>
                                                         <div className="your-grp">
-                                                            <h5><a title href="group-detail.html">Good Group</a></h5>
+                                                            <h5><a title href="group-detail.html">Hiến máu </a></h5>
                                                             <a title href="#"><i className="icofont-bell-alt" />Notifilactions <span>13</span></a>
                                                             <a className="promote" title href="group-feed.html">view feed</a>
                                                         </div>
@@ -335,7 +335,7 @@ export default function GroupsDetail (props) {
                                                 </ul>
                                             </div>
                                             <div className="widget">
-                                                <h4 className="widget-title">Suggested Group</h4>
+                                                <h4 className="widget-title">Đề xuất</h4>
                                                 <div className="sug-caro">
                                                     <div className="friend-box">
                                                         <figure>
@@ -431,7 +431,7 @@ export default function GroupsDetail (props) {
                                                         <a href="#" title="Boogle inc" data-toggle="tooltip"><img src="images/resources/company8.png" alt /></a>
                                                     </li>
                                                 </ul>
-                                            </div>{/* feature universites logos */}
+                                            </div> 
                                         </aside>
                                     </div>
                                     <div className="col-lg-9">
@@ -493,7 +493,7 @@ export default function GroupsDetail (props) {
                                                         </div>
                                                         <div className="col-lg-4">
                                                             <div className="share-article">
-                                                                <span>share this Group</span>
+                                                                <span>Chia sẻ nhóm</span>
                                                                 <a href="#" title className="facebook"><i className="icofont-facebook" /></a>
                                                                 <a href="#" title className="pinterest"><i className="icofont-pinterest" /></a>
                                                                 <a href="#" title className="instagram"><i className="icofont-instagram" /></a>
@@ -905,7 +905,7 @@ export default function GroupsDetail (props) {
                                                                 <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
                                                             </figure>
                                                         </div>
-                                                        <div className="widget">
+                                                        {/* <div className="widget">
                                                             <h4 className="widget-title">Members <a title href="#" className="see-all">See All</a></h4>
                                                             <ul className="invitepage">
                                                                 <li>
@@ -959,8 +959,8 @@ export default function GroupsDetail (props) {
                                                                     <span>Css3 2020 Tutorial</span>
                                                                 </figure>
                                                             </div>
-                                                        </div>
-                                                        <div className="widget stick-widget">
+                                                        </div> */}
+                                                        {/* <div className="widget stick-widget">
                                                             <h4 className="widget-title">You May Like Groups</h4>
                                                             <ul className="suggestd">
                                                                 <li>
@@ -989,7 +989,7 @@ export default function GroupsDetail (props) {
                                                                     <button className="sug-like"><i className="icofont-like" /><i className="icofont-check-alt" /></button>
                                                                 </li>
                                                             </ul>
-                                                        </div>{/* Suggested groups */}
+                                                        </div> */}
                                                     </aside>
                                                 </div>
                                             </div>
