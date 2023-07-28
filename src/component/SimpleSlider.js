@@ -11,7 +11,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
-function SimpleSlider(props) {
+function SimpleSlider (props) {
   const { userID } = useSelector((root) => root.LoginReducer);
   const dispatch = useDispatch();
   const settings = {
@@ -117,7 +117,7 @@ function SimpleSlider(props) {
                   />
                 </figure>
               </NavLink>
-              <span className="title-suggest">{item.fanpageName}</span>
+              <span className="title-suggest " style={{ paddingLeft: '25px', width: '150px' }}>{item.fanpageName}</span>
               {/* <ins>{(item.description).slice(0, 200)}</ins> */}
               <div
                 style={{
@@ -126,7 +126,7 @@ function SimpleSlider(props) {
                   borderRadius: "16px",
                   color: "#fff",
                   display: "block",
-
+                  marginLeft: '30px',
                   fontSize: "12px",
                   marginTop: "10px",
                   padding: " 5px 10px",
