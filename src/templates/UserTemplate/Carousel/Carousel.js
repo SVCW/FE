@@ -56,7 +56,7 @@ export default function Carousel() {
                     </a>
                   </div>
                   <div className="link-item">
-                    <a href="http://localhost:3000/home" title>
+                    <a href="http://localhost:3000/history" title>
                       <i className>
                         <svg
                           className="feather feather-zap"
