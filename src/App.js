@@ -25,7 +25,7 @@ import CreateFanpage from './pages/Fanpage/CreateFanpage';
 // import MultiStepForm from './MultiStepForm';
 // import MultiStepForm1 from './MultiStepForm1';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 export const history = createBrowserHistory()
 
@@ -34,33 +34,33 @@ function App () {
   return (
     <>
       <Router history={history}>
-      <Switch>
-        {/* <AboutUniversity /> */}
-        {/* <SignIn /> */}
-        {/* <Home /> */}
+        <Switch>
+          {/* <AboutUniversity /> */}
+          {/* <SignIn /> */}
+          {/* <Home /> */}
 
-        <AdminTemplate exact path="/achivement" Component={Achivement} />
-        <AdminTemplate exact path="/processtype" Component={ProcessType} />
-        <AdminTemplate exact path="/reporttype" Component={ReportType} />
-        <AdminTemplate exact path="/role" Component={Role} />
-        {/* <AdminTemplate exact path="/table" Component={Admin} /> */}
-        <UserTemplate exact path="/home" Component={Home} />
-        <UserTemplate exact path="/groups" Component={Group} />
-        <UserTemplate exact path="/fanpage/:id" Component={GroupsDetail} />
-        <UserTemplate exact path="/groupsdetail" Component={GroupsDetail} />
-        <UserTemplate exact path="/profile/:id" Component={Profile} />
-        <UserTemplate exact path="/history" Component={Result} />
-        <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
-        <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
-        <Route exact path="/test" component={MultiForm} />
-        <Route exact path="/test1" component={Test} />
-        {/* <Route exact path="/test1" component={MultiStepForm1} /> */}
-        <UserTemplate exact path="/game" Component={BaiTapGameXucXac} />
-        <Route exact path="/" component={Login} />
+          <AdminTemplate exact path="/achivement" Component={Achivement} />
+          <AdminTemplate exact path="/processtype" Component={ProcessType} />
+          <AdminTemplate exact path="/reporttype" Component={ReportType} />
+          <AdminTemplate exact path="/role" Component={Role} />
+          {/* <AdminTemplate exact path="/table" Component={Admin} /> */}
+          <UserTemplate exact path="/home" Component={Home} />
+          <UserTemplate exact path="/groups" Component={Group} />
+          <UserTemplate exact path="/fanpage/:id" Component={GroupsDetail} />
+          <UserTemplate exact path="/groupsdetail" Component={GroupsDetail} />
+          <UserTemplate exact path="/profile/:id" Component={Profile} />
+          <UserTemplate exact path="/history" Component={Result} />
+          <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
+          <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
+          <Route exact path="/test" component={MultiForm} />
+          <Route exact path="/test1" component={Test} />
+          {/* <Route exact path="/test1" component={MultiStepForm1} /> */}
+          <UserTemplate exact path="/game" Component={BaiTapGameXucXac} />
+          <Route exact path="/" component={Login} />
 
-      </Switch>
-    </Router>
-    <ToastContainer/>
+        </Switch>
+      </Router>
+      <ToastContainer />
     </>
   );
 }

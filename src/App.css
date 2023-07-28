@@ -1081,3 +1081,41 @@ i.fa.fa-arrow-up {
     top: 50%;
     transform: translateY(-50%);
 }
+
+.slider-container {
+    width: 400px;
+    margin: 0 auto;
+}
+
+/* Customize the arrow styles as you like */
+
+
+.prev-arrow {
+    left: 10px;
+}
+
+.next-arrow {
+    right: 10px;
+}
+
+.welcome-caro .owl-dot.active {
+    display: none;
+}
+
+.blackish:before,
+.whitish:before,
+.bluesh:before,
+.purple:before,
+.pattern:before,
+.orange:before,
+.mate-black:before,
+.pinkish:before {
+    /* opacity: 0.2;
+
+    background-color: #176b95; */
+    background: transparent;
+}
+
+.bg-image {
+    opacity: 0.2;
+}
