@@ -39,7 +39,6 @@ export const CreateFanpageAction = (value, props) => {
     }
 }
 
-
 export const GetFanpageByIDAction = (id) => {
     return async (dispatch) => {
         try {
