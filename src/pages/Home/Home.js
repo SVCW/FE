@@ -1,19 +1,14 @@
-import React from "react";
-import { useEffect } from "react";
-import {
-  CreateActivityAction,
-  DeleteLikeAction,
-  GetListActivityAction,
-  PostLikeAction,
-} from "../../redux/actions/ActivityAction";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import moment from "moment";
-import DetailActivity from "../../component/DetailActivity";
-import { Fragment } from "react";
-import { NavLink } from "react-router-dom";
-import { FilePond, registerPlugin } from "react-filepond";
-import Swal from "sweetalert2";
+import React from 'react'
+import { useEffect } from 'react'
+import { CreateActivityAction, DeleteLikeAction, GetListActivityAction, PostLikeAction } from '../../redux/actions/ActivityAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import moment from 'moment';
+import DetailActivity from '../../component/DetailActivity';
+import { Fragment } from 'react';
+import { NavLink } from 'react-router-dom'
+import { FilePond, registerPlugin } from 'react-filepond'
+import Swal from 'sweetalert2'
 // Import FilePond styles
 import "filepond/dist/filepond.min.css";
 
@@ -56,36 +51,38 @@ import {
 import { GetUserByIdAction } from "../../redux/actions/UserAction";
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-export default function Home() {
-  const { userByID } = useSelector((root) => root.UserReducer);
+export default function Home () {
+  const { userByID } = useSelector(root => root.UserReducer)
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
-
-  console.log(images);
-  const [tcss, setTcss] = useState("css");
-  const [vprocess, setVProcess] = useState(false);
+  const [tcss, setTcss] = useState('css');
+  const [vprocess, setVProcess] = useState(false)
   const dandleCSS = () => {
     if (tcss === "css") {
+
     }
-  };
+  }
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
-    dispatch(action);
+    dispatch(action)
     const action1 = GetListFanpageAction();
 
-    dispatch(action1);
+    dispatch(action1)
     const action2 = GetListProcessTypeAction();
-    dispatch(action2);
+    dispatch(action2)
+    // console.log(existingData);
     // if (existingData) {
     //     setCmt(existingData);
     //     dispatch({ type: "HIDE_LOADING" });
-    const user = localStorage.getItem("userID");
+    const user = localStorage.getItem('userID')
     if (user) {
-      const action = GetUserByIdAction(localStorage.getItem("userID"));
-      dispatch(action);
+      console.log('có user');
+      const action = GetUserByIdAction(localStorage.getItem('userID'));
+      dispatch(action)
     } else {
+      console.log('không có user');
     }
     //     return;
     // } else {
@@ -94,9 +91,8 @@ export default function Home() {
 
     // }
   }, []);
-  const { processType, activityProcess } = useSelector(
-    (root) => root.ProcessTypeReducer
-  );
+  const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
+
 
   const initialValues = {
     forms: [
@@ -156,7 +152,8 @@ export default function Home() {
   };
   const [arrDelete, setArrDelete] = useState([0]);
 
-  useEffect(() => {}, [arrDelete]);
+  useEffect(() => {
+  }, [arrDelete]);
   const handleDeleteForm = () => {
     if (formData.length > 1) {
       setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
@@ -202,8 +199,7 @@ export default function Home() {
     const fileList = e.target.files;
     const newImages = [];
 
-    console.log(fileList);
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ linkMedia: imageUrl, type: file.type });
@@ -224,7 +220,8 @@ export default function Home() {
           const downloadURL = await getDownloadURL(snapshot.ref);
           newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     setFormData((prevData) =>
       prevData.map((form, index) =>
@@ -377,6 +374,7 @@ export default function Home() {
   // );
   // const currentText2 = textOptions2[text2];
 
+
   //   const updatedComments = commentData.map((comment) => {
   //     if (comment.id === id) {
   //       if (comment.color === "rgb(117, 189, 240)") {
@@ -390,6 +388,7 @@ export default function Home() {
   const [joinedIndex, setJoinedIndex] = useState(null);
   const handleJoinClick = (index, activity, isJoin, title) => {
     setCmt((prevArray) => {
+
       const newArray = JSON.parse(JSON.stringify(prevArray));
       newArray[index].isJoin = !newArray[index].isJoin;
       localStorage.setItem(`activity`, JSON.stringify(newArray));
@@ -489,7 +488,7 @@ export default function Home() {
       return newArray;
     });
     if (isFollow) {
-      setFollowIndex(null);
+      setFollowIndex(null)
       const action = UnFollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -509,7 +508,7 @@ export default function Home() {
         title: `Bỏ theo dõi chiến dịch ${title} thành công `,
       });
     } else {
-      setFollowIndex(index);
+      setFollowIndex(index)
       const action = FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -598,7 +597,7 @@ export default function Home() {
       }
     },
   });
-  function calculateImageClass(imageCount) {
+  function calculateImageClass (imageCount) {
     let imageClass = "full-width";
     if (imageCount === 2) {
       imageClass = "half-width";
@@ -674,6 +673,7 @@ export default function Home() {
     // enableReinitialize: true,
     enableReinitialize: false,
     onSubmit: async (value) => {
+
       const action = await CreateActivityAction(value);
       await dispatch(action);
       formik.setFieldValue("title", "");
@@ -756,11 +756,9 @@ export default function Home() {
   const handleImageChange = async (e) => {
     setIsLoading(true);
     const fileList = e.target.files;
-
-    console.log(fileList);
     const newImages = [];
 
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -781,10 +779,10 @@ export default function Home() {
           const downloadURL = await getDownloadURL(snapshot.ref);
           const updatedImages = [...newImages];
           updatedImages[i].url = downloadURL;
-
-          setImages([...images, ...updatedImages]);
+          setImages((prevImages) => [...prevImages, ...updatedImages]);
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     setIsLoading(false);
     setUploadProgress(0);
@@ -804,7 +802,8 @@ export default function Home() {
         }
         return comment;
       },
-      () => {}
+      () => {
+      }
     );
 
     setCommentData(updatedComments);
@@ -852,15 +851,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const updatedArrActivity = JSON.parse(
-      localStorage.getItem("activity")
-    )?.map((activity) => {
-      const matchingComments = commentData?.filter(
-        (comment) => comment.id === activity.activityId
-      );
+    const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))?.map((activity) => {
+      const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
       return { ...activity, commentData: matchingComments };
     });
-    setCmt(updatedArrActivity);
+    setCmt(updatedArrActivity)
   }, [commentData, arrActivity]);
   // useEffect(() => {
   //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
@@ -1175,15 +1170,18 @@ export default function Home() {
                       </div>
                     </div>
                     {/* suggested friends */}
-                    {cmt?.map((item, index) => {
+                    {cmt.map((item, index) => {
                       const detailItem = item;
                       let isAlreadyLiked = false;
+                      console.log(item);
                       item?.like?.map((user) => {
                         if (user.userId === userByID.userId) {
+                          console.log(user.userId === userByID.userId);
                           //item?.like?
                           isAlreadyLiked = true;
                         }
-                      });
+                      })
+                      console.log(isAlreadyLiked);
                       return (
                         <div className="main-wraper">
                           <div className="user-post">
@@ -1232,14 +1230,14 @@ export default function Home() {
                                       </svg>
                                     </i>
                                     <ul>
-                                      <li>
+                                      {userID === item.userId ? <li>
                                         <i className="icofont-pen-alt-1" />
                                         Sửa bài đăng
                                         <span>
                                           Chỉnh sửa và cập nhật chi tiết bài
                                           đăng
                                         </span>
-                                      </li>
+                                      </li> : <div></div>}
                                       {/* <li>
                                         <i className="icofont-ban" />
                                         Ẩn bài đăng
@@ -1248,22 +1246,22 @@ export default function Home() {
                                           có vấn đề
                                         </span>
                                       </li> */}
-                                      <li>
+                                      {userID === item.userId ? <li>
                                         <i className="icofont-ui-delete" />
                                         Xóa bài đăng
                                         <span>
                                           Xóa những bài đăng khi bạn cảm thấy có
                                           vấn đề không ổn
                                         </span>
-                                      </li>
-                                      <li>
+                                      </li> : <div></div>}
+                                      {userID !== item.userId ? <li>
                                         <i className="icofont-flag" />
                                         Báo cáo bài đăng
                                         <span>
                                           nhầm báo cáo những vấn đề bất thường
                                           đến cho người quản lý
                                         </span>
-                                      </li>
+                                      </li> : <div></div>}
                                     </ul>
                                   </div>
                                 </div>
@@ -1308,6 +1306,40 @@ export default function Home() {
                                 ) : (
                                   <div></div>
                                 )}
+                                <figure style={{}}>
+                                  {/* <p style={{ width: '100%' }}>fetched-image</p> */}
+
+                                  <div className="image-gallery">
+                                    <div className="image-gallery">
+                                      {item.media?.map((image, index) => {
+                                        const imageClass = calculateImageClass(
+                                          item.media.length
+                                        );
+                                        return (
+                                          <div
+                                            key={index}
+                                            className={`image-container ${imageClass} `}
+                                          >
+                                            <a
+                                              data-toggle="modal"
+                                              data-target="#img-comt"
+                                              href="images/resources/album1.jpg"
+                                              onClick={() => {
+                                                setDetail(detailItem);
+                                              }}
+                                            >
+                                              <img
+                                                src={image.linkMedia}
+                                                alt={`Image ${image.id}`}
+                                                className="gallery-image"
+                                              />
+                                            </a>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                </figure>
                                 <div className="row">
                                   <div
                                     style={{
@@ -1331,84 +1363,9 @@ export default function Home() {
                                       {item.title}
                                     </a>
                                     {/* bla bla bla theo dõi */}
+
                                   </div>
                                 </div>
-                                <figure style={{}}>
-                                  {/* <p style={{ width: '100%' }}>fetched-image</p> */}
-
-                                  <div className="image-gallery-flex">
-                                    {item?.media?.length <= 3
-                                      ? item.media.map((image, index) => {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className={`image-container-post`}
-                                            >
-                                              <a
-                                                data-toggle="modal"
-                                                data-target="#img-comt"
-                                                href="images/resources/album1.jpg"
-                                                onClick={() => {
-                                                  setDetail(detailItem);
-                                                }}
-                                              >
-                                                <img
-                                                  src={image.linkMedia}
-                                                  alt={`Image ${image.id}`}
-                                                />
-                                              </a>
-                                            </div>
-                                          );
-                                        })
-                                      : item.media
-                                          ?.slice(0, 4)
-                                          .map((image, index) => {
-                                            return index !== 3 ? (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post-last`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <div className="overlay">
-                                                    +{item.media.length - 4}
-                                                  </div>
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            );
-                                          })}
-                                  </div>
-                                </figure>
-
                                 <p className="mt-3">
                                   <span
                                     style={{
@@ -1472,15 +1429,13 @@ export default function Home() {
                                       // onChange={handleChange}
                                       className="range-slider"
                                       style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                          (item.realDonation /
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
+                                          item.targetDonation) *
+                                          100
+                                          }%, #ddd ${(item.realDonation /
                                             item.targetDonation) *
                                           100
-                                        }%, #ddd ${
-                                          (item.realDonation /
-                                            item.targetDonation) *
-                                          100
-                                        }%, #ddd 100%)`,
+                                          }%, #ddd 100%)`,
                                       }}
                                     />
                                     {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
@@ -1503,11 +1458,10 @@ export default function Home() {
                                         className="range-value"
                                         style={{
                                           position: "absolute",
-                                          left: `${
-                                            (item.realDonation /
-                                              item.targetDonation) *
+                                          left: `${(item.realDonation /
+                                            item.targetDonation) *
                                             100
-                                          }%`,
+                                            }%`,
                                         }}
                                       >
                                         {" "}
@@ -1531,18 +1485,12 @@ export default function Home() {
                                   <div></div>
                                 )}
 
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-around",
-                                  }}
-                                >
+                                <div style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-around'
+                                }}>
                                   <button
-                                    className={`btn ${
-                                      item.isJoin && joinedIndex === index
-                                        ? "btn-danger"
-                                        : "btn-success"
-                                    } mb-4 mt-4`}
+                                    className={`btn ${item.isJoin && joinedIndex === index ? "btn-danger" : "btn-success"} mb-4 mt-4`}
                                     onClick={() => {
                                       handleJoinClick(
                                         index,
@@ -1556,11 +1504,8 @@ export default function Home() {
                                   </button>
 
                                   <button
-                                    className={`btn ${
-                                      item.isFollow && followIndex === index
-                                        ? "btn-danger"
-                                        : "btn-success"
-                                    } mb-4 mt-4`}
+                                    className={`btn ${item.isFollow && followIndex === index ? "btn-danger" : "btn-success"} mb-4 mt-4`}
+
                                     onClick={() => {
                                       handleFollowClick(
                                         index,
@@ -1725,14 +1670,14 @@ export default function Home() {
                                           />
                                           Thích
                                         </span>
-                                        <ul className="namelist">
-                                          {item?.like?.length <= 4 ? item?.like.map((userItem) => {
-                                            return <li>{userItem.user.username}</li>;
-                                          }) : item?.like?.slice(0, 4).map((userItem, index) => {
-                                            index < 4 ? <li>{userItem.user.username}</li> : <li><span>+{item?.like.length - 5}</span></li>;
-                                          })}
-                                         
-                                        </ul>
+                                        {/* <ul className="namelist">
+                                          <li>Jhon Doe</li>
+                                          <li>Amara Sin</li>
+                                          <li>Sarah K.</li>
+                                          <li>
+                                            <span>20+ more</span>
+                                          </li>
+                                        </ul> */}
                                       </div>
                                     </div>
 
@@ -1755,11 +1700,7 @@ export default function Home() {
                                   <div
                                     className=""
                                     style={{
-                                      backgroundColor: `${
-                                        isAlreadyLiked
-                                          ? "rgb(117, 189, 240)"
-                                          : "#eae9ee"
-                                      }`,
+                                      backgroundColor: `${isAlreadyLiked ? 'rgb(117, 189, 240)' : '#eae9ee'}`,
                                       borderRadius: "4px",
                                       color: "#82828e",
                                       display: "inline-block",
@@ -2072,7 +2013,7 @@ export default function Home() {
                   <div className="col-lg-3">
                     <aside className="sidebar static right">
                       {localStorage.getItem("userID") &&
-                      userByID?.fanpage !== null ? (
+                        userByID?.fanpage !== null ? (
                         <div className="widget">
                           <h4 className="widget-title">Nhóm của bạn</h4>
                           <ul className="ak-groups">
@@ -2114,7 +2055,7 @@ export default function Home() {
                                   href="group-feed.html"
                                   title
                                   className="promote"
-                                  onClick={() => {}}
+                                  onClick={() => { }}
                                 >
                                   Chi tiết
                                 </NavLink>
@@ -2132,9 +2073,9 @@ export default function Home() {
                             <figure>
                               <img
                                 style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
                                 }}
                                 alt
                                 src="images/avatar/5.jpg"
@@ -2168,9 +2109,9 @@ export default function Home() {
                             <figure>
                               <img
                                 style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
                                 }}
                                 alt
                                 src="images/avatar/19.jpg"
@@ -2629,7 +2570,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="form1">
+            <div className="">
               <header className="header"></header>
               <div className="form-wrap">
                 <form
@@ -2712,7 +2653,9 @@ export default function Home() {
                               />
                             </div>
                             {isTextInputVisible === true && (
+
                               <div className="form-group">
+
                                 <input
                                   type="number"
                                   name="targetDonation"
@@ -2721,10 +2664,11 @@ export default function Home() {
                                   id="name"
                                   placeholder="Nhập số tiền cần nhận"
                                   className="form-control"
-                                  style={{ marginTop: "-2rem" }}
+                                  style={{ marginTop: '-2rem' }}
                                   required
                                 />
                               </div>
+
                             )}
                           </div>
                         ) : (
@@ -2791,16 +2735,13 @@ export default function Home() {
                           </svg>
                         </div>
 
-                        <div className="image-container image-container-flex">
+                        <div className="image-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                           {images.map((image, index) => (
-                            <div
-                              className="image-item image-item-relative"
-                              key={index}
-                            >
+                            <div className="image-item" key={index} >
                               <img
                                 src={image.url}
                                 alt={`Image ${index}`}
-                                className="image-preview image-item-flex"
+                                className="image-preview"
                               />
                               <button
                                 className="delete-button"
@@ -2984,7 +2925,7 @@ export default function Home() {
                               id={`media_${index}`}
                               type="file"
                               multiple
-                              onChange={(e) => handleImageChange1(e, index)}
+                              onChange={(e) => handleImageChange1(e, index)} // Truyền formIndex khi xử lý handleImageChange1
                             />
                             <div className="image-container">
                               {form.media.map((image, imageIndex) => (
