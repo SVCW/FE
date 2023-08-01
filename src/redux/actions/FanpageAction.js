@@ -89,20 +89,3 @@ export const FollowFanpageAction = (user, fanpage) => {
         }
     }
 }
-
-export const UpdateStatusFanpageAction = (id) => {
-    return async (dispatch) => {
-        try {
-            let result = await http.put(`/Fanpage/moderate-fanpage?id=${id}`);
-            console.log(result.data.data);
-            // const action = GetListFanpageAction()
-            // dispatch(action)
-            // localStorage.setItem('isFanpage', true)
-            // props.history.push('/home')
-            const action = GetListFanpageAction();
-            dispatch(action)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}

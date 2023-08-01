@@ -7,13 +7,13 @@ import { useFormik } from 'formik'
 import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetListActivityAction } from '../../redux/actions/ActivityAction';
-import { LoginModeratorAction, LoginUserAction } from '../../redux/actions/LoginAction';
+import { LoginUserAction } from '../../redux/actions/LoginAction';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
 export default function Login (props) {
     const dispatch = useDispatch()
-    const { msg, msgModerator } = useSelector(root => root.LoginReducer)
+    const { msg } = useSelector(root => root.LoginReducer)
     const [isMatch, setIsMatch] = useState(false);
     useEffect(() => {
         const action = GetListActivityAction();
@@ -47,18 +47,10 @@ export default function Login (props) {
     console.log(isMatch);
     const formik = useFormik({
         initialValues: {
-            username: '',
-            password: ''
+
         },
         onSubmit: (value) => {
             console.log(value);
-            if (value.username === 'admin' && value.password === '1234') {
-                props.history.push('/achivement')
-            }
-            else {
-                const action = LoginModeratorAction(value, props);
-                dispatch(action)
-            }
         }
     })
     const signInWithGoogle = async () => {
@@ -109,7 +101,6 @@ export default function Login (props) {
 
 
     }
-
     const CustomPrevArrow = (props) => {
         const { onClick } = props;
         return <div className="custom-arrow prev-arrow" onClick={onClick} />;
@@ -192,14 +183,16 @@ export default function Login (props) {
                     <div className="login-form">
                         <h4><i className="icofont-key-hole" /> Đăng nhập</h4>
                         <form method="post" className="c-form" onSubmit={formik.handleSubmit}>
-                            <input type="text" placeholder="Tài khoản" name='username' onChange={formik.handleChange} />
-                            <input type="password" placeholder="Mật khẩu" name='password' onChange={formik.handleChange} />
-                            {/* <div className="checkbox">
+                            <input type="text" placeholder="Tài khoản" />
+                            <input type="password" placeholder="Mật khẩu" />
+                            <div className="checkbox">
                                 <input type="checkbox" id="checkbox" defaultChecked />
                                 <label htmlFor="checkbox"><span>Nhớ tài khoản</span></label>
-                            </div> */}
-                            {msgModerator !== '' ? <h3 style={{ color: 'red' }}>{msgModerator}</h3> : <div></div>}
-                            <button className="main-btn" type="submit" ><i className="icofont-key" /> Đăng nhập</button>
+                            </div>
+
+                            <button className="main-btn" type="submit" onClick={() => {
+                                props.history.push('/achivement')
+                            }}><i className="icofont-key" /> Đăng nhập</button>
 
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
                             <p

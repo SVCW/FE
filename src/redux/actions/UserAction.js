@@ -17,21 +17,3 @@ export const GetUserByIdAction = (id) => {
         }
     }
 }
-
-export const GetUserBystatisticAction = (id) => {
-    return async (dispatch) => {
-
-        try {
-            let result = await http.get(`/User/get-statistic-profile?userId=${id}`);
-            console.log(result.data.data);
-            const action = {
-                type: "GET_USER_BY_STATIS",
-                userByStatis: result.data.data
-            }
-            dispatch(action)
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
