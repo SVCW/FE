@@ -346,122 +346,50 @@ export default function DetailProcess(props) {
                                                         <p>Xem tiếp tiến trình sau.</p>
                                                     </div>
                                                 </div>
-                                            </div> */}
+                                            </div>
+                                        </div>
+                                        <div className="blog-title" style={{ display: 'flex', alignContent: 'center', fontSize: '40px', textAlign: 'center', color: '#00a6d3' }}>
+                                            <h2>Tiến trình : {currentObject?.processNo}</h2>
+                                        </div>
+                                        <div className="blog-title" style={{ textAlign: 'center' }}>
+                                            {/* <h2 style={{ width: '250px', fontWeight: 'bold' }}>Tiêu Đề : </h2> */}
+                                            <h2 style={{ color: '#00a6d3', width: '300px' }}>{currentObject?.processTitle}</h2>
+                                        </div>
+                                        <div className="blog-details-meta">
+                                            {/* <figure><img src="https://picsum.photos/200" alt style={{ height: '300px' }} /></figure> */}
+                                            {currentObject?.media?.length !== 0 ?
 
-                      <div
-                        className="blog-title"
-                        style={{
-                            display:"flex",
-                            justifyContent:"center",
-                        }}
-                      >
-                        <h2 >Tiến trình {currentObject?.processNo}:</h2>
-                        <h3 style={{ color: "#00a6d3", width: "300px" }}>
-                          {currentObject?.processTitle}
-                        </h3>
-                      </div>
-                        {/* <div
-                            className="blog-title"
-                            style={{ textAlign: "center" }}
-                        >
-                        
-                            <h2 style={{ color: "#00a6d3", width: "300px" }}>
-                            {currentObject?.processTitle}
-                            </h2>
-                        </div> */}
-                    </div>
+                                                <Slider {...settings}>
+                                                    {currentObject?.media?.map((item, index) => {
+                                                        return <figure key={index}><img src={item.linkMedia} alt style={{ height: '500px', width: '100%' }} /></figure>
+                                                    })}
+                                                </Slider>
+                                                :
+                                                <div></div>
+                                            }
+                                            <ul style={{ paddingTop: '50px' }}>
 
-                    <div className="blog-details-meta">
-                      {/* <figure><img src="https://picsum.photos/200" alt style={{ height: '300px' }} /></figure> */}
-                      {currentObject?.media?.length !== 0 ? (
-                        <Slider {...settings}>
-                          {currentObject?.media?.map((item, index) => {
-                            return (
-                              <figure key={index}>
-                                <img
-                                  src={item.linkMedia}
-                                  alt
-                                  style={{ height: "500px", width: "100%" }}
-                                />
-                              </figure>
-                            );
-                          })}
-                        </Slider>
-                      ) : (
-                        <div></div>
-                      )}
-                      <ul style={{ paddingTop: "50px" }}>
-                        <li
-                          style={{
-                            display: "flex",
-                            fontSize: "20px",
-                            paddingBottom: "20px",
-                          }}
-                        >
-                          <div style={{ paddingRight: "10px", color: "black" }}>
-                            - Ngày Bắt Đầu :
-                          </div>
-                          <i style={{ fontSize: "20px" }}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width={20}
-                              height={20}
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="feather feather-calendar"
-                            >
-                              <rect
-                                x={3}
-                                y={4}
-                                width={18}
-                                height={18}
-                                rx={2}
-                                ry={2}
-                              />
-                              <line x1={16} y1={2} x2={16} y2={6} />
-                              <line x1={8} y1={2} x2={8} y2={6} />
-                              <line x1={3} y1={10} x2={21} y2={10} />
-                            </svg>
-                          </i>{" "}
-                          {DateTime(currentObject?.startDate)}
-                        </li>
-                        <li style={{ display: "flex", fontSize: "20px" }}>
-                          <div style={{ paddingRight: "10px", color: "black" }}>
-                            - Ngày kết thúc:
-                          </div>
-                          <i style={{ fontSize: "20px" }}>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width={20}
-                              height={20}
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="feather feather-calendar"
-                            >
-                              <rect
-                                x={3}
-                                y={4}
-                                width={18}
-                                height={18}
-                                rx={2}
-                                ry={2}
-                              />
-                              <line x1={16} y1={2} x2={16} y2={6} />
-                              <line x1={8} y1={2} x2={8} y2={6} />
-                              <line x1={3} y1={10} x2={21} y2={10} />
-                            </svg>
-                          </i>{" "}
-                          {DateTime(currentObject?.endDate)}
-                        </li>
-                      </ul>
+                                                <li style={{ display: 'flex', fontSize: '20px', paddingBottom: '20px' }}>
+                                                    <div style={{ paddingRight: '10px', color: 'black' }}>- Ngày Bắt Đầu :</div>
+                                                    <i style={{ fontSize: '20px' }}>
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-calendar">
+                                                            <rect x={3} y={4} width={18} height={18} rx={2} ry={2} />
+                                                            <line x1={16} y1={2} x2={16} y2={6} />
+                                                            <line x1={8} y1={2} x2={8} y2={6} />
+                                                            <line x1={3} y1={10} x2={21} y2={10} />
+                                                        </svg></i> {DateTime(currentObject?.startDate)}</li>
+                                                <li style={{ display: 'flex', fontSize: '20px' }}>
+                                                    <div style={{ paddingRight: '10px', color: 'black' }}>- Ngày kết thúc:</div>
+                                                    <i style={{ fontSize: '20px' }}>
+
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-calendar">
+                                                            <rect x={3} y={4} width={18} height={18} rx={2} ry={2} />
+                                                            <line x1={16} y1={2} x2={16} y2={6} />
+                                                            <line x1={8} y1={2} x2={8} y2={6} />
+                                                            <line x1={3} y1={10} x2={21} y2={10} />
+                                                        </svg></i> {DateTime(currentObject?.endDate)}</li>
+                                            </ul>
 
                       <h3 style={{ fontWeight: "bold" }}>
                         Thông tin chi tiết :

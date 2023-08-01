@@ -1,19 +1,15 @@
-import React from "react";
-import { useEffect } from "react";
-import {
-  CreateActivityAction,
-  DeleteLikeAction,
-  GetListActivityAction,
-  PostLikeAction,
-} from "../../redux/actions/ActivityAction";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import moment from "moment";
-import DetailActivity from "../../component/DetailActivity";
-import { Fragment } from "react";
-import { NavLink } from "react-router-dom";
-import { FilePond, registerPlugin } from "react-filepond";
-import Swal from "sweetalert2";
+import React from 'react'
+import { useEffect } from 'react'
+import { CreateActivityAction, DeleteActivityByUserAction, DeleteLikeAction, GetListActivityAction, GetListEndActivityAction, PostLikeAction } from '../../redux/actions/ActivityAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import moment from 'moment';
+import DetailActivity from '../../component/DetailActivity';
+import { Fragment } from 'react';
+import { NavLink } from 'react-router-dom'
+import { FilePond, registerPlugin } from 'react-filepond'
+import Swal from 'sweetalert2';
+import { Dropdown } from 'primereact/dropdown';
 // Import FilePond styles
 import "filepond/dist/filepond.min.css";
 
@@ -53,11 +49,15 @@ import {
   CreateProcessAction,
   GetProcessByActivityAction,
 } from "../../redux/actions/ProcessAction";
-import { GetUserByIdAction } from "../../redux/actions/UserAction";
+import { GetUserByIdAction, GetUserBystatisticAction } from "../../redux/actions/UserAction";
+import { GetListReportTypeAction } from '../../redux/actions/ReportTypeAction';
+import { Toolbar } from 'primereact/toolbar';
+import { CreateReportAction } from '../../redux/actions/ReportAction';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-export default function Home() {
-  const { userByID } = useSelector((root) => root.UserReducer);
+export default function Home () {
+  const { userByID } = useSelector(root => root.UserReducer)
+  console.log(userByID);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
@@ -68,8 +68,9 @@ export default function Home() {
   const dandleCSS = () => {
     if (tcss === "css") {
     }
-  };
-
+  }
+  const { userByStatis } = useSelector(root => root.UserReducer)
+  console.log(userByStatis);
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
@@ -78,15 +79,24 @@ export default function Home() {
 
     dispatch(action1);
     const action2 = GetListProcessTypeAction();
-    dispatch(action2);
+    dispatch(action2)
+    const action4 = GetListReportTypeAction();
+    dispatch(action4)
+    const action5 = GetListEndActivityAction();
+    dispatch(action5)
+    const action8 = GetUserBystatisticAction(userID);
+    dispatch(action8)
+    // console.log(existingData);
     // if (existingData) {
     //     setCmt(existingData);
     //     dispatch({ type: "HIDE_LOADING" });
     const user = localStorage.getItem("userID");
     if (user) {
-      const action = GetUserByIdAction(localStorage.getItem("userID"));
-      dispatch(action);
+      // console.log('có user');
+      const action = GetUserByIdAction(localStorage.getItem('userID'));
+      dispatch(action)
     } else {
+      // console.log('không có user');
     }
     //     return;
     // } else {
@@ -157,7 +167,7 @@ export default function Home() {
   };
   const [arrDelete, setArrDelete] = useState([0]);
 
-  useEffect(() => {}, [arrDelete]);
+
   const handleDeleteForm = () => {
     if (formData.length > 1) {
       setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
@@ -545,9 +555,15 @@ export default function Home() {
   const currentTime = moment();
 
   const [isTextInputVisible, setTextInputVisible] = useState(false);
+  const [isTextInputVisible1, setTextInputVisible1] = useState(isFanpage);
 
   const toggleTextInput = () => {
     setTextInputVisible(!isTextInputVisible);
+  };
+  const toggleTextInput1 = () => {
+    setTextInputVisible1(!isTextInputVisible1);
+    formik.setFieldValue('isFanpageAvtivity', isTextInputVisible1)
+
   };
   const openPopup = () => {
     setPopupOpen(true);
@@ -634,7 +650,12 @@ export default function Home() {
     // setVProcess((prevIsOpen) => !prevIsOpen)
     // setIsDisplay(true)
   };
+  const handleClick3 = () => {
+    setReport((prevIsOpen) => !prevIsOpen);
+    // setIsDisplay(true)
+  };
   const [openpro, setOpenPro] = useState(false);
+  const [report, setReport] = useState(false)
   const popupStyle = {
     opacity: isOpen ? 1 : 0,
     visibility: isOpen ? "visible" : "hidden",
@@ -651,6 +672,66 @@ export default function Home() {
     visibility: isOpen2 ? "visible" : "hidden",
     overflow: isOpen2 ? "auto" : "hidden",
   };
+  const popupStyle3 = {
+    opacity: report ? 1 : 0,
+    visibility: report ? "visible" : "hidden",
+    overflow: report ? "auto" : "hidden",
+  };
+  const { reportType } = useSelector(root => root.ReportType)
+  // console.log(reportType);
+  const arrReportType = reportType?.map((item, index) => {
+    return {
+      label: item.reportTypeName,
+      value: item.reportTypeId,
+
+    }
+  })
+  // console.log(arrReportType);
+
+
+  // console.log(arrReportType);
+
+  const formik6 = useFormik({
+    initialValues: {
+      reportId: "string",
+      title: "string",
+      reason: "",
+      reportTypeId: "string",
+      description: "string",
+      status: true,
+      userId: userID,
+      activityId: ""
+    },
+    onSubmit: async (value) => {
+      // console.log(value);
+      const action = await CreateReportAction(value);
+      await dispatch(action)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: `Báo cáo chiến dịch thành công `,
+      });
+      setReport((prevIsOpen) => !prevIsOpen);
+    }
+  })
+  const onInputDropdown = (e, field) => {
+
+    // console.log(e.target.value)
+    formik6.setFieldValue('reportTypeId', e.target.value)
+  };
+  useEffect(() => {
+  }, [arrDelete, reportType]);
   const [files, setFiles] = useState("");
 
   useEffect(() => {
@@ -665,24 +746,28 @@ export default function Home() {
     initialValues: {
       title: "",
       description: "",
-      startDate: currentTime.format("YYYY-MM-DD HH:mm:ss"),
-      endDate: currentTime.format("YYYY-MM-DD HH:mm:ss"),
+      startDate: '',
+      endDate: '',
       // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
       location: "",
       targetDonation: 0,
       userId: userID,
-      isFanpageAvtivity: isFanpage,
+      isFanpageAvtivity: false,
       media: [],
     },
     // enableReinitialize: true,
     enableReinitialize: false,
     onSubmit: async (value) => {
+      console.log(value);
       const action = await CreateActivityAction(value);
       await dispatch(action);
       formik.setFieldValue("title", "");
       formik.setFieldValue("description", "");
       formik.setFieldValue("location", "");
       formik.setFieldValue("targetDonation", 0);
+      formik.setFieldValue("startDate", '');
+      formik.setFieldValue("endactivity", '');
+      formik.setFieldValue("isFanpageAvtivity", false);
       formik.setFieldValue("media", []);
       setIsOpen((prevIsOpen) => !prevIsOpen);
       setIsDisplay(false);
@@ -799,20 +884,6 @@ export default function Home() {
       return updatedImages;
     });
   };
-  const handleCommentClick = async (id) => {
-    const updatedComments = await commentData?.map(
-      (comment) => {
-        if (comment.id === id) {
-          return { ...comment, isCmt: !comment.isCmt };
-        }
-        return comment;
-      },
-      () => {}
-    );
-
-    setCommentData(updatedComments);
-  };
-
   const handleLikeClick = (id) => {
     const updatedComments = commentData.map((comment) => {
       if (comment.id === id) {
@@ -853,14 +924,24 @@ export default function Home() {
 
     setCommentData(updatedComments);
   };
+  const handleCommentClick = (id) => {
+    const updatedComments = commentData.map(
+      (comment) => {
+        if (comment.id === id) {
+          return { ...comment, isCmt: !comment.isCmt };
+        }
+        return comment;
+      });
+
+    setCommentData(updatedComments);
+    console.log(commentData);
+  };
+
+
 
   useEffect(() => {
-    const updatedArrActivity = JSON.parse(
-      localStorage.getItem("activity")
-    )?.map((activity) => {
-      const matchingComments = commentData?.filter(
-        (comment) => comment.id === activity.activityId
-      );
+    const updatedArrActivity = arrActivity.map((activity) => {
+      const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
       return { ...activity, commentData: matchingComments };
     });
     setCmt(updatedArrActivity);
@@ -893,6 +974,7 @@ export default function Home() {
     return timeAgoString;
   };
 
+  console.log(commentData);
   return (
     <Fragment>
       {isLoadingM ? <Loading /> : <Fragment></Fragment>}
@@ -927,19 +1009,19 @@ export default function Home() {
                         <div
                           data-progress="tip"
                           className="progress__outer"
-                          data-value="0.67"
+                          data-value="0.7"
                         >
-                          <div className="progress__inner">70%</div>
+                          <div className="progress__inner">{userByStatis.total}%</div>
                         </div>
                         <ul className="prof-complete">
                           <li>
                             <i className="icofont-plus-square" />{" "}
                             <a href="#" title>
-                              Cập nhật hình đại diện
+                              Cập nhật số điện thoại
                             </a>
                             <em>10%</em>
                           </li>
-                          <li>
+                          {/* <li>
                             <i className="icofont-plus-square" />{" "}
                             <a href="#" title>
                               Cập nhật ngày tháng năm sinh
@@ -952,7 +1034,7 @@ export default function Home() {
                               Cập nhật giới tính bạn
                             </a>
                             <em>10%</em>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                       {/* complete profile widget */}
@@ -1102,6 +1184,10 @@ export default function Home() {
                     </aside>
                   </div>
                   <div className="col-lg-6">
+                    <ul class="filtr-tabs">
+                      <li><NavLink to="/home">Trang chủ</NavLink></li>
+                      <li><NavLink to="/endactivity">Chiến dịch đã kết thúc</NavLink></li>
+                    </ul>
                     {/* <ul className="filtr-tabs">
                                             <li><a className="active" href="#" title>Home</a></li>
                                             <li><a href="#" title>Recent</a></li>
@@ -1178,24 +1264,18 @@ export default function Home() {
                       </div>
                     </div>
                     {/* suggested friends */}
-                    {cmt?.map((item, index) => {
+                    {cmt.filter(item => item.status === "Active").map((item, index) => {
                       const detailItem = item;
                       let isAlreadyLiked = false;
                       let isAlreadyJoined = false;
                       let isAlreadyFollowed = false;
+                      // console.log(item);
                       item?.like?.map((user) => {
                         if (user.userId === userByID.userId) {
                           isAlreadyLiked = true;
                         }
-                      });
-
-                      item?.followJoinAvtivity?.map((user) => {
-                        if (user.userId === userByID.userId) {
-                          isAlreadyFollowed = user.isFollow;
-                          isAlreadyJoined = user.isJoin;
-                        }
-                      });
-                      //TODO
+                      })
+                      // console.log(isAlreadyLiked);
                       return (
                         <div className="main-wraper">
                           <div className="user-post">
@@ -1260,22 +1340,45 @@ export default function Home() {
                                           có vấn đề
                                         </span>
                                       </li> */}
-                                      <li>
+                                      {userID === item.userId ? <li onClick={() => {
+                                        Swal.fire({
+                                          title: 'Bạn muốn xóa?',
+                                          text: "Bạn có chắc muốn xóa bài viết này!",
+                                          icon: 'warning',
+                                          showCancelButton: true,
+                                          confirmButtonColor: '#3085d6',
+                                          cancelButtonColor: '#d33',
+                                          confirmButtonText: 'Xóa!'
+                                        }).then((result) => {
+                                          if (result.isConfirmed) {
+                                            Swal.fire(
+                                              'Xóa thành công!',
+                                              'Xóa thành công chiến dịch.',
+                                              'success'
+                                            )
+                                            const action = DeleteActivityByUserAction(item.activityId);
+                                            dispatch(action)
+                                          }
+                                        })
+                                      }}>
                                         <i className="icofont-ui-delete" />
                                         Xóa bài đăng
                                         <span>
                                           Xóa những bài đăng khi bạn cảm thấy có
                                           vấn đề không ổn
                                         </span>
-                                      </li>
-                                      <li>
+                                      </li> : <div></div>}
+                                      {userID !== item.userId ? <li onClick={() => {
+                                        setReport(true)
+                                        formik6.setFieldValue('activityId', item.activityId)
+                                      }}>
                                         <i className="icofont-flag" />
                                         Báo cáo bài đăng
                                         <span>
                                           nhầm báo cáo những vấn đề bất thường
                                           đến cho người quản lý
                                         </span>
-                                      </li>
+                                      </li> : <div></div>}
                                     </ul>
                                   </div>
                                 </div>
@@ -1347,79 +1450,71 @@ export default function Home() {
                                 </div>
                                 <figure style={{}}>
                                   {/* <p style={{ width: '100%' }}>fetched-image</p> */}
-                                  <div className="image-gallery-flex">
-                                    {item?.media?.length <= 3
-                                      ? item.media.map((image, index) => {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className={`image-container-post`}
+
+                                  <div className="image-gallery">
+                                    <div className="image-gallery">
+                                      {item.media?.map((image, index) => {
+                                        const imageClass = calculateImageClass(
+                                          item.media.length
+                                        );
+                                        return (
+                                          <div
+                                            key={index}
+                                            className={`image-container ${imageClass} `}
+                                          >
+                                            <a
+                                              data-toggle="modal"
+                                              data-target="#img-comt"
+                                              href="images/resources/album1.jpg"
+                                              onClick={() => {
+                                                setDetail(detailItem);
+                                              }}
                                             >
-                                              <a
-                                                data-toggle="modal"
-                                                data-target="#img-comt"
-                                                href="images/resources/album1.jpg"
-                                                onClick={() => {
-                                                  setDetail(detailItem);
-                                                }}
-                                              >
-                                                <img
-                                                  src={image.linkMedia}
-                                                  alt={`Image ${image.id}`}
-                                                />
-                                              </a>
-                                            </div>
-                                          );
-                                        })
-                                      : item.media
-                                          ?.slice(0, 4)
-                                          .map((image, index) => {
-                                            return index !== 3 ? (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post-last`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <div className="overlay">
-                                                    +{item.media.length - 4}
-                                                  </div>
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            );
-                                          })}
+                                              <img
+                                                src={image.linkMedia}
+                                                alt={`Image ${image.id}`}
+                                                className="gallery-image"
+                                              />
+                                            </a>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
                                   </div>
                                 </figure>
+                                <div className="row">
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignContent: "center",
+                                    }}
+                                    className="col-lg-12"
+                                  >
+                                    <a
+                                      target="_blank"
+                                      style={{
+                                        fontSize: "25px",
+                                        fontWeight: "bold",
+                                        width: "450px",
+                                        wordWrap: "break-word",
+                                        color: "#3f6ad8",
+                                      }}
+                                      className="col-lg-8"
 
+                                      data-toggle="modal"
+                                      data-target="#img-comt"
+                                      href="images/resources/album1.jpg"
+                                      onClick={() => {
+                                        setDetail(detailItem);
+                                      }}
+                                    >
+
+                                      {item.title}
+                                    </a>
+                                    {/* bla bla bla theo dõi */}
+
+                                  </div>
+                                </div>
                                 <p className="mt-3">
                                   <span
                                     style={{
@@ -1432,6 +1527,10 @@ export default function Home() {
                                   </span>{" "}
                                   {item.description}
                                 </p>
+                                <div style={{ paddingBottom: '20px' }}>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>- Bắt đầu: </span> {moment(item.startDate).format('DD-MM-YYYY')}</div>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>- Kết thúc: </span> {moment(item.endDate).format('DD-MM-YYYY')}</div>
+                                </div>
 
                                 {item.targetDonation !== 0 ? (
                                   <div className="mb-4">
@@ -2104,7 +2203,7 @@ export default function Home() {
                   <div className="col-lg-3">
                     <aside className="sidebar static right">
                       {localStorage.getItem("userID") &&
-                      userByID?.fanpage !== null ? (
+                        userByID?.fanpage?.status === "Active" ? (
                         <div className="widget">
                           <h4 className="widget-title">Nhóm của bạn</h4>
                           <ul className="ak-groups">
@@ -2709,6 +2808,40 @@ export default function Home() {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
+                          Ngày bắt đầu
+                        </label>
+                        <input
+                          type="date"
+                          name="startDate"
+                          onChange={formik.handleChange}
+                          value={formik.values.startDate}
+                          id="name"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Ngày kết thúc
+                        </label>
+                        <input
+                          type="date"
+                          name="endDate"
+                          onChange={formik.handleChange}
+                          value={formik.values.endDate}
+                          id="name"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
                           Nơi diễn ra
                         </label>
                         <input
@@ -2766,6 +2899,36 @@ export default function Home() {
                     </div>
                   </div>
 
+                  <div className='row'>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        {userByID.fanpage?.status === "Active" && isFanpage ? (
+                          <div>
+                            <div
+                              className="form-group"
+                              style={{ display: "flex" }}
+                            >
+                              <label
+                                id="name-label"
+                                style={{ marginRight: "20px" }}
+                                htmlFor="name"
+                              >
+                                Chia sẽ lên nhóm của bạn
+                              </label>
+                              <input
+                                type="checkbox"
+                                onChange={toggleTextInput1}
+                              // checked={isTextInputVisible1}
+                              />
+                            </div>
+
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
@@ -3092,6 +3255,95 @@ export default function Home() {
                   )}
                 </Form>
               </Formik>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {report ? (
+        <div className="post-new-popup1" style={popupStyle3}>
+          <div
+            className="popup"
+            style={{
+              width: 600,
+              zIndex: 80,
+              height: 450,
+              // overflowY: "scroll",
+              padding: "10px",
+              marginTop: '-100px'
+            }}
+          >
+            <span className="popup-closed" onClick={handleClick3}>
+              <i className="icofont-close" />
+            </span>
+            <div className="popup-meta">
+              <div className="popup-head">
+                <h5>
+                  <i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-plus"
+                    >
+                      <line x1={12} y1={5} x2={12} y2={19} />
+                      <line x1={5} y1={12} x2={19} y2={12} />
+                    </svg>
+                  </i>
+                  Báo cáo bài viết
+                </h5>
+              </div>
+            </div>
+            <div>
+              <form onSubmit={formik6.handleSubmit}>
+                <div className="form row mt-3">
+                  <div className="form-group">
+                    <label >
+                      Thể loại tiến trình
+                    </label>
+                    <select
+                      value="" // Bind the select value to the formData value
+                      onChange={(e) => onInputDropdown(e)} // Pass the formIndex to handleSelectChange
+                      className="form-control"
+                      placeholder='Chọn loại báo cáo'
+                    >
+                      <option value=''>Chọn loại báo cáo</option>
+                      {arrReportType.map((item, index) => {
+                        return (
+                          <option value={item.value} key={index}>
+                            {item.label}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label >
+                      Lý do
+                    </label>
+                    <textarea id="message" className="form-control" rows="2" cols="50" name='reason' onChange={formik6.handleChange}></textarea>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Báo cáo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
             </div>
           </div>
         </div>

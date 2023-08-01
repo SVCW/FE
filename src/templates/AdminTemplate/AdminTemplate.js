@@ -597,6 +597,34 @@ export const AdminTemplate = (props) => {
                                             </i>Vai trò
                                         </NavLink>
                                     </li>
+                                    <li className="app-sidebar__heading">Người quản lý</li>
+                                    <li>
+                                        <NavLink to='/moderator'>
+                                            <i className="metismenu-icon pe-7s-graph2">
+                                            </i>Người quản lý
+                                        </NavLink>
+                                    </li>
+                                    <li className="app-sidebar__heading">Fanpage</li>
+                                    <li>
+                                        <NavLink to='/adminfanpage'>
+                                            <i className="metismenu-icon pe-7s-graph2">
+                                            </i>Fanpage
+                                        </NavLink>
+                                    </li>
+                                    <li className="app-sidebar__heading">Báo cáo</li>
+                                    <li>
+                                        <NavLink to='/report'>
+                                            <i className="metismenu-icon pe-7s-graph2">
+                                            </i>Báo cáo
+                                        </NavLink>
+                                    </li>
+                                    <li className="app-sidebar__heading">Chiến dịch</li>
+                                    <li>
+                                        <NavLink to='/adminactivity'>
+                                            <i className="metismenu-icon pe-7s-graph2">
+                                            </i>Chiến dịch
+                                        </NavLink>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
