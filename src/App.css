@@ -335,11 +335,79 @@ i {
     justify-content: center;
 }
 
+.image-gallery-flex {
+    display: flex;
+    height: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.image-container-post{
+    border: 3px solid #fff;
+    width: 50%;
+}
+
+.image-container-post-last{
+    position: relative;
+    border: 3px solid #fff;
+    width: 50%;
+}
+
+.image-container-post-last img{
+    width: 100%;
+    max-height: 200px;
+    min-height: 200px;
+}
+
+.image-container-post-last .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 2.25rem;
+    color: #fff;
+}
+
 .image-container {
     position: relative;
     width: 100%;
     padding-bottom: 0;
 }
+
+
+.image-container-post img{
+    width: 100%;
+    max-height: 200px;
+    min-height: 200px;
+}
+
+.image-container-flex {
+    gap: 1rem;
+    display: flex;
+    align-items: center;
+    /* flex-wrap: wrap; */
+}
+
+.image-item-relative {
+    position: relative;
+}
+
+.image-item-flex {
+    border-radius: 1rem;
+    width: 50%;
+    max-height: 300px;
+    min-height: 300px;
+    object-fit: contain;
+}
+
+
 
 .full-width {
     width: 500px;
@@ -808,3 +876,314 @@ textarea.form-control {
     right: 10px;
     top: -100px;
 } */
+
+
+.form1 {
+    /* width: 300px; */
+    height: 900px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.swal-custom-container {
+    z-index: 99;
+    /* Set the desired z-index value here */
+    /* Add other custom styles for the container here */
+}
+
+
+
+/*--- popup ---*/
+
+.post-new-popup1 {
+    background: rgba(248, 248, 248, 0.85) none repeat scroll 0 0;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    transition: all 0.25s linear 0s;
+    visibility: hidden;
+    width: 100%;
+    z-index: 999999;
+}
+
+
+.post-new-popup1.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.post-new-popup1.active .popup {
+    top: 50%;
+}
+
+
+.post-new-popup1 {
+    background: rgba(0, 0, 0, 0.85) none repeat scroll 0 0;
+}
+
+.post-new-popup1 .popup::after {
+    border-bottom: 0;
+}
+
+
+/*--- popup ---*/
+
+.post-new-popup2 {
+    background: rgba(248, 248, 248, 0.85) none repeat scroll 0 0;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    transition: all 0.25s linear 0s;
+    visibility: hidden;
+    width: 100%;
+    z-index: 999999;
+}
+
+
+.post-new-popup2.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.post-new-popup2.active .popup {
+    top: 50%;
+}
+
+
+.post-new-popup2 {
+    background: rgba(0, 0, 0, 0.85) none repeat scroll 0 0;
+}
+
+.post-new-popup2 .popup::after {
+    border-bottom: 0;
+}
+
+.blog-title>h2 {
+    font-size: 40px;
+}
+
+.next .translate {
+    width: 200px;
+}
+
+.next-prev-posts .pre {
+    display: inline-block;
+    width: 100%;
+}
+
+.next-prev-posts .prev>.pre i {
+    display: inline-block;
+    font-size: 30px;
+    transition: all 0.2s linear 0s;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.next-prev-posts .pre {
+    display: inline-block;
+    width: 100%;
+}
+
+.next>.pre>i {
+    float: right;
+    font-size: 30px;
+    margin-top: 15px;
+    transition: all 0.3s linear 0s;
+    width: 30px;
+    color: #3f6ad8;
+}
+
+.next:hover>.pre i {
+    transform: translate(5px);
+}
+
+.per {
+    color: #3f6ad8;
+}
+
+
+.prev .translate {
+    width: 100%;
+}
+
+.next-prev-posts .prev {
+    display: inline-block;
+    width: 100%;
+}
+
+.next-prev-posts .prev>.prev i {
+    display: inline-block;
+    font-size: 30px;
+    transition: all 0.2s linear 0s;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.next-prev-posts .prev {
+    display: inline-block;
+    width: 100%;
+}
+
+.prem>i {
+    float: left;
+    font-size: 30px;
+    margin-top: 15px;
+    transition: all 0.3s linear 0s;
+    width: 30px;
+    color: #3f6ad8;
+}
+
+.prev:hover>.pre i {
+    transform: translate(5px);
+}
+
+.pe {
+    color: #3f6ad8;
+}
+
+.next.disabled {
+    pointer-events: none;
+    /* Ngăn chặn sự tương tác với phần tử khi bị vô hiệu hóa */
+    opacity: 0.5;
+    /* Điều chỉnh độ mờ của phần tử */
+}
+
+.prev.disabled {
+    pointer-events: none;
+    /* Ngăn chặn sự tương tác với phần tử khi bị vô hiệu hóa */
+    opacity: 0.5;
+    /* Điều chỉnh độ mờ của phần tử */
+}
+
+
+/* .wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+.wrapper .file-upload {
+    height: 50px;
+    width: 300px;
+    border-radius: 100px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 4px solid #FFFFFF;
+    overflow: hidden;
+    background-image: linear-gradient(to bottom, #2590EB 50%, #FFFFFF 50%);
+    background-size: 100% 200%;
+    transition: all 1s;
+    color: #FFFFFF;
+    font-size: 100px;
+}
+
+.wrapper .file-upload input[type='file'] {
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.wrapper .file-upload:hover {
+    background-position: 0 -100%;
+    color: #2590EB;
+}
+
+i.fa.fa-arrow-up {
+    font-size: 20px;
+}
+
+.group-dp>img {
+    border: 3px solid #fff;
+    border-radius: 100%;
+    max-width: 135px;
+}
+
+.group-avatar>img {
+    border-radius: 10px;
+    display: inline-block;
+    width: 100%;
+    height: 400px;
+    filter: brightness(1);
+    text-align: center;
+}
+
+.more-grp-info form {
+    max-width: 400px;
+    min-width: 200px;
+    border-radius: 20px;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+
+}
+
+.more-grp-info form input {
+    background: #fff none repeat scroll 0 0;
+    border-left: 0 none;
+    border-right: 0 none;
+    border-top: 0 none;
+    margin-bottom: auto;
+    border-radius: 0;
+    padding-left: 20px;
+    padding-right: 0;
+    padding-bottom: 10px;
+}
+
+.more-grp-info form i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.slider-container {
+    width: 400px;
+    margin: 0 auto;
+}
+
+/* Customize the arrow styles as you like */
+
+
+.prev-arrow {
+    left: 10px;
+}
+
+.next-arrow {
+    right: 10px;
+}
+
+.welcome-caro .owl-dot.active {
+    display: none;
+}
+
+.blackish:before,
+.whitish:before,
+.bluesh:before,
+.purple:before,
+.pattern:before,
+.orange:before,
+.mate-black:before,
+.pinkish:before {
+    /* opacity: 0.2;
+
+    background-color: #176b95; */
+    background: transparent;
+}
+
+.bg-image {
+    opacity: 0.2;
+}

@@ -633,12 +633,12 @@ if ($.isFunction($.fn.owlCarousel)) {
 //-- welcome caro
 	$('.welcome-caro').owlCarousel({
 		items: 1,
-		loop: true,
+		loop: false,
 		margin: 20,
 		autoplay: true,
-		autoplayTimeout: 4500,
+		autoplayTimeout: 1000,
 		smartSpeed: 1000,
-		autoplayHoverPause: true,
+		autoplayHoverPause: false,
 		nav: false,
 		dots: true,
 		animateOut: 'fadeOut',

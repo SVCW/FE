@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
@@ -11,8 +11,8 @@ const initialValues = {
         {
             processTitle: "",
             description: "",
-            startDate: "2023-07-19T15:53:37.464Z",
-            endDate: "2023-07-19T15:53:37.464Z",
+            startDate: "",
+            endDate: "",
             activityId: "1234",
             processTypeId: "",
             isKeyProcess: true,
@@ -33,16 +33,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const MultiForm = () => {
-    const [number, setNumber] = useState(0);
-    const [num, setNum] = useState(0);
-    const handleButtonClick1 = () => {
-        setNumber(1);
-    };
-
-    const handleButtonClick2 = () => {
-        setNumber(2);
-    };
-    console.log("number" + number);
     const [currentForm, setCurrentForm] = useState(0);
     const [formData, setFormData] = useState(initialValues.forms);
 
@@ -59,15 +49,12 @@ const MultiForm = () => {
     };
 
     const handleCreateNewForm = () => {
-        // const newIndex = formData.length;
-        // setNum((prevNum) => prevNum + 1);
-
         setFormData((prevData) => [...prevData, {
             processTitle: "",
             description: "",
-            startDate: "2023-07-19T15:53:37.464Z",
-            endDate: "2023-07-19T15:53:37.464Z",
-            activityId: "",
+            startDate: "",
+            endDate: "",
+            activityId: "1234",
             processTypeId: "",
             isKeyProcess: true,
             processNo: 0,
@@ -76,85 +63,68 @@ const MultiForm = () => {
         setCurrentForm((prevForm) => prevForm + 1);
     };
 
+    const [arrDelete, setArrDelete] = useState([0]);
+
+    useEffect(() => {
+        console.log(arrDelete);
+        console.log(formData);
+    }, [arrDelete, formData]);
     const handleDeleteForm = () => {
         if (formData.length > 1) {
             setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
             setFormData((prevData) => prevData.filter((form, index) => index !== currentForm));
             console.log(currentForm);
+            setArrDelete((prevArr) => [...prevArr, currentForm]);
             console.log(formData);
-            handleButtonClick2()
+            // handleButtonClick2()
 
         }
     };
-    // const update =async ()=>{
-    //     const dataToSubmit = [...values.forms];
-    //     console.log(dataToSubmit);
-    //     await dataToSubmit.forEach((form, index) => {
-    //         console.log(`Form ${index + 1} - Name: ${form.name}`);
-    //         formData[index].name = form.name;
-    //         formData[index].email = form.email;
-    //     });
-    //     console.log(formData);
-    //     handleButtonClick1()
-    // }
-
-    const handleSelectChange = (event, formIndex) => {
-        const { value } = event.target;
-        console.log(value);
-        // Update the selectField value in formData at the specified formIndex
-        setFormData((prevData) =>
-            prevData.map((form, index) =>
-                index === formIndex ? { ...form, selectField: value } : form
-            )
-        );
-    };
-
-    console.log(formData);
-    const handleSubmit = async (values) => {
+    const handleSubmit1 = async (values) => {
         const dataToSubmit = [...values.forms];
         console.log(dataToSubmit);
         await dataToSubmit.forEach((form, index) => {
-            // console.log(`Form ${index + 1} - Name: ${form.name}`);
             formData[index].processTitle = form.processTitle;
             formData[index].description = form.description;
-            formData[index].processTypeId = form.processTypeId;
-            formData[index].processNo = index + 1;
+            formData[index].startDate = form.startDate;
+            formData[index].endDate = form.endDate;
+            formData[index].processNo = index;
         });
         console.log(formData);
-        handleButtonClick1()
+        const filteredData = formData.filter((item) => !arrDelete.includes(item.processNo));
+        console.log(filteredData);
+        // const arr = [1, 2, 3, 4, 5];
+        // const newDataToSubmit = filteredData.map((form, index) => {
+        //     return {
+        //         ...form,
+        //         // index: arr[index],
+        //     };
+        // });
+
+        // console.log(newDataToSubmit);
+        // const filteredData1 = newDataToSubmit.filter((item) => !arrDelete.includes(item.index));
+        // console.log(filteredData1);
+        const data = [];
+        data.push(filteredData)
+        console.log(data);
+
     }
 
+    const handleSelectChange = (event, formIndex) => {
+        const { value } = event.target;
+        setFormData((prevData) =>
+            prevData.map((form, index) =>
+                index === formIndex ? { ...form, processTypeId: value } : form
+            )
+        );
+    };;
 
 
+    const [isLoading1, setIsLoading1] = useState(false);
 
 
-
-
-
-    const [isOpen, setIsOpen] = useState(true);
-    const [images, setImages] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
-
-    const handleClick = () => {
-        setIsOpen((prevIsOpen) => !prevIsOpen);
-    };
-
-    const popupStyle = {
-        opacity: isOpen ? 1 : 0,
-        visibility: isOpen ? "visible" : "hidden",
-        overflow: isOpen ? "auto" : "hidden"
-    };
-
-    const { configActivity, isValidCreate, isFanpage } = useSelector(root => root.ConfigActivityReducer);
-    const [isTextInputVisible, setTextInputVisible] = useState(false);
-
-    const toggleTextInput = () => {
-        setTextInputVisible(!isTextInputVisible);
-    };
-
-    const handleImageChange = async (e, formIndex) => {
-        setIsLoading(true);
+    const handleImageChange1 = async (e, formIndex) => {
+        setIsLoading1(true);
         const fileList = e.target.files;
         const newImages = [];
 
@@ -169,7 +139,7 @@ const MultiForm = () => {
 
                 uploadTask.on('state_changed', (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    setUploadProgress(progress);
+                    // setUploadProgress(progress);
                 });
 
                 const snapshot = await uploadTask;
@@ -182,29 +152,25 @@ const MultiForm = () => {
                 console.log(error);
             }
         }
-
-        // Cập nhật mảng media của form tại vị trí formIndex
         setFormData((prevData) =>
             prevData.map((form, index) =>
                 index === formIndex ? { ...form, media: [...form.media, ...newImages] } : form
             )
         );
 
-        setIsLoading(false);
-        setUploadProgress(0);
+        setIsLoading1(false);
+        // setUploadProgress(0);
     };
-
-    console.log(formData); // Log mảng media của từng form
 
     return (
         <div>
             <div className="multi-form">
-                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit1}>
                     <Form>
                         <div className="form">
                             {formData.map((form, index) => (
-                                <div key={index} className={`form-group ${index === currentForm ? '' : 'hidden'}`}>
-                                    <h3>Form {index + 1}</h3>
+                                <div key={index} className={`form-group  hidden`} style={{ display: index === 0 ? 'none' : 'block' }}>
+                                    <h3>Form {index}</h3>
                                     <div className="form-group">
                                         <label htmlFor={`processTitle_${index}`}>Title</label>
                                         <Field type="text" name={`forms[${index}].processTitle`} className="form-control" />
@@ -213,6 +179,16 @@ const MultiForm = () => {
                                     <div className="form-group">
                                         <label htmlFor={`description_${index}`}>Description</label>
                                         <Field type="text" name={`forms[${index}].description`} className="form-control" />
+
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor={`startDate_${index}`}>StartDate</label>
+                                        <Field type="datetime-local" name={`forms[${index}].startDate`} className="form-control" />
+
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor={`endDate_${index}`}>EndDate</label>
+                                        <Field type="datetime-local" name={`forms[${index}].endDate`} className="form-control" />
 
                                     </div>
                                     <div className="form-group">
@@ -242,7 +218,7 @@ const MultiForm = () => {
                                                 id={`media_${index}`}
                                                 type="file"
                                                 multiple
-                                                onChange={(e) => handleImageChange(e, index)} // Truyền formIndex khi xử lý handleImageChange
+                                                onChange={(e) => handleImageChange1(e, index)} // Truyền formIndex khi xử lý handleImageChange1
                                             />
                                             <div className="image-container">
                                                 {form.media.map((image, imageIndex) => (
@@ -280,7 +256,7 @@ const MultiForm = () => {
                                 <button type="button" className="btn btn-primary" onClick={handleCreateNewForm}>
                                     Create New Form
                                 </button>
-                                {currentForm >= 0 && (
+                                {currentForm >= 1 && (
                                     <button type="submit" className="btn btn-success">
                                         Submit
                                     </button>
@@ -295,3 +271,6 @@ const MultiForm = () => {
 };
 
 export default MultiForm;
+
+
+
