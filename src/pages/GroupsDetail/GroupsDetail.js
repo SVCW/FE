@@ -23,14 +23,14 @@ export default function GroupsDetail (props) {
         const action = GetFanpageByIDAction(id);
         dispatch(action)
     }, []);
-    const initialCommentData = JSON.parse(localStorage.getItem('fanpageactivity'))?.map((comment) => ({
+    const initialCommentData = fanpageActivity?.map((comment) => ({
         id: comment.activityId,
         isCmt: true,
         color: '#eae9ee'
     }));
     const [commentData, setCommentData] = useState(initialCommentData);
     useEffect(() => {
-        const updatedArrActivity = JSON.parse(localStorage.getItem('fanpageactivity'))?.map((activity) => {
+        const updatedArrActivity = fanpageActivity?.map((activity) => {
             const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
             return { ...activity, commentData: matchingComments };
         });
@@ -431,7 +431,7 @@ export default function GroupsDetail (props) {
                                                         <a href="#" title="Boogle inc" data-toggle="tooltip"><img src="images/resources/company8.png" alt /></a>
                                                     </li>
                                                 </ul>
-                                            </div> 
+                                            </div>
                                         </aside>
                                     </div>
                                     <div className="col-lg-9">

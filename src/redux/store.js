@@ -13,6 +13,9 @@ import { HistoryReducer } from './reducers/HistoryReducer';
 import { DonationReducer } from './reducers/DonatonReducer';
 import { LoadingReducer } from './reducers/LoadingReducer';
 import { UserReducer } from './reducers/UserReducer';
+import { ModeratorReducer } from './reducers/ModeratorReducer';
+import { ReportReducer } from './reducers/ReportReducer';
+import { EndActivityReducer } from './reducers/EndActivityReducer';
 
 
 const rootReducer = combineReducers({
@@ -29,6 +32,9 @@ const rootReducer = combineReducers({
     DonationReducer,
     LoadingReducer,
     UserReducer,
+    ModeratorReducer,
+    ReportReducer,
+    EndActivityReducer,
 })
 
 let middleWare = applyMiddleware(reduxThunk);

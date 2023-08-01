@@ -7,13 +7,13 @@ import { useFormik } from 'formik'
 import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetListActivityAction } from '../../redux/actions/ActivityAction';
-import { LoginUserAction } from '../../redux/actions/LoginAction';
+import { LoginModeratorAction, LoginUserAction } from '../../redux/actions/LoginAction';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
 export default function Login (props) {
     const dispatch = useDispatch()
-    const { msg } = useSelector(root => root.LoginReducer)
+    const { msg, msgModerator } = useSelector(root => root.LoginReducer)
     const [isMatch, setIsMatch] = useState(false);
     useEffect(() => {
         const action = GetListActivityAction();
@@ -51,6 +51,13 @@ export default function Login (props) {
         },
         onSubmit: (value) => {
             console.log(value);
+            if (value.username === 'admin' && value.password === '1234') {
+                props.history.push('/achivement')
+            }
+            else {
+                const action = LoginModeratorAction(value, props);
+                dispatch(action)
+            }
         }
     })
     const signInWithGoogle = async () => {
@@ -189,7 +196,7 @@ export default function Login (props) {
                                 <input type="checkbox" id="checkbox" defaultChecked />
                                 <label htmlFor="checkbox"><span>Nhớ tài khoản</span></label>
                             </div>
-
+                            {msgModerator !== '' ? <h3 style={{ color: 'red' }}>{msgModerator}</h3> : <div></div>}
                             <button className="main-btn" type="submit" onClick={() => {
                                 props.history.push('/achivement')
                             }}><i className="icofont-key" /> Đăng nhập</button>
