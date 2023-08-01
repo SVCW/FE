@@ -584,7 +584,7 @@ export const AdminTemplate = (props) => {
 
                                     <li className="app-sidebar__heading">Báo cáo</li>
                                     <li>
-                                        <NavLink to='/reporttype'>
+                                        <NavLink to='reporttype'>
                                             <i className="metismenu-icon pe-7s-graph2">
                                             </i>Loại báo cáo
                                         </NavLink>
@@ -592,23 +592,9 @@ export const AdminTemplate = (props) => {
 
                                     <li className="app-sidebar__heading">Vai trò</li>
                                     <li>
-                                        <NavLink to='/role'>
+                                        <NavLink to='role'>
                                             <i className="metismenu-icon pe-7s-graph2">
                                             </i>Vai trò
-                                        </NavLink>
-                                    </li>
-                                    <li className="app-sidebar__heading">Người Quản Lý</li>
-                                    <li>
-                                        <NavLink to='/moderator'>
-                                            <i className="metismenu-icon pe-7s-graph2">
-                                            </i>Người Quản Lý
-                                        </NavLink>
-                                    </li>
-                                    <li className="app-sidebar__heading">Fanpage</li>
-                                    <li>
-                                        <NavLink to='/adminfanpage'>
-                                            <i className="metismenu-icon pe-7s-graph2">
-                                            </i>Fanpage
                                         </NavLink>
                                     </li>
                                 </ul>

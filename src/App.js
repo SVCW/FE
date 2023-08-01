@@ -25,8 +25,6 @@ import CreateFanpage from './pages/Fanpage/CreateFanpage';
 // import MultiStepForm from './MultiStepForm';
 // import MultiStepForm1 from './MultiStepForm1';
 import { ToastContainer } from 'react-toastify';
-import Moderator from './pages/Moderator/Moderator';
-import AdminFanpage from './pages/AdminFanpage/AdminFanpage';
 
 
 export const history = createBrowserHistory()
@@ -45,8 +43,6 @@ function App () {
           <AdminTemplate exact path="/processtype" Component={ProcessType} />
           <AdminTemplate exact path="/reporttype" Component={ReportType} />
           <AdminTemplate exact path="/role" Component={Role} />
-          <AdminTemplate exact path="/moderator" Component={Moderator} />
-          <AdminTemplate exact path="/adminfanpage" Component={AdminFanpage} />
           {/* <AdminTemplate exact path="/table" Component={Admin} /> */}
           <UserTemplate exact path="/home" Component={Home} />
           <UserTemplate exact path="/groups" Component={Group} />
