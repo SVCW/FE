@@ -6,7 +6,6 @@ import { storage_bucket } from './../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useEffect } from 'react';
 import { CreateFanpageAction } from '../../redux/actions/FanpageAction';
-import Swal from 'sweetalert2';
 export default function CreateFanpage (props) {
     const dispatch = useDispatch()
     const { userID } = useSelector(root => root.LoginReducer)
@@ -29,22 +28,6 @@ export default function CreateFanpage (props) {
             console.log(value);
             const action = CreateFanpageAction(value, props);
             dispatch(action)
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener("mouseenter", Swal.stopTimer);
-                    toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
-
-            Toast.fire({
-                icon: "success",
-                title: `Gửi yêu cầu tạo nhóm thành công. Chờ admin kiểm duyệt nhé!!!`,
-            });
         }
     })
     const [avartar, setAvatar] = useState('')
@@ -142,7 +125,7 @@ export default function CreateFanpage (props) {
 
                                                 </div>
                                             </div>
-                                            <button type='submit' className="main-btn " href="#" title>Tạo Fanpage</button>
+                                            <button type='submit' className="main-btn purchase-btn" href="#" title>Tạo Fanpage</button>
                                         </div>
                                         <div className="col-lg-4">
                                             <div className="main-wraper stick-widget" style={{ position: 'relative' }}>

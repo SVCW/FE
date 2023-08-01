@@ -45,28 +45,3 @@ export const LoginUserAction = (value, props) => {
         }
     }
 }
-
-
-export const LoginModeratorAction = (value, props) => {
-    return async (dispatch) => {
-        try {
-            let result = await http.post(`/Moderator/login`, value);
-            console.log(result.data.data);
-            const action = {
-                type: "GET_MODERATOR_LOGIN",
-                moderator: result.data.data,
-                msgModerator: ''
-            }
-            dispatch(action)
-            localStorage.setItem('moderator', result.data.data)
-
-            props.history.push("/achivement");
-        } catch (error) {
-            const action = {
-                type: "CHECK_MODERATOR",
-                msgModerator: error.response?.data?.message
-            }
-            dispatch(action)
-        }
-    }
-}
