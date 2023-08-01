@@ -17,12 +17,12 @@ import { CreateAchivementAction, DeleteAchivementAction, GetListAchivementAction
 import { useDispatch, useSelector } from 'react-redux';
 import { storage_bucket } from './../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { GetListFanpageAction, UpdateStatusFanpageAction } from '../../redux/actions/FanpageAction';
+import { DeleteActivityAction, GetListActivityAction } from '../../redux/actions/ActivityAction';
 
-export default function AdminFanpage () {
+export default function AdminActivity () {
     const dispatch = useDispatch()
-    const { arrFanpage } = useSelector(root => root.FanpageReducer)
-    console.log(arrFanpage);
+    const { arrActivity } = useSelector(root => root.ActivityReducer)
+    console.log(arrActivity);
     const [showInput, setShowInput] = useState(true);
     const [id, setID] = useState('abc')
     let counter = 0;
@@ -70,9 +70,10 @@ export default function AdminFanpage () {
     const dt = useRef(null);
     console.log(product);
     useEffect(() => {
-        const action = GetListFanpageAction();
+        const action = GetListActivityAction();
         dispatch(action)
     }, []);
+
 
     const [op, setOp] = useState('Active')
     const onInputDropdown = (e, field) => {
@@ -83,14 +84,14 @@ export default function AdminFanpage () {
     };
     console.log(op);
     const arrReportType = [
-        { value: 'Pending', label: "Chờ duyệt" },
         { value: 'Active', label: "Hoạt động" },
-        { value: 'Inactive', label: "Chưa hoạt động" },
+        { value: 'InActive', label: "Không hoạt động" },
     ]
     useEffect(() => {
-        const arr = arrFanpage.filter(item => item.status === op)
+
+        const arr = arrActivity.filter(item => item.status === op)
         setProducts(arr)
-    }, [arrFanpage, op]);
+    }, [arrActivity, op]);
 
     // const formatCurrency = (value) => {
     //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -132,7 +133,7 @@ export default function AdminFanpage () {
                 await dispatch(action)
                 setProductDialog(false);
                 counter++;
-                toast.current.show({ severity: 'success', summary: 'Thành công', detail: `Cập nhật thành công huy hiệu ${product.achivementId}`, life: 3000, });
+                toast.current.show({ severity: 'success', summary: 'Thành công', detail: `Cập nhật thành công  ${product.title}`, life: 3000, });
                 setText('')
 
             } else {
@@ -165,12 +166,12 @@ export default function AdminFanpage () {
 
     const deleteProduct = async () => {
 
-        const action = await UpdateStatusFanpageAction(product.fanpageId)
+        const action = await DeleteActivityAction(product.activityId)
         await dispatch(action)
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
         toast.current.show({
-            severity: 'success', summary: 'Thành công', detail: `Cập nhật trạng thái ${product.fanpageName} Thành công`, life: 3000, options: {
+            severity: 'error', summary: 'Thành công', detail: `Cập nhật trạng thái ${product.title} thành công`, life: 3000, options: {
                 style: {
                     zIndex: 100
                 }
@@ -251,7 +252,6 @@ export default function AdminFanpage () {
         setProduct(_product);
     };
 
-
     const leftToolbarTemplate = () => {
         return (
             <div className="flex flex-wrap gap-2">
@@ -266,7 +266,7 @@ export default function AdminFanpage () {
     };
 
     const imageBodyTemplate = (rowData) => {
-        return <img src={`${rowData.avatar}`} alt={rowData.avatar} className="shadow-2 border-round" style={{ width: '64px' }} />;
+        return <img src={`${rowData.achivementLogo}`} alt={rowData.image} className="shadow-2 border-round" style={{ width: '64px' }} />;
     };
 
     const priceBodyTemplate = (rowData) => {
@@ -285,8 +285,7 @@ export default function AdminFanpage () {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                {/* <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editProduct(rowData)} /> */}
-                <Button icon="pi pi-pencil" rounded outlined onClick={() => confirmDeleteProduct(rowData)} />
+                <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} />
             </React.Fragment>
         );
     };
@@ -309,7 +308,7 @@ export default function AdminFanpage () {
 
     const header = (
         <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0 mb-3">Quản lý Fanpage</h4>
+            <h4 className="m-0 mb-3">Quản lý chiến dịch</h4>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm kiếm..." />
@@ -347,10 +346,11 @@ export default function AdminFanpage () {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm" globalFilter={globalFilter} header={header}>
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
-                        <Column field="fanpageId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="avatar" header="Hình ảnh" body={imageBodyTemplate}></Column>
-                        <Column field="fanpageName" header="Fanpage" sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Ngày tạo" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field="activityId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
+                        <Column field="title" header="Tên chiến dịch" sortable style={{ minWidth: '11rem' }}></Column>
+                        <Column field="description" header="Chi tiết" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Bắt đầu" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field={createAt => moment(createAt.endDate).format('DD-MM-YYYY')} header="Kết thúc" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
                         <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
@@ -394,8 +394,8 @@ export default function AdminFanpage () {
                     <div className="confirmation-content">
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                         {product && (
-                            <span style={{ fontSize: '18px' }}>
-                                Bạn muốn cập nhật trạng thái hoạt động fanpage <b>{product.fanpageName}</b>?
+                            <span>
+                                Bạn có cập nhật trạng thái  <b>{product.title}</b>?
                             </span>
                         )}
                     </div>

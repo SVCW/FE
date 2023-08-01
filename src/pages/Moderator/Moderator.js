@@ -21,11 +21,12 @@ import { CreateModeratorAction, DeleteModeratorAction, GetListModeratorAction } 
 
 export default function Moderator () {
     const dispatch = useDispatch()
-    const { arrModerator } = useSelector(root => root.ModeratorReducer)
+    const { arrModerator, msg } = useSelector(root => root.ModeratorReducer)
     console.log(arrModerator);
     const [showInput, setShowInput] = useState(true);
     const [id, setID] = useState('abc')
     let counter = 0;
+    console.log(msg);
     let emptyProduct = {
 
 
@@ -112,28 +113,19 @@ export default function Moderator () {
     };
 
     const saveProduct = async () => {
+        let check = true;
         setSubmitted(true);
-        if (product.email === '') {
-            // const index = findIndexById(product.id);
-
-            // _products[index] = _product;
-            // console.log(product.achivementId);
-            // const action = await UpdateAchivementAction(product)
-            // await dispatch(action)
-            // setProductDialog(false);
-            // counter++;
-            // toast.current.show({ severity: 'success', summary: 'Thành công', detail: `Cập nhật thành công huy hiệu ${product.achivementId}`, life: 3000, });
-            // setText('')
-
-        } else {
-            const action = await CreateModeratorAction(product)
-            await dispatch(action)
+        const action = await CreateModeratorAction(product)
+        await dispatch(action)
+        console.log(msg);
+        if (localStorage.getItem('createmoderator') === '') {
             counter++;
             toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Tạo mới người quản lý thành công', life: 3000 });
-
             setProductDialog(false);
             setProduct(emptyProduct)
-
+            // localStorage.setItem("createmoderator", '')
+        } else {
+            setProductDialog(true)
 
         }
     };
@@ -415,10 +407,11 @@ export default function Moderator () {
                                 <input name="image" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'image')} />
                                 {product?.image === '' ? <div></div> : <img src={product.image} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
                             </label>
-                            {submitted && !product.image && <small className="p-error">Hình ảnh  không được để trống.</small>}
+                            {/* {submitted && !product.image && <small className="p-error">Hình ảnh  không được để trống.</small>} */}
                         </div>
 
                         <br />
+                        {msg !== '' ? <div style={{ color: 'red' }}>{msg}</div> : <div></div>}
                         {/* <input type='file' id="achivementLogo" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
                     </div>
 
@@ -441,9 +434,9 @@ export default function Moderator () {
                         {product && <span>Are you sure you want to delete the selected products?</span>}
                     </div>
                 </Dialog>
-            </div>
+            </div >
 
-        </div>
+        </div >
 
     )
 }

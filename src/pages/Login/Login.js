@@ -7,13 +7,13 @@ import { useFormik } from 'formik'
 import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetListActivityAction } from '../../redux/actions/ActivityAction';
-import { LoginUserAction } from '../../redux/actions/LoginAction';
+import { LoginModeratorAction, LoginUserAction } from '../../redux/actions/LoginAction';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
 export default function Login (props) {
     const dispatch = useDispatch()
-    const { msg } = useSelector(root => root.LoginReducer)
+    const { msg, msgModerator } = useSelector(root => root.LoginReducer)
     const [isMatch, setIsMatch] = useState(false);
     useEffect(() => {
         const action = GetListActivityAction();
@@ -56,7 +56,8 @@ export default function Login (props) {
                 props.history.push('/achivement')
             }
             else {
-                window.alert('loiii')
+                const action = LoginModeratorAction(value, props);
+                dispatch(action)
             }
         }
     })
@@ -197,7 +198,7 @@ export default function Login (props) {
                                 <input type="checkbox" id="checkbox" defaultChecked />
                                 <label htmlFor="checkbox"><span>Nhớ tài khoản</span></label>
                             </div> */}
-
+                            {msgModerator !== '' ? <h3 style={{ color: 'red' }}>{msgModerator}</h3> : <div></div>}
                             <button className="main-btn" type="submit" ><i className="icofont-key" /> Đăng nhập</button>
 
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
