@@ -567,34 +567,34 @@ export const AdminTemplate = (props) => {
                                             Tables
                                         </a>
                                     </li> */}
-                                    <li className="app-sidebar__heading">Thành Tựu</li>
+                                    <li className="app-sidebar__heading">Huy hiệu</li>
                                     <li>
                                         <NavLink to='/achivement'>
                                             <i className="metismenu-icon pe-7s-display2" />
-                                            Thành Tựu
+                                            Huy hiệu
                                         </NavLink>
                                     </li>
-                                    <li className="app-sidebar__heading">Tiến Trình</li>
+                                    <li className="app-sidebar__heading">Tiến trình</li>
                                     <li>
                                         <NavLink to='/processtype'>
                                             <i className="metismenu-icon pe-7s-mouse">
-                                            </i>Loại Tiến Trình
+                                            </i>Loại tiến trình
                                         </NavLink>
                                     </li>
 
-                                    <li className="app-sidebar__heading">Báo Cáo</li>
+                                    <li className="app-sidebar__heading">Báo cáo</li>
                                     <li>
                                         <NavLink to='reporttype'>
                                             <i className="metismenu-icon pe-7s-graph2">
-                                            </i>Loại Báo Cáo
+                                            </i>Loại báo cáo
                                         </NavLink>
                                     </li>
 
-                                    <li className="app-sidebar__heading">Vai Trò</li>
+                                    <li className="app-sidebar__heading">Vai trò</li>
                                     <li>
                                         <NavLink to='role'>
                                             <i className="metismenu-icon pe-7s-graph2">
-                                            </i>Vai Trò
+                                            </i>Vai trò
                                         </NavLink>
                                     </li>
                                 </ul>

@@ -56,7 +56,7 @@ export default function Achivement () {
             });
     };
 
-    const [text, setText] = useState('Thêm Mới Thành Tựu')
+    const [text, setText] = useState('Thêm mới huy hiệu')
     const [products, setProducts] = useState([]);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -117,14 +117,14 @@ export default function Achivement () {
                 await dispatch(action)
                 setProductDialog(false);
                 counter++;
-                toast.current.show({ severity: 'success', summary: 'Thành Công', detail: `Cập Nhật Thành Công Thành Tựu ${product.achivementId}`, life: 3000, });
+                toast.current.show({ severity: 'success', summary: 'Thành công', detail: `Cập nhật thành công huy hiệu ${product.achivementId}`, life: 3000, });
                 setText('')
 
             } else {
                 const action = await CreateAchivementAction(product)
                 await dispatch(action)
                 counter++;
-                toast.current.show({ severity: 'success', summary: 'Thành Công', detail: 'Tạo Mới Thành Tựu Thành Công', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Tạo mới huy hiệu thành công', life: 3000 });
 
 
             }
@@ -138,7 +138,7 @@ export default function Achivement () {
     };
 
     const editProduct = (product) => {
-        setText('Chỉnh Sửa Thành Tựu')
+        setText('Chỉnh sửa huy hiệu')
         setProduct({ ...product });
         setProductDialog(true);
     };
@@ -155,7 +155,7 @@ export default function Achivement () {
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
         toast.current.show({
-            severity: 'error', summary: 'Thành Công', detail: `Xóa Thành Tựu ${product.achivementId} Thành Công`, life: 3000, options: {
+            severity: 'error', summary: 'Thành công', detail: `Xóa huy hiệu ${product.achivementId} Thành công`, life: 3000, options: {
                 style: {
                     zIndex: 100
                 }
@@ -201,7 +201,7 @@ export default function Achivement () {
         setProducts(_products);
         setDeleteProductsDialog(false);
         setSelectedProducts(null);
-        toast.current.show({ severity: 'success', summary: 'Thành Công', detail: 'Xóa Thành Công Thành Tựu', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Xóa Thành công huy hiệu', life: 3000 });
     };
 
     const onCategoryChange = (e) => {
@@ -239,14 +239,14 @@ export default function Achivement () {
     const leftToolbarTemplate = () => {
         return (
             <div className="flex flex-wrap gap-2">
-                <Button label="Thêm Mới" icon="pi pi-plus" severity="success" onClick={openNew} />
+                <Button label="Thêm mới" icon="pi pi-plus" severity="success" onClick={openNew} />
                 {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
             </div>
         );
     };
 
     const rightToolbarTemplate = () => {
-        return <Button label="Tải Xuống" icon="pi pi-upload" style={{ marginRight: '50px' }} className="p-button-help" onClick={exportCSV} />;
+        return <Button label="Tải xuống" icon="pi pi-upload" style={{ marginRight: '50px' }} className="p-button-help" onClick={exportCSV} />;
     };
 
     const imageBodyTemplate = (rowData) => {
@@ -293,23 +293,23 @@ export default function Achivement () {
 
     const header = (
         <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0 mb-3">Quản Lý Thành Tựu</h4>
+            <h4 className="m-0 mb-3">Quản lý huy hiệu</h4>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm Kiếm..." />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm kiếm..." />
             </span>
         </div>
     );
     const productDialogFooter = (
         <React.Fragment>
-            <Button label="Hủy Bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
-            <Button label="Hoàn Thành" icon="pi pi-check" onClick={saveProduct} />
+            <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
+            <Button label="Hoàn thành" icon="pi pi-check" onClick={saveProduct} />
         </React.Fragment>
     );
     const deleteProductDialogFooter = (
         <React.Fragment>
-            <Button label="Hủy Bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
-            <Button label="Đồng Ý" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
+            <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
+            <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
         </React.Fragment>
     );
     const deleteProductsDialogFooter = (
@@ -332,9 +332,9 @@ export default function Achivement () {
                         currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm" globalFilter={globalFilter} header={header}>
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
                         <Column field="achivementId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="achivementLogo" header="Hình Ảnh" body={imageBodyTemplate}></Column>
-                        <Column field="description" header="Tên Thành Tựu" sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Ngày Tạo" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field="achivementLogo" header="Hình ảnh" body={imageBodyTemplate}></Column>
+                        <Column field="description" header="Tên huy hiệu" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Ngày tạo" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
                         <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
@@ -343,11 +343,11 @@ export default function Achivement () {
                     </DataTable>
                 </div>
 
-                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} onClick={() => { setText('Thêm Mới Thành Tựu') }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} onClick={() => { setText('Thêm Mới huy hiệu') }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
 
                     <div className="field">
                         <label htmlFor="name" className="font-bold" style={{ fontWeight: 'bold' }}>
-                            Hình Ảnh
+                            Hình ảnh
                         </label>
                         <br />
                         <div>
@@ -355,7 +355,7 @@ export default function Achivement () {
                                 <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} />
                                 {product?.achivementLogo === '' ? <div></div> : <img src={product.achivementLogo} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
                             </label>
-                            {submitted && !product.achivementLogo && <small className="p-error">Hình Ảnh Thành Tựu Không Được Để Trống.</small>}
+                            {submitted && !product.achivementLogo && <small className="p-error">Hình ảnh huy hiệu không được để trống.</small>}
                         </div>
 
                         <br />
@@ -363,10 +363,10 @@ export default function Achivement () {
                     </div>
                     <div className="field">
                         <label htmlFor="description" className="font-bold" style={{ fontWeight: 'bold' }}>
-                            Miêu Tả
+                            Miêu tả
                         </label>
                         <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-                        {submitted && !product.description && <small className="p-error">Miêu Tả Thành Tựu Không Được Để Trống.</small>}
+                        {submitted && !product.description && <small className="p-error">Miêu tả huy hiệu không được để trống.</small>}
                     </div>
 
 
@@ -379,7 +379,7 @@ export default function Achivement () {
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                         {product && (
                             <span>
-                                Bạn có chắc chắn muốn xóa thành tựu <b>{product.achivementId}</b>?
+                                Bạn có chắc chắn muốn xóa huy hiệu <b>{product.achivementId}</b>?
                             </span>
                         )}
                     </div>

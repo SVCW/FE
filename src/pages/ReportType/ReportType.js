@@ -313,11 +313,11 @@ export default function ReportType () {
 
                     <div className="field">
                         <label htmlFor="name" className="font-bold" style={{ fontWeight: 'bold' }}>
-                            Tên Loại Báo Cáo
+                            Tên loại báo cáo
                         </label>
                         <br />
                         <InputText id="reportTypeName" value={product.reportTypeName} onChange={(e) => onInputChange(e, 'reportTypeName')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                        {submitted && !product.reportTypeName && <small className="p-error">Tên Loại Báo Cáo Không Được Để Trống.</small>}
+                        {submitted && !product.reportTypeName && <small className="p-error">Tên Loại báo cáo không được để trống.</small>}
                     </div>
 
 
@@ -331,7 +331,7 @@ export default function ReportType () {
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                         {product && (
                             <span>
-                                Bạn có chắc chắn muốn xóa loại báo cáo <b>{product.reportTypeName}</b>?
+                                Bạn có chắc chắn muốn xóa loại báo cáo? <b>{product.reportTypeName}</b>?
                             </span>
                         )}
                     </div>
@@ -340,7 +340,7 @@ export default function ReportType () {
                 <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
                     <div className="confirmation-content">
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        {product && <span>Are you sure you want to delete the selected products?</span>}
+                        {product && <span>Bạn có muốn xóa những sản phẩm trên?</span>}
                     </div>
                 </Dialog>
             </div>
