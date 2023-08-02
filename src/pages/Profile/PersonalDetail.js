@@ -40,6 +40,8 @@ const PersonalDetail = () => {
     setIsEditing(false);
   };
 
+  if(!userDetails) return <p>Loading...</p>;
+
   return (
     <div className="main-wraper">
       <div
