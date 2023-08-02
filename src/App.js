@@ -56,7 +56,7 @@ function App () {
           <Route exact path="/test1" component={Test} />
           {/* <Route exact path="/test1" component={MultiStepForm1} /> */}
           <UserTemplate exact path="/game" Component={BaiTapGameXucXac} />
-          <Route exact path="/" component={Login} />
+          <Route path='*' exact component={Login} />
 
         </Switch>
       </Router>

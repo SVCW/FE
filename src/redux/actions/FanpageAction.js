@@ -8,7 +8,7 @@ export const GetListFanpageAction = () => {
             const newArray = await (result.data.data).map((item) => ({
                 ...item,
                 isFollow: false,
-
+                isJoin: false,
             }));
             const action = {
                 type: "GET_LIST_FANPAGE",

@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GetProfileByIdAction, UpdateProfileById } from "../../redux/actions/ProfileAction";
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useEffect } from "react";
 
 const PersonalDetail = () => {
+
+  const { getUserId } = useSelector(root => root.ProfileReducer)
+  console.log(getUserId);
+  useEffect(() => {
+    const action = GetProfileByIdAction(localStorage.getItem('userID'));
+    dispatch(action)
+  }, []);
   const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem('getuserid')));
-    const notify = () => toast("Wow so easy!", {
-        theme: 'dark'
-    });
+  const notify = () => toast("Wow so easy!", {
+    theme: 'dark'
+  });
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [info, setInfo] = useState({
@@ -40,7 +48,7 @@ const PersonalDetail = () => {
     setIsEditing(false);
   };
 
-  if(!userDetails) return <p>Loading...</p>;
+  if (!userDetails) return <p>Loading...</p>;
 
   return (
     <div className="main-wraper">
@@ -188,7 +196,7 @@ const PersonalDetail = () => {
                 </li>
               </div>
             </div>
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Submit" />
             <a className="ask-qst" onClick={() => setIsEditing(false)}>
               Huy
             </a>
