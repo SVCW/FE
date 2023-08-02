@@ -597,6 +597,20 @@ export const AdminTemplate = (props) => {
                                             </i>Vai trò
                                         </NavLink>
                                     </li>
+                                    <li className="app-sidebar__heading">Người Quản Lý</li>
+                                    <li>
+                                        <NavLink to='/moderator'>
+                                            <i className="metismenu-icon pe-7s-graph2">
+                                            </i>Người Quản Lý
+                                        </NavLink>
+                                    </li>
+                                    <li className="app-sidebar__heading">Fanpage</li>
+                                    <li>
+                                        <NavLink to='/adminfanpage'>
+                                            <i className="metismenu-icon pe-7s-graph2">
+                                            </i>Fanpage
+                                        </NavLink>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

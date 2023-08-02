@@ -279,7 +279,7 @@ export default function DetailProcess (props) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="blog-title" style={{ display: 'flex', alignContent: 'center', fontSize: '40px', textAlign: 'center', paddingBottom: '50px', color: '#00a6d3' }}>
+                                        <div className="blog-title" style={{ display: 'flex', alignContent: 'center', fontSize: '40px', textAlign: 'center', color: '#00a6d3' }}>
                                             <h2>Tiến trình : {currentObject?.processNo}</h2>
                                         </div>
                                         <div className="blog-title" style={{ textAlign: 'center' }}>
