@@ -1187,3 +1187,16 @@ i.fa.fa-arrow-up {
 .bg-image {
     opacity: 0.2;
 }
+.login-form-login p{
+    margin-top: 20px;
+    font-size: 16px;
+    border-bottom: 2px solid #17a2b8;
+    padding-bottom: 4px;
+    width: max-content;
+    cursor: pointer;
+}
+.login-form-login :hover{
+    background-color: red;
+    color: #fff;
+
+}

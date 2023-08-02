@@ -69,6 +69,7 @@ export default function Home() {
     if (tcss === "css") {
     }
   };
+
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
@@ -388,14 +389,7 @@ export default function Home() {
   //     return comment;
   //   });
   const [joinedIndex, setJoinedIndex] = useState(null);
-  const handleJoinClick = (index, activity, isJoin, title) => {
-    setCmt((prevArray) => {
-      const newArray = JSON.parse(JSON.stringify(prevArray));
-      newArray[index].isJoin = !newArray[index].isJoin;
-      localStorage.setItem(`activity`, JSON.stringify(newArray));
-
-      return newArray;
-    });
+  const handleJoinClick = async (index, activity, isJoin, title) => {
     if (isJoin) {
       setJoinedIndex(null);
       const action = UnJoinAction(activity, userID);
@@ -438,6 +432,14 @@ export default function Home() {
         title: `Tham Gia Thành Công Sự Kiện ${title}`,
       });
     }
+    const action = GetListActivityAction();
+    await dispatch(action);
+    setCmt((prevArray) => {
+      const newArray = JSON.parse(JSON.stringify(prevArray));
+      localStorage.getItem(`activity`, JSON.stringify(newArray));
+
+    return newArray;
+    });
   };
   //   const handleLikeClick = (id) => {
   //     const updatedComments = commentData.map((comment) => {
@@ -480,14 +482,7 @@ export default function Home() {
   //     setCommentData(updatedComments);
   //   };
   const [followIndex, setFollowIndex] = useState(null);
-  const handleFollowClick = (index, activity, isFollow, title) => {
-    setCmt((prevArray) => {
-      const newArray = JSON.parse(JSON.stringify(prevArray));
-      newArray[index].isFollow = !newArray[index].isFollow;
-      localStorage.setItem(`activity`, JSON.stringify(newArray));
-
-      return newArray;
-    });
+  const handleFollowClick = async (index, activity, isFollow, title) => {
     if (isFollow) {
       setFollowIndex(null);
       const action = UnFollowAction(activity, userID);
@@ -529,6 +524,14 @@ export default function Home() {
         title: `Theo dõi chiến dịch ${title} thành công `,
       });
     }
+    const action = GetListActivityAction();
+    await dispatch(action);
+    setCmt((prevArray) => {
+      const newArray = JSON.parse(JSON.stringify(prevArray));
+      localStorage.setItem(`activity`, JSON.stringify(newArray));
+
+      return newArray;
+    });
   };
 
   const initialCommentData = JSON.parse(localStorage.getItem("activity"))?.map(
@@ -1178,12 +1181,21 @@ export default function Home() {
                     {cmt?.map((item, index) => {
                       const detailItem = item;
                       let isAlreadyLiked = false;
+                      let isAlreadyJoined = false;
+                      let isAlreadyFollowed = false;
                       item?.like?.map((user) => {
                         if (user.userId === userByID.userId) {
-                          //item?.like?
                           isAlreadyLiked = true;
                         }
                       });
+
+                      item?.followJoinAvtivity?.map((user) => {
+                        if (user.userId === userByID.userId) {
+                          isAlreadyFollowed = user.isFollow;
+                          isAlreadyJoined = user.isJoin;
+                        }
+                      });
+                      //TODO
                       return (
                         <div className="main-wraper">
                           <div className="user-post">
@@ -1335,7 +1347,6 @@ export default function Home() {
                                 </div>
                                 <figure style={{}}>
                                   {/* <p style={{ width: '100%' }}>fetched-image</p> */}
-
                                   <div className="image-gallery-flex">
                                     {item?.media?.length <= 3
                                       ? item.media.map((image, index) => {
@@ -1539,7 +1550,7 @@ export default function Home() {
                                 >
                                   <button
                                     className={`btn ${
-                                      item.isJoin && joinedIndex === index
+                                      isAlreadyJoined
                                         ? "btn-danger"
                                         : "btn-success"
                                     } mb-4 mt-4`}
@@ -1547,17 +1558,19 @@ export default function Home() {
                                       handleJoinClick(
                                         index,
                                         item.activityId,
-                                        item.isJoin,
+                                        isAlreadyJoined,
                                         item.title
                                       );
                                     }}
                                   >
-                                    {item?.isJoin ? "Hủy Tham Gia" : "Tham Gia"}
+                                    {isAlreadyJoined
+                                      ? "Hủy Tham Gia"
+                                      : "Tham Gia"}
                                   </button>
 
                                   <button
                                     className={`btn ${
-                                      item.isFollow && followIndex === index
+                                      isAlreadyFollowed
                                         ? "btn-danger"
                                         : "btn-success"
                                     } mb-4 mt-4`}
@@ -1565,12 +1578,15 @@ export default function Home() {
                                       handleFollowClick(
                                         index,
                                         item.activityId,
-                                        item.isFollow,
+                                        isAlreadyFollowed,
                                         item.title
                                       );
                                     }}
                                   >
-                                    {item?.isFollow
+                                    {
+                                      //TODO
+                                    }
+                                    {isAlreadyFollowed
                                       ? "Hủy theo dõi"
                                       : "Theo dõi"}
                                   </button>
@@ -1726,12 +1742,29 @@ export default function Home() {
                                           Thích
                                         </span>
                                         <ul className="namelist">
-                                          {item?.like?.length <= 4 ? item?.like.map((userItem) => {
-                                            return <li>{userItem.user.username}</li>;
-                                          }) : item?.like?.slice(0, 4).map((userItem, index) => {
-                                            index < 4 ? <li>{userItem.user.username}</li> : <li><span>+{item?.like.length - 5}</span></li>;
-                                          })}
-                                         
+                                          {item?.like?.length <= 4
+                                            ? item?.like.map((userItem) => {
+                                                return (
+                                                  <li>
+                                                    {userItem.user.username}
+                                                  </li>
+                                                );
+                                              })
+                                            : item?.like
+                                                ?.slice(0, 4)
+                                                .map((userItem, index) => {
+                                                  index < 4 ? (
+                                                    <li>
+                                                      {userItem.user.username}
+                                                    </li>
+                                                  ) : (
+                                                    <li>
+                                                      <span>
+                                                        +{item?.like.length - 5}
+                                                      </span>
+                                                    </li>
+                                                  );
+                                                })}
                                         </ul>
                                       </div>
                                     </div>
@@ -1769,7 +1802,6 @@ export default function Home() {
                                       transition: "all 0.2s linear 0s",
                                       cursor: "pointer",
                                     }}
-                                    //TODO
                                     onClick={() => {
                                       handleLikeClick(item.activityId);
                                     }}
