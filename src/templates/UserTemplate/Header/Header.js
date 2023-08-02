@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 
-export default function Header(props) {
+export default function Header (props) {
   const dispatch = useDispatch();
   const { userByID } = useSelector((root) => root.UserReducer);
 
@@ -211,9 +211,9 @@ export default function Header(props) {
                   <i className="icofont-brand-slideshare" /> Invite Collegue
                 </a>
               </li> */}
-              <li>
+              {/* <li>
                 <a href="pay-out.html" title>
-                  <i className="icofont-price" /> 
+                  <i className="icofont-price" />
                 </a>
               </li>
 
@@ -231,10 +231,10 @@ export default function Header(props) {
                 <a href="privacy-n-policy.html" title>
                   <i className="icofont-notepad" /> Privacy
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a className="dark-mod" href="#" title>
-                  <i className="icofont-moon" /> Dark Mode
+                  <i className="icofont-moon" /> Sáng/Tối
                 </a>
               </li>
               <li
@@ -252,7 +252,7 @@ export default function Header(props) {
               >
                 <NavLink to="/" title>
                   <i className="icofont-power" />{" "}
-                  {localStorage.getItem("userID") ? "Logout" : "Login"}
+                  {localStorage.getItem("userID") ? "Đăng xuất" : "Đăng nhập"}
                 </NavLink>
               </li>
             </ul>

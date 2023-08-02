@@ -6,6 +6,7 @@ export const GetUserByIdAction = (id) => {
         try {
             let result = await http.get(`/User/get-user-by-id?UserId=${id}`);
             console.log(result.data.data.user);
+            console.log(result.data.data?.user?.activity);
             const action = {
                 type: "GET_USER_BY_ID",
                 userByID: result.data.data.user
@@ -24,9 +25,12 @@ export const GetUserBystatisticAction = (id) => {
         try {
             let result = await http.get(`/User/get-statistic-profile?userId=${id}`);
             console.log(result.data.data);
+            console.log(result.data.data.total.slice(0, 3));
             const action = {
                 type: "GET_USER_BY_STATIS",
-                userByStatis: result.data.data
+                userByStatis: result.data.data,
+                usertotal: result.data.data.total.slice(0, 3),
+
             }
             dispatch(action)
 

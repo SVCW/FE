@@ -58,6 +58,13 @@ export const LoginModeratorAction = (value, props) => {
                 msgModerator: ''
             }
             dispatch(action)
+            localStorage.setItem('admin', 'moderator')
+            const action1 = {
+                type: 'LOGOUT_ADMIN',
+                admin: localStorage.setItem('admin', 'moderator')
+            }
+            dispatch(action)
+            dispatch(action1)
             localStorage.setItem('moderator', result.data.data)
 
             props.history.push("/achivement");

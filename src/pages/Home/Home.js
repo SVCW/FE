@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from 'react'
-import { CreateActivityAction, DeleteActivityByUserAction, DeleteLikeAction, GetListActivityAction, GetListEndActivityAction, PostLikeAction } from '../../redux/actions/ActivityAction';
+import { CreateActivityAction, DeleteActivityByUserAction, DeleteLikeAction, GetActivityByIDAction, GetListActivityAction, GetListEndActivityAction, PostLikeAction, UpdateActivityAction } from '../../redux/actions/ActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import moment from 'moment';
@@ -53,6 +53,7 @@ import { GetUserByIdAction, GetUserBystatisticAction } from "../../redux/actions
 import { GetListReportTypeAction } from '../../redux/actions/ReportTypeAction';
 import { Toolbar } from 'primereact/toolbar';
 import { CreateReportAction } from '../../redux/actions/ReportAction';
+import { GetProfileByIdAction } from '../../redux/actions/ProfileAction';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 export default function Home () {
@@ -61,23 +62,22 @@ export default function Home () {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
-
-  console.log(images);
-  const [tcss, setTcss] = useState("css");
-  const [vprocess, setVProcess] = useState(false);
+  const [tcss, setTcss] = useState('css');
+  const [vprocess, setVProcess] = useState(false)
   const dandleCSS = () => {
     if (tcss === "css") {
+
     }
   }
-  const { userByStatis } = useSelector(root => root.UserReducer)
-  console.log(userByStatis);
+  const { userByStatis, usertotal } = useSelector(root => root.UserReducer)
+  console.log("user" + usertotal);
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
-    dispatch(action);
+    dispatch(action)
     const action1 = GetListFanpageAction();
 
-    dispatch(action1);
+    dispatch(action1)
     const action2 = GetListProcessTypeAction();
     dispatch(action2)
     const action4 = GetListReportTypeAction();
@@ -86,11 +86,12 @@ export default function Home () {
     dispatch(action5)
     const action8 = GetUserBystatisticAction(userID);
     dispatch(action8)
+
     // console.log(existingData);
     // if (existingData) {
     //     setCmt(existingData);
     //     dispatch({ type: "HIDE_LOADING" });
-    const user = localStorage.getItem("userID");
+    const user = localStorage.getItem('userID')
     if (user) {
       // console.log('có user');
       const action = GetUserByIdAction(localStorage.getItem('userID'));
@@ -105,9 +106,8 @@ export default function Home () {
 
     // }
   }, []);
-  const { processType, activityProcess } = useSelector(
-    (root) => root.ProcessTypeReducer
-  );
+  const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
+
 
   const initialValues = {
     forms: [
@@ -167,7 +167,7 @@ export default function Home () {
   };
   const [arrDelete, setArrDelete] = useState([0]);
 
-
+  useEffect(() => { }, [arrDelete]);
   const handleDeleteForm = () => {
     if (formData.length > 1) {
       setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
@@ -213,8 +213,7 @@ export default function Home () {
     const fileList = e.target.files;
     const newImages = [];
 
-    console.log(fileList);
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ linkMedia: imageUrl, type: file.type });
@@ -235,7 +234,8 @@ export default function Home () {
           const downloadURL = await getDownloadURL(snapshot.ref);
           newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     setFormData((prevData) =>
       prevData.map((form, index) =>
@@ -388,6 +388,7 @@ export default function Home () {
   // );
   // const currentText2 = textOptions2[text2];
 
+
   //   const updatedComments = commentData.map((comment) => {
   //     if (comment.id === id) {
   //       if (comment.color === "rgb(117, 189, 240)") {
@@ -448,7 +449,7 @@ export default function Home () {
       const newArray = JSON.parse(JSON.stringify(prevArray));
       localStorage.getItem(`activity`, JSON.stringify(newArray));
 
-    return newArray;
+      return newArray;
     });
   };
   //   const handleLikeClick = (id) => {
@@ -493,8 +494,15 @@ export default function Home () {
   //   };
   const [followIndex, setFollowIndex] = useState(null);
   const handleFollowClick = async (index, activity, isFollow, title) => {
+    setCmt((prevArray) => {
+      const newArray = JSON.parse(JSON.stringify(prevArray));
+      newArray[index].isFollow = !newArray[index].isFollow;
+      localStorage.setItem(`activity`, JSON.stringify(newArray));
+
+      return newArray;
+    });
     if (isFollow) {
-      setFollowIndex(null);
+      setFollowIndex(null)
       const action = UnFollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -514,7 +522,7 @@ export default function Home () {
         title: `Bỏ theo dõi chiến dịch ${title} thành công `,
       });
     } else {
-      setFollowIndex(index);
+      setFollowIndex(index)
       const action = FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -534,7 +542,7 @@ export default function Home () {
         title: `Theo dõi chiến dịch ${title} thành công `,
       });
     }
-    const action = GetListActivityAction();
+    const action = await GetListActivityAction();
     await dispatch(action);
     setCmt((prevArray) => {
       const newArray = JSON.parse(JSON.stringify(prevArray));
@@ -617,7 +625,7 @@ export default function Home () {
       }
     },
   });
-  function calculateImageClass(imageCount) {
+  function calculateImageClass (imageCount) {
     let imageClass = "full-width";
     if (imageCount === 2) {
       imageClass = "half-width";
@@ -676,6 +684,16 @@ export default function Home () {
     opacity: report ? 1 : 0,
     visibility: report ? "visible" : "hidden",
     overflow: report ? "auto" : "hidden",
+  };
+  const [openpro1, setOpenPro1] = useState(false);
+  const popupStyle4 = {
+    opacity: openpro1 ? 1 : 0,
+    visibility: openpro1 ? "visible" : "hidden",
+    overflow: openpro1 ? "auto" : "hidden",
+  };
+  const handleClick6 = () => {
+    setOpenPro1((prevIsOpen) => !prevIsOpen);
+    // setIsDisplay(true)
   };
   const { reportType } = useSelector(root => root.ReportType)
   // console.log(reportType);
@@ -840,15 +858,59 @@ export default function Home () {
         });
     },
   });
+  console.log(activityId.title);
+  console.log(moment(activityId.startDate).format('MM/DD/YYYY'));
+  const formik9 = useFormik({
+    initialValues: {
+      activityId: activityId.activityId,
+      title: activityId.title,
+      description: activityId.description,
+      startDate: activityId.startDate,
+      endDate: activityId.endDate,
+      location: activityId.location,
+      targetDonation: activityId.targetDonation
+    },
+    // enableReinitialize: true,
+    enableReinitialize: true,
+    onSubmit: async (value) => {
+      console.log(value);
+      const action = await UpdateActivityAction(value);
+      await dispatch(action);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: `Cập nhật chiến dịch ${value.title} thành công `,
+      });
+      // formik.setFieldValue("title", "");
+      // formik.setFieldValue("description", "");
+      // formik.setFieldValue("location", "");
+      // formik.setFieldValue("targetDonation", 0);
+      // formik.setFieldValue("startDate", '');
+      // formik.setFieldValue("endactivity", '');
+      // formik.setFieldValue("isFanpageAvtivity", false);
+      // formik.setFieldValue("media", []);
+      setOpenPro1((prevIsOpen) => !prevIsOpen);
+      // setIsDisplay(false);
+    }
+  })
 
   const handleImageChange = async (e) => {
     setIsLoading(true);
     const fileList = e.target.files;
-
-    console.log(fileList);
     const newImages = [];
 
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -869,10 +931,10 @@ export default function Home () {
           const downloadURL = await getDownloadURL(snapshot.ref);
           const updatedImages = [...newImages];
           updatedImages[i].url = downloadURL;
-
-          setImages([...images, ...updatedImages]);
+          setImages((prevImages) => [...prevImages, ...updatedImages]);
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     setIsLoading(false);
     setUploadProgress(0);
@@ -944,7 +1006,7 @@ export default function Home () {
       const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
       return { ...activity, commentData: matchingComments };
     });
-    setCmt(updatedArrActivity);
+    setCmt(updatedArrActivity)
   }, [commentData, arrActivity]);
   // useEffect(() => {
   //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
@@ -1009,9 +1071,9 @@ export default function Home () {
                         <div
                           data-progress="tip"
                           className="progress__outer"
-                          data-value="0.7"
+                          data-value={`${usertotal}`}
                         >
-                          <div className="progress__inner">{userByStatis.total}%</div>
+                          <div className="progress__inner">{usertotal}%</div>
                         </div>
                         <ul className="prof-complete">
                           <li>
@@ -1324,14 +1386,18 @@ export default function Home () {
                                       </svg>
                                     </i>
                                     <ul>
-                                      <li>
+                                      {userID === item.userId ? <li onClick={() => {
+                                        handleClick6()
+                                        const action = GetActivityByIDAction(item.activityId)
+                                        dispatch(action)
+                                      }}>
                                         <i className="icofont-pen-alt-1" />
                                         Sửa bài đăng
                                         <span>
                                           Chỉnh sửa và cập nhật chi tiết bài
                                           đăng
                                         </span>
-                                      </li>
+                                      </li> : <div></div>}
                                       {/* <li>
                                         <i className="icofont-ban" />
                                         Ẩn bài đăng
@@ -1423,31 +1489,6 @@ export default function Home () {
                                 ) : (
                                   <div></div>
                                 )}
-                                <div className="row">
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignContent: "center",
-                                    }}
-                                    className="col-lg-12"
-                                  >
-                                    <a
-                                      href=""
-                                      target="_blank"
-                                      style={{
-                                        fontSize: "25px",
-                                        fontWeight: "bold",
-                                        width: "450px",
-                                        wordWrap: "break-word",
-                                        color: "#3f6ad8",
-                                      }}
-                                      className="col-lg-8"
-                                    >
-                                      {item.title}
-                                    </a>
-                                    {/* bla bla bla theo dõi */}
-                                  </div>
-                                </div>
                                 <figure style={{}}>
                                   {/* <p style={{ width: '100%' }}>fetched-image</p> */}
 
@@ -1582,15 +1623,13 @@ export default function Home () {
                                       // onChange={handleChange}
                                       className="range-slider"
                                       style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                          (item.realDonation /
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
+                                          item.targetDonation) *
+                                          100
+                                          }%, #ddd ${(item.realDonation /
                                             item.targetDonation) *
                                           100
-                                        }%, #ddd ${
-                                          (item.realDonation /
-                                            item.targetDonation) *
-                                          100
-                                        }%, #ddd 100%)`,
+                                          }%, #ddd 100%)`,
                                       }}
                                     />
                                     {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
@@ -1613,11 +1652,10 @@ export default function Home () {
                                         className="range-value"
                                         style={{
                                           position: "absolute",
-                                          left: `${
-                                            (item.realDonation /
-                                              item.targetDonation) *
+                                          left: `${(item.realDonation /
+                                            item.targetDonation) *
                                             100
-                                          }%`,
+                                            }%`,
                                         }}
                                       >
                                         {" "}
@@ -1641,18 +1679,15 @@ export default function Home () {
                                   <div></div>
                                 )}
 
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-around",
-                                  }}
-                                >
+                                <div style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-around'
+                                }}>
                                   <button
-                                    className={`btn ${
-                                      isAlreadyJoined
+                                    className={`btn ${isAlreadyJoined
                                         ? "btn-danger"
                                         : "btn-success"
-                                    } mb-4 mt-4`}
+                                      } mb-4 mt-4`}
                                     onClick={() => {
                                       handleJoinClick(
                                         index,
@@ -1668,11 +1703,10 @@ export default function Home () {
                                   </button>
 
                                   <button
-                                    className={`btn ${
-                                      isAlreadyFollowed
+                                    className={`btn ${isAlreadyFollowed
                                         ? "btn-danger"
                                         : "btn-success"
-                                    } mb-4 mt-4`}
+                                      } mb-4 mt-4`}
                                     onClick={() => {
                                       handleFollowClick(
                                         index,
@@ -1843,27 +1877,27 @@ export default function Home () {
                                         <ul className="namelist">
                                           {item?.like?.length <= 4
                                             ? item?.like.map((userItem) => {
-                                                return (
+                                              return (
+                                                <li>
+                                                  {userItem.user.username}
+                                                </li>
+                                              );
+                                            })
+                                            : item?.like
+                                              ?.slice(0, 4)
+                                              .map((userItem, index) => {
+                                                index < 4 ? (
                                                   <li>
                                                     {userItem.user.username}
                                                   </li>
+                                                ) : (
+                                                  <li>
+                                                    <span>
+                                                      +{item?.like.length - 5}
+                                                    </span>
+                                                  </li>
                                                 );
-                                              })
-                                            : item?.like
-                                                ?.slice(0, 4)
-                                                .map((userItem, index) => {
-                                                  index < 4 ? (
-                                                    <li>
-                                                      {userItem.user.username}
-                                                    </li>
-                                                  ) : (
-                                                    <li>
-                                                      <span>
-                                                        +{item?.like.length - 5}
-                                                      </span>
-                                                    </li>
-                                                  );
-                                                })}
+                                              })}
                                         </ul>
                                       </div>
                                     </div>
@@ -1887,11 +1921,10 @@ export default function Home () {
                                   <div
                                     className=""
                                     style={{
-                                      backgroundColor: `${
-                                        isAlreadyLiked
+                                      backgroundColor: `${isAlreadyLiked
                                           ? "rgb(117, 189, 240)"
                                           : "#eae9ee"
-                                      }`,
+                                        }`,
                                       borderRadius: "4px",
                                       color: "#82828e",
                                       display: "inline-block",
@@ -2245,7 +2278,7 @@ export default function Home () {
                                   href="group-feed.html"
                                   title
                                   className="promote"
-                                  onClick={() => {}}
+                                  onClick={() => { }}
                                 >
                                   Chi tiết
                                 </NavLink>
@@ -2263,9 +2296,9 @@ export default function Home () {
                             <figure>
                               <img
                                 style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
                                 }}
                                 alt
                                 src="images/avatar/5.jpg"
@@ -2299,9 +2332,9 @@ export default function Home () {
                             <figure>
                               <img
                                 style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
                                 }}
                                 alt
                                 src="images/avatar/19.jpg"
@@ -2760,7 +2793,7 @@ export default function Home () {
               </div>
             </div>
 
-            <div className="form1">
+            <div className="">
               <header className="header"></header>
               <div className="form-wrap">
                 <form
@@ -2877,7 +2910,9 @@ export default function Home () {
                               />
                             </div>
                             {isTextInputVisible === true && (
+
                               <div className="form-group">
+
                                 <input
                                   type="number"
                                   name="targetDonation"
@@ -2886,10 +2921,11 @@ export default function Home () {
                                   id="name"
                                   placeholder="Nhập số tiền cần nhận"
                                   className="form-control"
-                                  style={{ marginTop: "-2rem" }}
+                                  style={{ marginTop: '-2rem' }}
                                   required
                                 />
                               </div>
+
                             )}
                           </div>
                         ) : (
@@ -2986,16 +3022,13 @@ export default function Home () {
                           </svg>
                         </div>
 
-                        <div className="image-container image-container-flex">
+                        <div className="image-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                           {images.map((image, index) => (
-                            <div
-                              className="image-item image-item-relative"
-                              key={index}
-                            >
+                            <div className="image-item" key={index} >
                               <img
                                 src={image.url}
                                 alt={`Image ${index}`}
-                                className="image-preview image-item-flex"
+                                className="image-preview"
                               />
                               <button
                                 className="delete-button"
@@ -3037,6 +3070,201 @@ export default function Home () {
                         className="btn btn-primary btn-block"
                       >
                         Hoàn thành
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {openpro1 === true ? (
+        <div className="post-new-popup" style={popupStyle4}>
+          <div
+            className="popup"
+            style={{ width: 800, marginTop: "100px", zIndex: 80 }}
+          >
+            <span className="popup-closed" onClick={handleClick6}>
+              <i className="icofont-close" />
+            </span>
+            <div className="popup-meta">
+              <div className="popup-head">
+                <h5>
+                  <i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-plus"
+                    >
+                      <line x1={12} y1={5} x2={12} y2={19} />
+                      <line x1={5} y1={12} x2={19} y2={12} />
+                    </svg>
+                  </i>
+                  Chỉnh sửa chiến dịch
+                </h5>
+              </div>
+            </div>
+
+            <div className="">
+              <header className="header"></header>
+              <div className="form-wrap">
+                <form
+                  id="survey-form"
+                  method="post"
+                  onSubmit={formik9.handleSubmit}
+                >
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Tên chiến dịch
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.title}
+                          id="name"
+                          placeholder="Nhập Tên Sự Kiện"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="email-label" htmlFor="email">
+                          Mô tả chiến dịch
+                        </label>
+                        <input
+                          type="text"
+                          name="description"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.description}
+                          id="email"
+                          placeholder="Nhập mô tả"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Ngày bắt đầu
+                        </label>
+                        <input
+                          type="date"
+                          name="startDate"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.startDate}
+                          id="name"
+                          className="form-control"
+
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Ngày kết thúc
+                        </label>
+                        <input
+                          type="date"
+                          name="endDate"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.endDate}
+                          id="name"
+                          className="form-control"
+
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Nơi diễn ra
+                        </label>
+                        <input
+                          type="text"
+                          name="location"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.location}
+                          id="name"
+                          placeholder="Nhập nơi diễn ra"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        {configActivity === "true" ? (
+                          <div>
+                            <div
+                              className="form-group"
+                              style={{ display: "flex" }}
+                            >
+                              <label
+                                id="name-label"
+                                style={{ marginRight: "20px" }}
+                                htmlFor="name"
+                              >
+                                Nhận ủng hộ
+                              </label>
+                              <input
+                                type="checkbox"
+                                onChange={toggleTextInput}
+                              />
+                            </div>
+                            {isTextInputVisible === true && (
+
+                              <div className="form-group">
+
+                                <input
+                                  type="number"
+                                  name="targetDonation"
+                                  onChange={formik9.handleChange}
+                                  value={formik9.values.targetDonation}
+                                  id="name"
+                                  placeholder="Nhập số tiền cần nhận"
+                                  className="form-control"
+                                  style={{ marginTop: '-2rem' }}
+                                  required
+                                />
+                              </div>
+
+                            )}
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        id="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Cập nhật
                       </button>
                     </div>
                   </div>
@@ -3179,7 +3407,7 @@ export default function Home () {
                               id={`media_${index}`}
                               type="file"
                               multiple
-                              onChange={(e) => handleImageChange1(e, index)}
+                              onChange={(e) => handleImageChange1(e, index)} // Truyền formIndex khi xử lý handleImageChange1
                             />
                             <div className="image-container">
                               {form.media.map((image, imageIndex) => (

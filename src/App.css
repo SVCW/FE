@@ -145,6 +145,10 @@ i {
     transform: scale(1.1);
 }
 
+.top-area .post-subject {
+    background-color: #0077b6;
+}
+
 .krajee-default.file-preview-frame {
     box-shadow: none;
     border-color: #fff;
@@ -342,18 +346,18 @@ i {
     justify-content: center;
 }
 
-.image-container-post{
+.image-container-post {
     border: 3px solid #fff;
     width: 50%;
 }
 
-.image-container-post-last{
+.image-container-post-last {
     position: relative;
     border: 3px solid #fff;
     width: 50%;
 }
 
-.image-container-post-last img{
+.image-container-post-last img {
     width: 100%;
     max-height: 200px;
     min-height: 200px;
@@ -382,7 +386,7 @@ i {
 }
 
 
-.image-container-post img{
+.image-container-post img {
     width: 100%;
     max-height: 200px;
     min-height: 200px;
@@ -718,9 +722,21 @@ i {
     font-size: 16px;
 }
 
+/* .topbar>ul {
+    float: right;
+    line-height: 50px;
+    list-style: outside none none;
+    margin: 0;
+    padding-left: 0;
+    vertical-align: middle;
+    position: absolute;
+    right: -300px;
+    top: -30px;
+} */
 
-
-
+.test {
+    margin-top: 75px !important;
+}
 
 /* .topbar>ul {
     position: absolute;
@@ -1187,7 +1203,8 @@ i.fa.fa-arrow-up {
 .bg-image {
     opacity: 0.2;
 }
-.login-form-login p{
+
+.login-form-login p {
     margin-top: 20px;
     font-size: 16px;
     border-bottom: 2px solid #17a2b8;
@@ -1195,8 +1212,24 @@ i.fa.fa-arrow-up {
     width: max-content;
     cursor: pointer;
 }
-.login-form-login :hover{
+
+.login-form-login :hover {
     background-color: red;
     color: #fff;
 
+}
+
+.buttons_container {
+    margin-top: 20px;
+}
+
+.buttons_container:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+.buttons_container .dropdown {
+    float: left;
+    margin-right: 10px;
 }

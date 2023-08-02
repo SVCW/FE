@@ -50,9 +50,16 @@ export default function Login (props) {
         initialValues: {
 
         },
-        onSubmit: (value) => {
+        onSubmit: async (value) => {
             console.log(value);
             if (value.username === 'admin' && value.password === '1234') {
+
+
+                const action1 = {
+                    type: 'LOGOUT_ADMIN',
+                    admin: localStorage.setItem('admin', 'admin')
+                }
+                await dispatch(action1)
                 props.history.push('/achivement')
             }
             else {
@@ -201,7 +208,7 @@ export default function Login (props) {
                             <button className="main-btn" type="submit" ><i className="icofont-key" /> Đăng nhập</button>
 
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
-                            <p 
+                            <p
                                 style={{
                                     marginTop: 20,
                                     fontSize: 16,
@@ -209,12 +216,12 @@ export default function Login (props) {
                                     paddingBottom: 4,
                                     width: "50%",
                                     cursor: "pointer",
-                                    fontWeight:"500",
+                                    fontWeight: "500",
                                 }}
                                 onClick={signInWithGoogle}
                             >
 
- Đăng nhập với google
+                                Đăng nhập với google
                             </p>
                         </form>
                     </div>

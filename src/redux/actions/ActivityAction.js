@@ -201,3 +201,17 @@ export const GetActivityByIDAction = (value) => {
         }
     }
 }
+
+
+export const UpdateActivityAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.put(`/Activity/update-activity`, value)
+            console.log(result.data.data);
+            const action1 = GetListActivityAction()
+            dispatch(action1)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
