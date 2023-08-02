@@ -16424,3 +16424,14 @@ a.classic-btn:hover {
     -webkit-box-orient:vertical ;
     display: -webkit-box;
 }
+
+
+.c-form p:hover{
+  background-color: #e74c3c;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  transition-duration: 1s;
+  
+}

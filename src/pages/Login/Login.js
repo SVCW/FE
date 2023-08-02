@@ -11,6 +11,7 @@ import { LoginUserAction } from '../../redux/actions/LoginAction';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
+
 export default function Login (props) {
     const dispatch = useDispatch()
     const { msg } = useSelector(root => root.LoginReducer)
@@ -195,19 +196,20 @@ export default function Login (props) {
                             }}><i className="icofont-key" /> Đăng nhập</button>
 
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
-                            <p
+                            <p 
                                 style={{
                                     marginTop: 20,
                                     fontSize: 16,
                                     borderBottom: "2px solid #17a2b8",
                                     paddingBottom: 4,
-                                    width: "max-content",
+                                    width: "50%",
                                     cursor: "pointer",
+                                    fontWeight:"500",
                                 }}
                                 onClick={signInWithGoogle}
                             >
 
-                                Đăng nhập với Google
+ Đăng nhập với google
                             </p>
                         </form>
                     </div>
