@@ -255,7 +255,7 @@ export default function Home () {
   );
   const { userID } = useSelector((root) => root.LoginReducer);
   const dispatch = useDispatch();
-  const { arrActivity } = useSelector((root) => root.ActivityReducer);
+  const { arrActivity, activityId } = useSelector((root) => root.ActivityReducer);
   const { arrFanpage } = useSelector((root) => root.FanpageReducer);
   const { isLoadingM } = useSelector((root) => root.LoadingReducer);
   const [cmt, setCmt] = useState([]);
@@ -493,7 +493,7 @@ export default function Home () {
   //     setCommentData(updatedComments);
   //   };
   const [followIndex, setFollowIndex] = useState(null);
-  const handleFollowClick = async (index, activity, isFollow, title) => {
+  const handleFollowClick = (index, activity, isFollow, title) => {
     setCmt((prevArray) => {
       const newArray = JSON.parse(JSON.stringify(prevArray));
       newArray[index].isFollow = !newArray[index].isFollow;
@@ -542,8 +542,8 @@ export default function Home () {
         title: `Theo dõi chiến dịch ${title} thành công `,
       });
     }
-    const action = await GetListActivityAction();
-    await dispatch(action);
+    const action = GetListActivityAction();
+     dispatch(action);
     setCmt((prevArray) => {
       const newArray = JSON.parse(JSON.stringify(prevArray));
       localStorage.setItem(`activity`, JSON.stringify(newArray));
@@ -1002,8 +1002,12 @@ export default function Home () {
 
 
   useEffect(() => {
-    const updatedArrActivity = arrActivity.map((activity) => {
-      const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
+    const updatedArrActivity = JSON.parse(
+      localStorage.getItem("activity")
+    )?.map((activity) => {
+      const matchingComments = commentData?.filter(
+        (comment) => comment.id === activity.activityId
+      );
       return { ...activity, commentData: matchingComments };
     });
     setCmt(updatedArrActivity)
@@ -1036,7 +1040,6 @@ export default function Home () {
     return timeAgoString;
   };
 
-  console.log(commentData);
   return (
     <Fragment>
       {isLoadingM ? <Loading /> : <Fragment></Fragment>}
@@ -1331,13 +1334,19 @@ export default function Home () {
                       let isAlreadyLiked = false;
                       let isAlreadyJoined = false;
                       let isAlreadyFollowed = false;
-                      // console.log(item);
                       item?.like?.map((user) => {
                         if (user.userId === userByID.userId) {
                           isAlreadyLiked = true;
                         }
-                      })
-                      // console.log(isAlreadyLiked);
+                      });
+
+                      item?.followJoinAvtivity?.map((user) => {
+                        if (user.userId === userByID.userId) {
+                          isAlreadyFollowed = user.isFollow;
+                          isAlreadyJoined = user.isJoin;
+                        }
+                      });
+                      //TODO
                       return (
                         <div className="main-wraper">
                           <div className="user-post">
