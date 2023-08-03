@@ -400,14 +400,14 @@ export default function Home () {
   //     return comment;
   //   });
   const [joinedIndex, setJoinedIndex] = useState(null);
-  const handleJoinClick = (index, activity, isJoin, title) => {
-    setCmt((prevArray) => {
-      const newArray = JSON.parse(JSON.stringify(prevArray));
-      newArray[index].isJoin = !newArray[index].isJoin;
-      localStorage.setItem(`activity`, JSON.stringify(newArray));
+  // const handleJoinClick = (index, activity, isJoin, title) => {
+  //   setCmt((prevArray) => {
+  //     const newArray = JSON.parse(JSON.stringify(prevArray));
+  //     newArray[index].isJoin = !newArray[index].isJoin;
+  //     localStorage.setItem(`activity`, JSON.stringify(newArray));
 
-      return newArray;
-    });
+  //     return newArray;
+  //   });
   const handleJoinClick = async (index, activity, isJoin, title) => {
     if (isJoin) {
       setJoinedIndex(null);
