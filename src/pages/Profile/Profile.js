@@ -5,7 +5,7 @@ import { GetProfileByIdAction } from "../../redux/actions/ProfileAction";
 import PersonalDetail from "./PersonalDetail";
 import Albums from "./Albums";
 
-export default function Profile(props) {
+export default function Profile (props) {
   //viết trước
   const dispatch = useDispatch();
 
@@ -97,7 +97,7 @@ export default function Profile(props) {
                                 <a className="main-btn2" href="#" title>Join Community</a>
                               </div>
                             </div>
-                          </div>	
+                          </div>
                         </div>
                         <div className="widget">
                           <h4 className="widget-title">Ask Research Question?</h4>
@@ -269,19 +269,19 @@ export default function Profile(props) {
                                             <a href="#" title>
                                               <i><img src="images/image.png" alt="" /></i>
                                               <span>Photo/Video</span>
-                                            </a>	
+                                            </a>
                                           </li>
                                           <li>
                                             <a href="#" title>
                                               <i><img src="images/activity.png" alt="" /></i>
                                               <span>Feeling/Activity</span>
-                                            </a>	
+                                            </a>
                                           </li>
                                           <li>
                                             <a href="live-stream.html" title>
                                               <i><img src="images/live-stream.png" alt="" /></i>
                                               <span>Live Stream</span>
-                                            </a>	
+                                            </a>
                                           </li>
                                         </ul>
                                       </div>
@@ -345,7 +345,7 @@ export default function Profile(props) {
                                                   <span title="follow" className="Follow">
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
-                                                    <ins>5k</ins>	
+                                                    <ins>5k</ins>
                                                   </span>
                                                 </li>
                                                 <li>
@@ -353,7 +353,7 @@ export default function Profile(props) {
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                                                     <ins>205</ins>
-                                                  </span>	
+                                                  </span>
                                                 </li>
                                               </ul>
                                               <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
@@ -457,7 +457,7 @@ export default function Profile(props) {
                                                 </div>
                                                 <p>10+</p>
                                               </div>
-                                              <div className="new-comment" style={{display: 'none'}}>
+                                              <div className="new-comment" style={{ display: 'none' }}>
                                                 <form method="post">
                                                   <input type="text" placeholder="write comment" />
                                                   <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -561,7 +561,7 @@ export default function Profile(props) {
                                                   <span title="follow" className="Follow">
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
-                                                    <ins>5k</ins>	
+                                                    <ins>5k</ins>
                                                   </span>
                                                 </li>
                                                 <li>
@@ -569,7 +569,7 @@ export default function Profile(props) {
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                                                     <ins>205</ins>
-                                                  </span>	
+                                                  </span>
                                                 </li>
                                               </ul>
                                               <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
@@ -673,7 +673,7 @@ export default function Profile(props) {
                                                 </div>
                                                 <p>10+</p>
                                               </div>
-                                              <div className="new-comment" style={{display: 'block'}}>
+                                              <div className="new-comment" style={{ display: 'block' }}>
                                                 <form method="post">
                                                   <input type="text" placeholder="write comment" />
                                                   <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -743,7 +743,7 @@ export default function Profile(props) {
                                           </div>
                                         </div>
                                         <div className="item-video" data-merge={2}>
-                                          <a className="owl-video" href="https://www.youtube.com/watch?v=JpxsRwnRwCQ" /> 
+                                          <a className="owl-video" href="https://www.youtube.com/watch?v=JpxsRwnRwCQ" />
                                           <div className="posted-user">
                                             <img src="/public/images/resources/user4.jpg" alt="" />
                                             <span>Jack Carter</span>
@@ -804,7 +804,7 @@ export default function Profile(props) {
                                             <figure>
                                               <a data-toggle="modal" data-target="#img-comt" href="/public/images/resources/album1.jpg">
                                                 <img src="/public/images/resources/study.jpg" alt="" />
-                                              </a>	
+                                              </a>
                                             </figure>
                                             <a href="post-detail.html" className="post-title">Supervision as a Personnel Development Device</a>
                                             <p>
@@ -830,7 +830,7 @@ export default function Profile(props) {
                                                   <span title="follow" className="Follow">
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
-                                                    <ins>5k</ins>	
+                                                    <ins>5k</ins>
                                                   </span>
                                                 </li>
                                                 <li>
@@ -838,7 +838,7 @@ export default function Profile(props) {
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                                                     <ins>205</ins>
-                                                  </span>	
+                                                  </span>
                                                 </li>
                                               </ul>
                                               <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
@@ -942,7 +942,7 @@ export default function Profile(props) {
                                                 </div>
                                                 <p>30+</p>
                                               </div>
-                                              <div className="new-comment" style={{display: 'none'}}>
+                                              <div className="new-comment" style={{ display: 'none' }}>
                                                 <form method="post">
                                                   <input type="text" placeholder="write comment" />
                                                   <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -1050,7 +1050,7 @@ export default function Profile(props) {
                                                     </figure>
                                                   </div>
                                                 </div>
-                                              </div>	
+                                              </div>
                                             </figure>
                                             <a href="post-detail.html" className="post-title">Supervision as a Personnel Development Device</a>
                                             <p>
@@ -1076,7 +1076,7 @@ export default function Profile(props) {
                                                   <span title="follow" className="Follow">
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
-                                                    <ins>5k</ins>	
+                                                    <ins>5k</ins>
                                                   </span>
                                                 </li>
                                                 <li>
@@ -1084,7 +1084,7 @@ export default function Profile(props) {
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                                                     <ins>205</ins>
-                                                  </span>	
+                                                  </span>
                                                 </li>
                                               </ul>
                                               <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
@@ -1188,7 +1188,7 @@ export default function Profile(props) {
                                                 </div>
                                                 <p>50+</p>
                                               </div>
-                                              <div className="new-comment" style={{display: 'none'}}>
+                                              <div className="new-comment" style={{ display: 'none' }}>
                                                 <form method="post">
                                                   <input type="text" placeholder="write comment" />
                                                   <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -1293,7 +1293,7 @@ export default function Profile(props) {
                                                   <span title="follow" className="Follow">
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
-                                                    <ins>5k</ins>	
+                                                    <ins>5k</ins>
                                                   </span>
                                                 </li>
                                                 <li>
@@ -1301,7 +1301,7 @@ export default function Profile(props) {
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                                                     <ins>205</ins>
-                                                  </span>	
+                                                  </span>
                                                 </li>
                                               </ul>
                                               <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
@@ -1405,7 +1405,7 @@ export default function Profile(props) {
                                                 </div>
                                                 <p>10+</p>
                                               </div>
-                                              <div className="new-comment" style={{display: 'block'}}>
+                                              <div className="new-comment" style={{ display: 'block' }}>
                                                 <form method="post">
                                                   <input type="text" placeholder="write comment" />
                                                   <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -1507,7 +1507,7 @@ export default function Profile(props) {
                                                   <span title="follow" className="Follow">
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
-                                                    <ins>5k</ins>	
+                                                    <ins>5k</ins>
                                                   </span>
                                                 </li>
                                                 <li>
@@ -1515,7 +1515,7 @@ export default function Profile(props) {
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                                                     <ins>205</ins>
-                                                  </span>	
+                                                  </span>
                                                 </li>
                                               </ul>
                                               <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
@@ -1619,7 +1619,7 @@ export default function Profile(props) {
                                                 </div>
                                                 <p>20+</p>
                                               </div>
-                                              <div className="new-comment" style={{display: 'none'}}>
+                                              <div className="new-comment" style={{ display: 'none' }}>
                                                 <form method="post">
                                                   <input type="text" placeholder="write comment" />
                                                   <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -1716,7 +1716,7 @@ export default function Profile(props) {
                                                   <span title="follow" className="Follow">
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
-                                                    <ins>5k</ins>	
+                                                    <ins>5k</ins>
                                                   </span>
                                                 </li>
                                                 <li>
@@ -1724,7 +1724,7 @@ export default function Profile(props) {
                                                     <i>
                                                       <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                                                     <ins>205</ins>
-                                                  </span>	
+                                                  </span>
                                                 </li>
                                               </ul>
                                               <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
@@ -1828,7 +1828,7 @@ export default function Profile(props) {
                                                 </div>
                                                 <p>20+</p>
                                               </div>
-                                              <div className="new-comment" style={{display: 'none'}}>
+                                              <div className="new-comment" style={{ display: 'none' }}>
                                                 <form method="post">
                                                   <input type="text" placeholder="write comment" />
                                                   <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -1968,11 +1968,11 @@ export default function Profile(props) {
                                   </div>
                                 </div>
                               </div>
-                              <Albums/>
+                              <Albums />
                               <div className="tab-pane fade" id="about">
                                 <div className="row merged20">
                                   <div className="col-lg-8">
-                                    <PersonalDetail/>
+                                    <PersonalDetail />
                                     <div className="main-wraper">
                                       <h5 className="main-title">Interests</h5>
                                       <div className="info-block-list">
@@ -2022,14 +2022,14 @@ export default function Profile(props) {
                                           <li><i className="icofont-user-alt-4" /><span>Last Friend Added <em>2 days ago</em></span></li>
                                         </ul>
                                       </div>{/* complete profile widget */}
-                                    </aside>	
+                                    </aside>
                                   </div>
-                                </div>	
                                 </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>	
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2053,7 +2053,7 @@ export default function Profile(props) {
             <div className="popup-meta">
               <div className="popup-head">
                 <h5><i>
-                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg></i> Invite Colleagues</h5>
+                  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg></i> Invite Colleagues</h5>
               </div>
               <div className="invitation-meta">
                 <p>
@@ -2073,7 +2073,7 @@ export default function Profile(props) {
             <div className="popup-meta">
               <div className="popup-head">
                 <h5><i>
-                    <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></i> Send Message</h5>
+                  <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></i> Send Message</h5>
               </div>
               <div className="send-message">
                 <form method="post" className="c-form">
@@ -2187,12 +2187,12 @@ export default function Profile(props) {
           </div>
         </div>
         <div className="post-new-popup">
-          <div className="popup" style={{width: '800px'}}>
+          <div className="popup" style={{ width: '800px' }}>
             <span className="popup-closed"><i className="icofont-close" /></span>
             <div className="popup-meta">
               <div className="popup-head">
                 <h5><i>
-                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus"><line x1={12} y1={5} x2={12} y2={19} /><line x1={5} y1={12} x2={19} y2={12} /></svg></i>Create New Post</h5>
+                  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus"><line x1={12} y1={5} x2={12} y2={19} /><line x1={5} y1={12} x2={19} y2={12} /></svg></i>Create New Post</h5>
               </div>
               <div className="post-new">
                 <div className="post-newmeta">
@@ -2213,7 +2213,7 @@ export default function Profile(props) {
                       <input name="file" type="file" multiple />
                     </div>
                   </form>
-                </div>	
+                </div>
                 <form method="post" className="c-form">
                   <textarea id="emojionearea1" placeholder="What's On Your Mind?" defaultValue={""} />
                   <div className="activity-post">
@@ -2267,7 +2267,7 @@ export default function Profile(props) {
             <div className="popup-meta">
               <div className="popup-head">
                 <h5><i>
-                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-help-circle"><circle cx={12} cy={12} r={10} /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1={12} y1={17} x2="12.01" y2={17} /></svg></i> Ask Question</h5>
+                  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-help-circle"><circle cx={12} cy={12} r={10} /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1={12} y1={17} x2="12.01" y2={17} /></svg></i> Ask Question</h5>
               </div>
               <div className="post-new">
                 <form method="post" className="c-form">
@@ -2306,7 +2306,7 @@ export default function Profile(props) {
           <div className="share-options">
             <span className="close-btn"><i className="icofont-close-circled" /></span>
             <h5><i>
-                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1={12} y1={2} x2={12} y2={15} /></svg></i>Share To!</h5>
+              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1={12} y1={2} x2={12} y2={15} /></svg></i>Share To!</h5>
             <form method="post">
               <textarea placeholder="Write Something" defaultValue={""} />
             </form>
@@ -2315,7 +2315,7 @@ export default function Profile(props) {
               <li className="friends"><a title href="#">To Friends</a></li>
               <li className="socialz"><a className="active" title href="#">Social Media</a></li>
             </ul>
-            <div style={{display: 'block'}} className="social-media">
+            <div style={{ display: 'block' }} className="social-media">
               <ul>
                 <li><a title href="#" className="facebook"><i className="icofont-facebook" /></a></li>
                 <li><a title href="#" className="twitter"><i className="icofont-twitter" /></a></li>
@@ -2326,7 +2326,7 @@ export default function Profile(props) {
                 <li><a title href="#" className="behance"><i className="icofont-behance-original" /></a></li>
               </ul>
             </div>
-            <div style={{display: 'none'}} className="friends-to">
+            <div style={{ display: 'none' }} className="friends-to">
               <div className="follow-men">
                 <figure><img className="mCS_img_loaded" src="/public/images/resources/user1.jpg" alt="" /></figure>
                 <div className="follow-meta">
@@ -2823,26 +2823,26 @@ export default function Profile(props) {
                                   <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
                               </a>
                               <ins>20</ins>
-                            </span>	
+                            </span>
                           </li>
                         </ul>
                         <div className="users-thumb-list">
                           <a href="#" title data-toggle="tooltip" data-original-title="Anderw">
-                            <img src="/public/images/resources/userlist-1.jpg" alt="" />  
+                            <img src="/public/images/resources/userlist-1.jpg" alt="" />
                           </a>
                           <a href="#" title data-toggle="tooltip" data-original-title="frank">
-                            <img src="/public/images/resources/userlist-2.jpg" alt="" />  
+                            <img src="/public/images/resources/userlist-2.jpg" alt="" />
                           </a>
                           <a href="#" title data-toggle="tooltip" data-original-title="Sara">
-                            <img src="/public/images/resources/userlist-1.jpg" alt="" />  
+                            <img src="/public/images/resources/userlist-1.jpg" alt="" />
                           </a>
                           <a href="#" title data-toggle="tooltip" data-original-title="Amy">
-                            <img src="/public/images/resources/userlist-2.jpg" alt="" />  
+                            <img src="/public/images/resources/userlist-2.jpg" alt="" />
                           </a>
                           <span><strong>You</strong>, <b>Sarah</b> and <a title href="#">24+ more</a> liked</span>
                         </div>
                       </div>
-                      <div className="new-comment" style={{display: 'block'}}>
+                      <div className="new-comment" style={{ display: 'block' }}>
                         <form method="post">
                           <input type="text" placeholder="write comment" />
                           <button type="submit"><i className="icofont-paper-plane" /></button>
@@ -2903,13 +2903,13 @@ export default function Profile(props) {
                         </div>
                       </div>
                     </div>
-                  </div>	
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>{/* The Scrolling Modal image with comment */}
       </div>
-  </Fragment>
+    </Fragment>
   );
 }

@@ -7,14 +7,14 @@ import { useFormik } from 'formik'
 import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetListActivityAction } from '../../redux/actions/ActivityAction';
-import { LoginUserAction } from '../../redux/actions/LoginAction';
+import { LoginModeratorAction, LoginUserAction } from '../../redux/actions/LoginAction';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import Swal from 'sweetalert2';
 import Slider from 'react-slick';
 
 export default function Login (props) {
     const dispatch = useDispatch()
-    const { msg } = useSelector(root => root.LoginReducer)
+    const { msg, msgModerator } = useSelector(root => root.LoginReducer)
     const [isMatch, setIsMatch] = useState(false);
     useEffect(() => {
         const action = GetListActivityAction();
@@ -50,8 +50,22 @@ export default function Login (props) {
         initialValues: {
 
         },
-        onSubmit: (value) => {
+        onSubmit: async (value) => {
             console.log(value);
+            if (value.username === 'admin' && value.password === '1234') {
+
+
+                const action1 = {
+                    type: 'LOGOUT_ADMIN',
+                    admin: localStorage.setItem('admin', 'admin')
+                }
+                await dispatch(action1)
+                props.history.push('/achivement')
+            }
+            else {
+                const action = LoginModeratorAction(value, props);
+                dispatch(action)
+            }
         }
     })
     const signInWithGoogle = async () => {
@@ -186,17 +200,15 @@ export default function Login (props) {
                         <form method="post" className="c-form" onSubmit={formik.handleSubmit}>
                             <input type="text" placeholder="Tài khoản" />
                             <input type="password" placeholder="Mật khẩu" />
-                            <div className="checkbox">
+                            {/* <div className="checkbox">
                                 <input type="checkbox" id="checkbox" defaultChecked />
                                 <label htmlFor="checkbox"><span>Nhớ tài khoản</span></label>
-                            </div>
-
-                            <button className="main-btn" type="submit" onClick={() => {
-                                props.history.push('/achivement')
-                            }}><i className="icofont-key" /> Đăng nhập</button>
+                            </div> */}
+                            {msgModerator !== '' ? <h3 style={{ color: 'red' }}>{msgModerator}</h3> : <div></div>}
+                            <button className="main-btn" type="submit" ><i className="icofont-key" /> Đăng nhập</button>
 
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
-                            <p 
+                            <p
                                 style={{
                                     marginTop: 20,
                                     fontSize: 16,
@@ -204,12 +216,12 @@ export default function Login (props) {
                                     paddingBottom: 4,
                                     width: "50%",
                                     cursor: "pointer",
-                                    fontWeight:"500",
+                                    fontWeight: "500",
                                 }}
                                 onClick={signInWithGoogle}
                             >
 
- Đăng nhập với google
+                                Đăng nhập với google
                             </p>
                         </form>
                     </div>

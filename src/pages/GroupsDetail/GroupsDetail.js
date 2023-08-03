@@ -23,14 +23,14 @@ export default function GroupsDetail (props) {
         const action = GetFanpageByIDAction(id);
         dispatch(action)
     }, []);
-    const initialCommentData = JSON.parse(localStorage.getItem('fanpageactivity'))?.map((comment) => ({
+    const initialCommentData = fanpageActivity?.map((comment) => ({
         id: comment.activityId,
         isCmt: true,
         color: '#eae9ee'
     }));
     const [commentData, setCommentData] = useState(initialCommentData);
     useEffect(() => {
-        const updatedArrActivity = JSON.parse(localStorage.getItem('fanpageactivity'))?.map((activity) => {
+        const updatedArrActivity = fanpageActivity?.map((activity) => {
             const matchingComments = commentData?.filter((comment) => comment.id === activity.activityId);
             return { ...activity, commentData: matchingComments };
         });
@@ -97,12 +97,12 @@ export default function GroupsDetail (props) {
         setCmt((prevArray) => {
             const newArray = JSON.parse(JSON.stringify(prevArray));
             newArray[index].isJoin = !newArray[index].isJoin;
-            localStorage.setItem(`activity`, JSON.stringify(newArray));
+            localStorage.setItem(`fanpageactivity`, JSON.stringify(newArray));
 
             return newArray;
         });
         if (isJoin) {
-            console.log('Hủy Tham Gia');
+            console.log('Hủy tham gia');
             const action = UnJoinAction(activity, userID);
             dispatch(action)
             const Toast = Swal.mixin({
@@ -119,13 +119,13 @@ export default function GroupsDetail (props) {
 
             Toast.fire({
                 icon: 'error',
-                title: `Bỏ Tham Gia Thành Công Sự Kiện ${title}`
+                title: `Bỏ tham gia thành công sự kiện ${title}`
             })
 
 
         }
         else {
-            console.log('Tham Gia');
+            console.log('Tham gia');
             const action = JoinAction(activity, userID);
             dispatch(action)
             const Toast = Swal.mixin({
@@ -142,7 +142,7 @@ export default function GroupsDetail (props) {
 
             Toast.fire({
                 icon: 'success',
-                title: `Tham Gia Thành Công Sự Kiện ${title}`
+                title: `Tham gia thành công sự kiện ${title}`
             })
         }
     };
@@ -150,12 +150,12 @@ export default function GroupsDetail (props) {
         setCmt((prevArray) => {
             const newArray = JSON.parse(JSON.stringify(prevArray));
             newArray[index].isFollow = !newArray[index].isFollow;
-            localStorage.setItem(`activity`, JSON.stringify(newArray));
+            localStorage.setItem(`fanpageactivity`, JSON.stringify(newArray));
 
             return newArray;
         });
         if (isFollow) {
-            console.log('Hủy Theo Dõi');
+            console.log('Hủy theo dõi');
             const action = UnFollowAction(activity, userID);
             dispatch(action)
             const Toast = Swal.mixin({
@@ -172,13 +172,13 @@ export default function GroupsDetail (props) {
 
             Toast.fire({
                 icon: 'error',
-                title: `Bỏ Theo Dõi Thành Công Sự Kiện ${title}`
+                title: `Bỏ theo dõi thành công sự kiện ${title}`
             })
 
 
         }
         else {
-            console.log('Theo Dõi');
+            console.log('Theo dõi');
             const action = FollowAction(activity, userID);
             dispatch(action)
             const Toast = Swal.mixin({
@@ -195,7 +195,7 @@ export default function GroupsDetail (props) {
 
             Toast.fire({
                 icon: 'success',
-                title: `Theo Dõi Thành Công Sự Kiện ${title}`
+                title: `Theo dõi thành công sự kiện ${title}`
             })
         }
     };
@@ -255,7 +255,7 @@ export default function GroupsDetail (props) {
         });
         let alreadyLiked = false;
 
-        JSON.parse(localStorage.getItem('activity'))?.map((comment) => {
+        JSON.parse(localStorage.getItem('fanpageactivity'))?.map((comment) => {
             if (comment.activityId === id && comment.like.length > 0) {
                 comment.like.map(item => {
                     console.log(item)
@@ -313,7 +313,7 @@ export default function GroupsDetail (props) {
                                                     </li>
                                                 </ul>
                                             </div> */}
-                                            <div className="widget">
+                                            {/* <div className="widget">
                                                 <h4 className="widget-title">Sự kiện gần đây</h4>
                                                 <ul className="ak-groups">
                                                     <li>
@@ -432,22 +432,23 @@ export default function GroupsDetail (props) {
                                                     </li>
                                                 </ul>
                                             </div> 
+                                            </div> */}
                                         </aside>
                                     </div>
                                     <div className="col-lg-9">
                                         <div className="group-feed">
                                             <div className="group-avatar">
                                                 <img src={fanpageId.coverImage} alt />
-                                                {localStorage.getItem('userID') === fanpageId.fanpageId ? <div></div> : <a href="#" title><i className="icofont-check-circled" />Theo Dõi</a>}
+                                                {localStorage.getItem('userID') === fanpageId.fanpageId ? <div></div> : <a href="#" title><i className="icofont-check-circled" />Theo dõi</a>}
                                                 <figure className="group-dp"><img src={fanpageId.avatar} alt /></figure>
                                             </div>
                                             <div className="grp-info">
                                                 <h4>{fanpageId.fanpageName} <span>@Cộng đồng</span></h4>
                                                 <ul>
-                                                    <li><span>Ngày Tạo: </span>{moment(fanpageId.createAt).format('DD-MM-YYYY')}</li>
-                                                    <li><span>Số Điện Thoại: </span> {fanpageId.phone}</li>
-                                                    <li><span>Bài Viết: </span> {fanpageActivity.length}</li>
-                                                    <li><span>Lượt Theo Dõi:</span>{fanpageId.numberFollow}</li>
+                                                    <li><span>Ngày tạo: </span>{moment(fanpageId.createAt).format('DD-MM-YYYY')}</li>
+                                                    <li><span>Số điện thoại: </span> {fanpageId.phone}</li>
+                                                    <li><span>Bài viết: </span> {fanpageActivity.length}</li>
+                                                    <li><span>Lượt theo dõi:</span>{fanpageId.numberFollow}</li>
                                                 </ul>
                                                 <ul className="more-grp-info">
                                                     <li>
@@ -463,21 +464,21 @@ export default function GroupsDetail (props) {
                                                                     <svg className="feather feather-more-horizontal" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg"><circle r={1} cy={12} cx={12} /><circle r={1} cy={12} cx={19} /><circle r={1} cy={12} cx={5} /></svg></i>
                                                                 <ul>
                                                                     <li>
-                                                                        <i className="icofont-pen-alt-1" />Edit Post
-                                                                        <span>Edit This Post within a Hour</span>
+                                                                        <i className="icofont-pen-alt-1" />Chỉnh sửa
+                                                                        <span>chỉnh sửa chiến dịch</span>
                                                                     </li>
-                                                                    <li>
+                                                                    {/* <li>
                                                                         <i className="icofont-ban" />Hide Post
                                                                         <span>Hide This Post</span>
-                                                                    </li>
+                                                                    </li> */}
                                                                     <li>
-                                                                        <i className="icofont-ui-delete" />Delete Post
-                                                                        <span>If inappropriate Post By Mistake</span>
+                                                                        <i className="icofont-ui-delete" />Xóa
+                                                                        <span>Xóa Chiến Dịch</span>
                                                                     </li>
-                                                                    <li>
+                                                                    {/* <li>
                                                                         <i className="icofont-flag" />Report
                                                                         <span>Inappropriate content</span>
-                                                                    </li>
+                                                                    </li> */}
                                                                 </ul>
                                                             </div>
                                                         </div>
@@ -492,21 +493,21 @@ export default function GroupsDetail (props) {
                                                             <p>{fanpageId.description}</p>
                                                         </div>
                                                         <div className="col-lg-4">
-                                                            <div className="share-article">
+                                                            {/* <div className="share-article">
                                                                 <span>Chia sẻ nhóm</span>
                                                                 <a href="#" title className="facebook"><i className="icofont-facebook" /></a>
                                                                 <a href="#" title className="pinterest"><i className="icofont-pinterest" /></a>
                                                                 <a href="#" title className="instagram"><i className="icofont-instagram" /></a>
                                                                 <a href="#" title className="twitter"><i className="icofont-twitter" /></a>
                                                                 <a href="#" title className="google"><i className="icofont-google-plus" /></a>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-lg-8">
-                                                    <div className="main-wraper">
+                                                    {/* <div className="main-wraper">
                                                         <span className="new-title">Create New Post</span>
                                                         <div className="new-post">
                                                             <form method="post">
@@ -528,7 +529,7 @@ export default function GroupsDetail (props) {
                                                                 </li>
                                                             </ul>
                                                         </div>
-                                                    </div>{/* create new post */}
+                                                    </div>create new post */}
 
                                                     {cmt.map((item, index) => {
                                                         const detailItem = item
@@ -593,11 +594,11 @@ export default function GroupsDetail (props) {
                                                                         }}>Xem Tiến Trình</NavLink> : <div></div>}
                                                                         <figure style={{}}>
                                                                             {/* <p style={{ width: '100%' }}>fetched-image</p> */}
-                                                                            {item.targetDonation !== 0 ? <button className='btn btn-primary mb-2' onClick={() => {
+                                                                            {/* {item.targetDonation !== 0 ? <button className='btn btn-primary mb-2' onClick={() => {
                                                                                 // setActi(item.activityId)
                                                                                 formik1.setFieldValue('activityId', item.activityId)
                                                                                 openPopup()
-                                                                            }}>Ủng Hộ</button> : <div></div>}
+                                                                            }}>Ủng Hộ</button> : <div></div>} */}
                                                                             <div className="image-gallery">
                                                                                 <div className="image-gallery">
                                                                                     {item.media?.map((image, index) => {
@@ -652,53 +653,9 @@ export default function GroupsDetail (props) {
                                                                             <div></div>
                                                                         }
 
-                                                                        <button className=' btn btn-success ml-3 mb-4 mt-4' onClick={() => { handleJoinClick(index, item.activityId, item.isJoin, item.title) }}>{item?.isJoin ? "Hủy Tham Gia" : "Tham Gia"}</button>
+                                                                        <button className=' btn btn-success ml-3 mb-4 mt-4' onClick={() => { handleJoinClick(index, item.activityId, item.isJoin, item.title) }}>{item?.isJoin ? "Hủy tham gia" : "Tham gia"}</button>
                                                                         <div className="we-video-info">
-                                                                            <ul>
-                                                                                <li>
-                                                                                    <span title="views" className="views">
-                                                                                        <i>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-eye">
-                                                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
-                                                                                                </path>
-                                                                                                <circle cx={12} cy={12} r={3} />
-                                                                                            </svg></i>
-                                                                                        <ins>1.2k</ins>
-                                                                                    </span>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <span title="Comments" className="Recommend">
-                                                                                        <i>
-                                                                                            <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg">
-                                                                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                                                                            </svg></i>
-                                                                                        <ins>54</ins>
-                                                                                    </span>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <span title="follow" className="Follow">
-                                                                                        <i>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star">
-                                                                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                                                                                </polygon>
-                                                                                            </svg></i>
-                                                                                        <ins>5k</ins>
-                                                                                    </span>
-                                                                                </li>
-                                                                                <li>
-                                                                                    <span className="share-pst" title="Share">
-                                                                                        <i>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2">
-                                                                                                <circle cx={18} cy={5} r={3} />
-                                                                                                <circle cx={6} cy={12} r={3} />
-                                                                                                <circle cx={18} cy={19} r={3} />
-                                                                                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                                                                                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                                                                                            </svg></i>
-                                                                                        <ins>205</ins>
-                                                                                    </span>
-                                                                                </li>
-                                                                            </ul>
+                                                                            <div></div>
                                                                             <div className="emoji-state" style={{ display: 'flex', alignContent: 'center', paddingTop: '20px' }}>
                                                                                 <div className="popover_wrapper" >
                                                                                     <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
@@ -892,19 +849,19 @@ export default function GroupsDetail (props) {
                                                         </div>
                                                     })}
 
-                                                    <div className="loadmore">
+                                                    {/* <div className="loadmore">
                                                         <div className="sp sp-bars" />
                                                         <a href="#" title data-ripple>Load More..</a>
-                                                    </div>{/* loadmore buttons */}
+                                                    </div>loadmore buttons */}
                                                 </div>
                                                 <div className="col-lg-4">
                                                     <aside className="sidebar static left">
-                                                        <div className="advertisment-box">
+                                                        {/* <div className="advertisment-box">
                                                             <h4 className><i className="icofont-info-circle" /> advertisment</h4>
                                                             <figure>
                                                                 <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
                                                             </figure>
-                                                        </div>
+                                                        </div> */}
                                                         {/* <div className="widget">
                                                             <h4 className="widget-title">Members <a title href="#" className="see-all">See All</a></h4>
                                                             <ul className="invitepage">
@@ -1002,7 +959,7 @@ export default function GroupsDetail (props) {
                 </div>
             </section>{/* content */}
             <figure className="bottom-mockup"><img alt src="images/footer.png" /></figure>
-            <div className="bottombar">
+            {/* <div className="bottombar">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12">
@@ -1010,7 +967,7 @@ export default function GroupsDetail (props) {
                         </div>
                     </div>
                 </div>
-            </div>{/* bottombar */}
+            </div>bottombar */}
             <div className="wraper-invite">
                 <div className="popup">
                     <span className="popup-closed"><i className="icofont-close" /></span>
@@ -1150,7 +1107,7 @@ export default function GroupsDetail (props) {
                     </div>
                 </div>
             </div>{/* side slide message & popup */}
-            <div className="post-new-popup">
+            {/* <div className="post-new-popup">
                 <div className="popup" style={{ width: 800 }}>
                     <span className="popup-closed"><i className="icofont-close" /></span>
                     <div className="popup-meta">
@@ -1224,7 +1181,7 @@ export default function GroupsDetail (props) {
                         </div>
                     </div>
                 </div>
-            </div>{/* New post popup */}
+            </div>New post popup */}
             <div className="new-question-popup">
                 <div className="popup">
                     <span className="popup-closed"><i className="icofont-close" /></span>

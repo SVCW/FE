@@ -1,19 +1,15 @@
-import React from "react";
-import { useEffect } from "react";
-import {
-  CreateActivityAction,
-  DeleteLikeAction,
-  GetListActivityAction,
-  PostLikeAction,
-} from "../../redux/actions/ActivityAction";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import moment from "moment";
-import DetailActivity from "../../component/DetailActivity";
-import { Fragment } from "react";
-import { NavLink } from "react-router-dom";
-import { FilePond, registerPlugin } from "react-filepond";
-import Swal from "sweetalert2";
+import React from 'react'
+import { useEffect } from 'react'
+import { CreateActivityAction, DeleteActivityByUserAction, DeleteLikeAction, GetActivityByIDAction, GetListActivityAction, GetListEndActivityAction, PostLikeAction, UpdateActivityAction } from '../../redux/actions/ActivityAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import moment from 'moment';
+import DetailActivity from '../../component/DetailActivity';
+import { Fragment } from 'react';
+import { NavLink } from 'react-router-dom'
+import { FilePond, registerPlugin } from 'react-filepond'
+import Swal from 'sweetalert2';
+import { Dropdown } from 'primereact/dropdown';
 // Import FilePond styles
 import "filepond/dist/filepond.min.css";
 
@@ -53,40 +49,55 @@ import {
   CreateProcessAction,
   GetProcessByActivityAction,
 } from "../../redux/actions/ProcessAction";
-import { GetUserByIdAction } from "../../redux/actions/UserAction";
+import { GetUserByIdAction, GetUserBystatisticAction } from "../../redux/actions/UserAction";
+import { GetListReportTypeAction } from '../../redux/actions/ReportTypeAction';
+import { Toolbar } from 'primereact/toolbar';
+import { CreateReportAction } from '../../redux/actions/ReportAction';
+import { GetProfileByIdAction } from '../../redux/actions/ProfileAction';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-export default function Home() {
-  const { userByID } = useSelector((root) => root.UserReducer);
+export default function Home () {
+  const { userByID } = useSelector(root => root.UserReducer)
+  console.log(userByID);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
-
-  console.log(images);
-  const [tcss, setTcss] = useState("css");
-  const [vprocess, setVProcess] = useState(false);
+  const [tcss, setTcss] = useState('css');
+  const [vprocess, setVProcess] = useState(false)
   const dandleCSS = () => {
     if (tcss === "css") {
-    }
-  };
 
+    }
+  }
+  const { userByStatis, usertotal } = useSelector(root => root.UserReducer)
+  console.log("user" + usertotal);
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
-    dispatch(action);
+    dispatch(action)
     const action1 = GetListFanpageAction();
 
-    dispatch(action1);
+    dispatch(action1)
     const action2 = GetListProcessTypeAction();
-    dispatch(action2);
+    dispatch(action2)
+    const action4 = GetListReportTypeAction();
+    dispatch(action4)
+    const action5 = GetListEndActivityAction();
+    dispatch(action5)
+    const action8 = GetUserBystatisticAction(userID);
+    dispatch(action8)
+
+    // console.log(existingData);
     // if (existingData) {
     //     setCmt(existingData);
     //     dispatch({ type: "HIDE_LOADING" });
-    const user = localStorage.getItem("userID");
+    const user = localStorage.getItem('userID')
     if (user) {
-      const action = GetUserByIdAction(localStorage.getItem("userID"));
-      dispatch(action);
+      // console.log('có user');
+      const action = GetUserByIdAction(localStorage.getItem('userID'));
+      dispatch(action)
     } else {
+      // console.log('không có user');
     }
     //     return;
     // } else {
@@ -95,9 +106,8 @@ export default function Home() {
 
     // }
   }, []);
-  const { processType, activityProcess } = useSelector(
-    (root) => root.ProcessTypeReducer
-  );
+  const { processType, activityProcess } = useSelector(root => root.ProcessTypeReducer)
+
 
   const initialValues = {
     forms: [
@@ -157,7 +167,7 @@ export default function Home() {
   };
   const [arrDelete, setArrDelete] = useState([0]);
 
-  useEffect(() => {}, [arrDelete]);
+  useEffect(() => { }, [arrDelete]);
   const handleDeleteForm = () => {
     if (formData.length > 1) {
       setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
@@ -203,8 +213,7 @@ export default function Home() {
     const fileList = e.target.files;
     const newImages = [];
 
-    console.log(fileList);
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ linkMedia: imageUrl, type: file.type });
@@ -225,7 +234,8 @@ export default function Home() {
           const downloadURL = await getDownloadURL(snapshot.ref);
           newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     setFormData((prevData) =>
       prevData.map((form, index) =>
@@ -245,7 +255,7 @@ export default function Home() {
   );
   const { userID } = useSelector((root) => root.LoginReducer);
   const dispatch = useDispatch();
-  const { arrActivity } = useSelector((root) => root.ActivityReducer);
+  const { arrActivity, activityId } = useSelector((root) => root.ActivityReducer);
   const { arrFanpage } = useSelector((root) => root.FanpageReducer);
   const { isLoadingM } = useSelector((root) => root.LoadingReducer);
   const [cmt, setCmt] = useState([]);
@@ -378,6 +388,7 @@ export default function Home() {
   // );
   // const currentText2 = textOptions2[text2];
 
+
   //   const updatedComments = commentData.map((comment) => {
   //     if (comment.id === id) {
   //       if (comment.color === "rgb(117, 189, 240)") {
@@ -438,7 +449,7 @@ export default function Home() {
       const newArray = JSON.parse(JSON.stringify(prevArray));
       localStorage.getItem(`activity`, JSON.stringify(newArray));
 
-    return newArray;
+      return newArray;
     });
   };
   //   const handleLikeClick = (id) => {
@@ -482,9 +493,16 @@ export default function Home() {
   //     setCommentData(updatedComments);
   //   };
   const [followIndex, setFollowIndex] = useState(null);
-  const handleFollowClick = async (index, activity, isFollow, title) => {
+  const handleFollowClick = (index, activity, isFollow, title) => {
+    setCmt((prevArray) => {
+      const newArray = JSON.parse(JSON.stringify(prevArray));
+      newArray[index].isFollow = !newArray[index].isFollow;
+      localStorage.setItem(`activity`, JSON.stringify(newArray));
+
+      return newArray;
+    });
     if (isFollow) {
-      setFollowIndex(null);
+      setFollowIndex(null)
       const action = UnFollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -504,7 +522,7 @@ export default function Home() {
         title: `Bỏ theo dõi chiến dịch ${title} thành công `,
       });
     } else {
-      setFollowIndex(index);
+      setFollowIndex(index)
       const action = FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -525,7 +543,7 @@ export default function Home() {
       });
     }
     const action = GetListActivityAction();
-    await dispatch(action);
+     dispatch(action);
     setCmt((prevArray) => {
       const newArray = JSON.parse(JSON.stringify(prevArray));
       localStorage.setItem(`activity`, JSON.stringify(newArray));
@@ -545,9 +563,15 @@ export default function Home() {
   const currentTime = moment();
 
   const [isTextInputVisible, setTextInputVisible] = useState(false);
+  const [isTextInputVisible1, setTextInputVisible1] = useState(isFanpage);
 
   const toggleTextInput = () => {
     setTextInputVisible(!isTextInputVisible);
+  };
+  const toggleTextInput1 = () => {
+    setTextInputVisible1(!isTextInputVisible1);
+    formik.setFieldValue('isFanpageAvtivity', isTextInputVisible1)
+
   };
   const openPopup = () => {
     setPopupOpen(true);
@@ -601,7 +625,7 @@ export default function Home() {
       }
     },
   });
-  function calculateImageClass(imageCount) {
+  function calculateImageClass (imageCount) {
     let imageClass = "full-width";
     if (imageCount === 2) {
       imageClass = "half-width";
@@ -634,7 +658,12 @@ export default function Home() {
     // setVProcess((prevIsOpen) => !prevIsOpen)
     // setIsDisplay(true)
   };
+  const handleClick3 = () => {
+    setReport((prevIsOpen) => !prevIsOpen);
+    // setIsDisplay(true)
+  };
   const [openpro, setOpenPro] = useState(false);
+  const [report, setReport] = useState(false)
   const popupStyle = {
     opacity: isOpen ? 1 : 0,
     visibility: isOpen ? "visible" : "hidden",
@@ -651,6 +680,76 @@ export default function Home() {
     visibility: isOpen2 ? "visible" : "hidden",
     overflow: isOpen2 ? "auto" : "hidden",
   };
+  const popupStyle3 = {
+    opacity: report ? 1 : 0,
+    visibility: report ? "visible" : "hidden",
+    overflow: report ? "auto" : "hidden",
+  };
+  const [openpro1, setOpenPro1] = useState(false);
+  const popupStyle4 = {
+    opacity: openpro1 ? 1 : 0,
+    visibility: openpro1 ? "visible" : "hidden",
+    overflow: openpro1 ? "auto" : "hidden",
+  };
+  const handleClick6 = () => {
+    setOpenPro1((prevIsOpen) => !prevIsOpen);
+    // setIsDisplay(true)
+  };
+  const { reportType } = useSelector(root => root.ReportType)
+  // console.log(reportType);
+  const arrReportType = reportType?.map((item, index) => {
+    return {
+      label: item.reportTypeName,
+      value: item.reportTypeId,
+
+    }
+  })
+  // console.log(arrReportType);
+
+
+  // console.log(arrReportType);
+
+  const formik6 = useFormik({
+    initialValues: {
+      reportId: "string",
+      title: "string",
+      reason: "",
+      reportTypeId: "string",
+      description: "string",
+      status: true,
+      userId: userID,
+      activityId: ""
+    },
+    onSubmit: async (value) => {
+      // console.log(value);
+      const action = await CreateReportAction(value);
+      await dispatch(action)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: `Báo cáo chiến dịch thành công `,
+      });
+      setReport((prevIsOpen) => !prevIsOpen);
+    }
+  })
+  const onInputDropdown = (e, field) => {
+
+    // console.log(e.target.value)
+    formik6.setFieldValue('reportTypeId', e.target.value)
+  };
+  useEffect(() => {
+  }, [arrDelete, reportType]);
   const [files, setFiles] = useState("");
 
   useEffect(() => {
@@ -665,24 +764,28 @@ export default function Home() {
     initialValues: {
       title: "",
       description: "",
-      startDate: currentTime.format("YYYY-MM-DD HH:mm:ss"),
-      endDate: currentTime.format("YYYY-MM-DD HH:mm:ss"),
+      startDate: '',
+      endDate: '',
       // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
       location: "",
       targetDonation: 0,
       userId: userID,
-      isFanpageAvtivity: isFanpage,
+      isFanpageAvtivity: false,
       media: [],
     },
     // enableReinitialize: true,
     enableReinitialize: false,
     onSubmit: async (value) => {
+      console.log(value);
       const action = await CreateActivityAction(value);
       await dispatch(action);
       formik.setFieldValue("title", "");
       formik.setFieldValue("description", "");
       formik.setFieldValue("location", "");
       formik.setFieldValue("targetDonation", 0);
+      formik.setFieldValue("startDate", '');
+      formik.setFieldValue("endactivity", '');
+      formik.setFieldValue("isFanpageAvtivity", false);
       formik.setFieldValue("media", []);
       setIsOpen((prevIsOpen) => !prevIsOpen);
       setIsDisplay(false);
@@ -755,15 +858,59 @@ export default function Home() {
         });
     },
   });
+  console.log(activityId.title);
+  console.log(moment(activityId.startDate).format('MM/DD/YYYY'));
+  const formik9 = useFormik({
+    initialValues: {
+      activityId: activityId.activityId,
+      title: activityId.title,
+      description: activityId.description,
+      startDate: activityId.startDate,
+      endDate: activityId.endDate,
+      location: activityId.location,
+      targetDonation: activityId.targetDonation
+    },
+    // enableReinitialize: true,
+    enableReinitialize: true,
+    onSubmit: async (value) => {
+      console.log(value);
+      const action = await UpdateActivityAction(value);
+      await dispatch(action);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "success",
+        title: `Cập nhật chiến dịch ${value.title} thành công `,
+      });
+      // formik.setFieldValue("title", "");
+      // formik.setFieldValue("description", "");
+      // formik.setFieldValue("location", "");
+      // formik.setFieldValue("targetDonation", 0);
+      // formik.setFieldValue("startDate", '');
+      // formik.setFieldValue("endactivity", '');
+      // formik.setFieldValue("isFanpageAvtivity", false);
+      // formik.setFieldValue("media", []);
+      setOpenPro1((prevIsOpen) => !prevIsOpen);
+      // setIsDisplay(false);
+    }
+  })
 
   const handleImageChange = async (e) => {
     setIsLoading(true);
     const fileList = e.target.files;
-
-    console.log(fileList);
     const newImages = [];
 
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -784,10 +931,10 @@ export default function Home() {
           const downloadURL = await getDownloadURL(snapshot.ref);
           const updatedImages = [...newImages];
           updatedImages[i].url = downloadURL;
-
-          setImages([...images, ...updatedImages]);
+          setImages((prevImages) => [...prevImages, ...updatedImages]);
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     setIsLoading(false);
     setUploadProgress(0);
@@ -799,20 +946,6 @@ export default function Home() {
       return updatedImages;
     });
   };
-  const handleCommentClick = async (id) => {
-    const updatedComments = await commentData?.map(
-      (comment) => {
-        if (comment.id === id) {
-          return { ...comment, isCmt: !comment.isCmt };
-        }
-        return comment;
-      },
-      () => {}
-    );
-
-    setCommentData(updatedComments);
-  };
-
   const handleLikeClick = (id) => {
     const updatedComments = commentData.map((comment) => {
       if (comment.id === id) {
@@ -853,6 +986,20 @@ export default function Home() {
 
     setCommentData(updatedComments);
   };
+  const handleCommentClick = (id) => {
+    const updatedComments = commentData.map(
+      (comment) => {
+        if (comment.id === id) {
+          return { ...comment, isCmt: !comment.isCmt };
+        }
+        return comment;
+      });
+
+    setCommentData(updatedComments);
+    console.log(commentData);
+  };
+
+
 
   useEffect(() => {
     const updatedArrActivity = JSON.parse(
@@ -863,7 +1010,7 @@ export default function Home() {
       );
       return { ...activity, commentData: matchingComments };
     });
-    setCmt(updatedArrActivity);
+    setCmt(updatedArrActivity)
   }, [commentData, arrActivity]);
   // useEffect(() => {
   //     const updatedArrActivity = JSON.parse(localStorage.getItem('activity'))
@@ -927,19 +1074,19 @@ export default function Home() {
                         <div
                           data-progress="tip"
                           className="progress__outer"
-                          data-value="0.67"
+                          data-value={`${usertotal}`}
                         >
-                          <div className="progress__inner">70%</div>
+                          <div className="progress__inner">{usertotal}%</div>
                         </div>
                         <ul className="prof-complete">
                           <li>
                             <i className="icofont-plus-square" />{" "}
                             <a href="#" title>
-                              Cập nhật hình đại diện
+                              Cập nhật số điện thoại
                             </a>
                             <em>10%</em>
                           </li>
-                          <li>
+                          {/* <li>
                             <i className="icofont-plus-square" />{" "}
                             <a href="#" title>
                               Cập nhật ngày tháng năm sinh
@@ -952,7 +1099,7 @@ export default function Home() {
                               Cập nhật giới tính bạn
                             </a>
                             <em>10%</em>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                       {/* complete profile widget */}
@@ -1102,6 +1249,10 @@ export default function Home() {
                     </aside>
                   </div>
                   <div className="col-lg-6">
+                    <ul class="filtr-tabs">
+                      <li><NavLink to="/home">Trang chủ</NavLink></li>
+                      <li><NavLink to="/endactivity">Chiến dịch đã kết thúc</NavLink></li>
+                    </ul>
                     {/* <ul className="filtr-tabs">
                                             <li><a className="active" href="#" title>Home</a></li>
                                             <li><a href="#" title>Recent</a></li>
@@ -1178,7 +1329,7 @@ export default function Home() {
                       </div>
                     </div>
                     {/* suggested friends */}
-                    {cmt?.map((item, index) => {
+                    {cmt.filter(item => item.status === "Active").map((item, index) => {
                       const detailItem = item;
                       let isAlreadyLiked = false;
                       let isAlreadyJoined = false;
@@ -1244,14 +1395,18 @@ export default function Home() {
                                       </svg>
                                     </i>
                                     <ul>
-                                      <li>
+                                      {userID === item.userId ? <li onClick={() => {
+                                        handleClick6()
+                                        const action = GetActivityByIDAction(item.activityId)
+                                        dispatch(action)
+                                      }}>
                                         <i className="icofont-pen-alt-1" />
                                         Sửa bài đăng
                                         <span>
                                           Chỉnh sửa và cập nhật chi tiết bài
                                           đăng
                                         </span>
-                                      </li>
+                                      </li> : <div></div>}
                                       {/* <li>
                                         <i className="icofont-ban" />
                                         Ẩn bài đăng
@@ -1260,22 +1415,45 @@ export default function Home() {
                                           có vấn đề
                                         </span>
                                       </li> */}
-                                      <li>
+                                      {userID === item.userId ? <li onClick={() => {
+                                        Swal.fire({
+                                          title: 'Bạn muốn xóa?',
+                                          text: "Bạn có chắc muốn xóa bài viết này!",
+                                          icon: 'warning',
+                                          showCancelButton: true,
+                                          confirmButtonColor: '#3085d6',
+                                          cancelButtonColor: '#d33',
+                                          confirmButtonText: 'Xóa!'
+                                        }).then((result) => {
+                                          if (result.isConfirmed) {
+                                            Swal.fire(
+                                              'Xóa thành công!',
+                                              'Xóa thành công chiến dịch.',
+                                              'success'
+                                            )
+                                            const action = DeleteActivityByUserAction(item.activityId);
+                                            dispatch(action)
+                                          }
+                                        })
+                                      }}>
                                         <i className="icofont-ui-delete" />
                                         Xóa bài đăng
                                         <span>
                                           Xóa những bài đăng khi bạn cảm thấy có
                                           vấn đề không ổn
                                         </span>
-                                      </li>
-                                      <li>
+                                      </li> : <div></div>}
+                                      {userID !== item.userId ? <li onClick={() => {
+                                        setReport(true)
+                                        formik6.setFieldValue('activityId', item.activityId)
+                                      }}>
                                         <i className="icofont-flag" />
                                         Báo cáo bài đăng
                                         <span>
                                           nhầm báo cáo những vấn đề bất thường
                                           đến cho người quản lý
                                         </span>
-                                      </li>
+                                      </li> : <div></div>}
                                     </ul>
                                   </div>
                                 </div>
@@ -1320,6 +1498,40 @@ export default function Home() {
                                 ) : (
                                   <div></div>
                                 )}
+                                <figure style={{}}>
+                                  {/* <p style={{ width: '100%' }}>fetched-image</p> */}
+
+                                  <div className="image-gallery">
+                                    <div className="image-gallery">
+                                      {item.media?.map((image, index) => {
+                                        const imageClass = calculateImageClass(
+                                          item.media.length
+                                        );
+                                        return (
+                                          <div
+                                            key={index}
+                                            className={`image-container ${imageClass} `}
+                                          >
+                                            <a
+                                              data-toggle="modal"
+                                              data-target="#img-comt"
+                                              href="images/resources/album1.jpg"
+                                              onClick={() => {
+                                                setDetail(detailItem);
+                                              }}
+                                            >
+                                              <img
+                                                src={image.linkMedia}
+                                                alt={`Image ${image.id}`}
+                                                className="gallery-image"
+                                              />
+                                            </a>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                </figure>
                                 <div className="row">
                                   <div
                                     style={{
@@ -1329,7 +1541,6 @@ export default function Home() {
                                     className="col-lg-12"
                                   >
                                     <a
-                                      href=""
                                       target="_blank"
                                       style={{
                                         fontSize: "25px",
@@ -1339,87 +1550,21 @@ export default function Home() {
                                         color: "#3f6ad8",
                                       }}
                                       className="col-lg-8"
+
+                                      data-toggle="modal"
+                                      data-target="#img-comt"
+                                      href="images/resources/album1.jpg"
+                                      onClick={() => {
+                                        setDetail(detailItem);
+                                      }}
                                     >
+
                                       {item.title}
                                     </a>
                                     {/* bla bla bla theo dõi */}
+
                                   </div>
                                 </div>
-                                <figure style={{}}>
-                                  {/* <p style={{ width: '100%' }}>fetched-image</p> */}
-                                  <div className="image-gallery-flex">
-                                    {item?.media?.length <= 3
-                                      ? item.media.map((image, index) => {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className={`image-container-post`}
-                                            >
-                                              <a
-                                                data-toggle="modal"
-                                                data-target="#img-comt"
-                                                href="images/resources/album1.jpg"
-                                                onClick={() => {
-                                                  setDetail(detailItem);
-                                                }}
-                                              >
-                                                <img
-                                                  src={image.linkMedia}
-                                                  alt={`Image ${image.id}`}
-                                                />
-                                              </a>
-                                            </div>
-                                          );
-                                        })
-                                      : item.media
-                                          ?.slice(0, 4)
-                                          .map((image, index) => {
-                                            return index !== 3 ? (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post-last`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <div className="overlay">
-                                                    +{item.media.length - 4}
-                                                  </div>
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            );
-                                          })}
-                                  </div>
-                                </figure>
-
                                 <p className="mt-3">
                                   <span
                                     style={{
@@ -1432,6 +1577,10 @@ export default function Home() {
                                   </span>{" "}
                                   {item.description}
                                 </p>
+                                <div style={{ paddingBottom: '20px' }}>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>- Bắt đầu: </span> {moment(item.startDate).format('DD-MM-YYYY')}</div>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>- Kết thúc: </span> {moment(item.endDate).format('DD-MM-YYYY')}</div>
+                                </div>
 
                                 {item.targetDonation !== 0 ? (
                                   <div className="mb-4">
@@ -1483,15 +1632,13 @@ export default function Home() {
                                       // onChange={handleChange}
                                       className="range-slider"
                                       style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                          (item.realDonation /
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
+                                          item.targetDonation) *
+                                          100
+                                          }%, #ddd ${(item.realDonation /
                                             item.targetDonation) *
                                           100
-                                        }%, #ddd ${
-                                          (item.realDonation /
-                                            item.targetDonation) *
-                                          100
-                                        }%, #ddd 100%)`,
+                                          }%, #ddd 100%)`,
                                       }}
                                     />
                                     {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
@@ -1514,11 +1661,10 @@ export default function Home() {
                                         className="range-value"
                                         style={{
                                           position: "absolute",
-                                          left: `${
-                                            (item.realDonation /
-                                              item.targetDonation) *
+                                          left: `${(item.realDonation /
+                                            item.targetDonation) *
                                             100
-                                          }%`,
+                                            }%`,
                                         }}
                                       >
                                         {" "}
@@ -1542,18 +1688,15 @@ export default function Home() {
                                   <div></div>
                                 )}
 
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-around",
-                                  }}
-                                >
+                                <div style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-around'
+                                }}>
                                   <button
-                                    className={`btn ${
-                                      isAlreadyJoined
+                                    className={`btn ${isAlreadyJoined
                                         ? "btn-danger"
                                         : "btn-success"
-                                    } mb-4 mt-4`}
+                                      } mb-4 mt-4`}
                                     onClick={() => {
                                       handleJoinClick(
                                         index,
@@ -1569,11 +1712,10 @@ export default function Home() {
                                   </button>
 
                                   <button
-                                    className={`btn ${
-                                      isAlreadyFollowed
+                                    className={`btn ${isAlreadyFollowed
                                         ? "btn-danger"
                                         : "btn-success"
-                                    } mb-4 mt-4`}
+                                      } mb-4 mt-4`}
                                     onClick={() => {
                                       handleFollowClick(
                                         index,
@@ -1744,27 +1886,27 @@ export default function Home() {
                                         <ul className="namelist">
                                           {item?.like?.length <= 4
                                             ? item?.like.map((userItem) => {
-                                                return (
+                                              return (
+                                                <li>
+                                                  {userItem.user.username}
+                                                </li>
+                                              );
+                                            })
+                                            : item?.like
+                                              ?.slice(0, 4)
+                                              .map((userItem, index) => {
+                                                index < 4 ? (
                                                   <li>
                                                     {userItem.user.username}
                                                   </li>
+                                                ) : (
+                                                  <li>
+                                                    <span>
+                                                      +{item?.like.length - 5}
+                                                    </span>
+                                                  </li>
                                                 );
-                                              })
-                                            : item?.like
-                                                ?.slice(0, 4)
-                                                .map((userItem, index) => {
-                                                  index < 4 ? (
-                                                    <li>
-                                                      {userItem.user.username}
-                                                    </li>
-                                                  ) : (
-                                                    <li>
-                                                      <span>
-                                                        +{item?.like.length - 5}
-                                                      </span>
-                                                    </li>
-                                                  );
-                                                })}
+                                              })}
                                         </ul>
                                       </div>
                                     </div>
@@ -1788,11 +1930,10 @@ export default function Home() {
                                   <div
                                     className=""
                                     style={{
-                                      backgroundColor: `${
-                                        isAlreadyLiked
+                                      backgroundColor: `${isAlreadyLiked
                                           ? "rgb(117, 189, 240)"
                                           : "#eae9ee"
-                                      }`,
+                                        }`,
                                       borderRadius: "4px",
                                       color: "#82828e",
                                       display: "inline-block",
@@ -2104,7 +2245,7 @@ export default function Home() {
                   <div className="col-lg-3">
                     <aside className="sidebar static right">
                       {localStorage.getItem("userID") &&
-                      userByID?.fanpage !== null ? (
+                        userByID?.fanpage?.status === "Active" ? (
                         <div className="widget">
                           <h4 className="widget-title">Nhóm của bạn</h4>
                           <ul className="ak-groups">
@@ -2146,7 +2287,7 @@ export default function Home() {
                                   href="group-feed.html"
                                   title
                                   className="promote"
-                                  onClick={() => {}}
+                                  onClick={() => { }}
                                 >
                                   Chi tiết
                                 </NavLink>
@@ -2164,9 +2305,9 @@ export default function Home() {
                             <figure>
                               <img
                                 style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
                                 }}
                                 alt
                                 src="images/avatar/5.jpg"
@@ -2200,9 +2341,9 @@ export default function Home() {
                             <figure>
                               <img
                                 style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
+                                  width: '310px',
+                                  height: '110px',
+                                  objectFit: 'cover',
                                 }}
                                 alt
                                 src="images/avatar/19.jpg"
@@ -2661,7 +2802,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="form1">
+            <div className="">
               <header className="header"></header>
               <div className="form-wrap">
                 <form
@@ -2709,6 +2850,40 @@ export default function Home() {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label id="name-label" htmlFor="name">
+                          Ngày bắt đầu
+                        </label>
+                        <input
+                          type="date"
+                          name="startDate"
+                          onChange={formik.handleChange}
+                          value={formik.values.startDate}
+                          id="name"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Ngày kết thúc
+                        </label>
+                        <input
+                          type="date"
+                          name="endDate"
+                          onChange={formik.handleChange}
+                          value={formik.values.endDate}
+                          id="name"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
                           Nơi diễn ra
                         </label>
                         <input
@@ -2744,7 +2919,9 @@ export default function Home() {
                               />
                             </div>
                             {isTextInputVisible === true && (
+
                               <div className="form-group">
+
                                 <input
                                   type="number"
                                   name="targetDonation"
@@ -2753,10 +2930,11 @@ export default function Home() {
                                   id="name"
                                   placeholder="Nhập số tiền cần nhận"
                                   className="form-control"
-                                  style={{ marginTop: "-2rem" }}
+                                  style={{ marginTop: '-2rem' }}
                                   required
                                 />
                               </div>
+
                             )}
                           </div>
                         ) : (
@@ -2766,6 +2944,36 @@ export default function Home() {
                     </div>
                   </div>
 
+                  <div className='row'>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        {userByID.fanpage?.status === "Active" && isFanpage ? (
+                          <div>
+                            <div
+                              className="form-group"
+                              style={{ display: "flex" }}
+                            >
+                              <label
+                                id="name-label"
+                                style={{ marginRight: "20px" }}
+                                htmlFor="name"
+                              >
+                                Chia sẽ lên nhóm của bạn
+                              </label>
+                              <input
+                                type="checkbox"
+                                onChange={toggleTextInput1}
+                              // checked={isTextInputVisible1}
+                              />
+                            </div>
+
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
@@ -2823,16 +3031,13 @@ export default function Home() {
                           </svg>
                         </div>
 
-                        <div className="image-container image-container-flex">
+                        <div className="image-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                           {images.map((image, index) => (
-                            <div
-                              className="image-item image-item-relative"
-                              key={index}
-                            >
+                            <div className="image-item" key={index} >
                               <img
                                 src={image.url}
                                 alt={`Image ${index}`}
-                                className="image-preview image-item-flex"
+                                className="image-preview"
                               />
                               <button
                                 className="delete-button"
@@ -2874,6 +3079,201 @@ export default function Home() {
                         className="btn btn-primary btn-block"
                       >
                         Hoàn thành
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {openpro1 === true ? (
+        <div className="post-new-popup" style={popupStyle4}>
+          <div
+            className="popup"
+            style={{ width: 800, marginTop: "100px", zIndex: 80 }}
+          >
+            <span className="popup-closed" onClick={handleClick6}>
+              <i className="icofont-close" />
+            </span>
+            <div className="popup-meta">
+              <div className="popup-head">
+                <h5>
+                  <i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-plus"
+                    >
+                      <line x1={12} y1={5} x2={12} y2={19} />
+                      <line x1={5} y1={12} x2={19} y2={12} />
+                    </svg>
+                  </i>
+                  Chỉnh sửa chiến dịch
+                </h5>
+              </div>
+            </div>
+
+            <div className="">
+              <header className="header"></header>
+              <div className="form-wrap">
+                <form
+                  id="survey-form"
+                  method="post"
+                  onSubmit={formik9.handleSubmit}
+                >
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Tên chiến dịch
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.title}
+                          id="name"
+                          placeholder="Nhập Tên Sự Kiện"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="email-label" htmlFor="email">
+                          Mô tả chiến dịch
+                        </label>
+                        <input
+                          type="text"
+                          name="description"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.description}
+                          id="email"
+                          placeholder="Nhập mô tả"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Ngày bắt đầu
+                        </label>
+                        <input
+                          type="date"
+                          name="startDate"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.startDate}
+                          id="name"
+                          className="form-control"
+
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Ngày kết thúc
+                        </label>
+                        <input
+                          type="date"
+                          name="endDate"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.endDate}
+                          id="name"
+                          className="form-control"
+
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Nơi diễn ra
+                        </label>
+                        <input
+                          type="text"
+                          name="location"
+                          onChange={formik9.handleChange}
+                          value={formik9.values.location}
+                          id="name"
+                          placeholder="Nhập nơi diễn ra"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        {configActivity === "true" ? (
+                          <div>
+                            <div
+                              className="form-group"
+                              style={{ display: "flex" }}
+                            >
+                              <label
+                                id="name-label"
+                                style={{ marginRight: "20px" }}
+                                htmlFor="name"
+                              >
+                                Nhận ủng hộ
+                              </label>
+                              <input
+                                type="checkbox"
+                                onChange={toggleTextInput}
+                              />
+                            </div>
+                            {isTextInputVisible === true && (
+
+                              <div className="form-group">
+
+                                <input
+                                  type="number"
+                                  name="targetDonation"
+                                  onChange={formik9.handleChange}
+                                  value={formik9.values.targetDonation}
+                                  id="name"
+                                  placeholder="Nhập số tiền cần nhận"
+                                  className="form-control"
+                                  style={{ marginTop: '-2rem' }}
+                                  required
+                                />
+                              </div>
+
+                            )}
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        id="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Cập nhật
                       </button>
                     </div>
                   </div>
@@ -3016,7 +3416,7 @@ export default function Home() {
                               id={`media_${index}`}
                               type="file"
                               multiple
-                              onChange={(e) => handleImageChange1(e, index)}
+                              onChange={(e) => handleImageChange1(e, index)} // Truyền formIndex khi xử lý handleImageChange1
                             />
                             <div className="image-container">
                               {form.media.map((image, imageIndex) => (
@@ -3092,6 +3492,95 @@ export default function Home() {
                   )}
                 </Form>
               </Formik>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {report ? (
+        <div className="post-new-popup1" style={popupStyle3}>
+          <div
+            className="popup"
+            style={{
+              width: 600,
+              zIndex: 80,
+              height: 450,
+              // overflowY: "scroll",
+              padding: "10px",
+              marginTop: '-100px'
+            }}
+          >
+            <span className="popup-closed" onClick={handleClick3}>
+              <i className="icofont-close" />
+            </span>
+            <div className="popup-meta">
+              <div className="popup-head">
+                <h5>
+                  <i>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-plus"
+                    >
+                      <line x1={12} y1={5} x2={12} y2={19} />
+                      <line x1={5} y1={12} x2={19} y2={12} />
+                    </svg>
+                  </i>
+                  Báo cáo bài viết
+                </h5>
+              </div>
+            </div>
+            <div>
+              <form onSubmit={formik6.handleSubmit}>
+                <div className="form row mt-3">
+                  <div className="form-group">
+                    <label >
+                      Thể loại tiến trình
+                    </label>
+                    <select
+                      value="" // Bind the select value to the formData value
+                      onChange={(e) => onInputDropdown(e)} // Pass the formIndex to handleSelectChange
+                      className="form-control"
+                      placeholder='Chọn loại báo cáo'
+                    >
+                      <option value=''>Chọn loại báo cáo</option>
+                      {arrReportType.map((item, index) => {
+                        return (
+                          <option value={item.value} key={index}>
+                            {item.label}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label >
+                      Lý do
+                    </label>
+                    <textarea id="message" className="form-control" rows="2" cols="50" name='reason' onChange={formik6.handleChange}></textarea>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Báo cáo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+
             </div>
           </div>
         </div>

@@ -2,6 +2,8 @@ const stateDefault = {
     userLogin: {},
     userID: localStorage.getItem('userID'),
     msg: '',
+    moderator: localStorage.getItem('moderator'),
+    msgModerator: ''
 }
 
 
@@ -20,6 +22,15 @@ export const LoginReducer = (state = stateDefault, action) => {
         case "LOGOUT1": {
             localStorage.setItem('setError', "")
             state.userID = localStorage.setItem('userID', "")
+            return { ...state }
+        }
+        case 'GET_MODERATOR_LOGIN': {
+            state.moderator = action.moderator;
+            state.msgModerator = '';
+            return { ...state }
+        }
+        case 'CHECK_MODERATOR': {
+            state.msgModerator = action.msgModerator;
             return { ...state }
         }
         default: return state;

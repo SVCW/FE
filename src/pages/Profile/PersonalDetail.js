@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GetProfileByIdAction, UpdateProfileById } from "../../redux/actions/ProfileAction";
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useEffect } from "react";
 
 const PersonalDetail = () => {
+
+  const { getUserId } = useSelector(root => root.ProfileReducer)
+  console.log(getUserId);
+  useEffect(() => {
+    const action = GetProfileByIdAction(localStorage.getItem('userID'));
+    dispatch(action)
+  }, []);
   const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem('getuserid')));
-    const notify = () => toast("Wow so easy!", {
-        theme: 'dark'
-    });
+  const notify = () => toast("Wow so easy!", {
+    theme: 'dark'
+  });
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [info, setInfo] = useState({
@@ -40,7 +48,7 @@ const PersonalDetail = () => {
     setIsEditing(false);
   };
 
-  if(!userDetails) return <p>Loading...</p>;
+  if (!userDetails) return <p>Loading...</p>;
 
   return (
     <div className="main-wraper">
@@ -66,22 +74,22 @@ const PersonalDetail = () => {
         {!isEditing ? (
           <ul>
             <li>
-              Tài khoản: <span>{userDetails.username}</span>
+              Tài khoản: <span>{userDetails?.username}</span>
             </li>
             <li>
-              Họ và tên: <span>{userDetails.fullName}</span>
+              Họ và tên: <span>{userDetails?.fullName}</span>
             </li>
             <li>
-              Gioi tính: <span>{userDetails.gender ? "Nam" : "Nu"}</span>
+              Gioi tính: <span>{userDetails?.gender ? "Nam" : "Nu"}</span>
             </li>
             <li>
-              Email: <span>{userDetails.email}</span>
+              Email: <span>{userDetails?.email}</span>
             </li>
             <li>
               {/* Ngày tháng năm sinh: <span>{new Date(userDetails.dateOfBirth).toUTCString()}</span> */}
             </li>
             <li>
-              Số điện thoại: <span>{userDetails.phone}</span>
+              Số điện thoại: <span>{userDetails?.phone}</span>
             </li>
             <li>
               Địa chỉ: <span>175 nguyễn văn tăng</span>
@@ -188,7 +196,7 @@ const PersonalDetail = () => {
                 </li>
               </div>
             </div>
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Submit" />
             <a className="ask-qst" onClick={() => setIsEditing(false)}>
               Huy
             </a>
