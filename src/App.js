@@ -23,7 +23,7 @@ import Test from './Test';
 import DetailProcess from './pages/DetailProcess/DetailProcess';
 import CreateFanpage from './pages/Fanpage/CreateFanpage';
 // import MultiStepForm from './MultiStepForm';
-// import MultiStepForm1 from './MultiStepForm1';
+import MultiStepForm1 from './MultiStepForm1';
 import { ToastContainer } from 'react-toastify';
 import Moderator from './pages/Moderator/Moderator';
 import AdminFanpage from './pages/AdminFanpage/AdminFanpage';
@@ -64,7 +64,7 @@ function App () {
           <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
           <Route exact path="/test" component={MultiForm} />
           <Route exact path="/test1" component={Test} />
-          {/* <Route exact path="/test1" component={MultiStepForm1} /> */}
+          <Route exact path="/test1" component={MultiStepForm1} />
           <UserTemplate exact path="/game" Component={BaiTapGameXucXac} />
           <Route path='*' exact component={Login} />
 
