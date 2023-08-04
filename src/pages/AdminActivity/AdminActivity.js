@@ -9,7 +9,7 @@ import { FileUpload } from 'primereact/fileupload';
 import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
 import { InputTextarea } from 'primereact/inputtextarea';
-
+import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
@@ -17,18 +17,21 @@ import { CreateAchivementAction, DeleteAchivementAction, GetListAchivementAction
 import { useDispatch, useSelector } from 'react-redux';
 import { storage_bucket } from './../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { CreateRoleAction, GetListRoleAction, UpdateRoleAction } from '../../redux/actions/RoleAction';
+import { DeleteActivityAction, GetListActivityAction } from '../../redux/actions/ActivityAction';
 
-export default function Role () {
+export default function AdminActivity () {
     const dispatch = useDispatch()
-    const { arrRole } = useSelector(root => root.RoleReducer)
-    console.log(arrRole);
+    const { arrActivity } = useSelector(root => root.ActivityReducer)
+    console.log(arrActivity);
+    const [showInput, setShowInput] = useState(true);
     const [id, setID] = useState('abc')
     let counter = 0;
     let emptyProduct = {
-        roleId: counter.toString(),
-        roleName: "",
-        description: ""
+        achivementId: counter.toString(),
+        achivementLogo: "",
+        description: "",
+        createAt: moment().format('YYYY-MM-DD'),
+        status: true
     };
 
     const uploadFile = (e) => {
@@ -41,6 +44,8 @@ export default function Role () {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log("Upload is " + progress + "% done");
             // console.log(snapshot);
+            setShowInput(false);
+
         },
             (err) => console.log(err),
             () => {
@@ -52,7 +57,7 @@ export default function Role () {
             });
     };
 
-    const [text, setText] = useState('Thêm mới')
+    const [text, setText] = useState('Thêm mới huy hiệu')
     const [products, setProducts] = useState([]);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -65,13 +70,28 @@ export default function Role () {
     const dt = useRef(null);
     console.log(product);
     useEffect(() => {
-        const action = GetListRoleAction();
+        const action = GetListActivityAction();
         dispatch(action)
     }, []);
+
+
+    const [op, setOp] = useState('Active')
+    const onInputDropdown = (e, field) => {
+
+        console.log(e.target.value)
+        setOp(e.target.value)
+        // setProduct(updatedProduct);
+    };
+    console.log(op);
+    const arrReportType = [
+        { value: 'Active', label: "Hoạt động" },
+        { value: 'InActive', label: "Không hoạt động" },
+    ]
     useEffect(() => {
-        const arr = arrRole.filter(item => item.status === true)
+
+        const arr = arrActivity.filter(item => item.status === op)
         setProducts(arr)
-    }, [arrRole]);
+    }, [arrActivity, op]);
 
     // const formatCurrency = (value) => {
     //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -104,22 +124,23 @@ export default function Role () {
             let _products = [...products];
             let _product = { ...product };
 
-            if (product.roleId !== '0') {
-                const index = findIndexById(product.roleId);
+            if (product.achivementId !== '0') {
+                const index = findIndexById(product.id);
 
                 _products[index] = _product;
-                console.log(product.roleId);
-                const action = await UpdateRoleAction(product.roleId)
+                console.log(product.achivementId);
+                const action = await UpdateAchivementAction(product)
                 await dispatch(action)
                 setProductDialog(false);
                 counter++;
-                toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Cập nhật thành công', life: 3000, });
+                toast.current.show({ severity: 'success', summary: 'Thành công', detail: `Cập nhật thành công  ${product.title}`, life: 3000, });
+                setText('')
 
             } else {
-                const action = await CreateRoleAction(product)
+                const action = await CreateAchivementAction(product)
                 await dispatch(action)
                 counter++;
-                toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Tạo mới thành công', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Tạo mới huy hiệu thành công', life: 3000 });
 
 
             }
@@ -133,7 +154,7 @@ export default function Role () {
     };
 
     const editProduct = (product) => {
-        setText('Chỉnh sửa')
+        setText('Chỉnh sửa huy hiệu')
         setProduct({ ...product });
         setProductDialog(true);
     };
@@ -145,12 +166,12 @@ export default function Role () {
 
     const deleteProduct = async () => {
 
-        const action = await DeleteAchivementAction(product.achivementId)
+        const action = await DeleteActivityAction(product.activityId)
         await dispatch(action)
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
         toast.current.show({
-            severity: 'error', summary: 'Thành công', detail: 'Xóa thành công', life: 3000, options: {
+            severity: 'error', summary: 'Thành công', detail: `Cập nhật trạng thái ${product.title} thành công`, life: 3000, options: {
                 style: {
                     zIndex: 100
                 }
@@ -196,7 +217,7 @@ export default function Role () {
         setProducts(_products);
         setDeleteProductsDialog(false);
         setSelectedProducts(null);
-        toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Xóa thành công', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Xóa Thành công huy hiệu', life: 3000 });
     };
 
     const onCategoryChange = (e) => {
@@ -207,9 +228,9 @@ export default function Role () {
     };
 
     const onInputChange = (e, name) => {
-        // if (name === 'achivementLogo') {
-        //     uploadFile(e); // Call uploadFile function when achivementLogo value changes
-        // }
+        if (name === 'achivementLogo') {
+            uploadFile(e); // Call uploadFile function when achivementLogo value changes
+        }
 
         const val = (e.target && e.target.value) || '';
         let _product = { ...product };
@@ -234,7 +255,7 @@ export default function Role () {
     const leftToolbarTemplate = () => {
         return (
             <div className="flex flex-wrap gap-2">
-                <Button label="Thêm mới" icon="pi pi-plus" severity="success" onClick={openNew} />
+                <Dropdown options={arrReportType} id='reportType' onChange={(e) => onInputDropdown(e, 'reportType')} value={op} placeholder="Chọn trạng thái" />
                 {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
             </div>
         );
@@ -264,7 +285,6 @@ export default function Role () {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editProduct(rowData)} />
                 <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} />
             </React.Fragment>
         );
@@ -288,10 +308,10 @@ export default function Role () {
 
     const header = (
         <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0 mb-4">Quản lý vai trò</h4>
+            <h4 className="m-0 mb-3">Quản lý chiến dịch</h4>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm Kiếm..." />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm kiếm..." />
             </span>
         </div>
     );
@@ -303,14 +323,14 @@ export default function Role () {
     );
     const deleteProductDialogFooter = (
         <React.Fragment>
-            <Button label="Hủy" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
+            <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
             <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
         </React.Fragment>
     );
     const deleteProductsDialogFooter = (
         <React.Fragment>
-            <Button label="Hủy" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
-            <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
+            <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
+            <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
         </React.Fragment>
     );
     console.log(product);
@@ -324,12 +344,13 @@ export default function Role () {
                     <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
+                        currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm" globalFilter={globalFilter} header={header}>
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
-                        <Column field="roleId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="roleName" header="Tên vai trò" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="description" header="Miêu tả" sortable style={{ minWidth: '12rem' }}></Column>
-                        {/* <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Day" sortable style={{ minWidth: '12rem' }}></Column> */}
+                        <Column field="activityId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
+                        <Column field="title" header="Tên chiến dịch" sortable style={{ minWidth: '11rem' }}></Column>
+                        <Column field="description" header="Chi tiết" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Bắt đầu" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field={createAt => moment(createAt.endDate).format('DD-MM-YYYY')} header="Kết thúc" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
                         <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
@@ -338,19 +359,30 @@ export default function Role () {
                     </DataTable>
                 </div>
 
-                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-
-                    <label htmlFor="description" className="font-bold">
-                        Tên
-                    </label>
-                    <InputText id="roleName" value={product.roleName} onChange={(e) => onInputChange(e, 'roleName')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.roleName })} />
+                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} onClick={() => { setText('Thêm Mới huy hiệu') }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
 
                     <div className="field">
-                        <label htmlFor="description" className="font-bold">
-                            Chi tiết
+                        <label htmlFor="name" className="font-bold" style={{ fontWeight: 'bold' }}>
+                            Hình ảnh
+                        </label>
+                        <br />
+                        <div>
+                            <label htmlFor="img" className="input-preview">
+                                <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} />
+                                {product?.achivementLogo === '' ? <div></div> : <img src={product.achivementLogo} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
+                            </label>
+                            {submitted && !product.achivementLogo && <small className="p-error">Hình ảnh huy hiệu không được để trống.</small>}
+                        </div>
+
+                        <br />
+                        {/* <input type='file' id="achivementLogo" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
+                    </div>
+                    <div className="field">
+                        <label htmlFor="description" className="font-bold" style={{ fontWeight: 'bold' }}>
+                            Miêu tả
                         </label>
                         <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-                        {/* {submitted && !product.description && <small className="p-error">Name is required.</small>} */}
+                        {submitted && !product.description && <small className="p-error">Miêu tả huy hiệu không được để trống.</small>}
                     </div>
 
 
@@ -358,12 +390,12 @@ export default function Role () {
 
                 </Dialog>
 
-                <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Thông Báo" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                     <div className="confirmation-content">
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                         {product && (
                             <span>
-                                Bạn chắc chắn muốn xóa nó? <b>{product.name}</b>?
+                                Bạn có cập nhật trạng thái  <b>{product.title}</b>?
                             </span>
                         )}
                     </div>
@@ -372,7 +404,7 @@ export default function Role () {
                 <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
                     <div className="confirmation-content">
                         <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        {product && <span>Bạn chắc chắn muốn xóa những sản phảm trên?</span>}
+                        {product && <span>Are you sure you want to delete the selected products?</span>}
                     </div>
                 </Dialog>
             </div>

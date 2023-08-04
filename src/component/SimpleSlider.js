@@ -69,7 +69,7 @@ function SimpleSlider (props) {
 
       Toast.fire({
         icon: "error",
-        title: `Bỏ Theo Dõi Thành Công Sự Kiện ${title}`,
+        title: `Bỏ theo dõi thành công fanpage ${title}`,
       });
     } else {
       console.log("Theo Dõi");
@@ -89,7 +89,7 @@ function SimpleSlider (props) {
 
       Toast.fire({
         icon: "success",
-        title: `Theo Dõi Thành Công Sự Kiện ${title}`,
+        title: `Theo dõi thành công fanpage ${title}`,
       });
     }
   };

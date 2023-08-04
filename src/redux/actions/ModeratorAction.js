@@ -25,8 +25,20 @@ export const CreateModeratorAction = (value) => {
             const action = GetListModeratorAction()
             dispatch(action)
 
+            const action1 = {
+                type: "CHECK_MODERATOR",
+                msg: ''
+            }
+            dispatch(action1)
+            localStorage.setItem('createmoderator', '')
         } catch (error) {
-            console.log(error);
+
+            const action = {
+                type: "CREATE_MODERATOR",
+                msg: error.response?.data?.message
+            }
+            dispatch(action)
+            console.log(error.response?.data?.message);
         }
     }
 }
@@ -40,7 +52,7 @@ export const DeleteModeratorAction = (value) => {
             dispatch(action)
 
         } catch (error) {
-            console.log(error);
+            console.log(error.response);
         }
     }
 }

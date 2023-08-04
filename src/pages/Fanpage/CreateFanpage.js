@@ -106,19 +106,19 @@ export default function CreateFanpage (props) {
                                                 <div className="billing">
                                                     <div className="row">
                                                         <div className="col-lg-6 col-md-6 col-sm-12 mb-4">
-                                                            <input className="uk-input" name='fanpageName' onChange={formik.handleChange} type="text" placeholder="Tên Fanpage" />
+                                                            <input className="uk-input" name='fanpageName' onChange={formik.handleChange} type="text" placeholder="Fanpage" />
                                                         </div>
                                                         <div className="col-lg-6 col-md-6 col-sm-12 mb-4">
-                                                            <input className="uk-input" type="text" name='mst' onChange={formik.handleChange} placeholder="Nhập Mã Số Thuế" />
+                                                            <input className="uk-input" type="text" name='mst' onChange={formik.handleChange} placeholder="Nhập mã số thuế" />
                                                         </div>
                                                         <div className="col-lg-12 col-md-12 col-sm-12 mb-4">
-                                                            <input className="uk-input" type="email" name='email' onChange={formik.handleChange} placeholder="Nhập Email" />
+                                                            <input className="uk-input" type="email" name='email' onChange={formik.handleChange} placeholder="Nhập email" />
                                                         </div>
                                                         <div className="col-lg-12 col-md-12 col-sm-12 mb-4">
-                                                            <input className="uk-input" type="text" name='phone' onChange={formik.handleChange} placeholder="Nhập Số Điện Thoại" />
+                                                            <input className="uk-input" type="text" name='phone' onChange={formik.handleChange} placeholder="Nhập số điện thoại" />
                                                         </div>
                                                         <div className="col-lg-12 col-md-12 col-sm-12 mb-4">
-                                                            <textarea className="uk-textarea" name='description' onChange={formik.handleChange} rows={5} placeholder="Nhập Mô Tả" defaultValue={""} />
+                                                            <textarea className="uk-textarea" name='description' onChange={formik.handleChange} rows={5} placeholder="Nhập mô tả" defaultValue={""} />
                                                         </div>
                                                     </div>
 
@@ -130,7 +130,7 @@ export default function CreateFanpage (props) {
                                         <div className="col-lg-4">
                                             <div className="main-wraper stick-widget" style={{ position: 'relative' }}>
                                                 <div className="cart-summary">
-                                                    <h4 className="main-title">Ảnh Đại Diện</h4>
+                                                    <h4 className="main-title">Ảnh đại diện</h4>
                                                     <div className="wrapper" onChange={(e) => uploadFile(e)} >
                                                         <div className="file-upload">
                                                             <input type="file" />
@@ -159,7 +159,7 @@ export default function CreateFanpage (props) {
                                             </div>
                                             <div className="main-wraper stick-widget">
                                                 <div className="cart-summary">
-                                                    <h4 className="main-title">Ảnh Bìa</h4>
+                                                    <h4 className="main-title">Ảnh bìa</h4>
                                                     <div className="wrapper">
                                                         <div className="file-upload" onChange={(e) => uploadFile1(e)}>
                                                             <input type="file" />

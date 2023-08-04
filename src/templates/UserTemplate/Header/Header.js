@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 
-export default function Header(props) {
+export default function Header (props) {
   const dispatch = useDispatch();
   const { userByID } = useSelector((root) => root.UserReducer);
 
@@ -213,28 +213,28 @@ export default function Header(props) {
               </li> */}
               <li>
                 <a href="pay-out.html" title>
-                  <i className="icofont-price" /> 
+                  <i className="icofont-price" />
                 </a>
               </li>
 
               <li>
                 <a href="help-faq.html" title>
-                  <i className="icofont-question-circle" /> Help
+                  <i className="icofont-question-circle" /> Giúp đỡ
                 </a>
               </li>
               <li>
                 <a href="settings.html" title>
-                  <i className="icofont-gear" /> Setting
+                  <i className="icofont-gear" /> Cài đặt
                 </a>
               </li>
               <li>
                 <a href="privacy-n-policy.html" title>
-                  <i className="icofont-notepad" /> Privacy
+                  <i className="icofont-notepad" /> Riêng tư
                 </a>
               </li>
               <li>
                 <a className="dark-mod" href="#" title>
-                  <i className="icofont-moon" /> Dark Mode
+                  <i className="icofont-moon" /> Sáng/Tối
                 </a>
               </li>
               <li
@@ -252,7 +252,7 @@ export default function Header(props) {
               >
                 <NavLink to="/" title>
                   <i className="icofont-power" />{" "}
-                  {localStorage.getItem("userID") ? "Logout" : "Login"}
+                  {localStorage.getItem("userID") ? "Đăng xuất" : "Đăng nhập"}
                 </NavLink>
               </li>
             </ul>

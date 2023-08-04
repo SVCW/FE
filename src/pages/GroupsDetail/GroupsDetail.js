@@ -313,7 +313,7 @@ export default function GroupsDetail (props) {
                                                     </li>
                                                 </ul>
                                             </div> */}
-                                            <div className="widget">
+                                            {/* <div className="widget">
                                                 <h4 className="widget-title">Sự kiện gần đây</h4>
                                                 <ul className="ak-groups">
                                                     <li>
@@ -431,7 +431,7 @@ export default function GroupsDetail (props) {
                                                         <a href="#" title="Boogle inc" data-toggle="tooltip"><img src="images/resources/company8.png" alt /></a>
                                                     </li>
                                                 </ul>
-                                            </div> 
+                                            </div> */}
                                         </aside>
                                     </div>
                                     <div className="col-lg-9">
@@ -492,21 +492,21 @@ export default function GroupsDetail (props) {
                                                             <p>{fanpageId.description}</p>
                                                         </div>
                                                         <div className="col-lg-4">
-                                                            <div className="share-article">
+                                                            {/* <div className="share-article">
                                                                 <span>Chia sẻ nhóm</span>
                                                                 <a href="#" title className="facebook"><i className="icofont-facebook" /></a>
                                                                 <a href="#" title className="pinterest"><i className="icofont-pinterest" /></a>
                                                                 <a href="#" title className="instagram"><i className="icofont-instagram" /></a>
                                                                 <a href="#" title className="twitter"><i className="icofont-twitter" /></a>
                                                                 <a href="#" title className="google"><i className="icofont-google-plus" /></a>
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-lg-8">
-                                                    <div className="main-wraper">
+                                                    {/* <div className="main-wraper">
                                                         <span className="new-title">Create New Post</span>
                                                         <div className="new-post">
                                                             <form method="post">
@@ -528,7 +528,7 @@ export default function GroupsDetail (props) {
                                                                 </li>
                                                             </ul>
                                                         </div>
-                                                    </div>{/* create new post */}
+                                                    </div>create new post */}
 
                                                     {cmt.map((item, index) => {
                                                         const detailItem = item
@@ -892,19 +892,19 @@ export default function GroupsDetail (props) {
                                                         </div>
                                                     })}
 
-                                                    <div className="loadmore">
+                                                    {/* <div className="loadmore">
                                                         <div className="sp sp-bars" />
                                                         <a href="#" title data-ripple>Load More..</a>
-                                                    </div>{/* loadmore buttons */}
+                                                    </div>loadmore buttons */}
                                                 </div>
                                                 <div className="col-lg-4">
                                                     <aside className="sidebar static left">
-                                                        <div className="advertisment-box">
+                                                        {/* <div className="advertisment-box">
                                                             <h4 className><i className="icofont-info-circle" /> advertisment</h4>
                                                             <figure>
                                                                 <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
                                                             </figure>
-                                                        </div>
+                                                        </div> */}
                                                         {/* <div className="widget">
                                                             <h4 className="widget-title">Members <a title href="#" className="see-all">See All</a></h4>
                                                             <ul className="invitepage">
@@ -1006,7 +1006,7 @@ export default function GroupsDetail (props) {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-12">
-                            <span className>© copyright All rights reserved by socimo 2020</span>
+                            {/* <span className>© copyright All rights reserved by socimo 2020</span> */}
                         </div>
                     </div>
                 </div>
