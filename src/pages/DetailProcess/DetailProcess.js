@@ -846,9 +846,7 @@ export default function DetailProcess(props) {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Bắt đầu
-                        </label>
+                        
                         <input
                           type="datetime-local"
                           name="startDate"
@@ -862,9 +860,7 @@ export default function DetailProcess(props) {
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Kết thúc
-                        </label>
+                        
                         <input
                           type="datetime-local"
                           name="endDate"
