@@ -65,6 +65,25 @@ export const GetListActivityAction = () => {
     }
 }
 
+export const GetActivityAction = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: "DISPLAY_LOADING" })
+            let result = await http.get('/Activity/get-activity?pageSize=5&PageLoad=1');
+            console.log(result.data.data.result);
+
+            const action = {
+                type: "GET_ACTIVITY",
+                arrListActivity: result.data.data.result
+            }
+            dispatch(action)
+            dispatch({ type: "HIDE_LOADING" })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
 export const GetListEndActivityAction = () => {
     return async (dispatch) => {
         try {
@@ -210,6 +229,51 @@ export const UpdateActivityAction = (value) => {
             console.log(result.data.data);
             const action1 = GetListActivityAction()
             dispatch(action1)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const GetActivityLoginAction = () => {
+    return async (dispatch) => {
+        try {
+            let result = await http.get(`/Activity/get-activity-login-page`)
+            console.log(result.data.data);
+            const action = {
+                type: 'GET_ACTIVITY_LOGIN',
+                arrActivityLogin: result.data.data
+            }
+            dispatch(action)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const GetRecommentActivityAction = (id) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.get(`/UserSearch/recommend-activity?userId=${id}`)
+            console.log(result.data.data);
+            const action = {
+                type: 'GET_ACTIVITY_RECOMMENT',
+                arrActivityRecomment: result.data.data
+            }
+            dispatch(action)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const RecommentActivityAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post(`/UserSearch/create`, value)
+            console.log(result.data.data);
+            const action = GetRecommentActivityAction()
+            dispatch(action)
         } catch (error) {
             console.log(error);
         }

@@ -1,11 +1,13 @@
 import { http } from "../../utils/reponse";
+import { GetActivityAction } from "./ActivityAction";
 
 export const FollowAction = (activity, user) => {
     return async (dispatch) => {
         try {
             let result = await http.post(`/Activity/follow-Activity?activityId=${activity}&userId=${user}`);
             console.log(result.data);
-
+            const action = GetActivityAction();
+            dispatch(action)
 
         } catch (error) {
             console.log(error);
@@ -33,7 +35,8 @@ export const JoinAction = (activity, user) => {
             let result = await http.post(`/Activity/join-Activity?activityId=${activity}&userId=${user}`);
             console.log(result.data);
 
-
+            const action = GetActivityAction();
+            dispatch(action)
         } catch (error) {
             console.log(error);
         }
@@ -44,7 +47,8 @@ export const UnJoinAction = (activity, user) => {
         try {
             let result = await http.put(`/Activity/disJoin-activity?activityId=${activity}&userId=${user}`);
             console.log(result.data);
-
+            const action = GetActivityAction();
+            dispatch(action)
 
         } catch (error) {
             console.log(error);
