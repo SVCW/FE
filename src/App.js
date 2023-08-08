@@ -30,6 +30,7 @@ import AdminFanpage from './pages/AdminFanpage/AdminFanpage';
 import Report from './pages/Report/Report';
 import EndActivity from './pages/EndActivity/EndActivity';
 import AdminActivity from './pages/AdminActivity/AdminActivity';
+import Home1 from './pages/Home/Home1';
 
 
 export const history = createBrowserHistory()
@@ -53,7 +54,8 @@ function App () {
           <AdminTemplate exact path="/adminactivity" Component={AdminActivity} />
           <AdminTemplate exact path="/report" Component={Report} />
           {/* <AdminTemplate exact path="/table" Component={Admin} /> */}
-          <UserTemplate exact path="/home" Component={Home} />
+          <Route exact path="/home" component={Home} />
+          <UserTemplate exact path="/home1" Component={Home1} />
           <UserTemplate exact path="/endactivity" Component={EndActivity} />
           <UserTemplate exact path="/groups" Component={Group} />
           <UserTemplate exact path="/fanpage/:id" Component={GroupsDetail} />

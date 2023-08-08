@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik'
 import { ConfigActivityAction } from '../../redux/actions/ConfigActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
-import { GetListActivityAction } from '../../redux/actions/ActivityAction';
+import { GetActivityLoginAction, GetListActivityAction } from '../../redux/actions/ActivityAction';
 import { LoginModeratorAction, LoginUserAction } from '../../redux/actions/LoginAction';
 import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
 import Swal from 'sweetalert2';
@@ -15,12 +15,17 @@ import Slider from 'react-slick';
 export default function Login (props) {
     const dispatch = useDispatch()
     const { msg, msgModerator } = useSelector(root => root.LoginReducer)
+    const { arrActivityLogin } = useSelector(root => root.ActivityReducer)
+    console.log(arrActivityLogin);
     const [isMatch, setIsMatch] = useState(false);
     useEffect(() => {
         const action = GetListActivityAction();
         dispatch(action)
         const action1 = GetListFanpageAction();
         dispatch(action1)
+
+        const action2 = GetActivityLoginAction();
+        dispatch(action2)
         const stringToCompare = 'host';
 
         // Get the current URL
@@ -76,6 +81,7 @@ export default function Login (props) {
             console.log(result);
 
             localStorage.setItem('username', result.user?.displayName)
+            localStorage.setItem('emailuser', result.user?.email)
             const action1 = LoginUserAction(email, props);
             dispatch(action1)
 
@@ -180,11 +186,11 @@ export default function Login (props) {
 
                 <ul className='welcome-caro' style={{ zIndex: '99!important', opacity: 1 }}>
                     <Slider {...settings} >
-                        {slides.map((slide, index) => (
+                        {arrActivityLogin.map((slide, index) => (
                             <div key={index} className='welcome-box' style={{ zIndex: '99!important', opacity: 1 }}>
-                                <img src={slide.imgSrc} style={{ width: 600, height: 400, borderRadius: '10px', objectFit: 'cover' }} alt={`Slide ${index + 1}`} />
-                                <h4 className='text-center pb-3 ' style={{ color: 'black' }}>{slide.text}</h4>
-                                <p className='text-center' style={{ color: 'black' }}>{slide.text2}</p>
+                                <img src={slide.media[0]} style={{ width: 600, height: 400, borderRadius: '10px', objectFit: 'cover' }} alt={`Slide ${index + 1}`} />
+                                <h4 className='text-center pb-3 ' style={{ color: 'black' }}>{slide.title}</h4>
+                                <p className='text-center' style={{ color: 'black' }}>{(slide.description).slice(0, 200) + '...'}</p>
                             </div>
                         ))}
                     </Slider>

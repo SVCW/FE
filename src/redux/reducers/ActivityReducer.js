@@ -2,7 +2,10 @@
 
 const stateDefault = {
     arrActivity: [],
-    activityId: {}
+    activityId: {},
+    arrListActivity: [],
+    arrActivityLogin: [],
+    arrActivityRecomment: []
 }
 
 
@@ -15,6 +18,18 @@ export const ActivityReducer = (state = stateDefault, action) => {
         }
         case 'GET_ACTIVITY_ID': {
             state.activityId = action.activityId;
+            return { ...state }
+        }
+        case 'GET_ACTIVITY': {
+            state.arrListActivity = action.arrListActivity;
+            return { ...state }
+        }
+        case 'GET_ACTIVITY_LOGIN': {
+            state.arrActivityLogin = action.arrActivityLogin;
+            return { ...state }
+        }
+        case 'GET_ACTIVITY_RECOMMENT': {
+            state.arrActivityRecomment = action.arrActivityRecomment;
             return { ...state }
         }
 
