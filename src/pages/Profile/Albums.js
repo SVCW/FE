@@ -98,7 +98,7 @@ const Albums = () => {
     <>
       <div className="tab-pane fade" id="pictures">
         <h5 className="tab-title">
-          Pictures <span>87</span>
+          Hình ảnh
         </h5>
         <ul className="pix-filter">
           <li>
