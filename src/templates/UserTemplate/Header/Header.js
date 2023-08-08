@@ -1,4 +1,5 @@
-import React from "react";
+import { useFormik } from "formik";
+import React, { useState } from "react";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
@@ -6,8 +7,26 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom";
 export default function Header (props) {
   const dispatch = useDispatch();
   const { userByID } = useSelector((root) => root.UserReducer);
+  const [title, setTitle] = useState('')
+  console.log(title);
+  const formik = useFormik({
+    initialValues: {
+      title: title
+    },
+    onSubmit: (value) => {
+      console.log(value);
+    }
+  })
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    setTitle(inputValue);
+    localStorage.setItem('search', inputValue);
+
+    formik.setFieldValue('title', inputValue); // Gán giá trị vào trường "title" trong Formik
+  };
 
   if (!userByID) return <p>Loading...</p>;
+
   return (
     <header className>
       <div className="topbar stick">
@@ -16,8 +35,10 @@ export default function Header (props) {
           <span>SVCW</span>
         </NavLink>
         <div className="searches">
-          <form method="post">
-            <input type="text" placeholder="Tìm Kiếm..." />
+          <form method="post" onSubmit={formik.handleSubmit}>
+            <input type="text" placeholder="Tìm Kiếm..." name="title"
+              value={title}
+              onChange={handleInputChange} />
             <button type="submit">
               <i className="icofont-search" />
             </button>
