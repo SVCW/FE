@@ -16433,5 +16433,11 @@ a.classic-btn:hover {
   display: flex;
   justify-content: center;
   transition-duration: 1s;
-  
+
+}
+
+/* Home thời gian bắt đầu và kết thúc */
+.row-time{
+  display: flex;
+  justify-content: center;
 }

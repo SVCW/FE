@@ -24,174 +24,32 @@ export default function Profile (props) {
               <div className="row">
                 <div className="col-lg-12">
                   <div id="page-contents" className="row merged20">
-                    <div className="col-lg-3">
-                      <aside className="sidebar static left">
-                        <div className="widget">
-                          <span><i className="icofont-globe" /> Sponsored</span>
-                          <ul className="sponsors-ad">
-                            <li>
-                              <figure><img alt="" src="/public/images/resources/sponsor.jpg" /></figure>
-                              <div className="sponsor-meta">
-                                <h5><a title href="#">IQ Options Broker</a></h5>
-                                <a target="_blank" title href="#">www.iqvie.com</a>
-                              </div>
-                            </li>
-                            <li>
-                              <figure><img alt="" src="/public/images/resources/sponsor2.jpg" /></figure>
-                              <div className="sponsor-meta">
-                                <h5><a title href="#">BM Fashion Designer</a></h5>
-                                <a target="_blank" title href="#">www.abcd.com</a>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="widget">
-                          <h4 className="widget-title">Your Groups</h4>
-                          <ul className="ak-groups">
-                            <li>
-                              <figure><img alt="" src="/public/images/resources/your-group1.jpg" /></figure>
-                              <div className="your-grp">
-                                <h5><a title href="group-detail.html">Good Group</a></h5>
-                                <a title href="#"><i className="icofont-bell-alt" />Notifilactions <span>13</span></a>
-                                <a className="promote" title href="group-feed.html">view feed</a>
-                              </div>
-                            </li>
-                            <li>
-                              <figure><img alt="" src="/public/images/resources/your-group2.jpg" /></figure>
-                              <div className="your-grp">
-                                <h5><a title href="group-detail.html">E-course Group</a></h5>
-                                <a title href="#"><i className="icofont-bell-alt" />Notifilactions <span>13</span></a>
-                                <a className="promote" title href="group-feed.html">view feed</a>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="widget">
-                          <h4 className="widget-title">Suggested Group</h4>
-                          <div className="sug-caro">
-                            <div className="friend-box">
-                              <figure>
-                                <img alt="" src="/public/images/resources/sidebar-info.jpg" />
-                                <span>Members: 505K</span>
-                              </figure>
-                              <div className="frnd-meta">
-                                <img alt="" src="/public/images/resources/frnd-figure2.jpg" />
-                                <div className="frnd-name">
-                                  <a title href="#">Social Research</a>
-                                  <span>@biolabest</span>
-                                </div>
-                                <a className="main-btn2" href="#" title>Join Community</a>
-                              </div>
-                            </div>
-                            <div className="friend-box">
-                              <figure>
-                                <img alt="" src="/public/images/resources/sidebar-info2.jpg" />
-                                <span>Members: 505K</span>
-                              </figure>
-                              <div className="frnd-meta">
-                                <img alt="" src="/public/images/resources/frnd-figure3.jpg" />
-                                <div className="frnd-name">
-                                  <a title href="#">Bio Labest Group</a>
-                                  <span>@biolabest</span>
-                                </div>
-                                <a className="main-btn2" href="#" title>Join Community</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="widget">
-                          <h4 className="widget-title">Ask Research Question?</h4>
-                          <div className="ask-question">
-                            <i className="icofont-question-circle" />
-                            <h6>Ask questions in Q&amp;A to get help from experts in your field.</h6>
-                            <a className="ask-qst" href="#" title>Ask a question</a>
-                          </div>
-                        </div>
-                        <div className="widget">
-                          <h4 className="widget-title">Explor Events <a className="see-all" href="#" title>See All</a></h4>
-                          <div className="rec-events bg-purple">
-                            <i className="icofont-gift" />
-                            <h6><a title href>BZ University good night event in columbia</a></h6>
-                            <img alt="" src="images/clock.png" />
-                          </div>
-                          <div className="rec-events bg-blue">
-                            <i className="icofont-microphone" />
-                            <h6><a title href>The 3rd International Conference 2020</a></h6>
-                            <img alt="" src="images/clock.png" />
-                          </div>
-                        </div>
-                        <div className="widget">
-                          <h4 className="widget-title">Group Terms</h4>
-                          <div className="grop-rules">
-                            <p>
-                              Hi! To ensure that this is a great place for everyone to have a wondefull time, we have some rules. Breaking them will result in a ban from the group.
-                            </p>
-                            <ol>
-                              <li><i className="icofont-dotted-right" /> Be positive! Respect and help other viewers</li>
-                              <li><i className="icofont-dotted-right" /> No insults, aggravations or any other bad languag</li>
-                              <li><i className="icofont-dotted-right" /> No self promotions</li>
-                              <li><i className="icofont-dotted-right" /> Avoid political or religious discussions</li>
-                              <li><i className="icofont-dotted-right" /> No comment spamming</li>
-                            </ol>
-                          </div>
-                        </div>
-                        <div className="widget stick-widget">
-                          <h4 className="widget-title">Featured Universities <a className="see-all" href="#" title>See All</a></h4>
-                          <ul className="featured-comp">
-                            <li>
-                              <a href="#" title="Color Hands inc" data-toggle="tooltip"><img src="/public/images/resources/company1.png" alt="" /></a>
-                            </li>
-                            <li>
-                              <a href="#" title="Macrosoft inc" data-toggle="tooltip"><img src="/public/images/resources/company2.png" alt="" /></a>
-                            </li>
-                            <li>
-                              <a href="#" title="EBM inc" data-toggle="tooltip"><img src="/public/images/resources/company3.png" alt="" /></a>
-                            </li>
-                            <li>
-                              <a href="#" title="Boogle inc" data-toggle="tooltip"><img src="/public/images/resources/company4.png" alt="" /></a>
-                            </li>
-                            <li>
-                              <a href="#" title="Color Hands inc" data-toggle="tooltip"><img src="/public/images/resources/company5.png" alt="" /></a>
-                            </li>
-                            <li>
-                              <a href="#" title="Macrosoft inc" data-toggle="tooltip"><img src="/public/images/resources/company6.png" alt="" /></a>
-                            </li>
-                            <li>
-                              <a href="#" title="EBM inc" data-toggle="tooltip"><img src="/public/images/resources/company7.png" alt="" /></a>
-                            </li>
-                            <li>
-                              <a href="#" title="Boogle inc" data-toggle="tooltip"><img src="/public/images/resources/company8.png" alt="" /></a>
-                            </li>
-                          </ul>
-                        </div>{/* feature universites logos */}
-                      </aside>
-                    </div>
-                    <div className="col-lg-9">
+                    <div className="col-lg-12">
                       <div className="group-feed">
                         <div className="group-avatar">
-                          <img src="/public/images/resources/profile-banner.jpg" alt="" />
-                          <a href="#" title><i className="icofont-check-circled" />Follow</a>
-                          <figure className="group-dp"><img src="/public/images/resources/user.jpg" alt="" /></figure>
+                          <img src="/images/avatar/9.jpg" alt="" />
+                          <a href="#" title><i className="icofont-check-circled" />Theo dõi</a>
+                          <figure className="group-dp"> <img src="/images/avatar/uocAvatar.jpg" alt="" /></figure>
                         </div>
                         <div className="grp-info about">
-                          <h4>Georg Peeter <span>@Georgofficial</span></h4>
+                          <h4>Nguyễn Ngọc Ước <span>@uocnnse140739</span></h4>
                           <ul className="joined-info">
-                            <li><span>Joined:</span> April 2020</li>
-                            <li><span>Follow:</span> 55K</li>
-                            <li><span>Followers:</span> 2.2K</li>
-                            <li><span>Posts:</span> 932</li>
+                            <li><span>Ngày tạo tài khoản:</span> 8-8-2023</li>
+                            <li><span>Số nhóm đã tham gia:</span> 3</li>
+                            <li><span>Số bài viết:</span> 4</li>
+                            <li><span>Số tiền donate đã nhận:</span> 1200000000</li>
                           </ul>
                           <ul className="nav nav-tabs about-btn">
-                            <li className="nav-item"><a className="active" href="#posts" data-toggle="tab">Posts</a></li>
-                            <li className="nav-item"><a className href="#pictures" data-toggle="tab">Pictures</a></li>
-                            <li className="nav-item"><a className href="#videos" data-toggle="tab">Videos</a></li>
-                            <li className="nav-item"><a className href="#friends" data-toggle="tab">Friends</a></li>
-                            <li className="nav-item"><a className href="#about" data-toggle="tab">About</a></li>
+                            <li className="nav-item"><a className="active" href="#posts" data-toggle="tab">Bài viết</a></li>
+                            <li className="nav-item"><a className href="#pictures" data-toggle="tab">Hình ảnh</a></li>
+                            
+                            
+                            <li className="nav-item"><a className href="#about" data-toggle="tab">Chi tiết</a></li>
                           </ul>
                           <ul className="more-grp-info">
                             <li>
                               <form className="c-form" method="post">
-                                <input type="text" placeholder="Search..." />
+                                <input type="text" placeholder="Tìm kiếm..." />
                                 <i className="icofont-search-1" />
                               </form>
                             </li>
@@ -202,20 +60,20 @@ export default function Profile (props) {
                                     <svg className="feather feather-more-horizontal" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg"><circle r={1} cy={12} cx={12} /><circle r={1} cy={12} cx={19} /><circle r={1} cy={12} cx={5} /></svg></i>
                                   <ul>
                                     <li>
-                                      <i className="icofont-pen-alt-1" />Edit Post
-                                      <span>Edit This Post within a Hour</span>
+                                      <i className="icofont-pen-alt-1" />Chỉnh sửa bài viết
+                                      
                                     </li>
                                     <li>
-                                      <i className="icofont-ban" />Hide Post
-                                      <span>Hide This Post</span>
+                                      <i className="icofont-ban" />Ẩn bài viết
+                                      
                                     </li>
                                     <li>
-                                      <i className="icofont-ui-delete" />Delete Post
-                                      <span>If inappropriate Post By Mistake</span>
+                                      <i className="icofont-ui-delete" />Xóa bài viết
+                                      
                                     </li>
                                     <li>
-                                      <i className="icofont-flag" />Report
-                                      <span>Inappropriate content</span>
+                                      <i className="icofont-flag" />Báo cáo bài viết
+                                      
                                     </li>
                                   </ul>
                                 </div>
@@ -227,8 +85,8 @@ export default function Profile (props) {
                           <div className="grp-about">
                             <div className="row">
                               <div className="col-lg-8 col-md-6">
-                                <h4>About Me!</h4>
-                                <p>Hi! My name is Georg Peeter but some people may know me as peeter! I have a Twitch channel where I stream, play and review all the newest games.</p>
+                                <h4>Giới thiệu</h4>
+                                <p>Tôi là ước. Hiện tại tôi sinh sống và làm việc tại hồ chí minh. Tôi rất thích tham gia các hoạt động thiện nguyện để giúp đỡ mọi người.</p>
                                 <ul className="badges">
                                   <li><img src="images/badges/badge2.png" alt="" /></li>
                                   <li><img src="images/badges/badge3.png" alt="" /></li>
@@ -240,7 +98,7 @@ export default function Profile (props) {
                               </div>
                               <div className="col-lg-4 col-md-6">
                                 <div className="share-article">
-                                  <span>Share Profile</span>
+                                  <span>Chia sẻ thông tin cá nhân</span>
                                   <a href="#" title className="facebook"><i className="icofont-facebook" /></a>
                                   <a href="#" title className="pinterest"><i className="icofont-pinterest" /></a>
                                   <a href="#" title className="instagram"><i className="icofont-instagram" /></a>
@@ -258,11 +116,11 @@ export default function Profile (props) {
                                 <div className="row merged20">
                                   <div className="col-lg-8">
                                     <div className="main-wraper">
-                                      <span className="new-title">Create New Post</span>
+                                      <span className="new-title">Tạo chiến dịch</span>
                                       <div className="new-post">
                                         <form method="post">
                                           <i className="icofont-pen-alt-1" />
-                                          <input type="text" placeholder="Create New Post" />
+                                          <input type="text" placeholder="Tạo chiến dịch mới" />
                                         </form>
                                         <ul className="upload-media">
                                           <li>
@@ -1874,94 +1732,25 @@ export default function Profile (props) {
                                   <div className="col-lg-4">
                                     <aside className="sidebar static left">
                                       <div className="advertisment-box">
-                                        <h4 className><i className="icofont-info-circle" /> advertisment</h4>
+                                        <h4 className><i className="icofont-info-circle" /> Thông tin phụ</h4>
                                         <figure>
                                           <a href="#" title="Advertisment"><img src="/public/images/resources/ad-widget2.gif" alt="" /></a>
                                         </figure>
                                       </div>
                                       <div className="widget">
-                                        <h4 className="widget-title">Follow People <a title href="#" className="see-all">See All</a></h4>
-                                        <ul className="invitepage">
-                                          <li>
-                                            <figure>
-                                              <img alt="" src="/public/images/resources/friend-avatar.jpg" />
-                                              <a href>Jack carter</a>
-                                            </figure>
-                                            <button className="sug-like"><i className="invit">Follow</i><i className="icofont-check-alt" /></button>
-                                          </li>
-                                          <li>
-                                            <figure>
-                                              <img alt="" src="/public/images/resources/friend-avatar2.jpg" />
-                                              <a href>Emma watson</a>
-                                            </figure>
-                                            <button className="sug-like"><i className="invit">Follow</i><i className="icofont-check-alt" /></button>
-                                          </li>
-                                          <li>
-                                            <figure>
-                                              <img alt="" src="/public/images/resources/friend-avatar3.jpg" />
-                                              <a href>Andrew</a>
-                                            </figure>
-                                            <button className="sug-like"><i className="invit">Follow</i><i className="icofont-check-alt" /></button>
-                                          </li>
-                                          <li>
-                                            <figure>
-                                              <img alt="" src="/public/images/resources/friend-avatar4.jpg" />
-                                              <a href>Moona Singh</a>
-                                            </figure>
-                                            <button className="sug-like"><i className="invit">Follow</i><i className="icofont-check-alt" /></button>
-                                          </li>
-                                          <li>
-                                            <figure>
-                                              <img alt="" src="/public/images/resources/friend-avatar5.jpg" />
-                                              <a href>Harry pooter</a>
-                                            </figure>
-                                            <button className="sug-like"><i className="invit">Follow</i><i className="icofont-check-alt" /></button>
-                                          </li>
-                                        </ul>
+                                        <h4 className="widget-title">Huy hiệu<a title href="#" className="see-all"></a></h4>
+                                        
                                       </div>
-                                      <div className="widget">
-                                        <h4 className="widget-title">Recent Media</h4>
-                                        <div className="recent-media">
-                                          <figure>
-                                            <img src="/public/images/resources/user-video7.jpg" alt="" />
-                                            <a className="play-btn" data-fancybox href="https://www.youtube.com/embed/vP-l9L3Ku5Y"><i className="icofont-play" /></a>
-                                            <span>Pool Party 2020</span>
-                                          </figure>
-                                          <figure>
-                                            <img src="/public/images/resources/user-video10.jpg" alt="" />
-                                            <a className="play-btn" data-fancybox href="https://www.youtube.com/embed/vP-l9L3Ku5Y"><i className="icofont-play" /></a>
-                                            <span>Spring Break Pool</span>
-                                          </figure>
-                                        </div>
-                                      </div>
+                                      
                                       <div className="widget stick-widget">
-                                        <h4 className="widget-title">You May Like Groups</h4>
+                                        <h4 className="widget-title">Nhóm đã tham gia</h4>
                                         <ul className="suggestd">
                                           <li>
                                             <a className="sug-pic" href="#" title><img src="/public/images/resources/sug-page-1.jpg" alt="" /></a>
-                                            <a className="sug-title" href="#" title>Physics Shop</a>
+                                            <a className="sug-title" href="#" title>FPT Group</a>
                                             <button className="sug-like"><i className="icofont-like" /><i className="icofont-check-alt" /></button>
                                           </li>
-                                          <li>
-                                            <a className="sug-pic" href="#" title><img src="/public/images/resources/sug-page-2.jpg" alt="" /></a>
-                                            <a className="sug-title" href="#" title>Sun Rise</a>
-                                            <button className="sug-like"><i className="icofont-like" /><i className="icofont-check-alt" /></button>
-                                          </li>
-                                          <li>
-                                            <a className="sug-pic" href="#" title><img src="/public/images/resources/sug-page-3.jpg" alt="" /></a>
-                                            <a className="sug-title" href="#" title>Big Botny</a>
-                                            <button className="sug-like"><i className="icofont-like" /><i className="icofont-check-alt" /></button>
-                                          </li>
-                                          <li>
-                                            <a className="sug-pic" href="#" title><img src="/public/images/resources/sug-page-4.jpg" alt="" /></a>
-                                            <a className="sug-title" href="#" title>King Work</a>
-                                            <button className="sug-like"><i className="icofont-like" /><i className="icofont-check-alt" /></button>
-                                          </li>
-                                          <li>
-                                            <a className="sug-pic" href="#" title><img src="/public/images/resources/sug-page-5.jpg" alt="" /></a>
-                                            <a className="sug-title" href="#" title>18teen Guys</a>
-                                            <button className="sug-like"><i className="icofont-like" /><i className="icofont-check-alt" /></button>
-                                          </li>
+                                          
                                         </ul>
                                       </div>{/* Suggested groups */}
                                     </aside>
@@ -1973,33 +1762,8 @@ export default function Profile (props) {
                                 <div className="row merged20">
                                   <div className="col-lg-8">
                                     <PersonalDetail />
-                                    <div className="main-wraper">
-                                      <h5 className="main-title">Interests</h5>
-                                      <div className="info-block-list">
-                                        <div className="info-block">
-                                          <h6>Favourite TV Shows</h6>
-                                          <p>Breaking Good, RedDevil, People of Interest, The Running Dead, Found,  American Guy, The Last Windbender, Game of Wars.</p>
-                                        </div>
-                                        <div className="info-block">
-                                          <h6>Favourite Music Bands / Artists</h6>
-                                          <p>Iron Maid, DC/AC, Megablow, Kung Fighters, System of a Revenge, Rammstown.</p>
-                                        </div>
-                                        <div className="info-block">
-                                          <h6>Favourite Movies</h6>
-                                          <p>The Revengers Saga, The Scarred Wizard and the Fire Crown, Crime Squad, Metal Man, The Dark Rider, Watchers, The Impossible Heist.</p>
-                                        </div>
-                                        <div className="info-block">
-                                          <h6>Favourite Books</h6>
-                                          <p>The Crime of the Century, Egiptian Mythology 101, The Scarred Wizard, Lord of the Wings, Amongst Gods, The Oracle, A Tale of Air and Water.</p>
-                                        </div>
-                                        <div className="info-block">
-                                          <h6>Favourite Games</h6>
-                                          <p>The First of Us, Assassin’s Squad, Dark Assylum, NMAK16, Last Cause 4, Grand Snatch Auto.</p>
-                                        </div>
-                                      </div>
-                                    </div>
                                   </div>
-                                  <div className="col-lg-4">
+                                  <div className="col-lg-4" >
                                     <aside className="sidebar">
                                       <div className="widget">
                                         <h4 className="widget-title">Complete Your Profile</h4>
@@ -2013,15 +1777,7 @@ export default function Profile (props) {
                                           <li><i className="icofont-plus-square" /> <a href="#" title>Invite to 10+ members</a><em>20%</em></li>
                                         </ul>
                                       </div>{/* complete profile widget */}
-                                      <div className="widget">
-                                        <h4 className="widget-title">User stats</h4>
-                                        <ul className="user-stat">
-                                          <li><i className="icofont-lollipop" /><span>Last Post <em>2 hours ago</em></span></li>
-                                          <li><i className="icofont-spotify" /><span>Last comment <em>6 hours ago</em></span></li>
-                                          <li><i className="icofont-like" /><span>Most Liked Post<em>540 Likes</em></span></li>
-                                          <li><i className="icofont-user-alt-4" /><span>Last Friend Added <em>2 days ago</em></span></li>
-                                        </ul>
-                                      </div>{/* complete profile widget */}
+                                      
                                     </aside>
                                   </div>
                                 </div>
