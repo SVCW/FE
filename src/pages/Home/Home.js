@@ -1804,20 +1804,18 @@ export default function Home () {
                                     }}
                                     className="col-lg-12"
                                   >
-                                    <a
-                                      href=""
-                                      target="_blank"
+                                    <h3
                                       style={{
                                         fontSize: "25px",
                                         fontWeight: "bold",
                                         width: "450px",
                                         wordWrap: "break-word",
-                                        color: "#3f6ad8",
+                                        color: "#2d3436",
                                       }}
                                       className="col-lg-8"
                                     >
                                       {item.title}
-                                    </a>
+                                    </h3>
                                     {/* bla bla bla theo dõi */}
                                   </div>
                                 </div>
@@ -1910,8 +1908,9 @@ export default function Home () {
                                   {item.description}
                                 </p>
                                 <div style={{ paddingBottom: '20px' }}>
-                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>- Bắt đầu: </span> {moment(item.startDate).format('DD-MM-YYYY')}</div>
-                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>- Kết thúc: </span> {moment(item.endDate).format('DD-MM-YYYY')}</div>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>  </span> {moment(item.startDate).format('DD/MM/YYYY')}</div> 
+                                  <div>-</div>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}></span> {moment(item.endDate).format('DD/MM/YYYY')}</div>
                                 </div>
 
                                 {item.targetDonation !== 0 ? (
@@ -2044,8 +2043,8 @@ export default function Home () {
                                     }}
                                   >
                                     {isAlreadyJoined
-                                      ? "Hủy Tham Gia"
-                                      : "Tham Gia"}
+                                      ? "Hủy Tham gia"
+                                      : "Tham gia"}
                                   </button>
 
                                   <button
