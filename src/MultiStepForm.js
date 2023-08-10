@@ -1,84 +1,55 @@
-// import React, { useState } from 'react';
-// import { useFormik } from 'formik';
+import React, { useEffect } from 'react';
+import ReactApexChart from 'react-apexcharts';
+import { GetStatisticalAction } from './redux/actions/StatisticalAction';
+import { useDispatch } from 'react-redux';
 
-// const FormStep = ({ formik }) => (
-//   <>
-//     <div className="row">
-//       <div className="col-md-6">
-//         <div className="form-group">
-//           <label id="name-label" htmlFor="name">
-//             Tên Sự Kiện
-//           </label>
-//           <input
-//             type="text"
-//             name="title"
-//             onChange={formik.handleChange}
-//             value={formik.values.title}
-//             id="name"
-//             placeholder="Nhập Tên Sự Kiện"
-//             className="form-control"
-//             required
-//           />
-//         </div>
-//       </div>
-//       <div className="col-md-6">
-//         <div className="form-group">
-//           <label id="email-label" htmlFor="email">
-//             Mô Tả Sự Kiện
-//           </label>
-//           <input
-//             type="text"
-//             name="description"
-//             onChange={formik.handleChange}
-//             value={formik.values.description}
-//             id="email"
-//             placeholder="Nhập Tô Tả"
-//             className="form-control"
-//             required
-//           />
-//         </div>
-//       </div>
-//     </div>
-//     {/* More form fields go here */}
-//     <div className="row">
-//       <div className="col-md-12">
-//         {/* Image upload section */}
-//       </div>
-//     </div>
-//   </>
-// );
+const MultiStepForm = () => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        const action = GetStatisticalAction(localStorage.getItem('userID'));
+        dispatch(action)
+    }, []);
+    const series = [
+        {
+            name: 'Desktops',
+            data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+        },
+    ];
 
-// const MultiStepForm = () => {
-//   const [forms, setForms] = useState([{}]);
+    const options = {
+        chart: {
+            height: 350,
+            type: 'line',
+            zoom: {
+                enabled: false,
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            curve: 'straight',
+        },
+        title: {
+            text: 'Product Trends by Month',
+            align: 'left',
+        },
+        grid: {
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5,
+            },
+        },
+        xaxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        },
+    };
 
-//   const handleFormSubmit = (values, formIndex) => {
-//     setForms((prevForms) => {
-//       const updatedForms = [...prevForms];
-//       updatedForms[formIndex] = values;
-//       return updatedForms;
-//     });
-//   };
+    return (
+        <div id="chart">
+            <ReactApexChart options={options} series={series} type="line" height={350} />
+        </div>
+    );
+};
 
-//   const handleNewForm = () => {
-//     setForms((prevForms) => [...prevForms, {}]);
-//   };
-
-//   return (
-//     <div>
-//       {forms.map((form, index) => (
-//         <div key={index} className="form-wrap">
-//           <h2>Form {index + 1}</h2>
-//           <form onSubmit={formik.handleSubmit}>
-//             <FormStep formik={useFormik({ initialValues: form, onSubmit: (values) => handleFormSubmit(values, index) })} />
-//             <button type="submit">Hoàn Thành</button>
-//           </form>
-//         </div>
-//       ))}
-//       <button type="button" onClick={handleNewForm}>
-//         New Form
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default MultiStepForm;
+export default MultiStepForm;

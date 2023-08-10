@@ -31,6 +31,7 @@ import Report from './pages/Report/Report';
 import EndActivity from './pages/EndActivity/EndActivity';
 import AdminActivity from './pages/AdminActivity/AdminActivity';
 import Home1 from './pages/Home/Home1';
+import MultiStepForm from './MultiStepForm';
 
 
 export const history = createBrowserHistory()
@@ -66,7 +67,7 @@ function App () {
           <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
           <Route exact path="/test" component={MultiForm} />
           <Route exact path="/test1" component={Test} />
-          <Route exact path="/test1" component={MultiStepForm1} />
+          <Route exact path="/test2" component={MultiStepForm} />
           <UserTemplate exact path="/game" Component={BaiTapGameXucXac} />
           <Route path='*' exact component={Login} />
 
