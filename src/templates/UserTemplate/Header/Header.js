@@ -213,9 +213,16 @@ export default function Header (props) {
               ) : (
                 <Fragment></Fragment>
               )}
+
               <li>
                 <NavLink to="/history" title>
                   <i className="icofont-flash" /> Lịch sử
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/statisticaluser" title>
+                  <i className="icofont-flash" /> Thống kê
                 </NavLink>
               </li>
               {userByID.fanpage === null ? (
