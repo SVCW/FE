@@ -346,18 +346,18 @@ i {
     justify-content: center;
 }
 
-.image-container-post{
+.image-container-post {
     border: 3px solid #fff;
     width: 50%;
 }
 
-.image-container-post-last{
+.image-container-post-last {
     position: relative;
     border: 3px solid #fff;
     width: 50%;
 }
 
-.image-container-post-last img{
+.image-container-post-last img {
     width: 100%;
     max-height: 200px;
     min-height: 200px;
@@ -378,6 +378,7 @@ i {
     font-size: 2.25rem;
     color: #fff;
 }
+
 .image-container {
     position: relative;
     width: 100%;
@@ -385,7 +386,7 @@ i {
 }
 
 
-.image-container-post img{
+.image-container-post img {
     width: 100%;
     max-height: 200px;
     min-height: 200px;

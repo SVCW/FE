@@ -59,6 +59,7 @@ import ResponsiveHeader from '../../templates/UserTemplate/ResponsiveHeader/Resp
 import Header from '../../templates/UserTemplate/Header/Header';
 import Carousel from '../../templates/UserTemplate/Carousel/Carousel';
 import SideBar from '../../templates/UserTemplate/SideBar/SideBar';
+import RecommentActivity from '../../component/RecommentActivity';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 export default function Home () {
@@ -175,7 +176,7 @@ export default function Home () {
   };
   const [arrDelete, setArrDelete] = useState([0]);
 
-  useEffect(() => {}, [arrDelete]);
+  useEffect(() => { }, [arrDelete]);
   const handleDeleteForm = () => {
     if (formData.length > 1) {
       setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
@@ -222,7 +223,7 @@ export default function Home () {
     const newImages = [];
 
     console.log(fileList);
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ linkMedia: imageUrl, type: file.type });
@@ -243,7 +244,7 @@ export default function Home () {
           const downloadURL = await getDownloadURL(snapshot.ref);
           newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     setFormData((prevData) =>
       prevData.map((form, index) =>
@@ -642,7 +643,7 @@ export default function Home () {
       }
     },
   });
-  function calculateImageClass(imageCount) {
+  function calculateImageClass (imageCount) {
     let imageClass = "full-width";
     if (imageCount === 2) {
       imageClass = "half-width";
@@ -929,7 +930,7 @@ export default function Home () {
     console.log(fileList);
     const newImages = [];
 
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -953,7 +954,7 @@ export default function Home () {
 
           setImages([...images, ...updatedImages]);
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     setIsLoading(false);
     setUploadProgress(0);
@@ -1404,62 +1405,7 @@ export default function Home () {
                                                     <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
                                                 </figure>
                                             </div>adversment widget */}
-                      {arrActivityRecomment.map((item, index) => {
-                        return <div className="widget">
-                          <h4 className="widget-title">
-                            <i className="icofont-flame-torch" /> {item.title}
-                          </h4>
-                          <ul className="premium-course">
-                            <li>
-                              <figure>
-                                <img
-                                  style={{ width: "480px", height: "180px" }}
-                                  src="images/avatar/hienMau.jpg"
-                                  alt
-                                />
-                                <span
-                                  style={{ background: "#1dd1a1" }}
-                                  className="tag"
-                                >
-                                  Đang diễn ra
-                                </span>
-                              </figure>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-around",
-                                }}
-                                className=""
-                              >
-                                <div>
-                                  <button
-                                    className="main-btn"
-                                    style={{
-                                      backgroundColor: "#2e86de",
-                                      width: "100px",
-                                      padding: "5px 4px",
-                                    }}
-                                  >
-                                    Chi tiết
-                                  </button>
-                                </div>
-                                <div>
-                                  <button
-                                    className="main-btn"
-                                    style={{
-                                      backgroundColor: "#2e86de",
-                                      width: "100px",
-                                      padding: "5px 2px",
-                                    }}
-                                  >
-                                    Tham gia ngay
-                                  </button>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      })}
+
                       {/* popular courses */}
                       <div className="widget">
                         <h4 className="widget-title">
@@ -1825,7 +1771,31 @@ export default function Home () {
                                   <div className="image-gallery-flex">
                                     {item?.media?.length <= 3
                                       ? item.media.map((image, index) => {
-                                          return (
+                                        return (
+                                          <div
+                                            key={index}
+                                            className={`image-container-post`}
+                                          >
+                                            <a
+                                              data-toggle="modal"
+                                              data-target="#img-comt"
+                                              href="images/resources/album1.jpg"
+                                              onClick={() => {
+                                                setDetail(detailItem);
+                                              }}
+                                            >
+                                              <img
+                                                src={image.linkMedia}
+                                                alt={`Image ${image.id}`}
+                                              />
+                                            </a>
+                                          </div>
+                                        );
+                                      })
+                                      : item.media
+                                        ?.slice(0, 4)
+                                        .map((image, index) => {
+                                          return index !== 3 ? (
                                             <div
                                               key={index}
                                               className={`image-container-post`}
@@ -1844,54 +1814,30 @@ export default function Home () {
                                                 />
                                               </a>
                                             </div>
+                                          ) : (
+                                            <div
+                                              key={index}
+                                              className={`image-container-post-last`}
+                                            >
+                                              <a
+                                                data-toggle="modal"
+                                                data-target="#img-comt"
+                                                href="images/resources/album1.jpg"
+                                                onClick={() => {
+                                                  setDetail(detailItem);
+                                                }}
+                                              >
+                                                <div className="overlay">
+                                                  +{item.media.length - 4}
+                                                </div>
+                                                <img
+                                                  src={image.linkMedia}
+                                                  alt={`Image ${image.id}`}
+                                                />
+                                              </a>
+                                            </div>
                                           );
-                                        })
-                                      : item.media
-                                          ?.slice(0, 4)
-                                          .map((image, index) => {
-                                            return index !== 3 ? (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            ) : (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post-last`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <div className="overlay">
-                                                    +{item.media.length - 4}
-                                                  </div>
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            );
-                                          })}
+                                        })}
                                   </div>
                                 </figure>
 
@@ -1908,7 +1854,7 @@ export default function Home () {
                                   {item.description}
                                 </p>
                                 <div style={{ paddingBottom: '20px' }}>
-                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>  </span> {moment(item.startDate).format('DD/MM/YYYY')}</div> 
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>  </span> {moment(item.startDate).format('DD/MM/YYYY')}</div>
                                   <div>-</div>
                                   <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}></span> {moment(item.endDate).format('DD/MM/YYYY')}</div>
                                 </div>
@@ -1963,15 +1909,13 @@ export default function Home () {
                                       // onChange={handleChange}
                                       className="range-slider"
                                       style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                          (item.realDonation /
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
+                                          item.targetDonation) *
+                                          100
+                                          }%, #ddd ${(item.realDonation /
                                             item.targetDonation) *
                                           100
-                                        }%, #ddd ${
-                                          (item.realDonation /
-                                            item.targetDonation) *
-                                          100
-                                        }%, #ddd 100%)`,
+                                          }%, #ddd 100%)`,
                                       }}
                                     />
                                     {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
@@ -1994,11 +1938,10 @@ export default function Home () {
                                         className="range-value"
                                         style={{
                                           position: "absolute",
-                                          left: `${
-                                            (item.realDonation /
-                                              item.targetDonation) *
+                                          left: `${(item.realDonation /
+                                            item.targetDonation) *
                                             100
-                                          }%`,
+                                            }%`,
                                         }}
                                       >
                                         {" "}
@@ -2225,7 +2168,7 @@ export default function Home () {
                                           }) : item?.like?.slice(0, 4).map((userItem, index) => {
                                             index < 4 ? <li>{userItem.user.username}</li> : <li><span>+{item?.like.length - 5}</span></li>;
                                           })}
-                                         
+
                                         </ul>
                                       </div>
                                     </div>
@@ -2249,11 +2192,10 @@ export default function Home () {
                                   <div
                                     className=""
                                     style={{
-                                      backgroundColor: `${
-                                        isAlreadyLiked
-                                          ? "rgb(117, 189, 240)"
-                                          : "#eae9ee"
-                                      }`,
+                                      backgroundColor: `${isAlreadyLiked
+                                        ? "rgb(117, 189, 240)"
+                                        : "#eae9ee"
+                                        }`,
                                       borderRadius: "4px",
                                       color: "#82828e",
                                       display: "inline-block",
@@ -2607,7 +2549,7 @@ export default function Home () {
                                   href="group-feed.html"
                                   title
                                   className="promote"
-                                  onClick={() => {}}
+                                  onClick={() => { }}
                                 >
                                   Chi tiết
                                 </NavLink>
@@ -2618,82 +2560,7 @@ export default function Home () {
                       ) : (
                         <div></div>
                       )}
-                      <div className="widget">
-                        <h4 className="widget-title">Đề xuất</h4>
-                        <div className="sug-caro">
-                          <div className="friend-box">
-                            <figure>
-                              <img
-                                style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
-                                }}
-                                alt
-                                src="images/avatar/5.jpg"
-                              />
-                              <span>Theo dõi: 505k</span>
-                            </figure>
-                            <div className="frnd-meta">
-                              <img
-                                style={{
-                                  width: "70px",
-                                  height: "70px",
-                                  objectfit: "cover",
-                                  display: "block",
-                                }}
-                                className="friend-box-img"
-                                alt
-                                src="images/company/nab.png"
-                              />
-                              <div className="frnd-name">
-                                <a title href="#">
-                                  Tìm kiếm
-                                </a>
-                                <span>@biolabest</span>
-                              </div>
-                              <a className="main-btn2" href="#" title>
-                                Tham gia
-                              </a>
-                            </div>
-                          </div>
-                          <div className="friend-box">
-                            <figure>
-                              <img
-                                style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
-                                }}
-                                alt
-                                src="images/avatar/19.jpg"
-                              />
-                              <span>Thành viên: 505K</span>
-                            </figure>
-                            <div className="frnd-meta">
-                              <img
-                                style={{
-                                  width: "70px",
-                                  height: "70px",
-                                  objectfit: "cover",
-                                  display: "block",
-                                }}
-                                alt
-                                src="images/company/amazonComany.jpg"
-                              />
-                              <div className="frnd-name">
-                                <a title href="#">
-                                  Tìm kiếm
-                                </a>
-                                <span>@biolabest</span>
-                              </div>
-                              <a className="main-btn2" href="#" title>
-                                Tham gia
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <RecommentActivity />
                       {/* suggested group */}
                       <div className="widget">
                         <h4 className="widget-title">Giải trí</h4>

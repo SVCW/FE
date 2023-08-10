@@ -272,7 +272,7 @@ export const RecommentActivityAction = (value) => {
         try {
             let result = await http.post(`/UserSearch/create`, value)
             console.log(result.data.data);
-            const action = GetRecommentActivityAction()
+            const action = GetListActivityAction()
             dispatch(action)
         } catch (error) {
             console.log(error);
