@@ -16441,3 +16441,30 @@ a.classic-btn:hover {
   display: flex;
   justify-content: center;
 }
+/* chi tiết */
+.mt-detail{
+  color: #747d8c;
+  font-weight: 400;
+  font-size: 15px;
+}
+/* test-xem thêm */
+.toggle-box {
+  display: none;
+}
+
+.toggle-box + label {
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  line-height: 21px;
+  margin-bottom: 5px;
+}
+
+.toggle-box + label + div {
+  display: none;
+  margin-bottom: 10px;
+}
+
+.toggle-box:checked + label + div {
+  display: block;
+}

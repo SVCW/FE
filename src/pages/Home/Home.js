@@ -1518,32 +1518,7 @@ export default function Home () {
                               placeholder="Tạo chiến dịch"
                             />
                           </form>
-                          <ul className="upload-media">
-                            <li>
-                              <a href="#" title>
-                                <i>
-                                  <img src="images/image.png" alt />
-                                </i>
-                                <span>Photo/Video</span>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#" title>
-                                <i>
-                                  <img src="images/activity.png" alt />
-                                </i>
-                                <span>Feeling/Activity</span>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="live-stream.html" title>
-                                <i>
-                                  <img src="images/live-stream.png" alt />
-                                </i>
-                                <span>Live stream</span>
-                              </a>
-                            </li>
-                          </ul>
+                          
                         </div>
                       </div>
                     ) : (
@@ -1745,6 +1720,7 @@ export default function Home () {
                                 <div className="row">
                                   <div
                                     style={{
+                                      padding: "0",
                                       display: "flex",
                                       alignContent: "center",
                                     }}
@@ -1758,13 +1734,40 @@ export default function Home () {
                                         wordWrap: "break-word",
                                         color: "#2d3436",
                                       }}
-                                      className="col-lg-8"
+                                      className="col-lg-12"
                                     >
                                       {item.title}
                                     </h3>
+                                    
                                     {/* bla bla bla theo dõi */}
                                   </div>
                                 </div>
+                                <div style={{ display:'flex' }}>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 400, color:'#747d8c' }}>Thời gian:   </span> {moment(item.startDate).format('DD/MM/YYYY')}</div> 
+                                  <div style={{fontSize:'15px', fontWeight:'900', padding:"0 0.5rem"}}>-</div>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}></span> {moment(item.endDate).format('DD/MM/YYYY')}</div>
+                                </div>
+
+                                  {/* chi tiết chiến dịch */}
+                                <p className="mt-3 mt-detail">
+                                  <span className="mt-detail">
+                                    Chi tiết :
+                                  </span>{" "}
+                                  {item.description}
+                                </p>
+                                
+                                {/* nút Xem thêm     */}
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    id="identifier-1"
+                                    class="toggle-box"
+                                  /> 
+                                  <label for="identifier-1">Xem thêm</label>
+                                  <div>{item.description}</div>
+                                </div>
+                                
+
                                 <figure style={{}}>
                                   {/* <p style={{ width: '100%' }}>fetched-image</p> */}
 

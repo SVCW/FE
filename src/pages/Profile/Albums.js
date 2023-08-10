@@ -100,13 +100,6 @@ const Albums = () => {
         <h5 className="tab-title">
           Hình ảnh
         </h5>
-        <ul className="pix-filter">
-          <li>
-            <a className="active" title>
-              Albums
-            </a>
-          </li>
-        </ul>
         <div className="row merged-10" style={{maxHeight: '100px'}}>{handleRenderAlbums()}</div>
       </div>
       <DetailActivity item={detail} dateTime={DateTime} />

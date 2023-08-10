@@ -205,7 +205,7 @@ export default function EndActivity () {
                 <div className='container'>
                     <div style={{ display: 'flex' }}>
                         <h3 style={{ paddingRight: '10px' }}><NavLink to="/home" style={{ TextDecoder: 'underline' }}>Trang chủ / </NavLink></h3>
-                        <h3><a href='#'> Danh sách các sự kiện đã kết thúc</a></h3>
+                        <h3><a href='#'> Danh sách các chiến dịch đã kết thúc</a></h3>
                     </div>
                     {cmt.map((item, index) => {
                         const detailItem = item;

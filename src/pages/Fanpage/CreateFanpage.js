@@ -220,81 +220,43 @@ export default function CreateFanpage (props) {
                     <div className="bg-image" style={{ backgroundImage: 'url(images/resources/footer-bg.png)' }} />
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-3 col-md-6 col-sm-6">
+                            <div className="col-lg-4 col-md-6 col-sm-6">
                                 <div className="web-info">
                                     <a href="#" title><img src="images/logo.png" alt /></a>
-                                    <p>Subscribe our newsletter for getting notifications and alerts</p>
+                                    <p>Tình yêu lớn lên nhờ cho đi. Yêu thương mà chúng ta cho đi là yêu thương mà chúng ta giữ được.</p>
                                     <div className="contact-little">
-                                        <span><i className="icofont-phone-circle" /> +1-235-099-34</span>
-                                        <span><i className="icofont-email" /> info@akedmic.com</span>
+                                        <span><i className="icofont-phone-circle" /> +84 938960697</span>
+                                        <span><i className="icofont-email" /> wscvcaptionproject@gmail.com</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-2 col-md-3 col-sm-6">
+                           
+                            <div className="col-lg-4 col-md-3 col-sm-6">
                                 <div className="widget">
                                     <div className="widget-title">
-                                        <h4>Company</h4>
+                                        <h4>Truy cập nhanh</h4>
                                     </div>
                                     <ul className="quick-links">
-                                        <li><a href="#" title>About Us</a></li>
-                                        <li><a href="#" title>Career</a></li>
-                                        <li><a href="#" title>Privacy</a></li>
-                                        <li><a href="#" title>Terms</a></li>
-                                        <li><a href="#" title>FAQ</a></li>
-                                        <li><a href="#" title>Contact</a></li>
+                                        <li><a href="#" title>Trang chủ</a></li>
+                                        <li><a href="#" title>Lịch sử</a></li>
+                                        <li><a href="#" title>Thống kê</a></li>
+                                        <li><a href="#" title>Fanpage</a></li>
                                     </ul>
                                 </div>
                             </div>
-                            <div className="col-lg-2 col-md-3 col-sm-6">
+                            <div className="col-lg-4 col-md-4 col-sm-6">
                                 <div className="widget">
                                     <div className="widget-title">
-                                        <h4>Quick Links</h4>
+                                        <h4>Theo dõi chúng tôi</h4>
                                     </div>
                                     <ul className="quick-links">
-                                        <li><a href="#" title>Product</a></li>
-                                        <li><a href="#" title>Market</a></li>
-                                        <li><a href="#" title>Courses</a></li>
-                                        <li><a href="#" title>Services</a></li>
-                                        <li><a href="#" title>Enterprise</a></li>
-                                        <li><a href="#" title>Sitemap</a></li>
+                                        <li><a href="https://www.facebook.com/nguyenuoc999" title><i className="icofont-facebook" />facebook</a></li>
+                                        <li><a href="#" title><i class="fa-solid fa-envelope"></i>Mail</a></li>
+                                        <li><a href="#" title><i class="fa-solid fa-phone"></i>Phone</a></li>
                                     </ul>
                                 </div>
                             </div>
-                            <div className="col-lg-2 col-md-4 col-sm-6">
-                                <div className="widget">
-                                    <div className="widget-title">
-                                        <h4>Follow Us</h4>
-                                    </div>
-                                    <ul className="quick-links">
-                                        <li><a href="#" title><i className="icofont-facebook" />facebook</a></li>
-                                        <li><a href="#" title><i className="icofont-twitter" />twitter</a></li>
-                                        <li><a href="#" title><i className="icofont-instagram" />instagram</a></li>
-                                        <li><a href="#" title><i className="icofont-google-plus" />google +</a></li>
-                                        <li><a href="#" title><i className="icofont-whatsapp" />whatsapp</a></li>
-                                        <li><a href="#" title><i className="icofont-reddit" />reddit</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-md-6 col-sm-6">
-                                <div className="widget">
-                                    <div className="widget-title">
-                                        <h4>Newsletter</h4>
-                                    </div>
-                                    <div className="news-lettr">
-                                        <form className="newsletter">
-                                            <input type="text" placeholder="Email Address" />
-                                            <button type="submit"><i className="icofont-paper-plane" /></button>
-                                        </form>
-                                        <p>
-                                            it is a long established fact that a reader will be distracted by.
-                                        </p>
-                                        <h5>Download App</h5>
-                                        <a href="#" title><img src="images/android.png" alt /></a>
-                                        <a href="#" title><img src="images/apple.png" alt /></a>
-                                        <a href="#" title><img src="images/windows.png" alt /></a>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
