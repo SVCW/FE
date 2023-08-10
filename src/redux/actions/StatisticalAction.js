@@ -22,21 +22,17 @@ export const GetStatisticalAction = (id) => {
             const allMonthsData = [];
 
             for (const month of months) {
-                let result = await http.get(`/Statistical/statistical?userId=${id}&start=${month.start}&end=${month.end}`);
-                console.log(result);
-                const monthData = {
-                    month: month.name,
-                    userData: result.data.data,
-                };
+                let result = await http.post(`/Statistical/statistical?userId=${id}&start=${month.start}&end=${month.end}`);
+                const monthData = result.data.data;
                 allMonthsData.push(monthData);
-                dispatch({
-                    type: "GET_STATICAL",
-                    userByID: result.data.data
-                });
             }
-
-            console.log("Dữ liệu tất cả các tháng:", allMonthsData);
-
+            dispatch({
+                type: "GET_STATICAL",
+                arrStatical: allMonthsData,
+            });
+            console.log(allMonthsData.userData);
+            localStorage.setItem('statistical', JSON.stringify(allMonthsData))
+            console.log(allMonthsData);
         } catch (error) {
             console.log(error);
         }

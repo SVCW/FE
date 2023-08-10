@@ -32,6 +32,7 @@ import EndActivity from './pages/EndActivity/EndActivity';
 import AdminActivity from './pages/AdminActivity/AdminActivity';
 import Home1 from './pages/Home/Home1';
 import MultiStepForm from './MultiStepForm';
+import StatisticalUser from './pages/StatisticalUser/StatisticalUser';
 
 
 export const history = createBrowserHistory()
@@ -65,6 +66,7 @@ function App () {
           <UserTemplate exact path="/history" Component={Result} />
           <UserTemplate exact path="/detailprocess/:id" Component={DetailProcess} />
           <UserTemplate exact path="/createfanpage" Component={CreateFanpage} />
+          <UserTemplate exact path="/statisticaluser" Component={StatisticalUser} />
           <Route exact path="/test" component={MultiForm} />
           <Route exact path="/test1" component={Test} />
           <Route exact path="/test2" component={MultiStepForm} />

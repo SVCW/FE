@@ -76,7 +76,8 @@ export default function Home () {
     }
   };
   const { userByStatis, usertotal } = useSelector(root => root.UserReducer)
-  console.log("user" + usertotal);
+  const change = usertotal.replace(',', '.')
+  console.log('change' + change);
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
@@ -1273,6 +1274,11 @@ export default function Home () {
                     <i className="icofont-flash" /> Lịch sử
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/statisticaluser" title>
+                    <i className="icofont-flash" /> Thống kê
+                  </NavLink>
+                </li>
                 {userByID.fanpage === null ? (
                   <li>
                     <NavLink to="/createfanpage" title>
@@ -1370,7 +1376,7 @@ export default function Home () {
                         <div
                           data-progress="tip"
                           className="progress__outer"
-                          data-value={`${usertotal}`}
+                          data-value={change}
                         >
                           <div className="progress__inner">{usertotal}%</div>
                         </div>
@@ -1379,6 +1385,27 @@ export default function Home () {
                             <i className="icofont-plus-square" />{" "}
                             <a href="#" title>
                               Cập nhật số điện thoại
+                            </a>
+                            <em>10%</em>
+                          </li>
+                          <li>
+                            <i className="icofont-plus-square" />{" "}
+                            <a href="#" title>
+                              Cập nhật họ tên
+                            </a>
+                            <em>10%</em>
+                          </li>
+                          <li>
+                            <i className="icofont-plus-square" />{" "}
+                            <a href="#" title>
+                              Cập nhật avartar
+                            </a>
+                            <em>10%</em>
+                          </li>
+                          <li>
+                            <i className="icofont-plus-square" />{" "}
+                            <a href="#" title>
+                              Cập nhật ảnh bìa
                             </a>
                             <em>10%</em>
                           </li>
@@ -1518,7 +1545,7 @@ export default function Home () {
                               placeholder="Tạo chiến dịch"
                             />
                           </form>
-                          
+
                         </div>
                       </div>
                     ) : (
@@ -1738,35 +1765,35 @@ export default function Home () {
                                     >
                                       {item.title}
                                     </h3>
-                                    
+
                                     {/* bla bla bla theo dõi */}
                                   </div>
                                 </div>
-                                <div style={{ display:'flex' }}>
-                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 400, color:'#747d8c' }}>Thời gian:   </span> {moment(item.startDate).format('DD/MM/YYYY')}</div> 
-                                  <div style={{fontSize:'15px', fontWeight:'900', padding:"0 0.5rem"}}>-</div>
+                                <div style={{ display: 'flex' }}>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 400, color: '#747d8c' }}>Thời gian:   </span> {moment(item.startDate).format('DD/MM/YYYY')}</div>
+                                  <div style={{ fontSize: '15px', fontWeight: '900', padding: "0 0.5rem" }}>-</div>
                                   <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}></span> {moment(item.endDate).format('DD/MM/YYYY')}</div>
                                 </div>
 
-                                  {/* chi tiết chiến dịch */}
+                                {/* chi tiết chiến dịch */}
                                 <p className="mt-3 mt-detail">
                                   <span className="mt-detail">
                                     Chi tiết :
                                   </span>{" "}
                                   {item.description}
                                 </p>
-                                
+
                                 {/* nút Xem thêm     */}
                                 <div>
                                   <input
                                     type="checkbox"
                                     id="identifier-1"
                                     class="toggle-box"
-                                  /> 
+                                  />
                                   <label for="identifier-1">Xem thêm</label>
                                   <div>{item.description}</div>
                                 </div>
-                                
+
 
                                 <figure style={{}}>
                                   {/* <p style={{ width: '100%' }}>fetched-image</p> */}
