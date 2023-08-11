@@ -1438,7 +1438,7 @@ export default function Home(props) {
                           className="progress__outer"
                           data-value={change.toString()}
                         >
-                          <div className="progress__inner">{((parseFloat(change)) * 100)}%</div>
+                          <div className="progress__inner">{(parseFloat(change) * 100).toFixed(1)}%</div>
                         </div>
                         <ul className="prof-complete">
                           {userByStatis.phone === null ? <li>
