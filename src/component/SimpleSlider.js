@@ -97,7 +97,7 @@ function SimpleSlider (props) {
   console.log(cmt);
   return (
     <Slider {...settings}>
-      {cmt.map((item, index) => {
+      {cmt.filter(item => item.status === "Active").map((item, index) => {
         return (
           <div className="suggested-caro">
             <li>
@@ -110,7 +110,7 @@ function SimpleSlider (props) {
                   <img
                     src={item.avatar}
                     style={{
-                      margin:"0 2.5rem",
+                      margin: "0 2.5rem",
                       height: "80px",
                       width: "90px",
                       objectFit: "cover",
