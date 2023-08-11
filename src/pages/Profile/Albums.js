@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import moment from "moment";
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 
-import DetailActivity from "../../component/DetailActivity";
+import DetailActivity from '../../component/DetailActivity';
 
 const Albums = () => {
   const [albums, setAlbums] = useState([]);
   const [detail, setDetail] = useState({});
 
-  console.log(albums)
+  console.log(albums);
 
-  const initialCommentData = JSON.parse(localStorage.getItem("activity"))?.map(
+  const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map(
     (comment) => ({
       id: comment.activityId,
       isCmt: true,
-      color: "#eae9ee",
+      color: '#eae9ee',
     })
   );
   const [commentData, setCommentData] = useState(initialCommentData);
@@ -23,7 +23,7 @@ const Albums = () => {
     const inputTime = moment(item);
     const duration = moment.duration(currentTime.diff(inputTime));
     const hoursAgo = duration.asHours();
-    let timeAgoString = "";
+    let timeAgoString = '';
     if (hoursAgo < 1) {
       const daysAgo = Math.floor(duration.asMinutes());
       timeAgoString = `${daysAgo} phút trước`;
@@ -39,24 +39,22 @@ const Albums = () => {
 
   useEffect(() => {
     const updatedArrActivity = JSON.parse(
-      localStorage.getItem("activity")
+      localStorage.getItem('activity')
     )?.map((activity) => {
       const matchingComments = commentData?.filter(
         (comment) => comment.id === activity.activityId
       );
       return { ...activity, commentData: matchingComments };
     });
-    setAlbums(updatedArrActivity);
+    setAlbums(updatedArrActivity || []);
   }, []);
 
-  if (albums.length === 0) return <p>Chua co album nao</p>;
+  // if (albums.length === 0) return <p>Chua co album nao</p>;
 
   const handleRenderAlbums = () => {
     return albums.map((album) => {
       return (
-        <div
-          className="col-lg-3 col-md-4 col-sm-6"
-        >
+        <div className="col-lg-3 col-md-4 col-sm-6">
           <div className="uzr-pictures">
             <a
               data-target="#img-comt"
@@ -69,12 +67,13 @@ const Albums = () => {
                 alt={album.media[0]?.mediaId}
                 src={album.media[0]?.linkMedia}
                 style={{
-                    height: "200px",
-                    maxHeight: "200px",
-                    width:
-                      "100%" /* Allow the width to adjust according to aspect ratio */,
-                    objectFit: "fill" /* Resize and crop images to cover the container */,
-                  }}
+                  height: '200px',
+                  maxHeight: '200px',
+                  width:
+                    '100%' /* Allow the width to adjust according to aspect ratio */,
+                  objectFit:
+                    'fill' /* Resize and crop images to cover the container */,
+                }}
               />
             </a>
             <ul className="hover-action">
@@ -82,7 +81,7 @@ const Albums = () => {
                 <a title>
                   {album.media.length > 0 ? (
                     <>
-                      <i className="icofont-plus" /> {album.media.length - 1}{" "}
+                      <i className="icofont-plus" /> {album.media.length - 1}{' '}
                     </>
                   ) : null}
                 </a>
@@ -97,9 +96,7 @@ const Albums = () => {
   return (
     <>
       <div className="tab-pane fade" id="pictures">
-        <h5 className="tab-title">
-          Hình ảnh
-        </h5>
+        <h5 className="tab-title">Hình ảnh</h5>
         <ul className="pix-filter">
           <li>
             <a className="active" title>
@@ -107,7 +104,9 @@ const Albums = () => {
             </a>
           </li>
         </ul>
-        <div className="row merged-10" style={{maxHeight: '100px'}}>{handleRenderAlbums()}</div>
+        <div className="row merged-10" style={{ maxHeight: '100px' }}>
+          {handleRenderAlbums()}
+        </div>
       </div>
       <DetailActivity item={detail} dateTime={DateTime} />
     </>
