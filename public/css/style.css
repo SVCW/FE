@@ -16388,7 +16388,39 @@ a.classic-btn:hover {
   color: black;
   margin: 1rem;
 }
+/* Login */
+.google-icon-p {
+background-color: #e74c3c;
+display: flex;
+justify-content: center;
+align-items: baseline;
+margin-top: 20px;
+font-size: 15px;
+border-bottom: 2px solid #17a2b8;
+padding-bottom: 4px;
+width: 50%;
+cursor: pointer;
+font-weight: 500;
+color: #fff;  
+}
 
+.google-icon-g{
+  color: #fff;
+  margin-right: 0.5rem;
+  font-size: 15px;
+}
+.google-icon-g:hover{
+  color: red;
+}
+.c-form p:hover{
+  background-color: #2d98da;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  transition-duration: 1s;
+
+}
 
 /* Home.js */
 .img-new-messages {
@@ -16426,15 +16458,6 @@ a.classic-btn:hover {
 }
 
 
-.c-form p:hover{
-  background-color: #e74c3c;
-  color: #fff;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  transition-duration: 1s;
-
-}
 
 /* Home thời gian bắt đầu và kết thúc */
 .row-time{
