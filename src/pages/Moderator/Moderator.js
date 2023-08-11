@@ -32,11 +32,12 @@ export default function Moderator () {
 
         username: "",
         password: "",
-        image: "",
+        image: "string",
         gender: true,
         phone: "",
         fullName: "",
         email: "",
+        coverImage: "string",
         dateOfBirth: moment().format('DD-MM-YYYY')
     };
     const options1 = [
@@ -112,6 +113,7 @@ export default function Moderator () {
         setDeleteProductsDialog(false);
     };
 
+    console.log(product);
     const saveProduct = async () => {
         let check = true;
         setSubmitted(true);
@@ -260,7 +262,7 @@ export default function Moderator () {
     // };
 
     const onInputDropdown = (e, field) => {
-        const updatedProduct = { ...product, [field]: e.target.value };
+        const updatedProduct = { ...product, [field]: e.target.value === 1 ? true : false };
         setProduct(updatedProduct);
     };
 
@@ -330,9 +332,9 @@ export default function Moderator () {
                         currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm" globalFilter={globalFilter} header={header}>
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
                         <Column field="userId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="fullName" header="Họ Tên" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field="fullName" header="Họ tên" sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field="email" header="Email" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="image" header="Hình Ảnh" body={imageBodyTemplate}></Column>
+                        <Column field="phone" header="Số điện thoại" sortable style={{ minWidth: '11rem' }}></Column>
                         <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Ngày tạo" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
@@ -364,7 +366,7 @@ export default function Moderator () {
                             Giới tính
                         </label>
 
-                        <Dropdown options={options1} id='gender' value={product.gender} onChange={(e) => onInputDropdown(e, 'gender')} placeholder="Chọn Giới Tính" />
+                        <Dropdown options={options1} id='gender' value={product.gender} onChange={(e) => onInputDropdown(e, 'gender')} placeholder={product.gender ? "Nam" : 'Nữ'} />
                         {/* {submitted && !product.description && <small className="p-error">Miêu tả huy hiệu không được để trống.</small>} */}
                     </div>
                     <div className="field" style={{ marginTop: '20px' }}>
@@ -396,24 +398,7 @@ export default function Moderator () {
                         {/* {submitted && !product.description && <small className="p-error">Miêu tả huy hiệu không được để trống.</small>} */}
                     </div>
 
-
-                    <div className="field">
-                        <label htmlFor="name" className="font-bold" style={{ fontWeight: 'bold' }}>
-                            Hình ảnh
-                        </label>
-                        <br />
-                        <div>
-                            <label htmlFor="img" className="input-preview">
-                                <input name="image" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'image')} />
-                                {product?.image === '' ? <div></div> : <img src={product.image} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
-                            </label>
-                            {/* {submitted && !product.image && <small className="p-error">Hình ảnh  không được để trống.</small>} */}
-                        </div>
-
-                        <br />
-                        {msg !== '' ? <div style={{ color: 'red' }}>{msg}</div> : <div></div>}
-                        {/* <input type='file' id="achivementLogo" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
-                    </div>
+                    <h4 style={{ color: 'red' }}>{localStorage.getItem('createmoderator')}</h4>
 
                 </Dialog>
 

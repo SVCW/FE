@@ -31,7 +31,7 @@ export const AdminTemplate = (props) => {
                 <div className="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
                     <div className="app-header header-shadow" >
                         <div className="app-header__logo">
-                            <div className="logo-src" />
+                            <div className="logo-abc" />
                             <div className="header__pane ml-auto">
                                 <div>
                                     <button type="button" className="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
@@ -123,18 +123,7 @@ export const AdminTemplate = (props) => {
                                                             className="dropdown-menu dropdown-menu-right show"
                                                             style={popupStyle}
                                                         >
-                                                            <button type="button" tabIndex={0} className="dropdown-item">
-                                                                User Account
-                                                            </button>
-                                                            <button type="button" tabIndex={0} className="dropdown-item">
-                                                                Settings
-                                                            </button>
-                                                            <h6 tabIndex={-1} className="dropdown-header">
-                                                                Header
-                                                            </h6>
-                                                            <button type="button" tabIndex={0} className="dropdown-item">
-                                                                Actions
-                                                            </button>
+
                                                             <div tabIndex={-1} className="dropdown-divider" />
                                                             <NavLink type="button" to="/" tabIndex={0} className="dropdown-item" onClick={() => {
                                                                 const action = {
@@ -152,14 +141,14 @@ export const AdminTemplate = (props) => {
                                                         : <div></div>}
                                                 </div>
                                             </div>
-                                            <div className="widget-content-left  ml-3 header-user-info">
+                                            {/* <div className="widget-content-left  ml-3 header-user-info">
                                                 <div className="widget-heading">
                                                     Alina Mclourd
                                                 </div>
                                                 <div className="widget-subheading">
                                                     VP People Manager
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <div className="widget-content-right header-user-info ml-3">
                                                 <button type="button" className="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example btn btn-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i className="fa text-white fa-calendar pr-1 pl-1" />

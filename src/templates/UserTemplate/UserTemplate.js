@@ -28,3 +28,4 @@ export const UserTemplate = (props) => {
         window.location.reload();
     }} />
 }
+
