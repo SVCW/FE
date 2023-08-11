@@ -110,9 +110,8 @@ export default function Carousel() {
                   </div> */}
                   <div className="link-item">
                     <a  href="http://localhost:3000/home" title>
-                      <i className>
-                        <svg
-                          className="feather feather-layout"
+                    <i class="fa-solid fa-chart-simple" style={{color: "#088dcd"}}>
+                        <svg className="feather feather-users"
                           strokeLinejoin="round"
                           strokeLinecap="round"
                           strokeWidth={2}
@@ -123,18 +122,9 @@ export default function Carousel() {
                           width={24}
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <rect
-                            ry={2}
-                            rx={2}
-                            height={18}
-                            width={18}
-                            y={3}
-                            x={3}
-                          />
-                          <line y2={9} x2={21} y1={9} x1={3} />
-                          <line y2={9} x2={9} y1={21} x1={9} />
                         </svg>
-                      </i>
+                    </i>
+                     
                       <p>Thống kê hoạt động</p>
                     </a>
                   </div>

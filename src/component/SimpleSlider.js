@@ -52,7 +52,7 @@ function SimpleSlider (props) {
       return newArray;
     });
     if (isFollow) {
-      console.log("Hủy Theo Dõi");
+      console.log("Hủy theo dõi");
       const action = UnFollowFanpageAction(userID, activity);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -69,10 +69,10 @@ function SimpleSlider (props) {
 
       Toast.fire({
         icon: "error",
-        title: `Bỏ Theo Dõi Thành Công Sự Kiện ${title}`,
+        title: `Bỏ theo dõi thành công chiến dịch ${title}`,
       });
     } else {
-      console.log("Theo Dõi");
+      console.log("Theo dõi");
       const action = FollowFanpageAction(userID, activity);
       dispatch(action);
       const Toast = Swal.mixin({
@@ -89,7 +89,7 @@ function SimpleSlider (props) {
 
       Toast.fire({
         icon: "success",
-        title: `Theo Dõi Thành Công Sự Kiện ${title}`,
+        title: `Theo dõi thành công chiến dịch ${title}`,
       });
     }
   };
@@ -110,6 +110,7 @@ function SimpleSlider (props) {
                   <img
                     src={item.avatar}
                     style={{
+                      margin:"0 2.5rem",
                       height: "80px",
                       width: "90px",
                       objectFit: "cover",
@@ -144,7 +145,7 @@ function SimpleSlider (props) {
                 }}
               >
                 <i className="icofont-star" />
-                {item?.isFollow ? "Hủy Theo Dõi" : "Theo Dõi"}
+                {item?.isFollow ? "Hủy theo dõi" : "Theo dõi"}
               </div>
             </li>
           </div>

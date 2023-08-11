@@ -103,7 +103,7 @@ const StatisticalUser = (props) => {
                                             <div className="tab-content">
                                                 <div className="tab-pane fade active show" id="allposts">
                                                     <div className="main-wraper">
-                                                        <div className="main-title">Thống kê số sự kiện đã tạo</div>
+                                                        <div className="main-title">Thống kê số chiến dịch đã tạo</div>
                                                         <ReactApexChart options={options} series={series} type="line" height={350} />
                                                     </div>
                                                 </div>

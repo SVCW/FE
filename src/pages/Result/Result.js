@@ -65,9 +65,9 @@ export default function Result () {
                                         </div>
                                     </div>
                                     <ul className="nav nav-tabs post-detail-btn">
-                                        <li className="nav-item"><a className="active" href="#allposts" data-toggle="tab">Sự Kiện Tham Gia</a></li>
-                                        <li className="nav-item"><a className href="#members" data-toggle="tab">Sự Kiện Theo Dõi</a></li>
-                                        <li className="nav-item"><a className href="#depart" data-toggle="tab">Số Tiền Ủng Hộ</a></li>
+                                        <li className="nav-item"><a className="active" href="#allposts" data-toggle="tab">Chiến dịch đã tham gia</a></li>
+                                        <li className="nav-item"><a className href="#members" data-toggle="tab">Chiến dịch đang theo dõi</a></li>
+                                        <li className="nav-item"><a className href="#depart" data-toggle="tab">Số tiền ủng hộ</a></li>
                                         {/* <li className="nav-item"><a className href="#photos" data-toggle="tab">Photos</a></li>
                                         <li className="nav-item"><a className href="#videos" data-toggle="tab">Videos</a></li>
                                         <li className="nav-item"><a className href="#groups" data-toggle="tab">Groups</a></li> */}
@@ -88,7 +88,7 @@ export default function Result () {
                                         <div className="tab-content">
                                             <div className="tab-pane fade active show" id="allposts">
                                                 <div className="main-wraper">
-                                                    <div className="main-title">Sự Kiện Tham Gia</div>
+                                                    <div className="main-title">Chiến dịch đã tham gia</div>
                                                     {arrFollowJoin.filter(item => item.isJoin === true).length === 0 ? <div>Chưa Tham Gia Sự Kiện Nào</div>
                                                         :
                                                         <div> {arrFollowJoin.filter(item => item.isJoin === true).map((item, index) => {
@@ -110,7 +110,7 @@ export default function Result () {
                                                                         {item.activity?.description}
                                                                     </p>
                                                                     <span><i className="icofont-clock-time" />{(DateTime(item.activity?.createAt)).toLowerCase()}</span>
-                                                                    <a href="blog-detail.html" title className="button primary circle">Chi Tiết</a>
+                                                                    <a href="blog-detail.html" title className="button primary circle">Chi tiết</a>
                                                                 </div>
                                                             </div>
                                                         })
@@ -136,18 +136,18 @@ export default function Result () {
                                             </div>
                                             <div className="tab-pane fade" id="depart">
                                                 <div className="main-wraper">
-                                                    <h4 className="main-title">Lịch Sử Thanh Toán</h4>
+                                                    <h4 className="main-title">Lịch sử thanh toán</h4>
                                                     <div className="dept-info">
                                                         <ul>
                                                             {arrDonation.length === 0 ?
-                                                                <div>Chưa Ủng Hộ Cho Sự Kiện Nào</div>
+                                                                <div>Chưa ủng hộ cho chiến dịch nào</div>
                                                                 :
                                                                 <Fragment>
                                                                     {arrDonation.map((item, index) => {
                                                                         return <li>
-                                                                            <h6>Hoạt Động : <span style={{ fontWeight: 'bold' }}>{item.activity.title}</span></h6>
-                                                                            <div>Thời Gian Thanh Toán : {DateTime(item.datetime)}</div>
-                                                                            <div>Số Tiền : <span> <i>{(item.amount.toLocaleString())} vnđ</i></span></div>
+                                                                            <h6>Hoạt động : <span style={{ fontWeight: 'bold' }}>{item.activity.title}</span></h6>
+                                                                            <div>Thời gian thanh toán : {DateTime(item.datetime)}</div>
+                                                                            <div>Số tiền : <span> <i>{(item.amount.toLocaleString())} vnđ</i></span></div>
                                                                         </li>
                                                                     })}
                                                                 </Fragment>
@@ -160,8 +160,8 @@ export default function Result () {
                                             </div>
                                             <div className="tab-pane fade" id="members">
                                                 <div className="main-wraper">
-                                                    <div className="main-title">Sự Kiện Theo Dõi</div>
-                                                    {arrFollowJoin.filter(item => item.isFollow === true).length === 0 ? <div>Chưa Theo Dõi Sự Kiện Nào</div>
+                                                    <div className="main-title">Chiến dịch theo dõi</div>
+                                                    {arrFollowJoin.filter(item => item.isFollow === true).length === 0 ? <div>Chưa theo dõi chiến dịch nào</div>
                                                         :
                                                         <div>
                                                             {arrFollowJoin.filter(item => item.isFollow === true).map((item, index) => {
@@ -183,7 +183,7 @@ export default function Result () {
                                                                         <span><i className="icofont-clock-time" />{DateTime(item.activity?.createAt)}</span>
                                                                         <a data-toggle="modal" data-target="#img-comt" title className="button primary circle" onClick={() => {
                                                                             setDetail(detailItem)
-                                                                        }}>Chi Tiết</a>
+                                                                        }}>Chi tiết</a>
                                                                     </div>
                                                                 </div>
                                                             })}
@@ -334,109 +334,28 @@ export default function Result () {
                                             </div>
                                             <div className="tab-pane fade" id="groups">
                                                 <div className="main-wraper">
-                                                    <h4 className="main-title">Groups</h4>
+                                                    <h4 className="main-title">Fanpages</h4>
                                                     <div className="row col-xs-6">
                                                         <div className="col-lg-3 col-md-4 col-sm-4">
                                                             <div className="group-box">
                                                                 <figure><img alt src="images/resources/group1.jpg" /></figure>
                                                                 <a title href="#">Sports Punch</a>
-                                                                <span>125M Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group2.jpg" alt /></figure>
-                                                                <a href="#" title>Asian Girls</a>
-                                                                <span>12k Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group3.jpg" alt /></figure>
-                                                                <a href="#" title>Graphic Design</a>
-                                                                <span>125M Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group4.jpg" alt /></figure>
-                                                                <a href="#" title>Family Lovers</a>
-                                                                <span>1M Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group5.jpg" alt /></figure>
-                                                                <a href="#" title>School Mates</a>
-                                                                <span>22M Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group6.jpg" alt /></figure>
-                                                                <a href="#" title>Panama Beach</a>
-                                                                <span>5M Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group7.jpg" alt /></figure>
-                                                                <a href="#" title>Online Teching</a>
-                                                                <span>52k Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group8.jpg" alt /></figure>
-                                                                <a href="#" title>Child Cares</a>
-                                                                <span>1M Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group9.jpg" alt /></figure>
-                                                                <a href="#" title>Fun Art</a>
-                                                                <span>35k Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group10.jpg" alt /></figure>
-                                                                <a href="#" title>Kids Players</a>
-                                                                <span>10M Members</span>
-                                                                <button>join group</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-3 col-md-4 col-sm-4">
-                                                            <div className="group-box">
-                                                                <figure><img src="images/resources/group11.jpg" alt /></figure>
-                                                                <a href="#" title>Goldi Friends</a>
-                                                                <span>14M Members</span>
-                                                                <button>join group</button>
+                                                                <span>Số lượt thích: 152 like</span>
+                                                                <button>Theo dõi</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div className="col-lg-4">
                                         <aside className="sidebar static right">
                                             <div className="widget">
                                                 <h4 className="widget-title">Lịch Sử</h4>
                                                 <ul className="widget-analytics">
-                                                    <li>Sự Kiện Theo Dõi<span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
-                                                    <li>Sự Kiện Tham Gia<span>{arrFollowJoin.filter(item => item.isJoin === true).length}</span></li>
+                                                    <li>Chiến dịch đã theo dõi<span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
+                                                    <li>Chiến dịch Tham Gia<span>{arrFollowJoin.filter(item => item.isJoin === true).length}</span></li>
                                                     <li>Số Lần Ủng Hộ <span>{arrDonation.length}</span></li>
                                                 </ul>
                                             </div>

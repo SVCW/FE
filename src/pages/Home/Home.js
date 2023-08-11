@@ -1276,7 +1276,7 @@ export default function Home () {
                 </li>
                 <li>
                   <NavLink to="/statisticaluser" title>
-                    <i className="icofont-flash" /> Thống kê
+                  <i class="fa-solid fa-chart-simple" /> Thống kê
                   </NavLink>
                 </li>
                 {userByID.fanpage === null ? (
@@ -1871,7 +1871,7 @@ export default function Home () {
                                   </div>
                                 </figure>
 
-                                <p className="mt-3">
+                                {/* <p className="mt-3">
                                   <span
                                     style={{
                                       color: "black",
@@ -1882,16 +1882,47 @@ export default function Home () {
                                     Chi tiết :
                                   </span>{" "}
                                   {item.description}
-                                </p>
-                                <div style={{ paddingBottom: '20px' }}>
+                                </p> */}
+
+                                {/* <div style={{ paddingBottom: '20px' }}>
                                   <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>  </span> {moment(item.startDate).format('DD/MM/YYYY')}</div>
                                   <div>-</div>
                                   <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}></span> {moment(item.endDate).format('DD/MM/YYYY')}</div>
-                                </div>
+                                </div> */}
 
                                 {item.targetDonation !== 0 ? (
                                   <div className="mb-4">
-                                    <div>
+                                  <p style={{
+                                    color:'blue',
+                                    fontWeight:'400',
+                                    fontSize:"15px",
+                                  }} >Đã quyên góp được <br/>
+                                      <span
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                         <span
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {item.realDonation.toLocaleString()}
+                                      </span>{" "} đ /
+                                      <span
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                         {item.targetDonation.toLocaleString()}{" "} đ
+                                      </span>{" "}
+                                      </span>
+                                   </p>
+                                  
+                                    {/* <div>
                                       {" "}
                                       <span
                                         style={{
@@ -1930,7 +1961,7 @@ export default function Home () {
                                       >
                                         {item.realDonation.toLocaleString()} vnđ
                                       </span>{" "}
-                                    </div>
+                                    </div> */}
                                     <input
                                       type="range"
                                       min="0"
@@ -1984,11 +2015,13 @@ export default function Home () {
                                     <div
                                       className="range-value"
                                       style={{
+                                        color:"blue",
                                         position: "absolute",
                                         right: "10px",
                                       }}
                                     >
-                                      100%
+                                      {item.targetDonation.toLocaleString()}{" "}
+                                        vnđ
                                     </div>
                                   </div>
                                 ) : (
@@ -2042,8 +2075,8 @@ export default function Home () {
                                       : "Theo dõi"}
                                   </button>
                                   {item.targetDonation !== 0 ? (
-                                    <button
-                                      className="btn btn-primary ml-3 mb-4 mt-4"
+                                    <button 
+                                      className="btn btn-primary mb-4 mt-4 "
                                       onClick={() => {
                                         // setActi(item.activityId)
                                         formik1.setFieldValue(
@@ -2061,110 +2094,7 @@ export default function Home () {
                                 </div>
 
                                 <div className="we-video-info">
-                                  {/* <ul>
-                                    <li>
-                                      <span title="views" className="views">
-                                        <i>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={16}
-                                            height={16}
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="feather feather-eye"
-                                          >
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx={12} cy={12} r={3} />
-                                          </svg>
-                                        </i>
-                                        <ins>1.2k</ins>
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <span
-                                        title="Comments"
-                                        className="Recommend"
-                                      >
-                                        <i>
-                                          <svg
-                                            className="feather feather-message-square"
-                                            strokeLinejoin="round"
-                                            strokeLinecap="round"
-                                            strokeWidth={2}
-                                            stroke="currentColor"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            height={16}
-                                            width={16}
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                          </svg>
-                                        </i>
-                                        <ins>54</ins>
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <span title="follow" className="Follow">
-                                        <i>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={16}
-                                            height={16}
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="feather feather-star"
-                                          >
-                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                          </svg>
-                                        </i>
-                                        <ins>5k</ins>
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <span className="share-pst" title="Share">
-                                        <i>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={16}
-                                            height={16}
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="feather feather-share-2"
-                                          >
-                                            <circle cx={18} cy={5} r={3} />
-                                            <circle cx={6} cy={12} r={3} />
-                                            <circle cx={18} cy={19} r={3} />
-                                            <line
-                                              x1="8.59"
-                                              y1="13.51"
-                                              x2="15.42"
-                                              y2="17.49"
-                                            />
-                                            <line
-                                              x1="15.41"
-                                              y1="6.51"
-                                              x2="8.59"
-                                              y2="10.49"
-                                            />
-                                          </svg>
-                                        </i>
-                                        <ins>205</ins>
-                                      </span>
-                                    </li>
-                                  </ul> */}
+                                
                                   <div
                                     className="emoji-state"
                                     style={{

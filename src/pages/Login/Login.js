@@ -212,22 +212,13 @@ export default function Login (props) {
                             </div> */}
                             {msgModerator !== '' ? <h3 style={{ color: 'red' }}>{msgModerator}</h3> : <div></div>}
                             <button className="main-btn" type="submit" ><i className="icofont-key" /> Đăng nhập</button>
-
+                            
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
-                            <p
-                                style={{
-                                    marginTop: 20,
-                                    fontSize: 16,
-                                    borderBottom: "2px solid #17a2b8",
-                                    paddingBottom: 4,
-                                    width: "50%",
-                                    cursor: "pointer",
-                                    fontWeight: "500",
-                                }}
+                            <p className="google-icon-p"
                                 onClick={signInWithGoogle}
                             >
-
-                                Đăng nhập với google
+                            <i class="fa-brands fa-google google-icon-g" /> 
+                                 Đăng nhập với google
                             </p>
                         </form>
                     </div>
