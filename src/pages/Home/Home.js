@@ -3568,201 +3568,194 @@ export default function Home(props) {
                 padding: "10px",
               }}
             >
-
-            {/* <span className="popup-closed" onClick={handleClick1}>
-              <i className="icofont-close" />
-            </span>
-            <div className="popup-meta">
-              <div className="popup-head">
-                <h5>
-                  <i>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-plus"
-                    >
-                      <line x1={12} y1={5} x2={12} y2={19} />
-                      <line x1={5} y1={12} x2={19} y2={12} />
-                    </svg>
-                  </i>
-                  Tạo tiến trình
-                </h5>
-              </div>
-            </div> */}
             <div className="multi-form">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit1}
-              >
-                <Form>
-                  <div className="form">
-                    {formData.map((form, index) => (
-                      <div
-                        key={index}
-                        className={`form-group  hidden`}
-                        style={{ display: index === 0 ? "none" : "block" }}
-                      >
-                        <h3>Form {index}</h3>
-                        <div className="form-group">
-                          <label htmlFor={`processTitle_${index}`}>
-                            Tiêu đề
-                          </label>
-                          <Field
-                            type="text"
-                            name={`forms[${index}].processTitle`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`description_${index}`}>Mô tả</label>
-                          <Field
-                            type="text"
-                            name={`forms[${index}].description`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`startDate_${index}`}>
-                            Thời gian diễn ra
-                          </label>
-                          <Field
-                            type="datetime-local"
-                            name={`forms[${index}].startDate`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`endDate_${index}`}>
-                            Thời gian kết thúc
-                          </label>
-                          <Field
-                            type="datetime-local"
-                            name={`forms[${index}].endDate`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`processTypeId_${index}`}>
-                            Thể loại tiến trình
-                          </label>
-                          <select
-                            name={`forms[${index}].processTypeId`}
-                            value={form.processTypeId} // Bind the select value to the formData value
-                            onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
-                            className="form-control"
-                          >
-                            <option value="">Chọn </option>
-                            {processType.map((item, index) => {
-                              return (
-                                <option value={item.processTypeId} key={index}>
-                                  {item.processTypeName}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        </div>
-                        <div className="form-group">
-                          <Field
-                            type="text"
-                            hidden
-                            name={`forms[${index}].processNo`}
-                            value={index + 1}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`media_${index}`}>Hình ảnh</label>
-                          <div>
-                            <Field
-                              name={`forms[${index}].media`}
-                              id={`media_${index}`}
-                              type="file"
-                              multiple
-                              onChange={(e) => handleImageChange1(e, index)}
-                            />
-                            <div className="image-container">
-                              {form.media.map((image, imageIndex) => (
-                                <div className="image-item" key={imageIndex}>
-                                  <img
-                                    src={image.linkMedia}
-                                    alt={`Image ${imageIndex}`}
-                                    className="image-preview"
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit1}
+                >
+                  <div className="container">
+                    <header className="header">
+                      {/* <h1 id="title" className="text-center">Survey Form</h1>
+                                <p id="description" className="text-center">
+                                    Thank you for taking the time to help us improve the platform
+                                </p>
+                                <button className="close-button" onClick={closePopup}>&times;</button> */}
+                    </header>
+                    <div className="form-wrap">
+                      <Form>
+
+                        <button className="close-button" onClick={closePopup}>
+                          &times;
+                        </button>
+                        <div className="form">
+                          {formData.map((form, index) => (
+                            <div
+                              key={index}
+                              className={`form-group  hidden `}
+                              style={{ display: index === 0 ? "none" : "block" }}
+                            >
+
+                              <h3 style={{ textAlign: 'center' }}>Vui lòng điền quy trình {index}</h3>
+                              <div className="form-group">
+                                <label htmlFor={`processTitle_${index}`}>
+                                  Tiêu đề
+                                </label>
+                                <Field
+                                  type="text"
+                                  name={`forms[${index}].processTitle`}
+                                  className="form-control"
+                                />
+                              </div>
+                              <div className="form-group">
+                                <label htmlFor={`description_${index}`}>Mô tả</label>
+                                <textarea
+                                  type="text"
+                                  name={`forms[${index}].description`}
+                                  className="form-control"
+                                />
+                              </div>
+                              <dv className="row">
+                                <div className="form-group col-md-6">
+                                  <label htmlFor={`startDate_${index}`}>
+                                    Thời gian diễn ra
+                                  </label>
+                                  <Field
+                                    type="datetime-local"
+                                    name={`forms[${index}].startDate`}
+                                    className="form-control"
                                   />
                                 </div>
-                              ))}
+                                <div className="form-group col-md-6">
+                                  <label htmlFor={`endDate_${index}`}>
+                                    Thời gian kết thúc
+                                  </label>
+                                  <Field
+                                    type="datetime-local"
+                                    name={`forms[${index}].endDate`}
+                                    className="form-control"
+                                  />
+                                </div>
+                              </dv>
+
+                              <div className="form-group">
+                                <label htmlFor={`processTypeId_${index}`}>
+                                  Thể loại tiến trình
+                                </label>
+                                <select
+                                  name={`forms[${index}].processTypeId`}
+                                  value={form.processTypeId} // Bind the select value to the formData value
+                                  onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
+                                  className="form-control"
+                                >
+                                  <option value="">Chọn </option>
+                                  {processType.map((item, index) => {
+                                    return (
+                                      <option value={item.processTypeId} key={index}>
+                                        {item.processTypeName}
+                                      </option>
+                                    );
+                                  })}
+                                </select>
+                              </div>
+                              <div className="form-group">
+                                <Field
+                                  type="text"
+                                  hidden
+                                  name={`forms[${index}].processNo`}
+                                  value={index + 1}
+                                  className="form-control"
+                                />
+                              </div>
+
+                              <div className="form-group">
+                                <label htmlFor={`media_${index}`}>Hình ảnh</label>
+                                <div>
+                                  <Field
+                                    name={`forms[${index}].media`}
+                                    id={`media_${index}`}
+                                    type="file"
+                                    multiple
+                                    onChange={(e) => handleImageChange1(e, index)}
+                                  />
+                                  <div className="image-container">
+                                    {form.media.map((image, imageIndex) => (
+                                      <div className="image-item" key={imageIndex}>
+                                        <img
+                                          src={image.linkMedia}
+                                          alt={`Image ${imageIndex}`}
+                                          className="image-preview"
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                              {index === currentForm && (
+                                <div className="form-buttons">
+                                  {index > 0 && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-secondary"
+                                      onClick={handlePrevious}
+                                    >
+                                      Về sau
+                                    </button>
+                                  )}
+                                  {index < formData.length - 1 && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-primary"
+                                      onClick={handleNext}
+                                    >
+                                      Tiếp tục
+                                    </button>
+                                  )}
+                                  {index > 0 && (
+                                    <button
+                                      style={{
+                                        marginLeft: "1rem",
+                                        width: "12%",
+                                      }}
+                                      type="button"
+                                      className="btn btn-danger delete"
+                                      onClick={handleDeleteForm}
+                                    >
+                                      Xóa
+                                    </button>
+                                  )}
+                                </div>
+                              )}
                             </div>
-                          </div>
+                          ))}
                         </div>
-                        {index === currentForm && (
+
+                        {currentForm === formData.length - 1 && (
                           <div className="form-buttons">
-                            {index > 0 && (
+                            <button
+                              style={{ width: "25%" }}
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={handleCreateNewForm}
+                            >
+                              Thêm quy trình
+                            </button>
+                            {currentForm >= 1 && (
                               <button
-                                type="button"
-                                className="btn btn-secondary"
-                                onClick={handlePrevious}
+                                style={{ marginLeft: "1rem" }}
+                                type="submit"
+                                className="btn btn-success"
                               >
-                                Về sau
-                              </button>
-                            )}
-                            {index < formData.length - 1 && (
-                              <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={handleNext}
-                              >
-                                Tiếp tục
-                              </button>
-                            )}
-                            {index > 0 && (
-                              <button
-                                style={{
-                                  marginLeft: "1rem",
-                                  width: "12%",
-                                }}
-                                type="button"
-                                className="btn btn-danger delete"
-                                onClick={handleDeleteForm}
-                              >
-                                Xóa
+                                Hoàn thành
                               </button>
                             )}
                           </div>
                         )}
-                      </div>
-                    ))}
-                  </div>
-                  {currentForm === formData.length - 1 && (
-                    <div className="form-buttons">
-                      <button
-                        style={{ width: "25%" }}
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={handleCreateNewForm}
-                      >
-                        Thêm quy trình khác
-                      </button>
-                      {currentForm >= 1 && (
-                        <button
-                          style={{ marginLeft: "1rem" }}
-                          type="submit"
-                          className="btn btn-success"
-                        >
-                          Hoàn thành
-                        </button>
-                      )}
+                      </Form>
                     </div>
-                  )}
-                </Form>
-              </Formik>
-            </div>
+                  </div>
+                </Formik>
+              </div>
           </div>
         </div>
       ) : (
