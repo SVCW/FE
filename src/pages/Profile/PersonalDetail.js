@@ -21,6 +21,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
   const [reloadData, setReloadData] = useState(false);
   const [avatarImage, setAvatarImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
+ 
   const { getUserId } = useSelector((root) => root.ProfileReducer);
   // useEffect(() => {
   //   const action = GetProfileByIdAction(localStorage.getItem('userID'));
@@ -54,6 +55,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
           dateOfBirth: response.data.data.user.dateOfBirth,
           status: response.data.data.user.status,
           roleId: response.data.data.user.roleId,
+          
         });
       })
       .catch((error) => {
@@ -360,7 +362,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
             </div>
             <div class="col-md-6">
               <label for="validationDefault07" class="form-label">
-                Sự kiện đã tham gia
+                Chiến dịch đã tham gia
               </label>
               <input
                 type="text"
@@ -372,7 +374,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
             </div>
             <div class="col-md-6">
               <label for="validationDefault08" class="form-label">
-                Sự kiện hoàn thành
+                Chiến dịch hoàn thành
               </label>
               <input
                 type="text"
@@ -410,14 +412,14 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
             </div>
             <div style={{ marginTop: 10 }}>
               <button className="btn btn-primary" type="submit">
-                Submit
+                Hoàn thành
               </button>
               <button
                 style={{ marginLeft: 10 }}
                 className="ask-qst btn btn-danger"
                 onClick={() => setIsEditing(false)}
               >
-                Huỷ
+                Huỷ 
               </button>
             </div>
           </form>

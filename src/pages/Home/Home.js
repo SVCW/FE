@@ -886,12 +886,12 @@ export default function Home(props) {
 
       swalWithBootstrapButtons
         .fire({
-          title: "Tạo mới  hoạt động thành công",
-          text: "Bạn muốn thêm tiến trình cho hoạt động",
+          title: "Tạo mới chiến dịch thành công",
+          text: "Bạn muốn thêm chi tiết tiến trình cho chiến dịch",
           icon: "success",
           showCancelButton: true,
           confirmButtonText: "Thêm tiến trình",
-          cancelButtonText: "Không!",
+          cancelButtonText: "Hoàn thành",
           reverseButtons: true,
         })
         .then((result) => {
@@ -914,8 +914,8 @@ export default function Home(props) {
             result.dismiss === Swal.DismissReason.cancel
           ) {
             swalWithBootstrapButtons.fire(
-              "Thành Công",
-              "Thêm Hoạt Động Thành  Công",
+              "Thành công",
+              "Thêm tiến trình thành  công",
               "success"
             );
             formik.setFieldValue("title", "");
@@ -1848,17 +1848,17 @@ export default function Home(props) {
                                   {/* chi tiết chiến dịch */}
                                   <p className="mt-3 mt-detail">
                                     <span className="mt-detail">
-                                      Chi tiết :
+                                      
                                     </span>{" "}
                                     <PostDescription
                                       description={item.description}
                                     />
                                   </p>
 
-                                  <p className="mt-3 mt-detail">
+                                  {/* <p className="mt-3 mt-detail">
                                     <span className="mt-detail">Dia chi :</span>{" "}
                                     {item.location}{" "}
-                                  </p>
+                                  </p> */}
 
                                   <figure style={{}}>
                                     {/* <p style={{ width: '100%' }}>fetched-image</p> */}

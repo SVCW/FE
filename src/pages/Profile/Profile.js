@@ -45,9 +45,9 @@ export default function Profile(props) {
                           <img src={userInfo?.coverImage} alt="" />
                           <a href="#" title>
                             
-                            <i className="icofont-check-circled" />
+                            {/* <i className="icofont-check-circled" /> */}
                             
-                            Theo dõi
+                            Thích
                           
                           </a>
                           <figure className="group-dp">
@@ -69,7 +69,7 @@ export default function Profile(props) {
                               {userInfo?.createAt}
                             </li>
                             <li>
-                              <span>Số nhóm đã tham gia:</span>{' '}
+                              <span>Số nhóm đang theo dõi:</span>{' '}
                               {userInfo?.followFanpage.length}
                             </li>
                             <li>
@@ -77,7 +77,8 @@ export default function Profile(props) {
                               {userInfo?.activity.length}
                             </li>
                             <li>
-                              <span>Số tiền donate đã nhận:</span> 0
+                              <span>Số người thích:</span> {' '}
+                              
                             </li>
                           </ul>
                           <ul className="nav nav-tabs about-btn">
@@ -102,126 +103,8 @@ export default function Profile(props) {
                               </a>
                             </li>
                           </ul>
-                          <ul className="more-grp-info">
-                            <li>
-                              <span>Ngày tạo tài khoản:</span> 8-8-2023
-                            </li>
-                            <li>
-                              <div className="more">
-                                <div className="more-post-optns">
-                                  <i className>
-                                    <svg
-                                      className="feather feather-more-horizontal"
-                                      strokeLinejoin="round"
-                                      strokeLinecap="round"
-                                      strokeWidth={2}
-                                      stroke="currentColor"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      height={24}
-                                      width={24}
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <circle r={1} cy={12} cx={12} />
-                                      <circle r={1} cy={12} cx={19} />
-                                      <circle r={1} cy={12} cx={5} />
-                                    </svg>
-                                  </i>
-                                  <ul>
-                                    <li>
-                                      <i className="icofont-pen-alt-1" />
-                                      Chỉnh sửa bài viết
-                                    </li>
-                                    <li>
-                                      <i className="icofont-ban" />
-                                      Ẩn bài viết
-                                    </li>
-                                    <li>
-                                      <i className="icofont-ui-delete" />
-                                      Xóa bài viết
-                                    </li>
-                                    <li>
-                                      <i className="icofont-flag" />
-                                      Báo cáo bài viết
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
                         </div>
-                        <div className="main-wraper">
-                          <div className="grp-about">
-                            <div className="row">
-                              <div className="col-lg-8 col-md-6">
-                                <h4>Giới thiệu</h4>
-                                <p>
-                                  Tôi là ước. Hiện tại tôi sinh sống và làm việc
-                                  tại hồ chí minh. Tôi rất thích tham gia các
-                                  hoạt động thiện nguyện để giúp đỡ mọi người.
-                                </p>
-                                <ul className="badges">
-                                  <li>
-                                    <img
-                                      src="images/badges/badge2.png"
-                                      alt=""
-                                    />
-                                  </li>
-                                  <li>
-                                    <img
-                                      src="images/badges/badge3.png"
-                                      alt=""
-                                    />
-                                  </li>
-                                  <li>
-                                    <img
-                                      src="images/badges/badge4.png"
-                                      alt=""
-                                    />
-                                  </li>
-                                  <li>
-                                    <img
-                                      src="images/badges/badge5.png"
-                                      alt=""
-                                    />
-                                  </li>
-                                  <li>
-                                    <img
-                                      src="images/badges/badge7.png"
-                                      alt=""
-                                    />
-                                  </li>
-                                  <li>
-                                    <img
-                                      src="images/badges/badge8.png"
-                                      alt=""
-                                    />
-                                  </li>
-                                </ul>
-                              </div>
-                              <div className="col-lg-4 col-md-6">
-                                <div className="share-article">
-                                  <span>Chia sẻ thông tin cá nhân</span>
-                                  <a href="#" title className="facebook">
-                                    <i className="icofont-facebook" />
-                                  </a>
-                                  <a href="#" title className="pinterest">
-                                    <i className="icofont-pinterest" />
-                                  </a>
-                                  <a href="#" title className="instagram">
-                                    <i className="icofont-instagram" />
-                                  </a>
-                                  <a href="#" title className="twitter">
-                                    <i className="icofont-twitter" />
-                                  </a>
-                                  <a href="#" title className="google">
-                                    <i className="icofont-google-plus" />
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        
                         <div className="row">
                           <div className="col-lg-12">
                             <div className="tab-content">
@@ -231,55 +114,7 @@ export default function Profile(props) {
                               >
                                 <div className="row merged20">
                                   <div className="col-lg-8">
-                                    <div className="main-wraper">
-                                      <span className="new-title">
-                                        Tạo chiến dịch
-                                      </span>
-                                      <div className="new-post">
-                                        <form method="post">
-                                          <i className="icofont-pen-alt-1" />
-                                          <input
-                                            type="text"
-                                            placeholder="Tạo chiến dịch mới"
-                                          />
-                                        </form>
-                                        <ul className="upload-media">
-                                          <li>
-                                            <a href="#" title>
-                                              <i>
-                                                <img
-                                                  src="images/image.png"
-                                                  alt=""
-                                                />
-                                              </i>
-                                              <span>Photo/Video</span>
-                                            </a>
-                                          </li>
-                                          <li>
-                                            <a href="#" title>
-                                              <i>
-                                                <img
-                                                  src="images/activity.png"
-                                                  alt=""
-                                                />
-                                              </i>
-                                              <span>Feeling/Activity</span>
-                                            </a>
-                                          </li>
-                                          <li>
-                                            <a href="live-stream.html" title>
-                                              <i>
-                                                <img
-                                                  src="images/live-stream.png"
-                                                  alt=""
-                                                />
-                                              </i>
-                                              <span>Live Stream</span>
-                                            </a>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </div>
+                                   
                                     {/* create new post */}
                                     {userInfo?.activity.map((activity) => (
                                       <div className="main-wraper">
@@ -3409,17 +3244,7 @@ export default function Profile(props) {
         <figure className="bottom-mockup">
           <img alt="" src="images/footer.png" />
         </figure>
-        <div className="bottombar">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <span className>
-                  © copyright All rights reserved by socimo 2020
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        
         <div className="wraper-invite">
           <div className="popup">
             <span className="popup-closed">
