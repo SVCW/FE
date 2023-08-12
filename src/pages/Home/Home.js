@@ -78,6 +78,7 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 export default function Home () {
   const { userByID } = useSelector(root => root.UserReducer)
+
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
@@ -1083,7 +1084,7 @@ export default function Home () {
     },
     onSubmit: (value) => {
       console.log(value);
-      const action = RecommentActivityAction(value);
+      const action = RecommentActivityAction(value, userID);
       dispatch(action)
     }
   })
@@ -1126,18 +1127,23 @@ export default function Home () {
                 <ul className="so-history">
                   <li>
                     <div className="searched-user">
-                      <figure>
+                      {/* <figure>
                         <img
                           style={{ height: "2.5rem", width: "2.5rem" }}
                           src="images/avatar/uocAvatar.jpg"
                           alt
                         />
-                      </figure>
-                      <span className="long-text">Miền Trung</span>
+                      </figure> */}
+                      {arrActivityRecomment.map((item,index)=>{
+                        return   <div style={{display:'flex',flexDirection:'column'}}>
+                        <span className="long-text">-{item.title}</span>
+                        </div>
+                      })}
+                     
                     </div>
-                    <span className="trash">
+                    {/* <span className="trash">
                       <i className="icofont-close-circled" />
-                    </span>
+                    </span> */}
                   </li>
                   {/* <li>
                                     <div className="searched-user">
@@ -1433,7 +1439,7 @@ export default function Home () {
                             <em>10%</em>
                           </li> : <div></div>}
                         </ul>
-                      <div className="widget">
+                      {/* <div className="widget">
                         <h4 className="widget-title">
                           Tổ chức{" "}
                           <a className="see-all" href="#" title>
@@ -1479,7 +1485,7 @@ export default function Home () {
                             </div>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
                      </div>
                     </aside>
                   </div>
