@@ -61,7 +61,7 @@ export default function Result () {
                                 <div className="post-subject">
                                     <div className="university-tag">
                                         <div className="Search-result">
-                                            <h4><strong>"Lịch Sử"</strong></h4>
+                                            <h4><strong>Lịch sử</strong></h4>
                                         </div>
                                     </div>
                                     <ul className="nav nav-tabs post-detail-btn">
