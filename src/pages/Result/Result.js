@@ -61,7 +61,7 @@ export default function Result () {
                                 <div className="post-subject">
                                     <div className="university-tag">
                                         <div className="Search-result">
-                                            <h4>Kết quả tìm kiếm cho  <strong>"Lịch Sử"</strong></h4>
+                                            <h4><strong>"Lịch Sử"</strong></h4>
                                         </div>
                                     </div>
                                     <ul className="nav nav-tabs post-detail-btn">
@@ -102,8 +102,8 @@ export default function Result () {
 
                                                                 <div className="blog-post-meta">
                                                                     <ul>
-                                                                        <li><i className="icofont-read-book" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
-                                                                        <li><i className="icofont-comment" /><a title="comments" href="#">33</a></li>
+                                                                        <li><i className="icofont-like" /><a title="Reads" href="#">{item.activity?.numberLike}</a></li>
+
                                                                     </ul>
                                                                     <h4>{item.activity?.title}</h4>
                                                                     <p>

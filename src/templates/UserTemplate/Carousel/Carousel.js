@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 
-export default function Carousel() {
+export default function Carousel () {
   return (
     <section>
       <div className="white-bg">
@@ -48,8 +48,8 @@ export default function Carousel() {
                           width={24}
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                        <polyline points="9 22 9 12 15 12 15 22" />
+                          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                          <polyline points="9 22 9 12 15 12 15 22" />
                         </svg>
                       </i>
                       <p>Trang Chủ</p>
@@ -109,8 +109,8 @@ export default function Carousel() {
                     </a>
                   </div> */}
                   <div className="link-item">
-                    <a  href="http://localhost:3000/home" title>
-                    <i class="fa-solid fa-chart-simple" style={{color: "#088dcd"}}>
+                    <NavLink to="/statisticaluser">
+                      <i class="fa-solid fa-chart-simple" style={{ color: "#088dcd" }}>
                         <svg className="feather feather-users"
                           strokeLinejoin="round"
                           strokeLinecap="round"
@@ -123,10 +123,10 @@ export default function Carousel() {
                           xmlns="http://www.w3.org/2000/svg"
                         >
                         </svg>
-                    </i>
-                     
+                      </i>
+
                       <p>Thống kê hoạt động</p>
-                    </a>
+                    </NavLink>
                   </div>
                   <div className="link-item">
                     <NavLink to="/groups" title>

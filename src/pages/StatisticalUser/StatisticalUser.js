@@ -50,6 +50,10 @@ const StatisticalUser = (props) => {
         title: {
             text: selectedValue ? 'Thống kê số chiến dịch đã tạo' : 'Thống kê số tiền đã ủng hộ',
             align: 'left',
+            style: {
+                color: selectedValue ? '#0077b6' : '#0077b6', // Đổi màu tùy theo selectedValue
+                fontSize: selectedValue ? '30px' : '30px',
+            },
         },
         grid: {
             row: {
@@ -103,13 +107,13 @@ const StatisticalUser = (props) => {
                                             <div className="tab-content">
                                                 <div className="tab-pane fade active show" id="allposts">
                                                     <div className="main-wraper">
-                                                        <div className="main-title">Thống kê số chiến dịch đã tạo</div>
+                                                        {/* <div className="main-title">Thống kê số chiến dịch đã tạo </div> */}
                                                         <ReactApexChart options={options} series={series} type="line" height={350} />
                                                     </div>
                                                 </div>
                                                 <div className="tab-pane fade" id="members">
                                                     <div className="main-wraper">
-                                                        <h4 className="main-title">Thống kê số tiển đã ủng hộ </h4>
+                                                        {/* <h4 className="main-title">Thống kê số tiển đã ủng hộ </h4> */}
                                                         <ReactApexChart options={options} series={series} type="line" height={350} />
                                                     </div>
                                                 </div>

@@ -39,7 +39,7 @@ export const CreateModeratorAction = (value) => {
             }
             dispatch(action)
             localStorage.setItem('createmoderator', error.response?.data?.message)
-            console.log(error.response?.data?.message);
+            console.log(error.response);
         }
     }
 }
