@@ -1097,7 +1097,7 @@ export default function Home () {
 
   return (
     <Fragment>
-      {isLoadingM ? <Loading /> : <Fragment></Fragment>}
+     
       <Config />
       <ResponsiveHeader />
       <header className>
@@ -1368,7 +1368,7 @@ export default function Home () {
       <Carousel />
 
       <SideBar />
-      <section>
+     
         <div className="gap">
           <div className="container">
             <div className="row">
@@ -1432,31 +1432,7 @@ export default function Home () {
                             </NavLink>
                             <em>10%</em>
                           </li> : <div></div>}
-                          {/* <li>
-                            <i className="icofont-plus-square" />{" "}
-                            <NavLink href="#" title>
-                              Cập nhật ngày tháng năm sinh
-                            </a>
-                            <em>10%</em>
-                          </li>
-                          <li>
-                            <i className="icofont-plus-square" />{" "}
-                            <a href="#" title>
-                              Cập nhật giới tính bạn
-                            </a>
-                            <em>10%</em>
-                          </li> */}
                         </ul>
-                      </div>
-                      {/* complete profile widget */}
-                      {/* <div className="advertisment-box">
-                                                <h4 className><i className="icofont-info-circle" /> advertisment</h4>
-                                                <figure>
-                                                    <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
-                                                </figure>
-                                            </div>adversment widget */}
-
-                      {/* popular courses */}
                       <div className="widget">
                         <h4 className="widget-title">
                           Tổ chức{" "}
@@ -1504,40 +1480,7 @@ export default function Home () {
                           </li>
                         </ul>
                       </div>
-                      {/* recent blog */}
-                      {/* <div className="widget">
-                                                <h4 className="widget-title">Your profile has a new Experience section</h4>
-                                                <p>
-                                                    Showcase your professional experience and education to help potential
-                                                    employers and collaborators find and contact you about career
-                                                    opportunities.
-                                                </p>
-                                                <a className="main-btn" href="profile.html" title data-ripple>view
-                                                    profile</a>
-                                            </div>your profile */}
-                      {/* <div className="widget web-links stick-widget">
-                                                <h4 className="widget-title">Useful Links <a title href="#" className="see-all">See All</a></h4>
-                                                <ul>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">about</a>
-                                                    </li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">career</a>
-                                                    </li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">advertise</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">socimo
-                                                        Apps</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">socimo
-                                                        Blog</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">Help</a>
-                                                    </li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">socimo
-                                                        Gifts</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">content
-                                                        policy</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">User
-                                                        Policy</a></li>
-                                                </ul>
-                                                <p>© Socimo 2020. All Rights Reserved.</p>
-                                            </div>links */}
+                     </div>
                     </aside>
                   </div>
                   <div className="col-lg-6">
@@ -2733,11 +2676,9 @@ export default function Home () {
             </div>
           </div>
         </div>
-      </section >
+     
       {/* content */}
-      < figure className="bottom-mockup" >
-        <img src="images/footer.png" alt />
-      </figure >
+   
       <div className="bottombar">
         <div className="container">
           <div className="row">
@@ -3325,9 +3266,12 @@ export default function Home () {
             </div>
           </div>
         </div>
+        </div>
       ) : (
         <div></div>
       )}
+
+
       {openpro1 === true ? (
         <div className="post-new-popup" style={popupStyle4}>
           <div
@@ -3826,38 +3770,7 @@ export default function Home () {
       ) : (
         <div></div>
       )}
-      {/* {isOpen2 === true ?
-                <div className="post-new-popup2" style={popupStyle2}>
-                    <div className="popup" style={{ width: 800, marginTop: '100px', zIndex: 80 }}>
-                        <span className="popup-closed" onClick={handleClick2}><i className="icofont-close" /></span>
-                        <div className="popup-meta">
-                            <div className="popup-head">
-                                <h5><i>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus">
-                                        <line x1={12} y1={5} x2={12} y2={19} />
-                                        <line x1={5} y1={12} x2={19} y2={12} />
-                                    </svg></i>Xem Tiến Trình</h5>
-                            </div>
-                        </div>
-
-                        <div className="form">
-                            <header className="header">
-
-                            </header>
-                            <div className="form-wrap">
-                                {processactivity.map((item, index) => {
-                                    return <div>
-                                    </div>
-                                }
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                :
-                <div></div>
-            } */}
+      
 
       <div className="new-question-popup">
         <div className="popup">
@@ -3924,31 +3837,7 @@ export default function Home () {
           </div>
         </div>
       </div>
-      {/* ask question */}
-      {/* <div className="auto-popup">
-                    <div className="popup-innner">
-                        <div className="popup-head">
-                            <h4>We want to hear from you!</h4>
-                        </div>
-                        <div className="popup-meta">
-                            <span>What are you struggling with right now? what we can help you with?</span>
-                            <form method="post" className="inquiry-about">
-                                <input type="text" placeholder="Your Answer" />
-                                <h5>How did you hear about us?</h5>
-                                <label><input type="radio" name="hear" /> Facebook</label>
-                                <label><input type="radio" name="hear" /> instagram</label>
-                                <label><input type="radio" name="hear" /> Google Search</label>
-                                <label><input type="radio" name="hear" /> Twitter</label>
-                                <label><input type="radio" name="hear" /> Whatsapp</label>
-                                <label><input type="radio" name="hear" /> Other</label>
-                                <input type="text" placeholder="Writh Other" />
-                                <button type="submit" className="primary button">Submit</button>
-                                <button className="canceled button outline-primary" type="button">Cancel</button>
-                            </form>
-                        </div>
-                    </div>
-                </div> */}
-      {/* auto popup */}
+    
       <div className="share-wraper">
         <div className="share-options">
           <span className="close-btn">
@@ -4641,8 +4530,7 @@ export default function Home () {
           </form>
         </div>
       </div>
-      {
-        isPopupOpen && (
+      {isPopupOpen && (
           <div className="popup-overlay">
             {/* <div className="popup-container"> */}
             {/* <h2>Popup Form</h2> */}
@@ -4770,13 +4658,10 @@ export default function Home () {
                 </form>
               </div>
             </div>
-
             {/* </div> */}
           </div>
         )
       }
     </Fragment >
   );
-
-
 }
