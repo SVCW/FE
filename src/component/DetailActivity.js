@@ -162,7 +162,7 @@ export default function DetailActivity (props) {
                             <div className="col-lg-3">
                                 <div className="commentbar">
                                     <div className="user">
-                                        <figure><img src={props.item.user.image} alt /></figure>
+                                        <figure><img src={props.item.user?.image} alt /></figure>
                                         <div className="user-information">
                                             <h4><a href="#" title>{props.item.user?.username}</a></h4>
                                             <span>{dateTime(item.createAt)}</span>
