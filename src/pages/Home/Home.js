@@ -69,7 +69,7 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-export default function Home(props) {
+export default function Home (props) {
   const defaultProps = {
     center: {
       lat: 10.99835602,
@@ -210,7 +210,7 @@ export default function Home(props) {
   };
   const [arrDelete, setArrDelete] = useState([0]);
 
-  useEffect(() => {}, [arrDelete]);
+  useEffect(() => { }, [arrDelete]);
   const handleDeleteForm = () => {
     if (formData.length > 1) {
       setCurrentForm((prevForm) => (prevForm > 0 ? prevForm - 1 : 0));
@@ -257,7 +257,7 @@ export default function Home(props) {
     const newImages = [];
 
     console.log(fileList);
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ linkMedia: imageUrl, type: file.type });
@@ -278,7 +278,7 @@ export default function Home(props) {
           const downloadURL = await getDownloadURL(snapshot.ref);
           newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     setFormData((prevData) =>
       prevData.map((form, index) =>
@@ -678,7 +678,7 @@ export default function Home(props) {
       }
     },
   });
-  function calculateImageClass(imageCount) {
+  function calculateImageClass (imageCount) {
     let imageClass = "full-width";
     if (imageCount === 2) {
       imageClass = "half-width";
@@ -982,7 +982,7 @@ export default function Home(props) {
     console.log(fileList);
     const newImages = [];
 
-    for (let i = 0; i < fileList.length; i++) {
+    for (let i = 0;i < fileList.length;i++) {
       const file = fileList[i];
       const imageUrl = URL.createObjectURL(file);
       newImages.push({ file, url: imageUrl });
@@ -1006,7 +1006,7 @@ export default function Home(props) {
 
           setImages([...images, ...updatedImages]);
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     setIsLoading(false);
     setUploadProgress(0);
@@ -1129,7 +1129,7 @@ export default function Home(props) {
 
   return (
     <Fragment>
-     
+
       <Config />
       <ResponsiveHeader />
       <header className>
@@ -1165,12 +1165,12 @@ export default function Home(props) {
                           alt
                         />
                       </figure> */}
-                      {arrActivityRecomment.map((item,index)=>{
-                        return   <div style={{display:'flex',flexDirection:'column'}}>
-                        <span className="long-text">-{item.title}</span>
+                      {arrActivityRecomment.map((item, index) => {
+                        return <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <span className="long-text">-{item.title}</span>
                         </div>
                       })}
-                     
+
                     </div>
                     {/* <span className="trash">
                       <i className="icofont-close-circled" />
@@ -1405,71 +1405,71 @@ export default function Home(props) {
       <Carousel />
 
       <SideBar />
-     
-        <div className="gap">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <div id="page-contents" className="row merged20">
-                  <div className="col-lg-3">
-                    <aside className="sidebar static left">
-                      <div className="widget whitish low-opacity">
-                        {/* <img src="images/time-clock.png" alt /> */}
-                        <div
-                          className="bg-image"
-                          style={{
-                            backgroundImage: "url(images/avatar/12.jpg)",
-                          }}
-                        />
-                        <div className="date-time">
-                          <div className="realtime">
-                            <span id="hours">00</span>
-                            <span id="point">:</span>
-                            <span id="min">00</span>
-                          </div>
-                          <span id="date" />
+
+      <div className="gap">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div id="page-contents" className="row merged20">
+                <div className="col-lg-3">
+                  <aside className="sidebar static left">
+                    <div className="widget whitish low-opacity">
+                      {/* <img src="images/time-clock.png" alt /> */}
+                      <div
+                        className="bg-image"
+                        style={{
+                          backgroundImage: "url(images/avatar/12.jpg)",
+                        }}
+                      />
+                      <div className="date-time">
+                        <div className="realtime">
+                          <span id="hours">00</span>
+                          <span id="point">:</span>
+                          <span id="min">00</span>
                         </div>
+                        <span id="date" />
                       </div>
-                      <div className="widget">
-                        <h4 className="widget-title">Thông tin cá nhân bạn</h4>
-                        <span>Tiến trình hoàn thiện thông tin cá nhân</span>
-                        <div
-                          data-progress="tip"
-                          className="progress__outer"
-                          data-value={change.toString()}
-                        >
-                          <div className="progress__inner">{(parseFloat(change) * 100).toFixed(1)}%</div>
-                        </div>
-                        <ul className="prof-complete">
-                          {userByStatis.phone === null ? <li>
-                            <i className="icofont-plus-square" />{" "}
-                            <NavLink to={`/profile/${userID}`}>
-                              Cập nhật số điện thoại
-                            </NavLink>
-                            <em>10%</em>
-                          </li> : <div></div>}
-                          {userByStatis.fullName === 'none' ? <li>
-                            <i className="icofont-plus-square" />{" "}
-                            <NavLink to={`/profile/${userID}`}>
-                              Cập nhật họ tên
-                            </NavLink>
-                            <em>10%</em>
-                          </li> : <div></div>}
-                          {userByStatis.image === 'none' ? <li>
-                            <i className="icofont-plus-square" />{" "}
-                            <NavLink to={`/profile/${userID}`}>
-                              Cập nhật avartar
-                            </NavLink>
-                            <em>10%</em>
-                          </li> : <div></div>}
-                          {userByStatis.coverImage === 'none' ? <li>
-                            <i className="icofont-plus-square" />{" "}
-                            <NavLink to={`/profile/${userID}`}>
-                              Cập nhật ảnh bìa
-                            </NavLink>
-                            <em>10%</em>
-                          </li> : <div></div>}
-                        </ul>
+                    </div>
+                    <div className="widget">
+                      <h4 className="widget-title">Thông tin cá nhân bạn</h4>
+                      <span>Tiến trình hoàn thiện thông tin cá nhân</span>
+                      <div
+                        data-progress="tip"
+                        className="progress__outer"
+                        data-value={change.toString()}
+                      >
+                        <div className="progress__inner">{(parseFloat(change) * 100).toFixed(1)}%</div>
+                      </div>
+                      <ul className="prof-complete">
+                        {userByStatis.phone === null ? <li>
+                          <i className="icofont-plus-square" />{" "}
+                          <NavLink to={`/profile/${userID}`}>
+                            Cập nhật số điện thoại
+                          </NavLink>
+                          <em>10%</em>
+                        </li> : <div></div>}
+                        {userByStatis.fullName === 'none' ? <li>
+                          <i className="icofont-plus-square" />{" "}
+                          <NavLink to={`/profile/${userID}`}>
+                            Cập nhật họ tên
+                          </NavLink>
+                          <em>10%</em>
+                        </li> : <div></div>}
+                        {userByStatis.image === 'none' ? <li>
+                          <i className="icofont-plus-square" />{" "}
+                          <NavLink to={`/profile/${userID}`}>
+                            Cập nhật avartar
+                          </NavLink>
+                          <em>10%</em>
+                        </li> : <div></div>}
+                        {userByStatis.coverImage === 'none' ? <li>
+                          <i className="icofont-plus-square" />{" "}
+                          <NavLink to={`/profile/${userID}`}>
+                            Cập nhật ảnh bìa
+                          </NavLink>
+                          <em>10%</em>
+                        </li> : <div></div>}
+                      </ul>
                       {/* <div className="widget">
                         <h4 className="widget-title">
                           Tổ chức{" "}
@@ -1517,166 +1517,166 @@ export default function Home(props) {
                           </li>
                         </ul>
                       </div> */}
-                     </div>
-                    </aside>
-                  </div>
-                  <div className="col-lg-6">
-                    <ul class="filtr-tabs">
-                      <li>
-                        <NavLink to="/home">Trang chủ</NavLink>
-                      </li>
-                      <li>
-                        <NavLink to="/endactivity">
-                          Chiến dịch đã kết thúc
-                        </NavLink>
-                      </li>
-                    </ul>
-                    {/* <ul className="filtr-tabs">
+                    </div>
+                  </aside>
+                </div>
+                <div className="col-lg-6">
+                  <ul class="filtr-tabs">
+                    <li>
+                      <NavLink to="/home">Trang chủ</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/endactivity">
+                        Chiến dịch đã kết thúc
+                      </NavLink>
+                    </li>
+                  </ul>
+                  {/* <ul className="filtr-tabs">
                                             <li><a className="active" href="#" title>Home</a></li>
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>tab buttons */}
-                    {isValidCreate === "true" ? (
-                      <div
-                        className="main-wraper"
-                        onClick={handleClick}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <span className="new-title">
-                          Bạn muốn tạo chiến dịch mới
-                        </span>
-                        <div className="new-post">
-                          <form method="post" onClick={handleClick}>
-                            <i className="icofont-pen-alt-1" />
-                            <input
-                              onClick={handleClick}
-                              type="text"
-                              placeholder="Tạo chiến dịch"
-                            />
-                          </form>
-                        </div>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    <div className="main-wraper">
-                      <div className="user-post">
-                        <div className="friend-info">
-                          <figure>
-                            <i className="icofont-learn" />
-                          </figure>
-                          <div className="friend-name">
-                            <ins>
-                              <a title href="time-line.html">
-                                Đề xuất
-                              </a>
-                            </ins>
-                            <span>
-                              <i className="icofont-runner-alt-1" /> Theo dõi
-                              fanpage tương tự
-                            </span>
-                          </div>
-                          <SimpleSlider arrFanpage={arrFanpage} />
-                        </div>
+                  {isValidCreate === "true" ? (
+                    <div
+                      className="main-wraper"
+                      onClick={handleClick}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span className="new-title">
+                        Bạn muốn tạo chiến dịch mới
+                      </span>
+                      <div className="new-post">
+                        <form method="post" onClick={handleClick}>
+                          <i className="icofont-pen-alt-1" />
+                          <input
+                            onClick={handleClick}
+                            type="text"
+                            placeholder="Tạo chiến dịch"
+                          />
+                        </form>
                       </div>
                     </div>
-                    {/* suggested friends */}
-                    {cmt
-                      .filter(
-                        (item) =>
-                          item.status === "Active" &&
-                          item.title.toLowerCase().includes(titlen)
-                      )
-                      .map((item, index) => {
-                        const detailItem = item;
-                        let isAlreadyLiked = false;
-                        let isAlreadyJoined = false;
-                        let isAlreadyFollowed = false;
-                        item?.like?.map((user) => {
-                          if (user.userId === userByID.userId) {
-                            console.log(user.userId === userByID.userId);
-                            //item?.like?
-                            isAlreadyLiked = true;
-                          }
-                        });
+                  ) : (
+                    <div></div>
+                  )}
+                  <div className="main-wraper">
+                    <div className="user-post">
+                      <div className="friend-info">
+                        <figure>
+                          <i className="icofont-learn" />
+                        </figure>
+                        <div className="friend-name">
+                          <ins>
+                            <a title href="time-line.html">
+                              Đề xuất
+                            </a>
+                          </ins>
+                          <span>
+                            <i className="icofont-runner-alt-1" /> Theo dõi
+                            fanpage tương tự
+                          </span>
+                        </div>
+                        <SimpleSlider arrFanpage={arrFanpage} />
+                      </div>
+                    </div>
+                  </div>
+                  {/* suggested friends */}
+                  {cmt
+                    .filter(
+                      (item) =>
+                        item.status === "Active" &&
+                        item.title.toLowerCase().includes(titlen)
+                    )
+                    .map((item, index) => {
+                      const detailItem = item;
+                      let isAlreadyLiked = false;
+                      let isAlreadyJoined = false;
+                      let isAlreadyFollowed = false;
+                      item?.like?.map((user) => {
+                        if (user.userId === userByID.userId) {
+                          console.log(user.userId === userByID.userId);
+                          //item?.like?
+                          isAlreadyLiked = true;
+                        }
+                      });
 
-                        item?.followJoinAvtivity?.map((user) => {
-                          if (user.userId === userByID.userId) {
-                            isAlreadyFollowed = user.isFollow;
-                            isAlreadyJoined = user.isJoin;
-                          }
-                        });
-                        //TODO
-                        return (
-                          <div className="main-wraper">
-                            <div className="user-post">
-                              <div className="friend-info">
-                                <figure>
-                                  <em>
-                                    <svg
-                                      style={{ verticalAlign: "middle" }}
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width={15}
-                                      height={15}
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        fill="#7fba00"
-                                        stroke="#7fba00"
-                                        d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
-                                      ></path>
-                                    </svg>
-                                  </em>
-                                  <img
-                                    style={{ height: "3rem", width: "3.5rem" }}
-                                    alt
-                                    src="images/avatar/uocAvatar.jpg"
-                                  />
-                                </figure>
-                                <div className="friend-name">
-                                  <div className="more">
-                                    <div className="more-post-optns">
-                                      <i className>
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width={24}
-                                          height={24}
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          strokeWidth={2}
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          className="feather feather-more-horizontal"
+                      item?.followJoinAvtivity?.map((user) => {
+                        if (user.userId === userByID.userId) {
+                          isAlreadyFollowed = user.isFollow;
+                          isAlreadyJoined = user.isJoin;
+                        }
+                      });
+                      //TODO
+                      return (
+                        <div className="main-wraper">
+                          <div className="user-post">
+                            <div className="friend-info">
+                              <figure>
+                                <em>
+                                  <svg
+                                    style={{ verticalAlign: "middle" }}
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width={15}
+                                    height={15}
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      fill="#7fba00"
+                                      stroke="#7fba00"
+                                      d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
+                                    ></path>
+                                  </svg>
+                                </em>
+                                <img
+                                  style={{ height: "3rem", width: "3.5rem" }}
+                                  alt
+                                  src="images/avatar/uocAvatar.jpg"
+                                />
+                              </figure>
+                              <div className="friend-name">
+                                <div className="more">
+                                  <div className="more-post-optns">
+                                    <i className>
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width={24}
+                                        height={24}
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth={2}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="feather feather-more-horizontal"
+                                      >
+                                        <circle cx={12} cy={12} r={1} />
+                                        <circle cx={19} cy={12} r={1} />
+                                        <circle cx={5} cy={12} r={1} />
+                                      </svg>
+                                    </i>
+                                    <ul>
+                                      {userID === item.userId ? (
+                                        <li
+                                          onClick={() => {
+                                            handleClick6();
+                                            const action =
+                                              GetActivityByIDAction(
+                                                item.activityId
+                                              );
+                                            dispatch(action);
+                                          }}
                                         >
-                                          <circle cx={12} cy={12} r={1} />
-                                          <circle cx={19} cy={12} r={1} />
-                                          <circle cx={5} cy={12} r={1} />
-                                        </svg>
-                                      </i>
-                                      <ul>
-                                        {userID === item.userId ? (
-                                          <li
-                                            onClick={() => {
-                                              handleClick6();
-                                              const action =
-                                                GetActivityByIDAction(
-                                                  item.activityId
-                                                );
-                                              dispatch(action);
-                                            }}
-                                          >
-                                            <i className="icofont-pen-alt-1" />
-                                            Sửa bài đăng
-                                            <span>
-                                              Chỉnh sửa và cập nhật chi tiết bài
-                                              đăng
-                                            </span>
-                                          </li>
-                                        ) : (
-                                          <div></div>
-                                        )}
-                                        {/* <li>
+                                          <i className="icofont-pen-alt-1" />
+                                          Sửa bài đăng
+                                          <span>
+                                            Chỉnh sửa và cập nhật chi tiết bài
+                                            đăng
+                                          </span>
+                                        </li>
+                                      ) : (
+                                        <div></div>
+                                      )}
+                                      {/* <li>
                                         <i className="icofont-ban" />
                                         Ẩn bài đăng
                                         <span>
@@ -1684,259 +1684,257 @@ export default function Home(props) {
                                           có vấn đề
                                         </span>
                                       </li> */}
-                                        {userID === item.userId ? (
-                                          <li
-                                            onClick={() => {
-                                              Swal.fire({
-                                                title: "Bạn muốn xóa?",
-                                                text: "Bạn có chắc muốn xóa bài viết này!",
-                                                icon: "warning",
-                                                showCancelButton: true,
-                                                confirmButtonColor: "#3085d6",
-                                                cancelButtonColor: "#d33",
-                                                confirmButtonText: "Xóa!",
-                                              }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                  Swal.fire(
-                                                    "Xóa thành công!",
-                                                    "Xóa thành công chiến dịch.",
-                                                    "success"
+                                      {userID === item.userId ? (
+                                        <li
+                                          onClick={() => {
+                                            Swal.fire({
+                                              title: "Bạn muốn xóa?",
+                                              text: "Bạn có chắc muốn xóa bài viết này!",
+                                              icon: "warning",
+                                              showCancelButton: true,
+                                              confirmButtonColor: "#3085d6",
+                                              cancelButtonColor: "#d33",
+                                              confirmButtonText: "Xóa!",
+                                            }).then((result) => {
+                                              if (result.isConfirmed) {
+                                                Swal.fire(
+                                                  "Xóa thành công!",
+                                                  "Xóa thành công chiến dịch.",
+                                                  "success"
+                                                );
+                                                const action =
+                                                  DeleteActivityByUserAction(
+                                                    item.activityId
                                                   );
-                                                  const action =
-                                                    DeleteActivityByUserAction(
-                                                      item.activityId
-                                                    );
-                                                  dispatch(action);
-                                                }
-                                              });
-                                            }}
-                                          >
-                                            <i className="icofont-ui-delete" />
-                                            Xóa bài đăng
-                                            <span>
-                                              Xóa những bài đăng khi bạn cảm
-                                              thấy có vấn đề không ổn
-                                            </span>
-                                          </li>
-                                        ) : (
-                                          <div></div>
-                                        )}
-                                        {userID !== item.userId ? (
-                                          <li
-                                            onClick={() => {
-                                              setReport(true);
-                                              formik6.setFieldValue(
-                                                "activityId",
-                                                item.activityId
-                                              );
-                                            }}
-                                          >
-                                            <i className="icofont-flag" />
-                                            Báo cáo bài đăng
-                                            <span>
-                                              nhầm báo cáo những vấn đề bất
-                                              thường đến cho người quản lý
-                                            </span>
-                                          </li>
-                                        ) : (
-                                          <div></div>
-                                        )}
-                                      </ul>
-                                    </div>
+                                                dispatch(action);
+                                              }
+                                            });
+                                          }}
+                                        >
+                                          <i className="icofont-ui-delete" />
+                                          Xóa bài đăng
+                                          <span>
+                                            Xóa những bài đăng khi bạn cảm
+                                            thấy có vấn đề không ổn
+                                          </span>
+                                        </li>
+                                      ) : (
+                                        <div></div>
+                                      )}
+                                      {userID !== item.userId ? (
+                                        <li
+                                          onClick={() => {
+                                            setReport(true);
+                                            formik6.setFieldValue(
+                                              "activityId",
+                                              item.activityId
+                                            );
+                                          }}
+                                        >
+                                          <i className="icofont-flag" />
+                                          Báo cáo bài đăng
+                                          <span>
+                                            Nhầm báo cáo những vấn đề bất
+                                            thường đến cho người quản lý
+                                          </span>
+                                        </li>
+                                      ) : (
+                                        <div></div>
+                                      )}
+                                    </ul>
                                   </div>
-                                  <ins>
-                                    <a title href="">
-                                      {item.user?.username}
-                                    </a>{" "}
-                                  </ins>
-                                  <span>
-                                    {" "}
-                                    {DateTime(item.createAt)}{" "}
-                                    <i className="icofont-globe" />
-                                  </span>
                                 </div>
-                                <div className="post-meta">
-                                  {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
+                                <ins>
+                                  <a title href="">
+                                    {item.user?.username}
+                                  </a>{" "}
+                                </ins>
+                                <span>
+                                  {" "}
+                                  {DateTime(item.createAt)}{" "}
+                                  <i className="icofont-globe" />
+                                </span>
+                              </div>
+                              <div className="post-meta">
+                                {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
 
-                                  {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
-                                  {/* <p>
+                                {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
+                                {/* <p>
                                                                 {item.description}
                                                             </p> */}
 
-                                  {/* hình ảnh */}
-                                  {item.process.length !== 0 ? (
-                                    <NavLink
-                                      to={`/detailprocess/${item.activityId}`}
+                                {/* hình ảnh */}
+
+                                <div className="row">
+                                  <div
+                                    style={{
+                                      padding: "0",
+                                      display: "flex",
+                                      alignContent: "center",
+                                    }}
+                                    className="col-lg-12"
+                                  >
+                                    <h3
                                       style={{
-                                        fontSize: "20px",
+                                        fontSize: "25px",
                                         fontWeight: "bold",
-                                        color: "#3f6ad8",
-                                        marginBottom: "20px",
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() => {
-                                        // handleClick2()
-                                        // const action = GetProcessByActivityAction(item.activityId);
-                                        // dispatch(action)
-                                      }}
-                                    >
-                                      Xem tiến trình
-                                    </NavLink>
-                                  ) : (
-                                    <div></div>
-                                  )}
-                                  <div className="row">
-                                    <div
-                                      style={{
-                                        padding: "0",
-                                        display: "flex",
-                                        alignContent: "center",
+                                        width: "450px",
+                                        wordWrap: "break-word",
+                                        color: "#2d3436",
                                       }}
                                       className="col-lg-12"
                                     >
-                                      <h3
-                                        style={{
-                                          fontSize: "25px",
-                                          fontWeight: "bold",
-                                          width: "450px",
-                                          wordWrap: "break-word",
-                                          color: "#2d3436",
-                                        }}
-                                        className="col-lg-12"
-                                      >
-                                        {item.title}
-                                      </h3>
+                                      {item.title}
+                                    </h3>
 
-                                      {/* bla bla bla theo dõi */}
-                                    </div>
+                                    {/* bla bla bla theo dõi */}
                                   </div>
-                                  <div style={{ display: "flex" }}>
-                                    <div style={{ fontSize: "17px" }}>
-                                      {" "}
-                                      <span
-                                        style={{
-                                          fontWeight: 400,
-                                          color: "#747d8c",
-                                        }}
-                                      >
-                                        Thời gian:{" "}
-                                      </span>{" "}
-                                      {moment(item.startDate).format(
-                                        "DD/MM/YYYY"
-                                      )}
-                                    </div>
-                                    <div
+                                </div>
+                                <div style={{ display: "flex" }}>
+                                  <div style={{
+                                    color: '#747d8c',
+                                    fontWeight: 400,
+                                    fontSize: '15px',
+                                  }}>
+                                    {" "}
+                                    <span
                                       style={{
-                                        fontSize: "15px",
-                                        fontWeight: "900",
-                                        padding: "0 0.5rem",
+
+                                        color: '#747d8c',
+                                        fontWeight: 400,
+                                        fontSize: '15px',
                                       }}
                                     >
-                                      -
-                                    </div>
-                                    <div style={{ fontSize: "17px" }}>
-                                      {" "}
-                                      <span
-                                        style={{ fontWeight: 600 }}
-                                      ></span>{" "}
-                                      {moment(item.endDate).format(
-                                        "DD/MM/YYYY"
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  {/* chi tiết chiến dịch */}
-                                  <p className="mt-3 mt-detail">
-                                    <span className="mt-detail">
-                                      
+                                      Thời gian:{" "}
                                     </span>{" "}
-                                    <PostDescription
-                                      description={item.description}
-                                    />
-                                  </p>
+                                    {moment(item.startDate).format(
+                                      "DD/MM/YYYY"
+                                    )}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: "15px",
+                                      fontWeight: "900",
+                                      padding: "0 0.5rem",
+                                    }}
+                                  >
+                                    <span style={{
+                                      color: '#747d8c',
+                                      fontWeight: 400,
+                                      fontSize: '15px',
+                                    }}>-</span>
+                                  </div>
+                                  <div style={{
+                                    color: '#747d8c',
+                                    fontWeight: 400,
+                                    fontSize: '15px',
+                                  }}>
+                                    {" "}
+                                    <span
+                                      style={{
+                                        color: '#747d8c',
+                                        fontWeight: 400,
+                                        fontSize: '15px',
+                                      }}
+                                    > </span>{" "}
+                                    {moment(item.endDate).format(
+                                      "DD/MM/YYYY"
+                                    )}
+                                  </div>
+                                </div>
 
-                                  {/* <p className="mt-3 mt-detail">
+                                {/* chi tiết chiến dịch */}
+                                <p className="mt-3 mt-detail">
+                                  <span className="mt-detail">
+
+                                  </span>{" "}
+                                  <PostDescription
+                                    description={item.description}
+                                  />
+                                </p>
+
+                                {/* <p className="mt-3 mt-detail">
                                     <span className="mt-detail">Dia chi :</span>{" "}
                                     {item.location}{" "}
                                   </p> */}
 
-                                  <figure style={{}}>
-                                    {/* <p style={{ width: '100%' }}>fetched-image</p> */}
+                                <figure style={{}}>
+                                  {/* <p style={{ width: '100%' }}>fetched-image</p> */}
 
-                                    <div className="image-gallery-flex">
-                                      {item?.media?.length <= 3
-                                        ? item.media.map((image, index) => {
-                                            return (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post`}
+                                  <div className="image-gallery-flex">
+                                    {item?.media?.length <= 3
+                                      ? item.media.map((image, index) => {
+                                        return (
+                                          <div
+                                            key={index}
+                                            className={`image-container-post`}
+                                          >
+                                            <a
+                                              data-toggle="modal"
+                                              data-target="#img-comt"
+                                              href="images/resources/album1.jpg"
+                                              onClick={() => {
+                                                setDetail(detailItem);
+                                              }}
+                                            >
+                                              <img
+                                                src={image.linkMedia}
+                                                alt={`Image ${image.id}`}
+                                              />
+                                            </a>
+                                          </div>
+                                        );
+                                      })
+                                      : item.media
+                                        ?.slice(0, 4)
+                                        .map((image, index) => {
+                                          return index !== 3 ? (
+                                            <div
+                                              key={index}
+                                              className={`image-container-post`}
+                                            >
+                                              <a
+                                                data-toggle="modal"
+                                                data-target="#img-comt"
+                                                href="images/resources/album1.jpg"
+                                                onClick={() => {
+                                                  setDetail(detailItem);
+                                                }}
                                               >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
-                                            );
-                                          })
-                                        : item.media
-                                            ?.slice(0, 4)
-                                            .map((image, index) => {
-                                              return index !== 3 ? (
-                                                <div
-                                                  key={index}
-                                                  className={`image-container-post`}
-                                                >
-                                                  <a
-                                                    data-toggle="modal"
-                                                    data-target="#img-comt"
-                                                    href="images/resources/album1.jpg"
-                                                    onClick={() => {
-                                                      setDetail(detailItem);
-                                                    }}
-                                                  >
-                                                    <img
-                                                      src={image.linkMedia}
-                                                      alt={`Image ${image.id}`}
-                                                    />
-                                                  </a>
+                                                <img
+                                                  src={image.linkMedia}
+                                                  alt={`Image ${image.id}`}
+                                                />
+                                              </a>
+                                            </div>
+                                          ) : (
+                                            <div
+                                              key={index}
+                                              className={`image-container-post-last`}
+                                            >
+                                              <a
+                                                data-toggle="modal"
+                                                data-target="#img-comt"
+                                                href="images/resources/album1.jpg"
+                                                onClick={() => {
+                                                  setDetail(detailItem);
+                                                }}
+                                              >
+                                                <div className="overlay">
+                                                  +{item.media.length - 4}
                                                 </div>
-                                              ) : (
-                                                <div
-                                                  key={index}
-                                                  className={`image-container-post-last`}
-                                                >
-                                                  <a
-                                                    data-toggle="modal"
-                                                    data-target="#img-comt"
-                                                    href="images/resources/album1.jpg"
-                                                    onClick={() => {
-                                                      setDetail(detailItem);
-                                                    }}
-                                                  >
-                                                    <div className="overlay">
-                                                      +{item.media.length - 4}
-                                                    </div>
-                                                    <img
-                                                      src={image.linkMedia}
-                                                      alt={`Image ${image.id}`}
-                                                    />
-                                                  </a>
-                                                </div>
-                                              );
-                                            })}
-                                    </div>
-                                  </figure>
+                                                <img
+                                                  src={image.linkMedia}
+                                                  alt={`Image ${image.id}`}
+                                                />
+                                              </a>
+                                            </div>
+                                          );
+                                        })}
+                                  </div>
+                                </figure>
 
-                                  {/* <p className="mt-3">
+                                {/* <p className="mt-3">
                                   <span
                                     style={{
                                       color: "black",
@@ -1949,7 +1947,7 @@ export default function Home(props) {
                                   {item.description}
                                 </p> */}
 
-                                  {/* <div style={{ paddingBottom: '20px' }}>
+                                {/* <div style={{ paddingBottom: '20px' }}>
                                   <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>  </span> {moment(item.startDate).format('DD/MM/YYYY')}</div>
                                   <div>-</div>
                                   <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}></span> {moment(item.endDate).format('DD/MM/YYYY')}</div>
@@ -1957,36 +1955,36 @@ export default function Home(props) {
 
                                 {item.targetDonation !== 0 ? (
                                   <div className="mb-4">
-                                  <p style={{
-                                    color:'blue',
-                                    fontWeight:'400',
-                                    fontSize:"15px",
-                                  }} >Đã quyên góp được <br/>
+                                    <p style={{
+                                      color: 'blue',
+                                      fontWeight: '400',
+                                      fontSize: "15px",
+                                    }} >Đã quyên góp được <br />
                                       <span
                                         style={{
                                           color: "blue",
                                           fontSize: "15px",
                                         }}
                                       >
-                                         <span
-                                        style={{
-                                          color: "blue",
-                                          fontSize: "15px",
-                                        }}
-                                      >
-                                        {item.realDonation.toLocaleString()}
-                                      </span>{" "} đ /
-                                      <span
-                                        style={{
-                                          color: "blue",
-                                          fontSize: "15px",
-                                        }}
-                                      >
-                                         {item.targetDonation.toLocaleString()}{" "} đ
-                                      </span>{" "}
+                                        <span
+                                          style={{
+                                            color: "blue",
+                                            fontSize: "15px",
+                                          }}
+                                        >
+                                          {item.realDonation.toLocaleString()}
+                                        </span>{" "} đ /
+                                        <span
+                                          style={{
+                                            color: "blue",
+                                            fontSize: "15px",
+                                          }}
+                                        >
+                                          {item.targetDonation.toLocaleString()}{" "} đ
+                                        </span>{" "}
                                       </span>
-                                   </p>
-                                  
+                                    </p>
+
                                     {/* <div>
                                       {" "}
                                       <span
@@ -2027,279 +2025,299 @@ export default function Home(props) {
                                         {item.realDonation.toLocaleString()} vnđ
                                       </span>{" "}
                                     </div> */}
-                                      <input
-                                        type="range"
-                                        min="0"
-                                        max={item.targetDonation}
-                                        value={item.realDonation}
-                                        // onChange={handleChange}
-                                        className="range-slider"
-                                        style={{
-                                          background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                            (item.realDonation /
-                                              item.targetDonation) *
-                                            100
-                                          }%, #ddd ${
-                                            (item.realDonation /
-                                              item.targetDonation) *
-                                            100
-                                          }%, #ddd 100%)`,
-                                        }}
-                                      />
-                                      {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
-                                      {item.realDonation !== 0 ? (
-                                        <div></div>
-                                      ) : (
-                                        <div
-                                          className="range-value"
-                                          style={{ position: "absolute" }}
-                                        >
-                                          0
-                                        </div>
-                                      )}
-                                      {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
-                                      {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
-                                      {item.realDonation === 0 ? (
-                                        <div></div>
-                                      ) : (
-                                        <div
-                                          className="range-value"
-                                          style={{
-                                            position: "absolute",
-                                            left: `${
-                                              (item.realDonation /
-                                                item.targetDonation) *
-                                              100
-                                            }%`,
-                                          }}
-                                        >
-                                          {" "}
-                                          {(item.realDonation /
+                                    <input
+                                      type="range"
+                                      min="0"
+                                      max={item.targetDonation}
+                                      value={item.realDonation}
+                                      // onChange={handleChange}
+                                      className="range-slider"
+                                      style={{
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
+                                          item.targetDonation) *
+                                          100
+                                          }%, #ddd ${(item.realDonation /
                                             item.targetDonation) *
-                                            100}
-                                          %
-                                        </div>
-                                      )}
+                                          100
+                                          }%, #ddd 100%)`,
+                                      }}
+                                    />
+                                    {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
+                                    {item.realDonation !== 0 ? (
+                                      <div></div>
+                                    ) : (
+                                      <div
+                                        className="range-value"
+                                        style={{ position: "absolute" }}
+                                      >
+                                        0
+                                      </div>
+                                    )}
+                                    {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
+                                    {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
+                                    {item.realDonation === 0 ? (
+                                      <div></div>
+                                    ) : (
                                       <div
                                         className="range-value"
                                         style={{
-                                          color: "blue",
                                           position: "absolute",
-                                          right: "10px",
+                                          left: `${(item.realDonation /
+                                            item.targetDonation) *
+                                            100
+                                            }%`,
                                         }}
                                       >
-                                        {item.targetDonation.toLocaleString()}{" "}
-                                        vnđ
+                                        {" "}
+                                        {(item.realDonation /
+                                          item.targetDonation) *
+                                          100}
+                                        %
                                       </div>
+                                    )}
+                                    <div
+                                      className="range-value"
+                                      style={{
+                                        color: "blue",
+                                        position: "absolute",
+                                        right: "10px",
+                                      }}
+                                    >
+                                      {item.targetDonation.toLocaleString()}{" "}
+                                      vnđ
                                     </div>
+                                  </div>
+                                ) : (
+                                  <div></div>
+                                )}
+
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+
+                                  }}
+                                  className={
+                                    (item.targetDonation !== 0 ? 'marginform' : 'nomarginform') +
+                                    ' ' +
+                                    (item.process.length !== 0 ? 'processform' : 'noprocessform')
+                                  }
+                                >
+                                  <button
+                                    className={` ${isAlreadyJoined
+                                      ? "btn-change"
+                                      : "btn-color"
+                                      } mb-4 mt-4 btn-add ${item.targetDonation !== 0 ? 'marginfollow' : 'sas'}`}
+                                    onClick={() => {
+                                      handleJoinClick(
+                                        index,
+                                        item.activityId,
+                                        isAlreadyJoined,
+                                        item.title
+                                      );
+                                    }}
+                                  >
+                                    {isAlreadyJoined
+                                      ? "Hủy Tham gia"
+                                      : "Tham gia"}
+                                  </button>
+
+                                  <button
+                                    className={` ${isAlreadyFollowed
+                                      ? "btn-change"
+                                      : "btn-color"
+                                      } mb-4 mt-4`}
+                                    onClick={() => {
+                                      handleFollowClick(
+                                        index,
+                                        item.activityId,
+                                        isAlreadyFollowed,
+                                        item.title
+                                      );
+                                    }}
+                                  >
+                                    {
+                                      //TODO
+                                    }
+                                    {isAlreadyFollowed
+                                      ? "Hủy theo dõi"
+                                      : "Theo dõi"}
+                                  </button>
+                                  {item.targetDonation !== 0 ? (
+                                    <button
+                                      className=" btn-color btn-donate"
+                                      onClick={() => {
+                                        // setActi(item.activityId)
+                                        formik1.setFieldValue(
+                                          "activityId",
+                                          item.activityId
+                                        );
+                                        openPopup();
+                                      }}
+                                    >
+                                      Ủng hộ
+                                    </button>
                                   ) : (
                                     <div></div>
                                   )}
+                                  {item.process.length !== 0 ? (
+                                    <NavLink
+                                      to={`/detailprocess/${item.activityId}`}
+                                      style={{
+                                        marginTop: '10x'
+                                      }}
+                                      className="btn-color mb-4 mt-4"
+                                      onClick={() => {
+                                        // handleClick2()
+                                        // const action = GetProcessByActivityAction(item.activityId);
+                                        // dispatch(action)
+                                      }}
+                                    >
+                                      Xem tiến trình
+                                    </NavLink>
+                                  ) : (
+                                    <div></div>
+                                  )}
+                                </div>
 
+                                <div className="we-video-info">
                                   <div
+                                    className="emoji-state"
                                     style={{
                                       display: "flex",
-                                      justifyContent: "space-around",
+                                      alignContent: "center",
+                                      paddingTop: "20px",
                                     }}
                                   >
-                                    <button
-                                      className={`btn ${
-                                        isAlreadyJoined
-                                          ? "btn-danger"
-                                          : "btn-success"
-                                      } mb-4 mt-4`}
-                                      onClick={() => {
-                                        handleJoinClick(
-                                          index,
-                                          item.activityId,
-                                          isAlreadyJoined,
-                                          item.title
-                                        );
-                                      }}
-                                    >
-                                      {isAlreadyJoined
-                                        ? "Hủy Tham gia"
-                                        : "Tham gia"}
-                                    </button>
-
-                                    <button
-                                      className={`btn ${
-                                        isAlreadyFollowed
-                                          ? "btn-danger"
-                                          : "btn-success"
-                                      } mb-4 mt-4`}
-                                      onClick={() => {
-                                        handleFollowClick(
-                                          index,
-                                          item.activityId,
-                                          isAlreadyFollowed,
-                                          item.title
-                                        );
-                                      }}
-                                    >
-                                      {
-                                        //TODO
-                                      }
-                                      {isAlreadyFollowed
-                                        ? "Hủy theo dõi"
-                                        : "Theo dõi"}
-                                    </button>
-                                    {item.targetDonation !== 0 ? (
-                                      <button
-                                        className="btn btn-primary mb-4 mt-4 "
-                                        onClick={() => {
-                                          // setActi(item.activityId)
-                                          formik1.setFieldValue(
-                                            "activityId",
-                                            item.activityId
-                                          );
-                                          openPopup();
-                                        }}
+                                    <div className="popover_wrapper">
+                                      <a
+                                        className="popover_title"
+                                        href="#"
+                                        title
                                       >
-                                        Ủng hộ
-                                      </button>
-                                    ) : (
-                                      <div></div>
-                                    )}
-                                  </div>
-
-                                  <div className="we-video-info">
-                                    <div
-                                      className="emoji-state"
-                                      style={{
-                                        display: "flex",
-                                        alignContent: "center",
-                                        paddingTop: "20px",
-                                      }}
-                                    >
-                                      <div className="popover_wrapper">
-                                        <a
-                                          className="popover_title"
-                                          href="#"
-                                          title
-                                        >
+                                        <img
+                                          alt
+                                          src="images/smiles/thumb.png"
+                                        />
+                                      </a>
+                                      <div className="popover_content">
+                                        <span>
                                           <img
                                             alt
                                             src="images/smiles/thumb.png"
                                           />
-                                        </a>
-                                        <div className="popover_content">
-                                          <span>
-                                            <img
-                                              alt
-                                              src="images/smiles/thumb.png"
-                                            />
-                                            Đã thích
-                                          </span>
-                                          <ul className="namelist">
-                                            {item?.like?.length <= 4
-                                              ? item?.like.map((userItem) => {
-                                                  return (
-                                                    <li>
-                                                      {userItem.user.username}
-                                                    </li>
-                                                  );
-                                                })
-                                              : item?.like
-                                                  ?.slice(0, 4)
-                                                  .map((userItem, index) => {
-                                                    index < 4 ? (
-                                                      <li>
-                                                        {userItem.user.username}
-                                                      </li>
-                                                    ) : (
-                                                      <li>
-                                                        <span>
-                                                          +
-                                                          {item?.like.length -
-                                                            5}
-                                                        </span>
-                                                      </li>
-                                                    );
-                                                  })}
-                                          </ul>
-                                        </div>
+                                          Đã thích
+                                        </span>
+                                        <ul className="namelist">
+                                          {item?.like?.length <= 4
+                                            ? item?.like.map((userItem) => {
+                                              return (
+                                                <li>
+                                                  {userItem.user.username}
+                                                </li>
+                                              );
+                                            })
+                                            : item?.like
+                                              ?.slice(0, 4)
+                                              .map((userItem, index) => {
+                                                index < 4 ? (
+                                                  <li>
+                                                    {userItem.user.username}
+                                                  </li>
+                                                ) : (
+                                                  <li>
+                                                    <span>
+                                                      +
+                                                      {item?.like.length -
+                                                        5}
+                                                    </span>
+                                                  </li>
+                                                );
+                                              })}
+                                        </ul>
                                       </div>
+                                    </div>
 
-                                      <p>{item.like.length || 0}</p>
-                                      <div style={{ marginLeft: "20px" }}>
-                                        <div
-                                          style={{
-                                            color: "blue",
-                                            fontSize: "15px",
-                                          }}
-                                        >
-                                          <span>
-                                            {item.comment.length} bình luận
-                                          </span>
-                                        </div>
+                                    <p>{item.like.length || 0}</p>
+                                    <div style={{ marginLeft: "20px" }}>
+                                      <div
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        <span>
+                                          {(item.comment ? item.comment.length : 0) +
+                                            (item.comment.inverseReply ? item.comment?.inverseReply?.length : 0)
+                                          } bình luận
+                                        </span>
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="stat-tools">
-                                    <div
-                                      className=""
-                                      style={{
-                                        backgroundColor: `${
-                                          isAlreadyLiked
-                                            ? "rgb(117, 189, 240)"
-                                            : "#eae9ee"
+                                </div>
+                                <div className="stat-tools">
+                                  <div
+                                    className=""
+                                    style={{
+                                      backgroundColor: `${isAlreadyLiked
+                                        ? "rgb(117, 189, 240)"
+                                        : "#eae9ee"
                                         }`,
-                                        borderRadius: "4px",
-                                        color: "#82828e",
-                                        display: "inline-block",
-                                        fontSize: "13px",
-                                        padding: "5px 20px",
-                                        verticalAlign: "middle",
-                                        transition: "all 0.2s linear 0s",
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() => {
-                                        handleLikeClick(item.activityId);
-                                      }}
-                                    >
-                                      <div className="Like ">
-                                        <a className="Like__link">
-                                          <i className="icofont-like" /> Thích
-                                        </a>
+                                      borderRadius: "4px",
+                                      color: "#82828e",
+                                      display: "inline-block",
+                                      fontSize: "13px",
+                                      padding: "5px 20px",
+                                      verticalAlign: "middle",
+                                      transition: "all 0.2s linear 0s",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() => {
+                                      handleLikeClick(item.activityId);
+                                    }}
+                                  >
+                                    <div className="Like ">
+                                      <a className="Like__link">
+                                        <i className="icofont-like" /> Thích
+                                      </a>
+                                    </div>
+                                  </div>
+                                  <div className="box">
+                                    <div className="Emojis">
+                                      <div className="Emoji Emoji--like">
+                                        <div className="icon icon--like" />
+                                      </div>
+                                      <div className="Emoji Emoji--love">
+                                        <div className="icon icon--heart" />
+                                      </div>
+                                      <div className="Emoji Emoji--haha">
+                                        <div className="icon icon--haha" />
+                                      </div>
+                                      <div className="Emoji Emoji--wow">
+                                        <div className="icon icon--wow" />
+                                      </div>
+                                      <div className="Emoji Emoji--sad">
+                                        <div className="icon icon--sad" />
+                                      </div>
+                                      <div className="Emoji Emoji--angry">
+                                        <div className="icon icon--angry" />
                                       </div>
                                     </div>
-                                    <div className="box">
-                                      <div className="Emojis">
-                                        <div className="Emoji Emoji--like">
-                                          <div className="icon icon--like" />
-                                        </div>
-                                        <div className="Emoji Emoji--love">
-                                          <div className="icon icon--heart" />
-                                        </div>
-                                        <div className="Emoji Emoji--haha">
-                                          <div className="icon icon--haha" />
-                                        </div>
-                                        <div className="Emoji Emoji--wow">
-                                          <div className="icon icon--wow" />
-                                        </div>
-                                        <div className="Emoji Emoji--sad">
-                                          <div className="icon icon--sad" />
-                                        </div>
-                                        <div className="Emoji Emoji--angry">
-                                          <div className="icon icon--angry" />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div
-                                      className="comment-to bg "
-                                      onClick={() =>
-                                        handleCommentClick(item.activityId)
-                                      }
-                                    >
-                                      <i className="icofont-comment" /> Bình
-                                      luận
-                                    </div>
-                                    <a title href="#" className="share-to">
-                                      <i className="icofont-share-alt" /> Chia
-                                      sẽ
-                                    </a>
-                                    {/* <div className="emoji-state" style={{ display: 'flex', alignContent: 'center' }}>
+                                  </div>
+                                  <div
+                                    className="comment-to bg "
+                                    onClick={() =>
+                                      handleCommentClick(item.activityId)
+                                    }
+                                  >
+                                    <i className="icofont-comment" /> Bình
+                                    luận
+                                  </div>
+                                  <a title href="#" className="share-to">
+                                    <i className="icofont-share-alt" /> Chia
+                                    sẻ
+                                  </a>
+                                  {/* <div className="emoji-state" style={{ display: 'flex', alignContent: 'center' }}>
                                                                     <div className="popover_wrapper" >
                                                                         <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
                                                                         <div className="popover_content">
@@ -2320,316 +2338,316 @@ export default function Home(props) {
                                                                         <div style={{ color: 'blue', fontSize: '15px' }}><span>{item.comment.length} bình luận</span></div>
                                                                     </div>
                                                                 </div> */}
-                                  </div>
-                                  <div
-                                    className="new-comment"
-                                    style={{ display: "block" }}
+                                </div>
+                                <div
+                                  className="new-comment"
+                                  style={{ display: "block" }}
+                                >
+                                  <form
+                                    method="post"
+                                    onSubmit={formik2.handleSubmit}
+                                    style={{ position: "relative" }}
                                   >
-                                    <form
-                                      method="post"
-                                      onSubmit={formik2.handleSubmit}
-                                      style={{ position: "relative" }}
-                                    >
-                                      <div style={{ paddingBottom: "10px" }}>
-                                        {onID === item.activityId ? (
-                                          <div
-                                            className="commentT"
-                                            style={{
-                                              display: "flex",
-                                              alignContent: "center",
-                                            }}
-                                          >
-                                            <span style={{ paddingTop: "6px" }}>
-                                              Trả lời bình luận :{" "}
-                                            </span>
-                                            <div
-                                              style={{ marginLeft: "10px" }}
-                                              className="textcmt"
-                                            >
-                                              {" "}
-                                              @{content}
-                                              {setOnID === item.activityId ? (
-                                                <span
-                                                  style={{
-                                                    color: "red",
-                                                    fontSize: "18px",
-                                                    cursor: "pointer",
-                                                    paddingLeft: "4px",
-                                                  }}
-                                                  onClick={() => {
-                                                    setOnID("");
-                                                    setTcss("35px");
-                                                  }}
-                                                >
-                                                  x
-                                                </span>
-                                              ) : (
-                                                <span
-                                                  style={{
-                                                    color: "red",
-                                                    fontSize: "18px",
-                                                    cursor: "pointer",
-                                                    paddingLeft: "4px",
-                                                  }}
-                                                  onClick={() => {
-                                                    setOnID("");
-                                                    setTcss("10px");
-                                                  }}
-                                                >
-                                                  x
-                                                </span>
-                                              )}
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <div
-                                            style={{
-                                              paddingTop: "6px",
-                                              paddingBottom: "10px",
-                                            }}
-                                          ></div>
-                                        )}
-                                      </div>
-                                      <input
-                                        type="text"
-                                        placeholder=""
-                                        value={formik2.values.commentContent}
-                                        name={commentI}
-                                        onChange={formik2.handleChange}
-                                        className="input-comment"
-                                      />
+                                    <div style={{ paddingBottom: "10px" }}>
                                       {onID === item.activityId ? (
-                                        <button
+                                        <div
+                                          className="commentT"
                                           style={{
-                                            position: "absolute",
-                                            top: "52px",
-                                          }}
-                                          type="submit"
-                                          onClick={async () => {
-                                            // await setTextI(item.activityId)
-                                            formik2.setFieldValue(
-                                              "activityId",
-                                              item.activityId
-                                            );
+                                            display: "flex",
+                                            alignContent: "center",
                                           }}
                                         >
-                                          <i className="icofont-paper-plane" />
-                                        </button>
+                                          <span style={{ paddingTop: "6px" }}>
+                                            Trả lời bình luận :{" "}
+                                          </span>
+                                          <div
+                                            style={{ marginLeft: "10px" }}
+                                            className="textcmt"
+                                          >
+                                            {" "}
+                                            @{content}
+                                            {setOnID === item.activityId ? (
+                                              <span
+                                                style={{
+                                                  color: "red",
+                                                  fontSize: "18px",
+                                                  cursor: "pointer",
+                                                  paddingLeft: "4px",
+                                                }}
+                                                onClick={() => {
+                                                  setOnID("");
+                                                  setTcss("35px");
+                                                }}
+                                              >
+                                                x
+                                              </span>
+                                            ) : (
+                                              <span
+                                                style={{
+                                                  color: "red",
+                                                  fontSize: "18px",
+                                                  cursor: "pointer",
+                                                  paddingLeft: "4px",
+                                                }}
+                                                onClick={() => {
+                                                  setOnID("");
+                                                  setTcss("10px");
+                                                }}
+                                              >
+                                                x
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
                                       ) : (
-                                        <button
+                                        <div
                                           style={{
-                                            position: "absolute",
-                                            top: "40px",
+                                            paddingTop: "6px",
+                                            paddingBottom: "10px",
                                           }}
-                                          type="submit"
-                                          onClick={async () => {
-                                            // await setTextI(item.activityId)
-                                            formik2.setFieldValue(
-                                              "activityId",
-                                              item.activityId
-                                            );
-                                          }}
-                                        >
-                                          <i className="icofont-paper-plane" />
-                                        </button>
+                                        ></div>
                                       )}
+                                    </div>
+                                    <input
+                                      type="text"
+                                      placeholder=""
+                                      value={formik2.values.commentContent}
+                                      name={commentI}
+                                      onChange={formik2.handleChange}
+                                      className="input-comment"
+                                    />
+                                    {onID === item.activityId ? (
+                                      <button
+                                        style={{
+                                          position: "absolute",
+                                          top: "52px",
+                                        }}
+                                        type="submit"
+                                        onClick={async () => {
+                                          // await setTextI(item.activityId)
+                                          formik2.setFieldValue(
+                                            "activityId",
+                                            item.activityId
+                                          );
+                                        }}
+                                      >
+                                        <i className="icofont-paper-plane" />
+                                      </button>
+                                    ) : (
+                                      <button
+                                        style={{
+                                          position: "absolute",
+                                          top: "40px",
+                                        }}
+                                        type="submit"
+                                        onClick={async () => {
+                                          // await setTextI(item.activityId)
+                                          formik2.setFieldValue(
+                                            "activityId",
+                                            item.activityId
+                                          );
+                                        }}
+                                      >
+                                        <i className="icofont-paper-plane" />
+                                      </button>
+                                    )}
 
-                                      {item?.commentData[0]?.isCmt ? (
-                                        <div></div>
-                                      ) : (
-                                        item.comment.map((item, index) => {
-                                          return (
-                                            <div className="comments-area">
-                                              <ul>
-                                                <li>
-                                                  <figure>
-                                                    <img
-                                                      alt
-                                                      src="images/resources/user1.jpg"
-                                                    />
-                                                  </figure>
-                                                  <div className="commenter">
-                                                    <h5>
-                                                      <a title href="#">
-                                                        {item.user?.username}
-                                                      </a>
-                                                    </h5>
-                                                    <span>
-                                                      {DateTime(item.datetime)}
-                                                    </span>
-                                                    <p>{item.commentContent}</p>
-                                                    {/* <span>you can view the more detail via
+                                    {item?.commentData[0]?.isCmt ? (
+                                      <div></div>
+                                    ) : (
+                                      item.comment.map((item, index) => {
+                                        return (
+                                          <div className="comments-area">
+                                            <ul>
+                                              <li>
+                                                <figure>
+                                                  <img
+                                                    alt
+                                                    src="images/resources/user1.jpg"
+                                                  />
+                                                </figure>
+                                                <div className="commenter">
+                                                  <h5>
+                                                    <a title href="#">
+                                                      {item.user?.username}
+                                                    </a>
+                                                  </h5>
+                                                  <span>
+                                                    {DateTime(item.datetime)}
+                                                  </span>
+                                                  <p>{item.commentContent}</p>
+                                                  {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
-                                                  </div>
-                                                  {/* <span title="Like" onClick={() => {
+                                                </div>
+                                                {/* <span title="Like" onClick={() => {
                                                                                         }}><i className="icofont-heart" /></span> */}
-                                                  <a
-                                                    title="Reply"
-                                                    onClick={() => {
-                                                      formik2.setFieldValue(
-                                                        "commentIdReply",
-                                                        item.commentId
-                                                      );
-                                                      // setCommentI('commentIdReply')
-                                                      setContent(
-                                                        item.user?.username
-                                                      );
-                                                      setOnID(item.activityId);
-                                                    }}
-                                                    className="reply-coment"
-                                                  >
-                                                    <i className="icofont-reply" />
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  {item.inverseReply?.map(
-                                                    (item, index) => {
-                                                      return (
-                                                        <div
-                                                          key={index}
-                                                          className="ml-5"
-                                                        >
-                                                          <figure>
-                                                            <img
-                                                              alt
-                                                              src="images/resources/user1.jpg"
-                                                            />
-                                                          </figure>
-                                                          <div className="commenter">
-                                                            <h5>
-                                                              <a title href="#">
-                                                                {
-                                                                  item.user
-                                                                    ?.username
-                                                                }
-                                                              </a>
-                                                            </h5>
-                                                            <span>
-                                                              {DateTime(
-                                                                item.datetime
-                                                              )}
-                                                            </span>
-                                                            <p>
+                                                <a
+                                                  title="Reply"
+                                                  onClick={() => {
+                                                    formik2.setFieldValue(
+                                                      "commentIdReply",
+                                                      item.commentId
+                                                    );
+                                                    // setCommentI('commentIdReply')
+                                                    setContent(
+                                                      item.user?.username
+                                                    );
+                                                    setOnID(item.activityId);
+                                                  }}
+                                                  className="reply-coment"
+                                                >
+                                                  <i className="icofont-reply" />
+                                                </a>
+                                              </li>
+                                              <li>
+                                                {item.inverseReply?.map(
+                                                  (item, index) => {
+                                                    return (
+                                                      <div
+                                                        key={index}
+                                                        className="ml-5"
+                                                      >
+                                                        <figure>
+                                                          <img
+                                                            alt
+                                                            src="images/resources/user1.jpg"
+                                                          />
+                                                        </figure>
+                                                        <div className="commenter">
+                                                          <h5>
+                                                            <a title href="#">
                                                               {
-                                                                item.commentContent
+                                                                item.user
+                                                                  ?.username
                                                               }
-                                                            </p>
-                                                            {/* <span>you can view the more detail via
+                                                            </a>
+                                                          </h5>
+                                                          <span>
+                                                            {DateTime(
+                                                              item.datetime
+                                                            )}
+                                                          </span>
+                                                          <p>
+                                                            {
+                                                              item.commentContent
+                                                            }
+                                                          </p>
+                                                          {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
-                                                          </div>
-                                                          {/* <span title="Like" onClick={() => {
+                                                        </div>
+                                                        {/* <span title="Like" onClick={() => {
                                                                                         }}><i className="icofont-heart" /></span> */}
-                                                          {/* <a title="Reply" onClick={() => {
+                                                        {/* <a title="Reply" onClick={() => {
                                                                                                 formik2.setFieldValue('commentIdReply', item.commentId)
                                                                                                 // setCommentI('commentIdReply')
                                                                                                 setContent(item.user?.username)
                                                                                                 setOnID(item.activityId)
 
                                                                                             }} className="reply-coment"><i className="icofont-reply" /></a> */}
-                                                        </div>
-                                                      );
-                                                    }
-                                                  )}
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          );
-                                        })
-                                      )}
-                                    </form>
-                                  </div>
+                                                      </div>
+                                                    );
+                                                  }
+                                                )}
+                                              </li>
+                                            </ul>
+                                          </div>
+                                        );
+                                      })
+                                    )}
+                                  </form>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        );
-                      })}
+                        </div>
+                      );
+                    })}
 
-                    <div className="loadmore">
-                      <div className="sp sp-bars" />
-                      <a href="#" title data-ripple>
-                        Load More..
-                      </a>
-                    </div>
-                    {/* loadmore buttons */}
+                  <div className="loadmore">
+                    <div className="sp sp-bars" />
+                    <a href="#" title data-ripple>
+                      Load More..
+                    </a>
                   </div>
-                  <div className="col-lg-3">
-                    <aside className="sidebar static right">
-                      {localStorage.getItem("userID") &&
+                  {/* loadmore buttons */}
+                </div>
+                <div className="col-lg-3">
+                  <aside className="sidebar static right">
+                    {localStorage.getItem("userID") &&
                       userByID?.fanpage?.status === "Active" ? (
-                        <div className="widget">
-                          <h4 className="widget-title">Nhóm của bạn</h4>
-                          <ul className="ak-groups">
-                            <li>
-                              <figure>
-                                <img
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    objectfit: "cover",
-                                  }}
-                                  src={userByID?.fanpage?.avatar}
-                                  alt
-                                />
-                              </figure>
-                              <div className="your-grp">
-                                <h5>
-                                  <NavLink
-                                    to={`/fanpage/${localStorage.getItem(
-                                      "userID"
-                                    )}`}
-                                    title
-                                    style={{
-                                      fontSize: "20px",
-                                      width: "200px",
-                                      wordWrap: "break-word",
-                                    }}
-                                  >
-                                    {userByID?.fanpage?.fanpageName}
-                                  </NavLink>
-                                </h5>
-                                <NavLink to="/" title>
-                                  <i className="icofont-bell-alt" />
-                                  Thông báo
-                                  <span>13</span>
-                                </NavLink>
-                                <NavLink
-                                  to=""
-                                  href="group-feed.html"
-                                  title
-                                  className="promote"
-                                  onClick={() => {}}
-                                >
-                                  Chi tiết
-                                </NavLink>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-                      <RecommentActivity />
-                      {/* suggested group */}
                       <div className="widget">
-                        <h4 className="widget-title">Giải trí</h4>
-                        <div className="ask-question">
-                          <div className="rec-events bg-purple">
-                            <i className="icofont-gift" />
-                            <h6>
-                              <a title href>
-                                Game xúc xắc
-                              </a>
-                            </h6>
-                            <img alt src="images/clock.png" />
-                          </div>
-                          <NavLink to="/game">Chơi game</NavLink>
-                        </div>
+                        <h4 className="widget-title">Nhóm của bạn</h4>
+                        <ul className="ak-groups">
+                          <li>
+                            <figure>
+                              <img
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  objectfit: "cover",
+                                }}
+                                src={userByID?.fanpage?.avatar}
+                                alt
+                              />
+                            </figure>
+                            <div className="your-grp">
+                              <h5>
+                                <NavLink
+                                  to={`/fanpage/${localStorage.getItem(
+                                    "userID"
+                                  )}`}
+                                  title
+                                  style={{
+                                    fontSize: "20px",
+                                    width: "200px",
+                                    wordWrap: "break-word",
+                                  }}
+                                >
+                                  {userByID?.fanpage?.fanpageName}
+                                </NavLink>
+                              </h5>
+                              <NavLink to="/" title>
+                                <i className="icofont-bell-alt" />
+                                Thông báo
+                                <span>13</span>
+                              </NavLink>
+                              <NavLink
+                                to=""
+                                href="group-feed.html"
+                                title
+                                className="promote"
+                                onClick={() => { }}
+                              >
+                                Chi tiết
+                              </NavLink>
+                            </div>
+                          </li>
+                        </ul>
                       </div>
-                      {/* ask question widget */}
-                      {/* <div className="widget">
+                    ) : (
+                      <div></div>
+                    )}
+                    <RecommentActivity />
+                    {/* suggested group */}
+                    <div className="widget">
+                      <h4 className="widget-title">Giải trí</h4>
+                      <div className="ask-question">
+                        <div className="rec-events bg-purple">
+                          <i className="icofont-gift" />
+                          <h6>
+                            <a title href>
+                              Game xúc xắc
+                            </a>
+                          </h6>
+                          <img alt src="images/clock.png" />
+                        </div>
+                        <NavLink to="/game">Chơi game</NavLink>
+                      </div>
+                    </div>
+                    {/* ask question widget */}
+                    {/* <div className="widget">
                                                 <h4 className="widget-title">Explor Events <a className="see-all" href="#" title>Xem Tất Cả</a></h4>
                                                 <div className="rec-events bg-purple">
                                                     <i className="icofont-gift" />
@@ -2643,8 +2661,8 @@ export default function Home(props) {
                                                     <img alt src="images/clock.png" />
                                                 </div>
                                             </div> */}
-                      {/* event widget */}
-                      {/* <div className="widget">
+                    {/* event widget */}
+                    {/* <div className="widget">
                                                 <span><i className="icofont-globe" /> Sponsored</span>
                                                 <ul className="sponsors-ad">
                                                     <li>
@@ -2663,8 +2681,8 @@ export default function Home(props) {
                                                     </li>
                                                 </ul>
                                             </div> */}
-                      {/* sponsord */}
-                      {/* <div className="widget stick-widget">
+                    {/* sponsord */}
+                    {/* <div className="widget stick-widget">
                                                 <h4 className="widget-title">Who's follownig</h4>
                                                 <ul className="followers">
                                                     <li>
@@ -2724,14 +2742,14 @@ export default function Home(props) {
                                                     </li>
                                                 </ul>
                                             </div>whos following */}
-                    </aside>
-                  </div>
+                  </aside>
                 </div>
               </div>
             </div>
           </div>
         </div>
-     
+      </div>
+
       {/* content */}
       < figure className="bottom-mockup" >
         <img src="images/footer.png" alt />
@@ -3010,7 +3028,7 @@ export default function Home(props) {
         <div className="post-new-popup" style={popupStyle}>
           <div
             className="popupPost"
-            style={{ 
+            style={{
               width: 800,
               zIndex: 80,
               height: "100vh",
@@ -3145,6 +3163,26 @@ export default function Home(props) {
                     </div>
                   </div>
                   <div className="col-md-12">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Lựa chọn
+                      </label>
+                      <select
+                        type="text"
+                        name="location"
+
+                        value={formik.values.location}
+                        id="name"
+                        className="form-control"
+                        required
+                      >
+                        <option>Không nhận donation</option>
+                        <option>Có nhận donation</option>
+                        <option>Chỉ donation</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-12">
                     <div style={{ height: "200px", width: "100%" }}>
                       <GoogleMapReact
                         bootstrapURLKeys={{
@@ -3224,12 +3262,12 @@ export default function Home(props) {
                               style={{ marginRight: "20px" }}
                               htmlFor="name"
                             >
-                              Chia sẽ lên nhóm của bạn
+                              Chia sẻ lên nhóm của bạn
                             </label>
                             <input
                               type="checkbox"
                               onChange={toggleTextInput1}
-                              // checked={isTextInputVisible1}
+                            // checked={isTextInputVisible1}
                             />
                           </div>
                         </div>
@@ -3531,27 +3569,27 @@ export default function Home(props) {
                         )}
                       </div>
                     </div>*/}
-                  </div> 
+                  </div>
 
-                    <div className="row">
-                      <div className="col-md-4">
-                        <button
-                          type="submit"
-                          id="submit"
-                          className="btn btn-primary btn-block"
-                        >
-                          Cập nhật
-                        </button>
-                      </div>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        id="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Cập nhật
+                      </button>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        ) : (
-          <div></div>
-        )
+        </div>
+      ) : (
+        <div></div>
+      )
       }
 
       {
@@ -3568,7 +3606,7 @@ export default function Home(props) {
                 padding: "10px",
               }}
             >
-            <div className="multi-form">
+              <div className="multi-form">
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -3756,11 +3794,11 @@ export default function Home(props) {
                   </div>
                 </Formik>
               </div>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+        ) : (
+          <div></div>
+        )}
       {report ? (
         <div className="post-new-popup1" style={popupStyle3}>
           <div
@@ -3948,7 +3986,7 @@ export default function Home(props) {
           </div>
         </div>
       </div>
-    
+
       <div className="share-wraper">
         <div className="share-options">
           <span className="close-btn">

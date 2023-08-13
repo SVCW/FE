@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick';
 import styles from './style.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { DeleteLikeAction, PostLikeAction } from '../redux/actions/ActivityAction';
+import { FollowAction, UnFollowAction } from '../redux/actions/FollowJoinAction';
 export default function DetailActivity (props) {
+    const { userID } = useSelector((root) => root.LoginReducer);
     const { item, dateTime } = props;
-    console.log(props.item.media);
+    console.log(item);
+    console.log(props.item.like?.length === 0 ? true : false);
     console.log(props.item);
+    const dispatch = useDispatch()
     const settings = {
         dots: true,
         infinite: true,
@@ -12,6 +18,7 @@ export default function DetailActivity (props) {
         slidesToShow: 1,
         slidesToScroll: 1
     };
+    const [like, setLike] = useState(false)
 
     const slides = props.item.media?.map((item, index) => {
         return <div className={styles['carousel-item']} key={index}>
@@ -31,13 +38,36 @@ export default function DetailActivity (props) {
     //     </div>,
     //     // Add more slides as needed
     // ];
+
+    const [likeTemp, setLikeTemp] = useState(like);
+
+    const handleClick = () => {
+        setLikeTemp(false); // Thay đổi biến tạm thời
+    };
+
+    useEffect(() => {
+        if (!likeTemp) {
+            setLike(false)
+            setDa(true)// Thực hiện setLike khi biến tạm thời thay đổi
+        }
+    }, [likeTemp]);
+    const [da, setDa] = useState(true)
+    const handleCha = () => {
+
+        setDa(da => !da)
+    }
+
+
     return (
         <div className="modal fade" id="img-comt">
             <div className="modal-dialog">
                 <div className="modal-content">
                     {/* Modal Header */}
                     <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal">×</button>
+                        <button type="button" className="close" data-dismiss="modal" onClick={() => {
+                            handleClick()
+                            handleCha()
+                        }}>×</button>
                     </div>
                     {/* Modal body */}
                     <div className="modal-body">
@@ -46,31 +76,7 @@ export default function DetailActivity (props) {
                                 <div className='pop-image'>
                                     <div className="pop-item">
                                         <div className="action-block">
-                                            <a className="action-button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-tag">
-                                                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                                                    <line x1={7} y1={7} x2="7.01" y2={7} />
-                                                </svg>
-                                            </a>
-                                            <a className="action-button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-map-pin">
-                                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                                    <circle cx={12} cy={10} r={3} />
-                                                </svg>
-                                            </a>
-                                            <a className="action-button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-arrow-down">
-                                                    <line x1={12} y1={5} x2={12} y2={19} />
-                                                    <polyline points="19 12 12 19 5 12" />
-                                                </svg>
-                                            </a>
-                                            <a className="action-button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-vertical">
-                                                    <circle cx={12} cy={12} r={1} />
-                                                    <circle cx={12} cy={5} r={1} />
-                                                    <circle cx={12} cy={19} r={1} />
-                                                </svg>
-                                            </a>
+
                                         </div>
 
                                         {/* <div>
@@ -80,14 +86,55 @@ export default function DetailActivity (props) {
 
                                         <div className="stat-tools">
                                             <div className="box">
-                                                <div className="Like"><a className="Like__link"><i className="icofont-like" />
-                                                    Like</a>
+                                                <div className="Like"><a className="Like__link" style={{ display: 'flex' }}>
 
+                                                    {props.item.like?.length === 0 ? <div onClick={() => {
+                                                        const action = PostLikeAction({
+                                                            userId: userID,
+                                                            activityId: props.item.activityId,
+                                                        });
+                                                        dispatch(action)
+                                                        setLike(true)
+
+                                                    }}>
+
+                                                        <i className="icofont-like" />
+                                                        {like ? 'Đã thích' : 'Thích'}</div> :
+                                                        props.item.like?.map((item, index) => {
+
+                                                            return item.userId === userID ? <div style={{ display: 'flex' }} onClick={() => {
+
+
+                                                                handleCha()
+                                                            }}> <i className="icofont-like" style={{ color: 'white' }} />{da ? <div onClick={() => {
+                                                                const action = DeleteLikeAction({
+                                                                    userId: userID,
+                                                                    activityId: props.item.activityId,
+                                                                })
+                                                                dispatch(action)
+                                                            }}>Đã thích</div> : <div onClick={() => {
+                                                                const action = PostLikeAction({
+                                                                    userId: userID,
+                                                                    activityId: props.item.activityId,
+                                                                })
+                                                                dispatch(action)
+                                                            }}>Thích</div>} </div> : <div onClick={() => {
+                                                                const action = PostLikeAction({
+                                                                    userId: userID,
+                                                                    activityId: props.item.activityId,
+                                                                })
+                                                                dispatch(action)
+                                                            }}>Thích</div>;
+
+                                                        })
+                                                    }
+
+
+                                                </a>
                                                 </div>
                                             </div>
 
-                                            <a title href="#" className="share-to"><i className="icofont-share-alt" />
-                                                Share</a>
+
                                             <div className="emoji-state">
                                                 <div className="popover_wrapper">
                                                     <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
@@ -102,7 +149,7 @@ export default function DetailActivity (props) {
                                                     </div>
                                                 </div>
 
-                                                <p>{props.item.numberLike}+</p>
+                                                <p>{props.item.like?.length}+</p>
                                             </div>
                                         </div>
                                     </div>
@@ -116,66 +163,32 @@ export default function DetailActivity (props) {
                                             <h4><a href="#" title>{props.item.user?.username}</a></h4>
                                             <span>{dateTime(item.createAt)}</span>
                                         </div>
-                                        <a href="#" title="Follow" data-ripple>Follow</a>
-                                    </div>
-                                    <div className="we-video-info">
-                                        <ul>
-                                            <li>
-                                                <span title="Comments" className="liked">
-                                                    <i>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-thumbs-up">
-                                                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
-                                                            </path>
-                                                        </svg></i>
-                                                    <ins>52</ins>
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <span title="Comments" className="comment">
-                                                    <i>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-message-square">
-                                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
-                                                            </path>
-                                                        </svg></i>
-                                                    <ins>52</ins>
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    <a title="Share" href="#" className>
-                                                        <i>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2">
-                                                                <circle cx={18} cy={5} r={3} />
-                                                                <circle cx={6} cy={12} r={3} />
-                                                                <circle cx={18} cy={19} r={3} />
-                                                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                                                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                                                            </svg></i>
-                                                    </a>
-                                                    <ins>20</ins>
-                                                </span>
-                                            </li>
-                                        </ul>
-                                        <div className="users-thumb-list">
-                                            <a href="#" title data-toggle="tooltip" data-original-title="Anderw">
-                                                <img src="images/resources/userlist-1.jpg" alt />
-                                            </a>
-                                            <a href="#" title data-toggle="tooltip" data-original-title="frank">
-                                                <img src="images/resources/userlist-2.jpg" alt />
-                                            </a>
-                                            <a href="#" title data-toggle="tooltip" data-original-title="Sara">
-                                                <img src="images/resources/userlist-1.jpg" alt />
-                                            </a>
-                                            <a href="#" title data-toggle="tooltip" data-original-title="Amy">
-                                                <img src="images/resources/userlist-2.jpg" alt />
-                                            </a>
-                                            <span><strong>You</strong>, <b>Sarah</b> and <a title href="#">24+
-                                                more</a> liked</span>
+                                        <div className='userfollow' title="Follow" data-ripple>
+                                            {props.item.followJoinAvtivity?.length === 0 ? "Theo dõi" : props.item.followJoinAvtivity?.map((item1, index) => {
+                                                return item1.userId === userID && item1.isFollow ? <div onClick={() => {
+                                                    const action = UnFollowAction(
+
+                                                        props.item1.activityId,
+                                                        userID,
+                                                    )
+                                                    dispatch(action)
+                                                }}>Đang theo dõi</div> : <div onClick={() => {
+                                                    const action = FollowAction(
+
+                                                        props.item1.activityId,
+                                                        userID,
+                                                    )
+                                                    dispatch(action)
+                                                }} style={{ cursor: 'pointer' }}>Theo dõi</div>
+                                            })}
                                         </div>
                                     </div>
+                                    <h3> {item.title}</h3>
+                                    <p>{item.description}</p>
+
                                     <div className="new-comment" style={{ display: 'block' }}>
                                         <form method="post">
-                                            <input type="text" placeholder="write comment" />
+                                            <input type="text" placeholder="bình luận" />
                                             <button type="submit"><i className="icofont-paper-plane" /></button>
                                         </form>
                                         <div className="comments-area">
@@ -192,7 +205,7 @@ export default function DetailActivity (props) {
                                                             <span></span>
                                                             <a title href="#"></a>
                                                         </div>
-                                                        <a title="Like" href="#"><i className="icofont-heart" /></a>
+
                                                         <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
                                                     </li>
                                                 })}
