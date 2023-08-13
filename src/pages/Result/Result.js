@@ -89,7 +89,7 @@ export default function Result () {
                                             <div className="tab-pane fade active show" id="allposts">
                                                 <div className="main-wraper">
                                                     <div className="main-title">Chiến dịch đã tham gia</div>
-                                                    {arrFollowJoin.filter(item => item.isJoin === true).length === 0 ? <div>Chưa Tham Gia Sự Kiện Nào</div>
+                                                    {arrFollowJoin.filter(item => item.isJoin === true).length === 0 ? <div>Chưa tham gia chiến dịch</div>
                                                         :
                                                         <div> {arrFollowJoin.filter(item => item.isJoin === true).map((item, index) => {
                                                             return <div className="blog-posts mb-3">
@@ -136,7 +136,7 @@ export default function Result () {
                                             </div>
                                             <div className="tab-pane fade" id="depart">
                                                 <div className="main-wraper">
-                                                    <h4 className="main-title">Lịch sử thanh toán</h4>
+                                                    <h4 className="main-title">Lịch sử đã ủng hộ</h4>
                                                     <div className="dept-info">
                                                         <ul>
                                                             {arrDonation.length === 0 ?
@@ -160,7 +160,7 @@ export default function Result () {
                                             </div>
                                             <div className="tab-pane fade" id="members">
                                                 <div className="main-wraper">
-                                                    <div className="main-title">Chiến dịch theo dõi</div>
+                                                    <div className="main-title">Chiến dịch đang theo dõi</div>
                                                     {arrFollowJoin.filter(item => item.isFollow === true).length === 0 ? <div>Chưa theo dõi chiến dịch nào</div>
                                                         :
                                                         <div>
@@ -352,11 +352,11 @@ export default function Result () {
                                     <div className="col-lg-4">
                                         <aside className="sidebar static right">
                                             <div className="widget">
-                                                <h4 className="widget-title">Lịch Sử</h4>
+                                                <h4 className="widget-title">Lịch sử</h4>
                                                 <ul className="widget-analytics">
                                                     <li>Chiến dịch đã theo dõi<span>{arrFollowJoin.filter(item => item.isFollow === true).length}</span></li>
-                                                    <li>Chiến dịch Tham Gia<span>{arrFollowJoin.filter(item => item.isJoin === true).length}</span></li>
-                                                    <li>Số Lần Ủng Hộ <span>{arrDonation.length}</span></li>
+                                                    <li>Chiến dịch tham gia<span>{arrFollowJoin.filter(item => item.isJoin === true).length}</span></li>
+                                                    <li>Số lần ủng hộ <span>{arrDonation.length}</span></li>
                                                 </ul>
                                             </div>
                                             {/* <div className="widget">

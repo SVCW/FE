@@ -10,25 +10,7 @@ export default function Carousel () {
             <div className="row">
               <div className="col-lg-3">
                 <div className="sidemenu">
-                  <i>
-                    <svg
-                      id="side-menu"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={26}
-                      height={26}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-menu"
-                    >
-                      <line x1={3} y1={12} x2={21} y2={12} />
-                      <line x1={3} y1={6} x2={21} y2={6} />
-                      <line x1={3} y1={18} x2={21} y2={18} />
-                    </svg>
-                  </i>
+                  
                 </div>
               </div>
               <div className="col-lg-7 pl-3">
@@ -52,7 +34,7 @@ export default function Carousel () {
                           <polyline points="9 22 9 12 15 12 15 22" />
                         </svg>
                       </i>
-                      <p>Trang Chủ</p>
+                      <p>Trang chủ</p>
                     </a>
                   </div>
                   <div className="link-item">
@@ -73,7 +55,7 @@ export default function Carousel () {
                           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                         </svg>
                       </i>
-                      <p>Lịch Sử Quyên Góp</p>
+                      <p>Lịch sử quyên góp</p>
                     </a>
                   </div>
                   {/* <div className="link-item">
@@ -152,6 +134,11 @@ export default function Carousel () {
                       <p>Nhóm</p>
                     </NavLink>
                   </div>
+                </div>
+              </div>
+              <div className="col-lg-2">
+                <div className="sidemenu">
+                  
                 </div>
               </div>
               {/* <div className="col-lg-2">
