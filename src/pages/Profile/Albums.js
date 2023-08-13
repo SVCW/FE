@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
+
 import DetailActivity from '../../component/DetailActivity';
 
 const Albums = () => {

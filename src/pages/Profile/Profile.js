@@ -5,11 +5,11 @@ import { GetProfileByIdAction } from '../../redux/actions/ProfileAction';
 import PersonalDetail from './PersonalDetail';
 import Albums from './Albums';
 import { http } from '../../utils/reponse';
+import moment from 'moment';
 
 export default function Profile(props) {
   const [userInfo, setUserInfo] = useState(null);
   const [reloadPage, setReloadPage] = useState(false);
-
   //viết trước
   const dispatch = useDispatch();
 
@@ -51,11 +51,8 @@ export default function Profile(props) {
                           
                           </a>
                           <figure className="group-dp">
-                            {" "}
-                           
                             {' '}
                             <img src={userInfo?.image} alt="" />
-                          
                           </figure>
                         </div>
                         <div className="grp-info about">
@@ -66,10 +63,10 @@ export default function Profile(props) {
                           <ul className="joined-info">
                             <li>
                               <span>Ngày tạo tài khoản:</span>{' '}
-                              {userInfo?.createAt}
+                              {moment(userInfo?.createAt).format('DD-MM-YYYY')}
                             </li>
                             <li>
-                              <span>Số nhóm đang theo dõi:</span>{' '}
+                              <span>Số nhóm đã tham gia:</span>{' '}
                               {userInfo?.followFanpage.length}
                             </li>
                             <li>
@@ -103,6 +100,40 @@ export default function Profile(props) {
                               </a>
                             </li>
                           </ul>
+                          <ul className="more-grp-info">
+                            <li>
+                              <form className="c-form" method="post">
+                                <input type="text" placeholder="Tìm kiếm..." />
+                                <i className="icofont-search-1" />
+                              </form>
+                            </li>
+                            <li>
+                              <div className="more">
+                                <div className="more-post-optns">
+                                  <i className>
+                                    <svg className="feather feather-more-horizontal" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={24} width={24} xmlns="http://www.w3.org/2000/svg"><circle r={1} cy={12} cx={12} /><circle r={1} cy={12} cx={19} /><circle r={1} cy={12} cx={5} /></svg></i>
+                                  <ul>
+                                    <li>
+                                      <i className="icofont-pen-alt-1" />Chỉnh sửa bài viết
+                                      
+                                    </li>
+                                    <li>
+                                      <i className="icofont-ban" />Ẩn bài viết
+                                      
+                                    </li>
+                                    <li>
+                                      <i className="icofont-ui-delete" />Xóa bài viết
+                                      
+                                    </li>
+                                    <li>
+                                      <i className="icofont-flag" />Báo cáo bài viết
+                                      
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
                         </div>
                         
                         <div className="row">
@@ -114,276 +145,83 @@ export default function Profile(props) {
                               >
                                 <div className="row merged20">
                                   <div className="col-lg-8">
-                                   
                                     {/* create new post */}
                                     {userInfo?.activity.map((activity) => (
-                                      <div className="main-wraper">
-                                        <div className="user-post">
-                                          <div className="friend-info">
-                                            <figure>
-                                              <img
-                                                alt=""
-                                                src="/public/images/resources/user4.jpg"
-                                              />
-                                            </figure>
-                                            <div className="friend-name">
-                                              <div className="more">
-                                                <div className="more-post-optns">
-                                                  <i className>
-                                                    <svg
-                                                      xmlns="http://www.w3.org/2000/svg"
-                                                      width={24}
-                                                      height={24}
-                                                      viewBox="0 0 24 24"
-                                                      fill="none"
-                                                      stroke="currentColor"
-                                                      strokeWidth={2}
-                                                      strokeLinecap="round"
-                                                      strokeLinejoin="round"
-                                                      className="feather feather-more-horizontal"
-                                                    >
-                                                      <circle
-                                                        cx={12}
-                                                        cy={12}
-                                                        r={1}
-                                                      />
-                                                      <circle
-                                                        cx={19}
-                                                        cy={12}
-                                                        r={1}
-                                                      />
-                                                      <circle
-                                                        cx={5}
-                                                        cy={12}
-                                                        r={1}
-                                                      />
-                                                    </svg>
-                                                  </i>
-                                                  <ul>
-                                                    <li>
-                                                      <i className="icofont-pen-alt-1" />
-                                                      Edit Post
-                                                      <span>
-                                                        Edit This Post within a
-                                                        Hour
-                                                      </span>
-                                                    </li>
-                                                    <li>
-                                                      <i className="icofont-ban" />
-                                                      Hide Post
-                                                      <span>
-                                                        Hide This Post
-                                                      </span>
-                                                    </li>
-                                                    <li>
-                                                      <i className="icofont-ui-delete" />
-                                                      Delete Post
-                                                      <span>
-                                                        If inappropriate Post By
-                                                        Mistake
-                                                      </span>
-                                                    </li>
-                                                    <li>
-                                                      <i className="icofont-flag" />
-                                                      Report
-                                                      <span>
-                                                        Inappropriate content
-                                                      </span>
-                                                    </li>
-                                                  </ul>
-                                                </div>
+                                    <div className="main-wraper">
+                                      <div className="user-post">
+                                        <div className="friend-info">
+                                          <figure>
+                                            <img alt="" src="/public/images/resources/user4.jpg" />
+                                          </figure>
+                                          <div className="friend-name">
+                                            <div className="more">
+                                              <div className="more-post-optns">
+                                                <i className>
+                                                  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal"><circle cx={12} cy={12} r={1} /><circle cx={19} cy={12} r={1} /><circle cx={5} cy={12} r={1} /></svg></i>
+                                                <ul>
+                                                  <li>
+                                                    <i className="icofont-pen-alt-1" />Edit Post
+                                                    <span>Edit This Post within a Hour</span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="icofont-ban" />Hide Post
+                                                    <span>Hide This Post</span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="icofont-ui-delete" />Delete Post
+                                                    <span>If inappropriate Post By Mistake</span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="icofont-flag" />Report
+                                                    <span>Inappropriate content</span>
+                                                  </li>
+                                                </ul>
                                               </div>
-                                              <ins>
-                                                <a title href="time-line.html">
-                                                  {userInfo.username}
-                                                </a>{' '}
-                                                Share Post
-                                              </ins>
-                                              <span>
-                                                <i className="icofont-globe" />{' '}
-                                                published: {activity.createAt}
-                                              </span>
                                             </div>
-                                            <div className="post-meta">
-                                              {/* <a
-                                                href="post-detail.html"
-                                                className="post-title"
-                                              >
-                                                {activity.title}
-                                              </a> */}
-                                              <h5 className="post-title">
-                                                {activity.title}
-                                              </h5>
-                                              <p>{activity.description}</p>
-                                              <div className="we-video-info">
-                                                {/* <ul>
-                                                  <li>
-                                                    <span
-                                                      title="views"
-                                                      className="views"
-                                                    >
-                                                      <i>
-                                                        <svg
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                          width={16}
-                                                          height={16}
-                                                          viewBox="0 0 24 24"
-                                                          fill="none"
-                                                          stroke="currentColor"
-                                                          strokeWidth={2}
-                                                          strokeLinecap="round"
-                                                          strokeLinejoin="round"
-                                                          className="feather feather-eye"
-                                                        >
-                                                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                                                          <circle
-                                                            cx={12}
-                                                            cy={12}
-                                                            r={3}
-                                                          />
-                                                        </svg>
-                                                      </i>
-                                                      <ins>1.2k</ins>
-                                                    </span>
-                                                  </li>
-                                                  <li>
-                                                    <span
-                                                      title="Comments"
-                                                      className="Recommend"
-                                                    >
-                                                      <i>
-                                                        <svg
-                                                          className="feather feather-message-square"
-                                                          strokeLinejoin="round"
-                                                          strokeLinecap="round"
-                                                          strokeWidth={2}
-                                                          stroke="currentColor"
-                                                          fill="none"
-                                                          viewBox="0 0 24 24"
-                                                          height={16}
-                                                          width={16}
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                                        </svg>
-                                                      </i>
-                                                      <ins>54</ins>
-                                                    </span>
-                                                  </li>
-                                                  <li>
-                                                    <span
-                                                      title="follow"
-                                                      className="Follow"
-                                                    >
-                                                      <i>
-                                                        <svg
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                          width={16}
-                                                          height={16}
-                                                          viewBox="0 0 24 24"
-                                                          fill="none"
-                                                          stroke="currentColor"
-                                                          strokeWidth={2}
-                                                          strokeLinecap="round"
-                                                          strokeLinejoin="round"
-                                                          className="feather feather-star"
-                                                        >
-                                                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                                                        </svg>
-                                                      </i>
-                                                      <ins>5k</ins>
-                                                    </span>
-                                                  </li>
-                                                  <li>
-                                                    <span
-                                                      className="share-pst"
-                                                      title="Share"
-                                                    >
-                                                      <i>
-                                                        <svg
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                          width={16}
-                                                          height={16}
-                                                          viewBox="0 0 24 24"
-                                                          fill="none"
-                                                          stroke="currentColor"
-                                                          strokeWidth={2}
-                                                          strokeLinecap="round"
-                                                          strokeLinejoin="round"
-                                                          className="feather feather-share-2"
-                                                        >
-                                                          <circle
-                                                            cx={18}
-                                                            cy={5}
-                                                            r={3}
-                                                          />
-                                                          <circle
-                                                            cx={6}
-                                                            cy={12}
-                                                            r={3}
-                                                          />
-                                                          <circle
-                                                            cx={18}
-                                                            cy={19}
-                                                            r={3}
-                                                          />
-                                                          <line
-                                                            x1="8.59"
-                                                            y1="13.51"
-                                                            x2="15.42"
-                                                            y2="17.49"
-                                                          />
-                                                          <line
-                                                            x1="15.41"
-                                                            y1="6.51"
-                                                            x2="8.59"
-                                                            y2="10.49"
-                                                          />
-                                                        </svg>
-                                                      </i>
-                                                      <ins>205</ins>
-                                                    </span>
-                                                  </li>
-                                                </ul> */}
-                                                <a
-                                                  href="post-detail.html"
-                                                  title
-                                                  className="reply"
-                                                >
-                                                  Reply{' '}
-                                                  <i className="icofont-reply" />
-                                                </a>
-                                              </div>
-                                              <div className="stat-tools">
-                                                <div className="box">
-                                                  <div className="Like">
-                                                    <a className="Like__link">
-                                                      <i className="icofont-like" />{' '}
-                                                      Like
-                                                    </a>
-                                                    <div className="Emojis">
-                                                      <div className="Emoji Emoji--like">
-                                                        <div className="icon icon--like" />
-                                                      </div>
-                                                      <div className="Emoji Emoji--love">
-                                                        <div className="icon icon--heart" />
-                                                      </div>
-                                                      <div className="Emoji Emoji--haha">
-                                                        <div className="icon icon--haha" />
-                                                      </div>
-                                                      <div className="Emoji Emoji--wow">
-                                                        <div className="icon icon--wow" />
-                                                      </div>
-                                                      <div className="Emoji Emoji--sad">
-                                                        <div className="icon icon--sad" />
-                                                      </div>
-                                                      <div className="Emoji Emoji--angry">
-                                                        <div className="icon icon--angry" />
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                                <div className="box">
+                                            <ins><a title href="time-line.html">Jack Carter</a> Share Post</ins>
+                                            <span><i className="icofont-globe" /> published: Sep,15 2020</span>
+                                          </div>
+                                          <div className="post-meta">
+                                            <a href="post-detail.html" className="post-title">Supervision as a Personnel Development Device</a>
+                                            <p>
+                                              Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero.
+                                            </p>
+                                            <div className="we-video-info">
+                                              <ul>
+                                                <li>
+                                                  <span title="views" className="views">
+                                                    <i>
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx={12} cy={12} r={3} /></svg></i>
+                                                    <ins>1.2k</ins>
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span title="Comments" className="Recommend">
+                                                    <i>
+                                                      <svg className="feather feather-message-square" strokeLinejoin="round" strokeLinecap="round" strokeWidth={2} stroke="currentColor" fill="none" viewBox="0 0 24 24" height={16} width={16} xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg></i>
+                                                    <ins>54</ins>
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span title="follow" className="Follow">
+                                                    <i>
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg></i>
+                                                    <ins>5k</ins>
+                                                  </span>
+                                                </li>
+                                                <li>
+                                                  <span className="share-pst" title="Share">
+                                                    <i>
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-share-2"><circle cx={18} cy={5} r={3} /><circle cx={6} cy={12} r={3} /><circle cx={18} cy={19} r={3} /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg></i>
+                                                    <ins>205</ins>
+                                                  </span>
+                                                </li>
+                                              </ul>
+                                              <a href="post-detail.html" title className="reply">Reply <i className="icofont-reply" /></a>
+                                            </div>
+                                            <div className="stat-tools">
+                                              <div className="box">
+                                                <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
                                                   <div className="Emojis">
                                                     <div className="Emoji Emoji--like">
                                                       <div className="icon icon--like" />
@@ -405,258 +243,132 @@ export default function Profile(props) {
                                                     </div>
                                                   </div>
                                                 </div>
-                                                <a
-                                                  title
-                                                  href="#"
-                                                  className="comment-to"
-                                                >
-                                                  <i className="icofont-comment" />{' '}
-                                                  Comment
-                                                </a>
-                                                <a
-                                                  title
-                                                  href="#"
-                                                  className="share-to"
-                                                >
-                                                  <i className="icofont-share-alt" />{' '}
-                                                  Share
-                                                </a>
-                                                <div className="emoji-state">
-                                                  <div className="popover_wrapper">
-                                                    <a
-                                                      className="popover_title"
-                                                      href="#"
-                                                      title
-                                                    >
-                                                      <img
-                                                        alt=""
-                                                        src="images/smiles/thumb.png"
-                                                      />
-                                                    </a>
-                                                    <div className="popover_content">
-                                                      <span>
-                                                        <img
-                                                          alt=""
-                                                          src="images/smiles/thumb.png"
-                                                        />{' '}
-                                                        Likes
-                                                      </span>
-                                                      <ul className="namelist">
-                                                        <li>Jhon Doe</li>
-                                                        <li>Amara Sin</li>
-                                                        <li>Sarah K.</li>
-                                                        <li>
-                                                          <span>20+ more</span>
-                                                        </li>
-                                                      </ul>
-                                                    </div>
+                                              </div>
+                                              <div className="box">
+                                                <div className="Emojis">
+                                                  <div className="Emoji Emoji--like">
+                                                    <div className="icon icon--like" />
                                                   </div>
-                                                  <div className="popover_wrapper">
-                                                    <a
-                                                      className="popover_title"
-                                                      href="#"
-                                                      title
-                                                    >
-                                                      <img
-                                                        alt=""
-                                                        src="images/smiles/heart.png"
-                                                      />
-                                                    </a>
-                                                    <div className="popover_content">
-                                                      <span>
-                                                        <img
-                                                          alt=""
-                                                          src="images/smiles/heart.png"
-                                                        />{' '}
-                                                        Love
-                                                      </span>
-                                                      <ul className="namelist">
-                                                        <li>Amara Sin</li>
-                                                        <li>Jhon Doe</li>
-                                                        <li>
-                                                          <span>10+ more</span>
-                                                        </li>
-                                                      </ul>
-                                                    </div>
+                                                  <div className="Emoji Emoji--love">
+                                                    <div className="icon icon--heart" />
                                                   </div>
-                                                  <div className="popover_wrapper">
-                                                    <a
-                                                      className="popover_title"
-                                                      href="#"
-                                                      title
-                                                    >
-                                                      <img
-                                                        alt=""
-                                                        src="images/smiles/smile.png"
-                                                      />
-                                                    </a>
-                                                    <div className="popover_content">
-                                                      <span>
-                                                        <img
-                                                          alt=""
-                                                          src="images/smiles/smile.png"
-                                                        />{' '}
-                                                        Happy
-                                                      </span>
-                                                      <ul className="namelist">
-                                                        <li>Sarah K.</li>
-                                                        <li>Jhon Doe</li>
-                                                        <li>Amara Sin</li>
-                                                        <li>
-                                                          <span>100+ more</span>
-                                                        </li>
-                                                      </ul>
-                                                    </div>
+                                                  <div className="Emoji Emoji--haha">
+                                                    <div className="icon icon--haha" />
                                                   </div>
-                                                  <div className="popover_wrapper">
-                                                    <a
-                                                      className="popover_title"
-                                                      href="#"
-                                                      title
-                                                    >
-                                                      <img
-                                                        alt=""
-                                                        src="images/smiles/weep.png"
-                                                      />
-                                                    </a>
-                                                    <div className="popover_content">
-                                                      <span>
-                                                        <img
-                                                          alt=""
-                                                          src="images/smiles/weep.png"
-                                                        />{' '}
-                                                        Dislike
-                                                      </span>
-                                                      <ul className="namelist">
-                                                        <li>Danial Carbal</li>
-                                                        <li>Amara Sin</li>
-                                                        <li>Sarah K.</li>
-                                                        <li>
-                                                          <span>15+ more</span>
-                                                        </li>
-                                                      </ul>
-                                                    </div>
+                                                  <div className="Emoji Emoji--wow">
+                                                    <div className="icon icon--wow" />
                                                   </div>
-                                                  <p>10+</p>
+                                                  <div className="Emoji Emoji--sad">
+                                                    <div className="icon icon--sad" />
+                                                  </div>
+                                                  <div className="Emoji Emoji--angry">
+                                                    <div className="icon icon--angry" />
+                                                  </div>
                                                 </div>
-                                                <div
-                                                  className="new-comment"
-                                                  style={{ display: 'none' }}
-                                                >
-                                                  <form method="post">
-                                                    <input
-                                                      type="text"
-                                                      placeholder="write comment"
-                                                    />
-                                                    <button type="submit">
-                                                      <i className="icofont-paper-plane" />
-                                                    </button>
-                                                  </form>
-                                                  <div className="comments-area">
-                                                    <ul>
-                                                      <li>
-                                                        <figure>
-                                                          <img
-                                                            alt=""
-                                                            src="/public/images/resources/user1.jpg"
-                                                          />
-                                                        </figure>
-                                                        <div className="commenter">
-                                                          <h5>
-                                                            <a title href="#">
-                                                              Jack Carter
-                                                            </a>
-                                                          </h5>
-                                                          <span>
-                                                            2 hours ago
-                                                          </span>
-                                                          <p>
-                                                            i think that some
-                                                            how, we learn who we
-                                                            really are and then
-                                                            live with that
-                                                            decision, great
-                                                            post!
-                                                          </p>
-                                                          <span>
-                                                            you can view the
-                                                            more detail via link
-                                                          </span>
-                                                          <a
-                                                            title
-                                                            href="https://www.youtube.com/watch?v=HpZgwHU1GcI"
-                                                            target="_blank"
-                                                          >
-                                                            https://www.youtube.com/watch?v=HpZgwHU1GcI
-                                                          </a>
-                                                        </div>
-                                                        <a
-                                                          title="Like"
-                                                          href="#"
-                                                        >
-                                                          <i className="icofont-heart" />
-                                                        </a>
-                                                        <a
-                                                          title="Reply"
-                                                          href="#"
-                                                          className="reply-coment"
-                                                        >
-                                                          <i className="icofont-reply" />
-                                                        </a>
-                                                      </li>
-                                                      <li>
-                                                        <figure>
-                                                          <img
-                                                            alt=""
-                                                            src="/public/images/resources/user2.jpg"
-                                                          />
-                                                        </figure>
-                                                        <div className="commenter">
-                                                          <h5>
-                                                            <a title href="#">
-                                                              Ching xang
-                                                            </a>
-                                                          </h5>
-                                                          <span>
-                                                            2 hours ago
-                                                          </span>
-                                                          <p>
-                                                            i think that some
-                                                            how, we learn who we
-                                                            really are and then
-                                                            live with that
-                                                            decision, great
-                                                            post!
-                                                          </p>
-                                                        </div>
-                                                        <a
-                                                          title="Like"
-                                                          href="#"
-                                                        >
-                                                          <i className="icofont-heart" />
-                                                        </a>
-                                                        <a
-                                                          title="Reply"
-                                                          href="#"
-                                                          className="reply-coment"
-                                                        >
-                                                          <i className="icofont-reply" />
-                                                        </a>
-                                                      </li>
+                                              </div>
+                                              <a title href="#" className="comment-to"><i className="icofont-comment" /> Comment</a>
+                                              <a title href="#" className="share-to"><i className="icofont-share-alt" /> Share</a>
+                                              <div className="emoji-state">
+                                                <div className="popover_wrapper">
+                                                  <a className="popover_title" href="#" title><img alt="" src="images/smiles/thumb.png" /></a>
+                                                  <div className="popover_content">
+                                                    <span><img alt="" src="images/smiles/thumb.png" /> Likes</span>
+                                                    <ul className="namelist">
+                                                      <li>Jhon Doe</li>
+                                                      <li>Amara Sin</li>
+                                                      <li>Sarah K.</li>
+                                                      <li><span>20+ more</span></li>
                                                     </ul>
                                                   </div>
+                                                </div>
+                                                <div className="popover_wrapper">
+                                                  <a className="popover_title" href="#" title><img alt="" src="images/smiles/heart.png" /></a>
+                                                  <div className="popover_content">
+                                                    <span><img alt="" src="images/smiles/heart.png" /> Love</span>
+                                                    <ul className="namelist">
+                                                      <li>Amara Sin</li>
+                                                      <li>Jhon Doe</li>
+                                                      <li><span>10+ more</span></li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                                <div className="popover_wrapper">
+                                                  <a className="popover_title" href="#" title><img alt="" src="images/smiles/smile.png" /></a>
+                                                  <div className="popover_content">
+                                                    <span><img alt="" src="images/smiles/smile.png" /> Happy</span>
+                                                    <ul className="namelist">
+                                                      <li>Sarah K.</li>
+                                                      <li>Jhon Doe</li>
+                                                      <li>Amara Sin</li>
+                                                      <li><span>100+ more</span></li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                                <div className="popover_wrapper">
+                                                  <a className="popover_title" href="#" title><img alt="" src="images/smiles/weep.png" /></a>
+                                                  <div className="popover_content">
+                                                    <span><img alt="" src="images/smiles/weep.png" /> Dislike</span>
+                                                    <ul className="namelist">
+                                                      <li>Danial Carbal</li>
+                                                      <li>Amara Sin</li>
+                                                      <li>Sarah K.</li>
+                                                      <li><span>15+ more</span></li>
+                                                    </ul>
+                                                  </div>
+                                                </div>
+                                                <p>10+</p>
+                                              </div>
+                                              <div className="new-comment" style={{ display: 'none' }}>
+                                                <form method="post">
+                                                  <input type="text" placeholder="write comment" />
+                                                  <button type="submit"><i className="icofont-paper-plane" /></button>
+                                                </form>
+                                                <div className="comments-area">
+                                                  <ul>
+                                                    <li>
+                                                      <figure><img alt="" src="/public/images/resources/user1.jpg" /></figure>
+                                                      <div className="commenter">
+                                                        <h5><a title href="#">Jack Carter</a></h5>
+                                                        <span>2 hours ago</span>
+                                                        <p>
+                                                          i think that some how, we learn who we really are and then live with that decision, great post!
+                                                        </p>
+                                                        <span>you can view the more detail via link</span>
+                                                        <a title href="https://www.youtube.com/watch?v=HpZgwHU1GcI" target="_blank">https://www.youtube.com/watch?v=HpZgwHU1GcI</a>
+                                                      </div>
+                                                      <a title="Like" href="#"><i className="icofont-heart" /></a>
+                                                      <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
+                                                    </li>
+                                                    <li>
+                                                      <figure><img alt="" src="/public/images/resources/user2.jpg" /></figure>
+                                                      <div className="commenter">
+                                                        <h5><a title href="#">Ching xang</a></h5>
+                                                        <span>2 hours ago</span>
+                                                        <p>
+                                                          i think that some how, we learn who we really are and then live with that decision, great post!
+                                                        </p>
+                                                      </div>
+                                                      <a title="Like" href="#"><i className="icofont-heart" /></a>
+                                                      <a title="Reply" href="#" className="reply-coment"><i className="icofont-reply" /></a>
+                                                    </li>
+                                                  </ul>
                                                 </div>
                                               </div>
                                             </div>
                                           </div>
                                         </div>
                                       </div>
+                                    </div>
                                     ))}
                                     {/* share post without image */}
-                                    {/* <div className="main-wraper">
+                                    <div className="main-wraper">
                                       <div className="user-post">
                                         <div className="friend-info">
                                           <figure>
+                                            <img
+                                              alt=""
+                                              src="/public/images/resources/user4.jpg"
+                                            />
                                             <img
                                               alt=""
                                               src="/public/images/resources/user4.jpg"
@@ -1186,7 +898,8 @@ export default function Profile(props) {
                                           </div>
                                         </div>
                                       </div>
-                                    </div> */}
+                                    </div> 
+                                    
                                     {/* post sell book */}
                                     {/* <div className="main-wraper">
                                       <div className="wraper-title">
@@ -3097,45 +2810,44 @@ export default function Profile(props) {
                                       <div className="widget">
                                         <h4 className="widget-title">
                                           Huy hiệu
-                                          <ul className="suggestd">
-                                            {userInfo?.achivementUser.map(
-                                              (item) => (
-                                                <li>
-                                                  <a
-                                                    className="sug-pic"
-                                                    href="#"
-                                                    title
-                                                  >
-                                                    <img
-                                                      src={
-                                                        item.achivement
-                                                          .achivementLogo
-                                                      }
-                                                      alt=""
-                                                    />
-                                                  </a>
-                                                  <a
-                                                    className="sug-title"
-                                                    href="#"
-                                                    title
-                                                  >
-                                                    {
-                                                      item.achivement
-                                                        .description
-                                                    }
-                                                  </a>
-                                                </li>
-                                              )
-                                            )}
-                                          </ul>
                                         </h4>
+                                        {userInfo?.achivementUser.map(
+                                          (item) => (
+                                            <li>
+                                              <b style={{ fontSize: 14 }}>
+                                                {'- '}
+                                                {item.achivement.description}
+                                              </b>
+                                            </li>
+                                          )
+                                        )}
                                       </div>
 
                                       <div className="widget stick-widget">
                                         <h4 className="widget-title">
                                           Nhóm đã tham gia
                                         </h4>
-                                        <ul className="suggestd">
+                                        {userInfo?.followFanpage.map(
+                                          (follow) => (
+                                            <div
+                                              style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                marginBottom: 10,
+                                              }}
+                                            >
+                                              <img
+                                                src={follow.fanpage.coverImage}
+                                                alt=""
+                                                width={150}
+                                              />
+                                              <b>
+                                                {follow.fanpage.fanpageName}
+                                              </b>
+                                            </div>
+                                          )
+                                        )}
+                                        {/* <ul className="suggestd">
                                           {userInfo?.followFanpage.map(
                                             (follow) => (
                                               <li>
@@ -3165,7 +2877,7 @@ export default function Profile(props) {
                                               </li>
                                             )
                                           )}
-                                        </ul>
+                                        </ul> */}
                                       </div>
                                       {/* Suggested groups */}
                                     </aside>
@@ -3241,10 +2953,7 @@ export default function Profile(props) {
             </div>
           </div>
         </section>
-        <figure className="bottom-mockup">
-          <img alt="" src="images/footer.png" />
-        </figure>
-        
+        <figure className="bottom-mockup"><img alt="" src="images/footer.png" /></figure>
         <div className="wraper-invite">
           <div className="popup">
             <span className="popup-closed">

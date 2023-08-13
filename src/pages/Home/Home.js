@@ -1190,10 +1190,7 @@ export default function Home(props) {
           <ul className="web-elements">
             <li>
               <div className="user-dp">
-                <NavLink
-                  to={`/profile/${localStorage.getItem("userID")}`}
-                  title
-                >
+                <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
                   <img alt src="images/avatar/uocAvatar.jpg" />
                   <div className="name">
                     <h4>{localStorage.getItem("username")}</h4>
@@ -1418,7 +1415,7 @@ export default function Home(props) {
                         <div
                           className="bg-image"
                           style={{
-                            backgroundImage: "url(images/avatar/12.jpg)",
+                            backgroundImage: "url(./images/avatar/12.jpg)",
                           }}
                         />
                         <div className="date-time">
@@ -1470,7 +1467,73 @@ export default function Home(props) {
                             <em>10%</em>
                           </li> : <div></div>}
                         </ul>
-                      {/* <div className="widget">
+                      </div>
+                      {/* complete profile widget */}
+                      {/* <div className="advertisment-box">
+                                                <h4 className><i className="icofont-info-circle" /> advertisment</h4>
+                                                <figure>
+                                                    <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
+                                                </figure>
+                                            </div>adversment widget */}
+                      {arrActivityRecomment.map((item, index) => {
+                        return <div className="widget">
+                          <h4 className="widget-title">
+                            <i className="icofont-flame-torch" /> {item.title}
+                          </h4>
+                          <ul className="premium-course">
+                            <li>
+                              <figure>
+                                <img
+                                  style={{ width: "480px", height: "180px" }}
+                                  src="images/avatar/hienMau.jpg"
+                                  alt
+                                />
+                                <span
+                                  style={{ background: "#1dd1a1" }}
+                                  className="tag"
+                                >
+                                  Đang diễn ra
+                                </span>
+                              </figure>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-around",
+                                }}
+                                className=""
+                              >
+                                <div>
+                                  <button
+                                    className="main-btn"
+                                    style={{
+                                      backgroundColor: "#2e86de",
+                                      width: "100px",
+                                      padding: "5px 4px",
+                                    }}
+                                  >
+                                    Chi tiết
+                                  </button>
+                                </div>
+                                <div>
+                                  <button
+                                    className="main-btn"
+                                    style={{
+                                      backgroundColor: "#2e86de",
+                                      width: "100px",
+                                      padding: "5px 2px",
+                                    }}
+                                  >
+                                    Tham gia ngay
+                                  </button>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      })}
+                      {/* popular courses */}
+                      
+                      {/*<div className="widget">
                         <h4 className="widget-title">
                           Tổ chức{" "}
                           <a className="see-all" href="#" title>
@@ -1517,7 +1580,7 @@ export default function Home(props) {
                           </li>
                         </ul>
                       </div> */}
-                     </div>
+                     
                     </aside>
                   </div>
                   <div className="col-lg-6">
