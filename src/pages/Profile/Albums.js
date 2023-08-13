@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
+
 import DetailActivity from '../../component/DetailActivity';
 
 const Albums = () => {
@@ -97,13 +98,6 @@ const Albums = () => {
     <>
       <div className="tab-pane fade" id="pictures">
         <h5 className="tab-title">Hình ảnh</h5>
-        <ul className="pix-filter">
-          <li>
-            <a className="active" title>
-              Albums
-            </a>
-          </li>
-        </ul>
         <div className="row merged-10" style={{ maxHeight: '100px' }}>
           {handleRenderAlbums()}
         </div>

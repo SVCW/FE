@@ -423,7 +423,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
             </div>
             <div style={{ marginTop: 10 }}>
               <button className="btn btn-primary" type="submit">
-                Submit
+                Hoàn thành
               </button>
               <button
                 style={{ marginLeft: 10 }}

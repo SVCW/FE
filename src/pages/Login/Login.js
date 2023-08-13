@@ -53,7 +53,8 @@ export default function Login (props) {
     console.log(isMatch);
     const formik = useFormik({
         initialValues: {
-
+            username: '',
+            password: ''
         },
         onSubmit: async (value) => {
             console.log(value);
@@ -204,8 +205,8 @@ export default function Login (props) {
                     <div className="login-form">
                         <h4><i className="icofont-key-hole" /> Đăng nhập</h4>
                         <form method="post" className="c-form" onSubmit={formik.handleSubmit}>
-                            <input type="text" placeholder="Tài khoản" />
-                            <input type="password" placeholder="Mật khẩu" />
+                            <input type="text" placeholder="Tài khoản" name='username' onChange={formik.handleChange} />
+                            <input type="password" placeholder="Mật khẩu" name='password' onChange={formik.handleChange} />
                             {/* <div className="checkbox">
                                 <input type="checkbox" id="checkbox" defaultChecked />
                                 <label htmlFor="checkbox"><span>Nhớ tài khoản</span></label>
@@ -214,19 +215,10 @@ export default function Login (props) {
                             <button className="main-btn" type="submit" ><i className="icofont-key" /> Đăng nhập</button>
 
                             {msg !== '' ? <div style={{ color: 'red' }}>{localStorage.getItem('setError')}</div> : <div></div>}
-                            <p
-                                style={{
-                                    marginTop: 20,
-                                    fontSize: 16,
-                                    borderBottom: "2px solid #17a2b8",
-                                    paddingBottom: 4,
-                                    width: "50%",
-                                    cursor: "pointer",
-                                    fontWeight: "500",
-                                }}
+                            <p className="google-icon-p"
                                 onClick={signInWithGoogle}
                             >
-
+                                <i class="fa-brands fa-google google-icon-g" />
                                 Đăng nhập với google
                             </p>
                         </form>

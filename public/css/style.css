@@ -2604,6 +2604,20 @@ aside .widget {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
+
+.popupPost {
+  background: #fff none repeat scroll 0 0;
+  border-radius: 5px;
+  left: 50%;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  transition: all 0.2s linear 0.25s;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
 .popup-wraper.active .popup,
 .post-new-popup.active .popup,
 .post-new-popup-delete.active .popup,
@@ -16388,7 +16402,39 @@ a.classic-btn:hover {
   color: black;
   margin: 1rem;
 }
+/* Login */
+.google-icon-p {
+background-color: #e74c3c;
+display: flex;
+justify-content: center;
+align-items: baseline;
+margin-top: 20px;
+font-size: 15px;
+border-bottom: 2px solid #17a2b8;
+padding-bottom: 4px;
+width: 50%;
+cursor: pointer;
+font-weight: 500;
+color: #fff;  
+}
 
+.google-icon-g{
+  color: #fff;
+  margin-right: 0.5rem;
+  font-size: 15px;
+}
+.google-icon-g:hover{
+  color: red;
+}
+.c-form p:hover{
+  background-color: #2d98da;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  transition-duration: 1s;
+
+}
 
 /* Home.js */
 .img-new-messages {
@@ -16426,18 +16472,36 @@ a.classic-btn:hover {
 }
 
 
-.c-form p:hover{
-  background-color: #e74c3c;
-  color: #fff;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  transition-duration: 1s;
-
-}
 
 /* Home thời gian bắt đầu và kết thúc */
 .row-time{
   display: flex;
   justify-content: center;
+}
+/* chi tiết */
+.mt-detail{
+  color: #747d8c;
+  font-weight: 400;
+  font-size: 15px;
+}
+/* test-xem thêm */
+.toggle-box {
+  display: none;
+}
+
+.toggle-box + label {
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  line-height: 21px;
+  margin-bottom: 5px;
+}
+
+.toggle-box + label + div {
+  display: none;
+  margin-bottom: 10px;
+}
+
+.toggle-box:checked + label + div {
+  display: block;
 }

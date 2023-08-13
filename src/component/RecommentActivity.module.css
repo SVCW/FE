@@ -1,0 +1,4 @@
+.slickprev:before {
+    position: absolute;
+    left: 30px;
+}

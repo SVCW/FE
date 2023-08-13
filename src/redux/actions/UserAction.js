@@ -25,11 +25,11 @@ export const GetUserBystatisticAction = (id) => {
         try {
             let result = await http.get(`/User/get-statistic-profile?userId=${id}`);
             console.log(result.data.data);
-            console.log(result.data.data.total.slice(0, 3));
+            console.log(result.data.data.total.slice(0, 4));
             const action = {
                 type: "GET_USER_BY_STATIS",
                 userByStatis: result.data.data,
-                usertotal: result.data.data.total.slice(0, 3),
+                usertotal: result.data.data.total.slice(0, 4),
 
             }
             dispatch(action)

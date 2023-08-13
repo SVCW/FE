@@ -17,6 +17,7 @@ import { ModeratorReducer } from './reducers/ModeratorReducer';
 import { ReportReducer } from './reducers/ReportReducer';
 import { EndActivityReducer } from './reducers/EndActivityReducer';
 import { ProfileReducer } from './reducers/ProfileReducer';
+import { StatisticalReducer } from './reducers/StatisticalReducer';
 
 
 const rootReducer = combineReducers({
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
     ReportReducer,
     EndActivityReducer,
     ProfileReducer,
+    StatisticalReducer,
 })
 
 let middleWare = applyMiddleware(reduxThunk);

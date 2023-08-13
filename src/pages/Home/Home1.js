@@ -130,7 +130,7 @@ export default function Home1 () {
                                                         </div>
                                                         <div className="stat-tools">
                                                             <div className="box">
-                                                                <div className="Like"><a className="Like__link"><i className="icofont-like" /> Like</a>
+                                                                <div className="Thích"><a className="Like__link"><i className="icofont-like" /> Thích</a>
                                                                     <div className="Emojis">
                                                                         <div className="Emoji Emoji--like">
                                                                             <div className="icon icon--like" />

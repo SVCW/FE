@@ -10,6 +10,8 @@ import { NavLink } from 'react-router-dom'
 import { FilePond, registerPlugin } from 'react-filepond'
 import Swal from 'sweetalert2';
 import { Dropdown } from 'primereact/dropdown';
+import GoogleMapReact from "google-map-react";
+import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
 // Import FilePond styles
 import "filepond/dist/filepond.min.css";
 
@@ -59,10 +61,42 @@ import ResponsiveHeader from '../../templates/UserTemplate/ResponsiveHeader/Resp
 import Header from '../../templates/UserTemplate/Header/Header';
 import Carousel from '../../templates/UserTemplate/Carousel/Carousel';
 import SideBar from '../../templates/UserTemplate/SideBar/SideBar';
+import RecommentActivity from '../../component/RecommentActivity';
+import PostDescription from "./PostDescription";
+import { history } from '../../App';
+import { Redirect, useHistory } from 'react-router-dom/cjs/react-router-dom';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-export default function Home () {
-  const { userByID } = useSelector(root => root.UserReducer)
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
+export default function Home(props) {
+  const defaultProps = {
+    center: {
+      lat: 10.99835602,
+      lng: 77.01502627,
+    },
+    zoom: 11,
+  };
+
+  const [coords, setCoords] = useState([]);
+  const [places, setPlaces] = useState("");
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCoords({ lat: latitude, lng: longitude });
+      }
+    );
+  }, []);
+
+  const fn = async (value) => {
+    const result = await geocodeByAddress(value);
+    const lnglat = await getLatLng(result[0]);
+
+    setCoords(lnglat);
+  };
+
+  const { userByID } = useSelector((root) => root.UserReducer);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
@@ -74,8 +108,9 @@ export default function Home () {
     if (tcss === "css") {
     }
   };
-  const { userByStatis, usertotal } = useSelector(root => root.UserReducer)
-  console.log("user" + usertotal);
+  const { userByStatis, usertotal } = useSelector((root) => root.UserReducer);
+  const change = usertotal.replace(",", ".");
+  console.log("change" + change);
   useEffect(() => {
     const existingData = JSON.parse(localStorage.getItem("activity"));
     const action = GetListActivityAction();
@@ -84,15 +119,15 @@ export default function Home () {
 
     dispatch(action1);
     const action2 = GetListProcessTypeAction();
-    dispatch(action2)
+    dispatch(action2);
     const action4 = GetListReportTypeAction();
-    dispatch(action4)
+    dispatch(action4);
     const action5 = GetListEndActivityAction();
-    dispatch(action5)
+    dispatch(action5);
     const action8 = GetUserBystatisticAction(userID);
-    dispatch(action8)
+    dispatch(action8);
     const action9 = GetRecommentActivityAction(userID);
-    dispatch(action9)
+    dispatch(action9);
 
     // console.log(existingData);
     // if (existingData) {
@@ -100,9 +135,9 @@ export default function Home () {
     //     dispatch({ type: "HIDE_LOADING" });
     const user = localStorage.getItem("userID");
     if (user) {
-      console.log('có user');
-      const action = GetUserByIdAction(localStorage.getItem('userID'));
-      dispatch(action)
+      console.log("có user");
+      const action = GetUserByIdAction(localStorage.getItem("userID"));
+      dispatch(action);
     } else {
       // console.log('không có user');
     }
@@ -211,7 +246,7 @@ export default function Home () {
     );
     const action = await CreateProcessAction(filteredData);
     await dispatch(action);
-    setIsOpen1((prevIsOpen) => !prevIsOpen);
+    setTT((prevIsOpen) => !prevIsOpen);
   };
 
   const [isLoading1, setIsLoading1] = useState(false);
@@ -263,7 +298,9 @@ export default function Home () {
   );
   const { userID } = useSelector((root) => root.LoginReducer);
   const dispatch = useDispatch();
-  const { arrActivity, activityId, arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
+  const { arrActivity, activityId, arrActivityRecomment } = useSelector(
+    (root) => root.ActivityReducer
+  );
   console.log("comment", arrActivityRecomment);
   const { arrFanpage } = useSelector((root) => root.FanpageReducer);
   const { isLoadingM } = useSelector((root) => root.LoadingReducer);
@@ -586,8 +623,7 @@ export default function Home () {
   };
   const toggleTextInput1 = () => {
     setTextInputVisible1(!isTextInputVisible1);
-    formik.setFieldValue('isFanpageAvtivity', isTextInputVisible1)
-
+    formik.setFieldValue("isFanpageAvtivity", isTextInputVisible1);
   };
   const openPopup = () => {
     setPopupOpen(true);
@@ -600,9 +636,9 @@ export default function Home () {
     initialValues: {
       title: "",
       amount: 0,
-      email: localStorage.getItem('emailuser'),
+      email: localStorage.getItem("emailuser"),
       phone: "",
-      name: localStorage.getItem('username'),
+      name: localStorage.getItem("username"),
       isAnonymous: true,
       activityId: "",
     },
@@ -680,7 +716,8 @@ export default function Home () {
     // setIsDisplay(true)
   };
   const [openpro, setOpenPro] = useState(false);
-  const [report, setReport] = useState(false)
+  console.log('open' + openpro);
+  const [report, setReport] = useState(false);
   const popupStyle = {
     opacity: isOpen ? 1 : 0,
     visibility: isOpen ? "visible" : "hidden",
@@ -691,6 +728,12 @@ export default function Home () {
     opacity: isOpen1 ? 1 : 0,
     visibility: isOpen1 ? "visible" : "hidden",
     overflow: isOpen1 ? "auto" : "hidden",
+  };
+  const [tt, setTT] = useState(false)
+  const popupStyle9 = {
+    opacity: tt ? 1 : 0,
+    visibility: tt ? "visible" : "hidden",
+    overflow: tt ? "auto" : "hidden",
   };
   const popupStyle2 = {
     opacity: isOpen2 ? 1 : 0,
@@ -712,17 +755,15 @@ export default function Home () {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
     // setIsDisplay(true)
   };
-  const { reportType } = useSelector(root => root.ReportType)
+  const { reportType } = useSelector((root) => root.ReportType);
   // console.log(reportType);
   const arrReportType = reportType?.map((item, index) => {
     return {
       label: item.reportTypeName,
       value: item.reportTypeId,
-
-    }
-  })
+    };
+  });
   // console.log(arrReportType);
-
 
   // console.log(arrReportType);
 
@@ -735,12 +776,12 @@ export default function Home () {
       description: "string",
       status: true,
       userId: userID,
-      activityId: ""
+      activityId: "",
     },
     onSubmit: async (value) => {
       // console.log(value);
       const action = await CreateReportAction(value);
-      await dispatch(action)
+      await dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -758,15 +799,25 @@ export default function Home () {
         title: `Báo cáo chiến dịch thành công `,
       });
       setReport((prevIsOpen) => !prevIsOpen);
-    }
-  })
+    },
+  });
   const onInputDropdown = (e, field) => {
-
     // console.log(e.target.value)
-    formik6.setFieldValue('reportTypeId', e.target.value)
+    formik6.setFieldValue("reportTypeId", e.target.value);
   };
+
+
+  const history = useHistory();
   useEffect(() => {
-  }, [arrDelete, reportType]);
+    const userID = localStorage.getItem('userID');
+
+    if (userID !== '') {
+      // Do something if userID is available in localStorage
+    } else {
+      alert('Vui lòng đăng nhập để trải nghiệm tốt hơn');
+      history.push('/');
+    }
+  }, [arrDelete, reportType, history]);
   const [files, setFiles] = useState("");
 
   useEffect(() => {
@@ -781,8 +832,8 @@ export default function Home () {
     initialValues: {
       title: "",
       description: "",
-      startDate: '',
-      endDate: '',
+      startDate: "",
+      endDate: "",
       // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
       location: "",
       targetDonation: 0,
@@ -800,8 +851,9 @@ export default function Home () {
       formik.setFieldValue("description", "");
       formik.setFieldValue("location", "");
       formik.setFieldValue("targetDonation", 0);
-      formik.setFieldValue("startDate", '');
-      formik.setFieldValue("endactivity", '');
+      formik.setFieldValue("startDate", "");
+      formik.setFieldValue("endDate", '');
+      formik.setFieldValue("endactivity", "");
       formik.setFieldValue("isFanpageAvtivity", false);
       formik.setFieldValue("media", []);
       setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -834,23 +886,24 @@ export default function Home () {
 
       swalWithBootstrapButtons
         .fire({
-          title: "Tạo mới  hoạt động thành công",
-          text: "Bạn muốn thêm tiến trình cho hoạt động",
+          title: "Tạo mới chiến dịch thành công",
+          text: "Bạn muốn thêm chi tiết tiến trình cho chiến dịch",
           icon: "success",
           showCancelButton: true,
           confirmButtonText: "Thêm tiến trình",
-          cancelButtonText: "Không!",
+          cancelButtonText: "Hoàn thành",
           reverseButtons: true,
         })
         .then((result) => {
           if (result.isConfirmed) {
+            setTT(true);
             handleCreateNewForm();
-            setOpenPro(true);
-            swalWithBootstrapButtons.fire(
-              "Thành công!",
-              "Thêm tiến trình thành công.",
-              "success"
-            );
+            setTT(true);
+            // swalWithBootstrapButtons.fire(
+            //   "Thành công!",
+            //   "Thêm tiến trình thành công.",
+            //   "success"
+            // );
             formik.setFieldValue("title", "");
             formik.setFieldValue("description", "");
             formik.setFieldValue("location", "");
@@ -861,8 +914,8 @@ export default function Home () {
             result.dismiss === Swal.DismissReason.cancel
           ) {
             swalWithBootstrapButtons.fire(
-              "Thành Công",
-              "Thêm Hoạt Động Thành  Công",
+              "Thành công",
+              "Thêm tiến trình thành  công",
               "success"
             );
             formik.setFieldValue("title", "");
@@ -876,7 +929,7 @@ export default function Home () {
     },
   });
   console.log(activityId.title);
-  console.log(moment(activityId.startDate).format('MM/DD/YYYY'));
+  console.log(moment(activityId.startDate).format("MM/DD/YYYY"));
   const formik9 = useFormik({
     initialValues: {
       activityId: activityId.activityId,
@@ -885,7 +938,7 @@ export default function Home () {
       startDate: activityId.startDate,
       endDate: activityId.endDate,
       location: activityId.location,
-      targetDonation: activityId.targetDonation
+      targetDonation: activityId.targetDonation,
     },
     // enableReinitialize: true,
     enableReinitialize: true,
@@ -919,8 +972,8 @@ export default function Home () {
       // formik.setFieldValue("media", []);
       setOpenPro1((prevIsOpen) => !prevIsOpen);
       // setIsDisplay(false);
-    }
-  })
+    },
+  });
 
   const handleImageChange = async (e) => {
     setIsLoading(true);
@@ -1006,19 +1059,16 @@ export default function Home () {
     setCommentData(updatedComments);
   };
   const handleCommentClick = (id) => {
-    const updatedComments = commentData.map(
-      (comment) => {
-        if (comment.id === id) {
-          return { ...comment, isCmt: !comment.isCmt };
-        }
-        return comment;
-      });
+    const updatedComments = commentData.map((comment) => {
+      if (comment.id === id) {
+        return { ...comment, isCmt: !comment.isCmt };
+      }
+      return comment;
+    });
 
     setCommentData(updatedComments);
     console.log(commentData);
   };
-
-
 
   useEffect(() => {
     const updatedArrActivity = arrActivity?.map((activity) => {
@@ -1056,30 +1106,30 @@ export default function Home () {
     }
     return timeAgoString;
   };
-  const [titlen, setTitlen] = useState('')
+  const [titlen, setTitlen] = useState("");
   console.log(titlen);
   const formik7 = useFormik({
     initialValues: {
       userId: userID,
-      searchContent: titlen
+      searchContent: titlen,
     },
     onSubmit: (value) => {
       console.log(value);
-      const action = RecommentActivityAction(value);
-      dispatch(action)
-    }
-  })
+      const action = RecommentActivityAction(value, userID);
+      dispatch(action);
+    },
+  });
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     setTitlen(inputValue);
 
-    formik7.setFieldValue('searchContent', inputValue); // Gán giá trị vào trường "title" trong Formik
+    formik7.setFieldValue("searchContent", inputValue); // Gán giá trị vào trường "title" trong Formik
   };
 
-  if (!userByID) return <p>Loading...</p>;
+
   return (
     <Fragment>
-      {isLoadingM ? <Loading /> : <Fragment></Fragment>}
+     
       <Config />
       <ResponsiveHeader />
       <header className>
@@ -1090,9 +1140,13 @@ export default function Home () {
           </NavLink>
           <div className="searches">
             <form method="post" onSubmit={formik7.handleSubmit}>
-              <input type="text" placeholder="Tìm Kiếm..." name="titlen"
+              <input
+                type="text"
+                placeholder="Tìm Kiếm..."
+                name="titlen"
                 value={titlen}
-                onChange={handleInputChange} />
+                onChange={handleInputChange}
+              />
               <button type="submit">
                 <i className="icofont-search" />
               </button>
@@ -1104,18 +1158,23 @@ export default function Home () {
                 <ul className="so-history">
                   <li>
                     <div className="searched-user">
-                      <figure>
+                      {/* <figure>
                         <img
                           style={{ height: "2.5rem", width: "2.5rem" }}
                           src="images/avatar/uocAvatar.jpg"
                           alt
                         />
-                      </figure>
-                      <span className="long-text">Miền Trung</span>
+                      </figure> */}
+                      {arrActivityRecomment.map((item,index)=>{
+                        return   <div style={{display:'flex',flexDirection:'column'}}>
+                        <span className="long-text">-{item.title}</span>
+                        </div>
+                      })}
+                     
                     </div>
-                    <span className="trash">
+                    {/* <span className="trash">
                       <i className="icofont-close-circled" />
-                    </span>
+                    </span> */}
                   </li>
                   {/* <li>
                                     <div className="searched-user">
@@ -1132,7 +1191,7 @@ export default function Home () {
             <li>
               <div className="user-dp">
                 <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
-                  <img alt src="./images/avatar/uocAvatar.jpg" />
+                  <img alt src="images/avatar/uocAvatar.jpg" />
                   <div className="name">
                     <h4>{localStorage.getItem("username")}</h4>
                   </div>
@@ -1272,6 +1331,11 @@ export default function Home () {
                     <i className="icofont-flash" /> Lịch sử
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/statisticaluser" title>
+                    <i class="fa-solid fa-chart-simple" /> Thống kê
+                  </NavLink>
+                </li>
                 {userByID.fanpage === null ? (
                   <li>
                     <NavLink to="/createfanpage" title>
@@ -1338,7 +1402,7 @@ export default function Home () {
       <Carousel />
 
       <SideBar />
-      <section>
+     
         <div className="gap">
           <div className="container">
             <div className="row">
@@ -1369,32 +1433,39 @@ export default function Home () {
                         <div
                           data-progress="tip"
                           className="progress__outer"
-                          data-value={`${usertotal}`}
+                          data-value={change.toString()}
                         >
-                          <div className="progress__inner">{usertotal}%</div>
+                          <div className="progress__inner">{(parseFloat(change) * 100).toFixed(1)}%</div>
                         </div>
                         <ul className="prof-complete">
-                          <li>
+                          {userByStatis.phone === null ? <li>
                             <i className="icofont-plus-square" />{" "}
-                            <a href="#" title>
+                            <NavLink to={`/profile/${userID}`}>
                               Cập nhật số điện thoại
-                            </a>
+                            </NavLink>
                             <em>10%</em>
-                          </li>
-                          {/* <li>
+                          </li> : <div></div>}
+                          {userByStatis.fullName === 'none' ? <li>
                             <i className="icofont-plus-square" />{" "}
-                            <a href="#" title>
-                              Cập nhật ngày tháng năm sinh
-                            </a>
+                            <NavLink to={`/profile/${userID}`}>
+                              Cập nhật họ tên
+                            </NavLink>
                             <em>10%</em>
-                          </li>
-                          <li>
+                          </li> : <div></div>}
+                          {userByStatis.image === 'none' ? <li>
                             <i className="icofont-plus-square" />{" "}
-                            <a href="#" title>
-                              Cập nhật giới tính bạn
-                            </a>
+                            <NavLink to={`/profile/${userID}`}>
+                              Cập nhật avartar
+                            </NavLink>
                             <em>10%</em>
-                          </li> */}
+                          </li> : <div></div>}
+                          {userByStatis.coverImage === 'none' ? <li>
+                            <i className="icofont-plus-square" />{" "}
+                            <NavLink to={`/profile/${userID}`}>
+                              Cập nhật ảnh bìa
+                            </NavLink>
+                            <em>10%</em>
+                          </li> : <div></div>}
                         </ul>
                       </div>
                       {/* complete profile widget */}
@@ -1414,7 +1485,7 @@ export default function Home () {
                               <figure>
                                 <img
                                   style={{ width: "480px", height: "180px" }}
-                                  src="./images/avatar/hienMau.jpg"
+                                  src="images/avatar/hienMau.jpg"
                                   alt
                                 />
                                 <span
@@ -1507,47 +1578,20 @@ export default function Home () {
                             </div>
                           </li>
                         </ul>
-                      </div>
-                      {/* recent blog */}
-                      {/* <div className="widget">
-                                                <h4 className="widget-title">Your profile has a new Experience section</h4>
-                                                <p>
-                                                    Showcase your professional experience and education to help potential
-                                                    employers and collaborators find and contact you about career
-                                                    opportunities.
-                                                </p>
-                                                <a className="main-btn" href="profile.html" title data-ripple>view
-                                                    profile</a>
-                                            </div>your profile */}
-                      {/* <div className="widget web-links stick-widget">
-                                                <h4 className="widget-title">Useful Links <a title href="#" className="see-all">See All</a></h4>
-                                                <ul>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">about</a>
-                                                    </li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">career</a>
-                                                    </li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">advertise</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">socimo
-                                                        Apps</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">socimo
-                                                        Blog</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">Help</a>
-                                                    </li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">socimo
-                                                        Gifts</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">content
-                                                        policy</a></li>
-                                                    <li><i className="icofont-dotted-right" /> <a title href="#">User
-                                                        Policy</a></li>
-                                                </ul>
-                                                <p>© Socimo 2020. All Rights Reserved.</p>
-                                            </div>links */}
+                      </div> */}
+                     </div>
                     </aside>
                   </div>
                   <div className="col-lg-6">
                     <ul class="filtr-tabs">
-                      <li><NavLink to="/home">Trang chủ</NavLink></li>
-                      <li><NavLink to="/endactivity">Chiến dịch đã kết thúc</NavLink></li>
+                      <li>
+                        <NavLink to="/home">Trang chủ</NavLink>
+                      </li>
+                      <li>
+                        <NavLink to="/endactivity">
+                          Chiến dịch đã kết thúc
+                        </NavLink>
+                      </li>
                     </ul>
                     {/* <ul className="filtr-tabs">
                                             <li><a className="active" href="#" title>Home</a></li>
@@ -1572,32 +1616,6 @@ export default function Home () {
                               placeholder="Tạo chiến dịch"
                             />
                           </form>
-                          <ul className="upload-media">
-                            <li>
-                              <a href="#" title>
-                                <i>
-                                  <img src="images/image.png" alt />
-                                </i>
-                                <span>Photo/Video</span>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="#" title>
-                                <i>
-                                  <img src="images/activity.png" alt />
-                                </i>
-                                <span>Feeling/Activity</span>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="live-stream.html" title>
-                                <i>
-                                  <img src="images/live-stream.png" alt />
-                                </i>
-                                <span>Live stream</span>
-                              </a>
-                            </li>
-                          </ul>
                         </div>
                       </div>
                     ) : (
@@ -1625,87 +1643,102 @@ export default function Home () {
                       </div>
                     </div>
                     {/* suggested friends */}
-                    {cmt.filter(item => item.status === "Active" && item.title.toLowerCase().includes(titlen)).map((item, index) => {
-                      const detailItem = item;
-                      let isAlreadyLiked = false;
-                      let isAlreadyJoined = false;
-                      let isAlreadyFollowed = false;
-                      item?.like?.map((user) => {
-                        if (user.userId === userByID.userId) {
-                          console.log(user.userId === userByID.userId);
-                          //item?.like?
-                          isAlreadyLiked = true;
-                        }
-                      });
+                    {cmt
+                      .filter(
+                        (item) =>
+                          item.status === "Active" &&
+                          item.title.toLowerCase().includes(titlen)
+                      )
+                      .map((item, index) => {
+                        const detailItem = item;
+                        let isAlreadyLiked = false;
+                        let isAlreadyJoined = false;
+                        let isAlreadyFollowed = false;
+                        item?.like?.map((user) => {
+                          if (user.userId === userByID.userId) {
+                            console.log(user.userId === userByID.userId);
+                            //item?.like?
+                            isAlreadyLiked = true;
+                          }
+                        });
 
-                      item?.followJoinAvtivity?.map((user) => {
-                        if (user.userId === userByID.userId) {
-                          isAlreadyFollowed = user.isFollow;
-                          isAlreadyJoined = user.isJoin;
-                        }
-                      });
-                      //TODO
-                      return (
-                        <div className="main-wraper">
-                          <div className="user-post">
-                            <div className="friend-info">
-                              <figure>
-                                <em>
-                                  <svg
-                                    style={{ verticalAlign: "middle" }}
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width={15}
-                                    height={15}
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      fill="#7fba00"
-                                      stroke="#7fba00"
-                                      d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
-                                    ></path>
-                                  </svg>
-                                </em>
-                                <img
-                                  style={{ height: "3rem", width: "3.5rem" }}
-                                  alt
-                                  src="images/avatar/uocAvatar.jpg"
-                                />
-                              </figure>
-                              <div className="friend-name">
-                                <div className="more">
-                                  <div className="more-post-optns">
-                                    <i className>
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width={24}
-                                        height={24}
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="feather feather-more-horizontal"
-                                      >
-                                        <circle cx={12} cy={12} r={1} />
-                                        <circle cx={19} cy={12} r={1} />
-                                        <circle cx={5} cy={12} r={1} />
-                                      </svg>
-                                    </i>
-                                    <ul>
-                                      {userID === item.userId ? <li onClick={() => {
-                                        handleClick6()
-                                        const action = GetActivityByIDAction(item.activityId)
-                                        dispatch(action)
-                                      }}>
-                                        <i className="icofont-pen-alt-1" />
-                                        Sửa bài đăng
-                                        <span>
-                                          Chỉnh sửa và cập nhật chi tiết bài
-                                          đăng
-                                        </span>
-                                      </li> : <div></div>}
-                                      {/* <li>
+                        item?.followJoinAvtivity?.map((user) => {
+                          if (user.userId === userByID.userId) {
+                            isAlreadyFollowed = user.isFollow;
+                            isAlreadyJoined = user.isJoin;
+                          }
+                        });
+                        //TODO
+                        return (
+                          <div className="main-wraper">
+                            <div className="user-post">
+                              <div className="friend-info">
+                                <figure>
+                                  <em>
+                                    <svg
+                                      style={{ verticalAlign: "middle" }}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width={15}
+                                      height={15}
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        fill="#7fba00"
+                                        stroke="#7fba00"
+                                        d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
+                                      ></path>
+                                    </svg>
+                                  </em>
+                                  <img
+                                    style={{ height: "3rem", width: "3.5rem" }}
+                                    alt
+                                    src="images/avatar/uocAvatar.jpg"
+                                  />
+                                </figure>
+                                <div className="friend-name">
+                                  <div className="more">
+                                    <div className="more-post-optns">
+                                      <i className>
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width={24}
+                                          height={24}
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          strokeWidth={2}
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          className="feather feather-more-horizontal"
+                                        >
+                                          <circle cx={12} cy={12} r={1} />
+                                          <circle cx={19} cy={12} r={1} />
+                                          <circle cx={5} cy={12} r={1} />
+                                        </svg>
+                                      </i>
+                                      <ul>
+                                        {userID === item.userId ? (
+                                          <li
+                                            onClick={() => {
+                                              handleClick6();
+                                              const action =
+                                                GetActivityByIDAction(
+                                                  item.activityId
+                                                );
+                                              dispatch(action);
+                                            }}
+                                          >
+                                            <i className="icofont-pen-alt-1" />
+                                            Sửa bài đăng
+                                            <span>
+                                              Chỉnh sửa và cập nhật chi tiết bài
+                                              đăng
+                                            </span>
+                                          </li>
+                                        ) : (
+                                          <div></div>
+                                        )}
+                                        {/* <li>
                                         <i className="icofont-ban" />
                                         Ẩn bài đăng
                                         <span>
@@ -1713,143 +1746,189 @@ export default function Home () {
                                           có vấn đề
                                         </span>
                                       </li> */}
-                                      {userID === item.userId ? <li onClick={() => {
-                                        Swal.fire({
-                                          title: 'Bạn muốn xóa?',
-                                          text: "Bạn có chắc muốn xóa bài viết này!",
-                                          icon: 'warning',
-                                          showCancelButton: true,
-                                          confirmButtonColor: '#3085d6',
-                                          cancelButtonColor: '#d33',
-                                          confirmButtonText: 'Xóa!'
-                                        }).then((result) => {
-                                          if (result.isConfirmed) {
-                                            Swal.fire(
-                                              'Xóa thành công!',
-                                              'Xóa thành công chiến dịch.',
-                                              'success'
-                                            )
-                                            const action = DeleteActivityByUserAction(item.activityId);
-                                            dispatch(action)
-                                          }
-                                        })
-                                      }}>
-                                        <i className="icofont-ui-delete" />
-                                        Xóa bài đăng
-                                        <span>
-                                          Xóa những bài đăng khi bạn cảm thấy có
-                                          vấn đề không ổn
-                                        </span>
-                                      </li> : <div></div>}
-                                      {userID !== item.userId ? <li onClick={() => {
-                                        setReport(true)
-                                        formik6.setFieldValue('activityId', item.activityId)
-                                      }}>
-                                        <i className="icofont-flag" />
-                                        Báo cáo bài đăng
-                                        <span>
-                                          nhầm báo cáo những vấn đề bất thường
-                                          đến cho người quản lý
-                                        </span>
-                                      </li> : <div></div>}
-                                    </ul>
+                                        {userID === item.userId ? (
+                                          <li
+                                            onClick={() => {
+                                              Swal.fire({
+                                                title: "Bạn muốn xóa?",
+                                                text: "Bạn có chắc muốn xóa bài viết này!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#3085d6",
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Xóa!",
+                                              }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                  Swal.fire(
+                                                    "Xóa thành công!",
+                                                    "Xóa thành công chiến dịch.",
+                                                    "success"
+                                                  );
+                                                  const action =
+                                                    DeleteActivityByUserAction(
+                                                      item.activityId
+                                                    );
+                                                  dispatch(action);
+                                                }
+                                              });
+                                            }}
+                                          >
+                                            <i className="icofont-ui-delete" />
+                                            Xóa bài đăng
+                                            <span>
+                                              Xóa những bài đăng khi bạn cảm
+                                              thấy có vấn đề không ổn
+                                            </span>
+                                          </li>
+                                        ) : (
+                                          <div></div>
+                                        )}
+                                        {userID !== item.userId ? (
+                                          <li
+                                            onClick={() => {
+                                              setReport(true);
+                                              formik6.setFieldValue(
+                                                "activityId",
+                                                item.activityId
+                                              );
+                                            }}
+                                          >
+                                            <i className="icofont-flag" />
+                                            Báo cáo bài đăng
+                                            <span>
+                                              nhầm báo cáo những vấn đề bất
+                                              thường đến cho người quản lý
+                                            </span>
+                                          </li>
+                                        ) : (
+                                          <div></div>
+                                        )}
+                                      </ul>
+                                    </div>
                                   </div>
+                                  <ins>
+                                    <a title href="">
+                                      {item.user?.username}
+                                    </a>{" "}
+                                  </ins>
+                                  <span>
+                                    {" "}
+                                    {DateTime(item.createAt)}{" "}
+                                    <i className="icofont-globe" />
+                                  </span>
                                 </div>
-                                <ins>
-                                  <a title href="">
-                                    {item.user?.username}
-                                  </a>{" "}
-                                </ins>
-                                <span>
-                                  {" "}
-                                  {DateTime(item.createAt)}{" "}
-                                  <i className="icofont-globe" />
-                                </span>
-                              </div>
-                              <div className="post-meta">
-                                {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
+                                <div className="post-meta">
+                                  {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
 
-                                {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
-                                {/* <p>
+                                  {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
+                                  {/* <p>
                                                                 {item.description}
                                                             </p> */}
 
-                                {/* hình ảnh */}
-                                {item.process.length !== 0 ? (
-                                  <NavLink
-                                    to={`/detailprocess/${item.activityId}`}
-                                    style={{
-                                      fontSize: "20px",
-                                      fontWeight: "bold",
-                                      color: "#3f6ad8",
-                                      marginBottom: "20px",
-                                      cursor: "pointer",
-                                    }}
-                                    onClick={() => {
-                                      // handleClick2()
-                                      // const action = GetProcessByActivityAction(item.activityId);
-                                      // dispatch(action)
-                                    }}
-                                  >
-                                    Xem tiến trình
-                                  </NavLink>
-                                ) : (
-                                  <div></div>
-                                )}
-                                <div className="row">
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignContent: "center",
-                                    }}
-                                    className="col-lg-12"
-                                  >
-                                    <h3
+                                  {/* hình ảnh */}
+                                  {item.process.length !== 0 ? (
+                                    <NavLink
+                                      to={`/detailprocess/${item.activityId}`}
                                       style={{
-                                        fontSize: "25px",
+                                        fontSize: "20px",
                                         fontWeight: "bold",
-                                        width: "450px",
-                                        wordWrap: "break-word",
-                                        color: "#2d3436",
+                                        color: "#3f6ad8",
+                                        marginBottom: "20px",
+                                        cursor: "pointer",
                                       }}
-                                      className="col-lg-8"
+                                      onClick={() => {
+                                        // handleClick2()
+                                        // const action = GetProcessByActivityAction(item.activityId);
+                                        // dispatch(action)
+                                      }}
                                     >
-                                      {item.title}
-                                    </h3>
-                                    {/* bla bla bla theo dõi */}
-                                  </div>
-                                </div>
-                                <figure style={{}}>
-                                  {/* <p style={{ width: '100%' }}>fetched-image</p> */}
+                                      Xem tiến trình
+                                    </NavLink>
+                                  ) : (
+                                    <div></div>
+                                  )}
+                                  <div className="row">
+                                    <div
+                                      style={{
+                                        padding: "0",
+                                        display: "flex",
+                                        alignContent: "center",
+                                      }}
+                                      className="col-lg-12"
+                                    >
+                                      <h3
+                                        style={{
+                                          fontSize: "25px",
+                                          fontWeight: "bold",
+                                          width: "450px",
+                                          wordWrap: "break-word",
+                                          color: "#2d3436",
+                                        }}
+                                        className="col-lg-12"
+                                      >
+                                        {item.title}
+                                      </h3>
 
-                                  <div className="image-gallery-flex">
-                                    {item?.media?.length <= 3
-                                      ? item.media.map((image, index) => {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className={`image-container-post`}
-                                            >
-                                              <a
-                                                data-toggle="modal"
-                                                data-target="#img-comt"
-                                                href="images/resources/album1.jpg"
-                                                onClick={() => {
-                                                  setDetail(detailItem);
-                                                }}
-                                              >
-                                                <img
-                                                  src={image.linkMedia}
-                                                  alt={`Image ${image.id}`}
-                                                />
-                                              </a>
-                                            </div>
-                                          );
-                                        })
-                                      : item.media
-                                          ?.slice(0, 4)
-                                          .map((image, index) => {
-                                            return index !== 3 ? (
+                                      {/* bla bla bla theo dõi */}
+                                    </div>
+                                  </div>
+                                  <div style={{ display: "flex" }}>
+                                    <div style={{ fontSize: "17px" }}>
+                                      {" "}
+                                      <span
+                                        style={{
+                                          fontWeight: 400,
+                                          color: "#747d8c",
+                                        }}
+                                      >
+                                        Thời gian:{" "}
+                                      </span>{" "}
+                                      {moment(item.startDate).format(
+                                        "DD/MM/YYYY"
+                                      )}
+                                    </div>
+                                    <div
+                                      style={{
+                                        fontSize: "15px",
+                                        fontWeight: "900",
+                                        padding: "0 0.5rem",
+                                      }}
+                                    >
+                                      -
+                                    </div>
+                                    <div style={{ fontSize: "17px" }}>
+                                      {" "}
+                                      <span
+                                        style={{ fontWeight: 600 }}
+                                      ></span>{" "}
+                                      {moment(item.endDate).format(
+                                        "DD/MM/YYYY"
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* chi tiết chiến dịch */}
+                                  <p className="mt-3 mt-detail">
+                                    <span className="mt-detail">
+                                      
+                                    </span>{" "}
+                                    <PostDescription
+                                      description={item.description}
+                                    />
+                                  </p>
+
+                                  {/* <p className="mt-3 mt-detail">
+                                    <span className="mt-detail">Dia chi :</span>{" "}
+                                    {item.location}{" "}
+                                  </p> */}
+
+                                  <figure style={{}}>
+                                    {/* <p style={{ width: '100%' }}>fetched-image</p> */}
+
+                                    <div className="image-gallery-flex">
+                                      {item?.media?.length <= 3
+                                        ? item.media.map((image, index) => {
+                                            return (
                                               <div
                                                 key={index}
                                                 className={`image-container-post`}
@@ -1868,34 +1947,58 @@ export default function Home () {
                                                   />
                                                 </a>
                                               </div>
-                                            ) : (
-                                              <div
-                                                key={index}
-                                                className={`image-container-post-last`}
-                                              >
-                                                <a
-                                                  data-toggle="modal"
-                                                  data-target="#img-comt"
-                                                  href="images/resources/album1.jpg"
-                                                  onClick={() => {
-                                                    setDetail(detailItem);
-                                                  }}
-                                                >
-                                                  <div className="overlay">
-                                                    +{item.media.length - 4}
-                                                  </div>
-                                                  <img
-                                                    src={image.linkMedia}
-                                                    alt={`Image ${image.id}`}
-                                                  />
-                                                </a>
-                                              </div>
                                             );
-                                          })}
-                                  </div>
-                                </figure>
+                                          })
+                                        : item.media
+                                            ?.slice(0, 4)
+                                            .map((image, index) => {
+                                              return index !== 3 ? (
+                                                <div
+                                                  key={index}
+                                                  className={`image-container-post`}
+                                                >
+                                                  <a
+                                                    data-toggle="modal"
+                                                    data-target="#img-comt"
+                                                    href="images/resources/album1.jpg"
+                                                    onClick={() => {
+                                                      setDetail(detailItem);
+                                                    }}
+                                                  >
+                                                    <img
+                                                      src={image.linkMedia}
+                                                      alt={`Image ${image.id}`}
+                                                    />
+                                                  </a>
+                                                </div>
+                                              ) : (
+                                                <div
+                                                  key={index}
+                                                  className={`image-container-post-last`}
+                                                >
+                                                  <a
+                                                    data-toggle="modal"
+                                                    data-target="#img-comt"
+                                                    href="images/resources/album1.jpg"
+                                                    onClick={() => {
+                                                      setDetail(detailItem);
+                                                    }}
+                                                  >
+                                                    <div className="overlay">
+                                                      +{item.media.length - 4}
+                                                    </div>
+                                                    <img
+                                                      src={image.linkMedia}
+                                                      alt={`Image ${image.id}`}
+                                                    />
+                                                  </a>
+                                                </div>
+                                              );
+                                            })}
+                                    </div>
+                                  </figure>
 
-                                <p className="mt-3">
+                                  {/* <p className="mt-3">
                                   <span
                                     style={{
                                       color: "black",
@@ -1906,16 +2009,47 @@ export default function Home () {
                                     Chi tiết :
                                   </span>{" "}
                                   {item.description}
-                                </p>
-                                <div style={{ paddingBottom: '20px' }}>
-                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>  </span> {moment(item.startDate).format('DD/MM/YYYY')}</div> 
+                                </p> */}
+
+                                  {/* <div style={{ paddingBottom: '20px' }}>
+                                  <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}>  </span> {moment(item.startDate).format('DD/MM/YYYY')}</div>
                                   <div>-</div>
                                   <div style={{ fontSize: '17px' }}> <span style={{ fontWeight: 600 }}></span> {moment(item.endDate).format('DD/MM/YYYY')}</div>
-                                </div>
+                                </div> */}
 
                                 {item.targetDonation !== 0 ? (
                                   <div className="mb-4">
-                                    <div>
+                                  <p style={{
+                                    color:'blue',
+                                    fontWeight:'400',
+                                    fontSize:"15px",
+                                  }} >Đã quyên góp được <br/>
+                                      <span
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                         <span
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {item.realDonation.toLocaleString()}
+                                      </span>{" "} đ /
+                                      <span
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                         {item.targetDonation.toLocaleString()}{" "} đ
+                                      </span>{" "}
+                                      </span>
+                                   </p>
+                                  
+                                    {/* <div>
                                       {" "}
                                       <span
                                         style={{
@@ -1954,359 +2088,280 @@ export default function Home () {
                                       >
                                         {item.realDonation.toLocaleString()} vnđ
                                       </span>{" "}
-                                    </div>
-                                    <input
-                                      type="range"
-                                      min="0"
-                                      max={item.targetDonation}
-                                      value={item.realDonation}
-                                      // onChange={handleChange}
-                                      className="range-slider"
-                                      style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                          (item.realDonation /
-                                            item.targetDonation) *
-                                          100
-                                        }%, #ddd ${
-                                          (item.realDonation /
-                                            item.targetDonation) *
-                                          100
-                                        }%, #ddd 100%)`,
-                                      }}
-                                    />
-                                    {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
-                                    {item.realDonation !== 0 ? (
-                                      <div></div>
-                                    ) : (
-                                      <div
-                                        className="range-value"
-                                        style={{ position: "absolute" }}
-                                      >
-                                        0
-                                      </div>
-                                    )}
-                                    {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
-                                    {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
-                                    {item.realDonation === 0 ? (
-                                      <div></div>
-                                    ) : (
-                                      <div
-                                        className="range-value"
+                                    </div> */}
+                                      <input
+                                        type="range"
+                                        min="0"
+                                        max={item.targetDonation}
+                                        value={item.realDonation}
+                                        // onChange={handleChange}
+                                        className="range-slider"
                                         style={{
-                                          position: "absolute",
-                                          left: `${
+                                          background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
                                             (item.realDonation /
                                               item.targetDonation) *
                                             100
-                                          }%`,
+                                          }%, #ddd ${
+                                            (item.realDonation /
+                                              item.targetDonation) *
+                                            100
+                                          }%, #ddd 100%)`,
+                                        }}
+                                      />
+                                      {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
+                                      {item.realDonation !== 0 ? (
+                                        <div></div>
+                                      ) : (
+                                        <div
+                                          className="range-value"
+                                          style={{ position: "absolute" }}
+                                        >
+                                          0
+                                        </div>
+                                      )}
+                                      {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
+                                      {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
+                                      {item.realDonation === 0 ? (
+                                        <div></div>
+                                      ) : (
+                                        <div
+                                          className="range-value"
+                                          style={{
+                                            position: "absolute",
+                                            left: `${
+                                              (item.realDonation /
+                                                item.targetDonation) *
+                                              100
+                                            }%`,
+                                          }}
+                                        >
+                                          {" "}
+                                          {(item.realDonation /
+                                            item.targetDonation) *
+                                            100}
+                                          %
+                                        </div>
+                                      )}
+                                      <div
+                                        className="range-value"
+                                        style={{
+                                          color: "blue",
+                                          position: "absolute",
+                                          right: "10px",
                                         }}
                                       >
-                                        {" "}
-                                        {(item.realDonation /
-                                          item.targetDonation) *
-                                          100}
-                                        %
+                                        {item.targetDonation.toLocaleString()}{" "}
+                                        vnđ
                                       </div>
-                                    )}
-                                    <div
-                                      className="range-value"
-                                      style={{
-                                        position: "absolute",
-                                        right: "10px",
-                                      }}
-                                    >
-                                      100%
                                     </div>
-                                  </div>
-                                ) : (
-                                  <div></div>
-                                )}
-
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-around",
-                                  }}
-                                >
-                                  <button
-                                    className={`btn ${isAlreadyJoined
-                                      ? "btn-danger"
-                                      : "btn-success"
-                                      } mb-4 mt-4`}
-                                    onClick={() => {
-                                      handleJoinClick(
-                                        index,
-                                        item.activityId,
-                                        isAlreadyJoined,
-                                        item.title
-                                      );
-                                    }}
-                                  >
-                                    {isAlreadyJoined
-                                      ? "Hủy Tham gia"
-                                      : "Tham gia"}
-                                  </button>
-
-                                  <button
-                                    className={`btn ${isAlreadyFollowed
-                                      ? "btn-danger"
-                                      : "btn-success"
-                                      } mb-4 mt-4`}
-                                    onClick={() => {
-                                      handleFollowClick(
-                                        index,
-                                        item.activityId,
-                                        isAlreadyFollowed,
-                                        item.title
-                                      );
-                                    }}
-                                  >
-                                    {
-                                      //TODO
-                                    }
-                                    {isAlreadyFollowed
-                                      ? "Hủy theo dõi"
-                                      : "Theo dõi"}
-                                  </button>
-                                  {item.targetDonation !== 0 ? (
-                                    <button
-                                      className="btn btn-primary ml-3 mb-4 mt-4"
-                                      onClick={() => {
-                                        // setActi(item.activityId)
-                                        formik1.setFieldValue(
-                                          "activityId",
-                                          item.activityId
-                                        );
-                                        openPopup();
-                                      }}
-                                    >
-                                      Ủng hộ
-                                    </button>
                                   ) : (
                                     <div></div>
                                   )}
-                                </div>
 
-                                <div className="we-video-info">
-                                  {/* <ul>
-                                    <li>
-                                      <span title="views" className="views">
-                                        <i>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={16}
-                                            height={16}
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="feather feather-eye"
-                                          >
-                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                            <circle cx={12} cy={12} r={3} />
-                                          </svg>
-                                        </i>
-                                        <ins>1.2k</ins>
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <span
-                                        title="Comments"
-                                        className="Recommend"
-                                      >
-                                        <i>
-                                          <svg
-                                            className="feather feather-message-square"
-                                            strokeLinejoin="round"
-                                            strokeLinecap="round"
-                                            strokeWidth={2}
-                                            stroke="currentColor"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            height={16}
-                                            width={16}
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                          </svg>
-                                        </i>
-                                        <ins>54</ins>
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <span title="follow" className="Follow">
-                                        <i>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={16}
-                                            height={16}
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="feather feather-star"
-                                          >
-                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                          </svg>
-                                        </i>
-                                        <ins>5k</ins>
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <span className="share-pst" title="Share">
-                                        <i>
-                                          <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width={16}
-                                            height={16}
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="feather feather-share-2"
-                                          >
-                                            <circle cx={18} cy={5} r={3} />
-                                            <circle cx={6} cy={12} r={3} />
-                                            <circle cx={18} cy={19} r={3} />
-                                            <line
-                                              x1="8.59"
-                                              y1="13.51"
-                                              x2="15.42"
-                                              y2="17.49"
-                                            />
-                                            <line
-                                              x1="15.41"
-                                              y1="6.51"
-                                              x2="8.59"
-                                              y2="10.49"
-                                            />
-                                          </svg>
-                                        </i>
-                                        <ins>205</ins>
-                                      </span>
-                                    </li>
-                                  </ul> */}
                                   <div
-                                    className="emoji-state"
                                     style={{
                                       display: "flex",
-                                      alignContent: "center",
-                                      paddingTop: "20px",
+                                      justifyContent: "space-around",
                                     }}
                                   >
-                                    <div className="popover_wrapper">
-                                      <a
-                                        className="popover_title"
-                                        href="#"
-                                        title
+                                    <button
+                                      className={`btn ${
+                                        isAlreadyJoined
+                                          ? "btn-danger"
+                                          : "btn-success"
+                                      } mb-4 mt-4`}
+                                      onClick={() => {
+                                        handleJoinClick(
+                                          index,
+                                          item.activityId,
+                                          isAlreadyJoined,
+                                          item.title
+                                        );
+                                      }}
+                                    >
+                                      {isAlreadyJoined
+                                        ? "Hủy Tham gia"
+                                        : "Tham gia"}
+                                    </button>
+
+                                    <button
+                                      className={`btn ${
+                                        isAlreadyFollowed
+                                          ? "btn-danger"
+                                          : "btn-success"
+                                      } mb-4 mt-4`}
+                                      onClick={() => {
+                                        handleFollowClick(
+                                          index,
+                                          item.activityId,
+                                          isAlreadyFollowed,
+                                          item.title
+                                        );
+                                      }}
+                                    >
+                                      {
+                                        //TODO
+                                      }
+                                      {isAlreadyFollowed
+                                        ? "Hủy theo dõi"
+                                        : "Theo dõi"}
+                                    </button>
+                                    {item.targetDonation !== 0 ? (
+                                      <button
+                                        className="btn btn-primary mb-4 mt-4 "
+                                        onClick={() => {
+                                          // setActi(item.activityId)
+                                          formik1.setFieldValue(
+                                            "activityId",
+                                            item.activityId
+                                          );
+                                          openPopup();
+                                        }}
                                       >
-                                        <img
-                                          alt
-                                          src="images/smiles/thumb.png"
-                                        />
-                                      </a>
-                                      <div className="popover_content">
-                                        <span>
+                                        Ủng hộ
+                                      </button>
+                                    ) : (
+                                      <div></div>
+                                    )}
+                                  </div>
+
+                                  <div className="we-video-info">
+                                    <div
+                                      className="emoji-state"
+                                      style={{
+                                        display: "flex",
+                                        alignContent: "center",
+                                        paddingTop: "20px",
+                                      }}
+                                    >
+                                      <div className="popover_wrapper">
+                                        <a
+                                          className="popover_title"
+                                          href="#"
+                                          title
+                                        >
                                           <img
                                             alt
                                             src="images/smiles/thumb.png"
                                           />
-                                          Thích
-                                        </span>
-                                        <ul className="namelist">
-                                          {item?.like?.length <= 4 ? item?.like.map((userItem) => {
-                                            return <li>{userItem.user.username}</li>;
-                                          }) : item?.like?.slice(0, 4).map((userItem, index) => {
-                                            index < 4 ? <li>{userItem.user.username}</li> : <li><span>+{item?.like.length - 5}</span></li>;
-                                          })}
-                                         
-                                        </ul>
+                                        </a>
+                                        <div className="popover_content">
+                                          <span>
+                                            <img
+                                              alt
+                                              src="images/smiles/thumb.png"
+                                            />
+                                            Đã thích
+                                          </span>
+                                          <ul className="namelist">
+                                            {item?.like?.length <= 4
+                                              ? item?.like.map((userItem) => {
+                                                  return (
+                                                    <li>
+                                                      {userItem.user.username}
+                                                    </li>
+                                                  );
+                                                })
+                                              : item?.like
+                                                  ?.slice(0, 4)
+                                                  .map((userItem, index) => {
+                                                    index < 4 ? (
+                                                      <li>
+                                                        {userItem.user.username}
+                                                      </li>
+                                                    ) : (
+                                                      <li>
+                                                        <span>
+                                                          +
+                                                          {item?.like.length -
+                                                            5}
+                                                        </span>
+                                                      </li>
+                                                    );
+                                                  })}
+                                          </ul>
+                                        </div>
                                       </div>
-                                    </div>
 
-                                    <p>{item.like.length || 0}</p>
-                                    <div style={{ marginLeft: "20px" }}>
-                                      <div
-                                        style={{
-                                          color: "blue",
-                                          fontSize: "15px",
-                                        }}
-                                      >
-                                        <span>
-                                          {item.comment.length} bình luận
-                                        </span>
+                                      <p>{item.like.length || 0}</p>
+                                      <div style={{ marginLeft: "20px" }}>
+                                        <div
+                                          style={{
+                                            color: "blue",
+                                            fontSize: "15px",
+                                          }}
+                                        >
+                                          <span>
+                                            {item.comment.length} bình luận
+                                          </span>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div className="stat-tools">
-                                  <div
-                                    className=""
-                                    style={{
-                                      backgroundColor: `${
-                                        isAlreadyLiked
-                                          ? "rgb(117, 189, 240)"
-                                          : "#eae9ee"
-                                      }`,
-                                      borderRadius: "4px",
-                                      color: "#82828e",
-                                      display: "inline-block",
-                                      fontSize: "13px",
-                                      padding: "5px 20px",
-                                      verticalAlign: "middle",
-                                      transition: "all 0.2s linear 0s",
-                                      cursor: "pointer",
-                                    }}
-                                    onClick={() => {
-                                      handleLikeClick(item.activityId);
-                                    }}
-                                  >
-                                    <div className="Like ">
-                                      <a className="Like__link">
-                                        <i className="icofont-like" /> Thích
-                                      </a>
-                                    </div>
-                                  </div>
-                                  <div className="box">
-                                    <div className="Emojis">
-                                      <div className="Emoji Emoji--like">
-                                        <div className="icon icon--like" />
-                                      </div>
-                                      <div className="Emoji Emoji--love">
-                                        <div className="icon icon--heart" />
-                                      </div>
-                                      <div className="Emoji Emoji--haha">
-                                        <div className="icon icon--haha" />
-                                      </div>
-                                      <div className="Emoji Emoji--wow">
-                                        <div className="icon icon--wow" />
-                                      </div>
-                                      <div className="Emoji Emoji--sad">
-                                        <div className="icon icon--sad" />
-                                      </div>
-                                      <div className="Emoji Emoji--angry">
-                                        <div className="icon icon--angry" />
+                                  <div className="stat-tools">
+                                    <div
+                                      className=""
+                                      style={{
+                                        backgroundColor: `${
+                                          isAlreadyLiked
+                                            ? "rgb(117, 189, 240)"
+                                            : "#eae9ee"
+                                        }`,
+                                        borderRadius: "4px",
+                                        color: "#82828e",
+                                        display: "inline-block",
+                                        fontSize: "13px",
+                                        padding: "5px 20px",
+                                        verticalAlign: "middle",
+                                        transition: "all 0.2s linear 0s",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() => {
+                                        handleLikeClick(item.activityId);
+                                      }}
+                                    >
+                                      <div className="Like ">
+                                        <a className="Like__link">
+                                          <i className="icofont-like" /> Thích
+                                        </a>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div
-                                    className="comment-to bg "
-                                    onClick={() =>
-                                      handleCommentClick(item.activityId)
-                                    }
-                                  >
-                                    <i className="icofont-comment" /> Bình luận
-                                  </div>
-                                  <a title href="#" className="share-to">
-                                    <i className="icofont-share-alt" /> Chia sẽ
-                                  </a>
-                                  {/* <div className="emoji-state" style={{ display: 'flex', alignContent: 'center' }}>
+                                    <div className="box">
+                                      <div className="Emojis">
+                                        <div className="Emoji Emoji--like">
+                                          <div className="icon icon--like" />
+                                        </div>
+                                        <div className="Emoji Emoji--love">
+                                          <div className="icon icon--heart" />
+                                        </div>
+                                        <div className="Emoji Emoji--haha">
+                                          <div className="icon icon--haha" />
+                                        </div>
+                                        <div className="Emoji Emoji--wow">
+                                          <div className="icon icon--wow" />
+                                        </div>
+                                        <div className="Emoji Emoji--sad">
+                                          <div className="icon icon--sad" />
+                                        </div>
+                                        <div className="Emoji Emoji--angry">
+                                          <div className="icon icon--angry" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className="comment-to bg "
+                                      onClick={() =>
+                                        handleCommentClick(item.activityId)
+                                      }
+                                    >
+                                      <i className="icofont-comment" /> Bình
+                                      luận
+                                    </div>
+                                    <a title href="#" className="share-to">
+                                      <i className="icofont-share-alt" /> Chia
+                                      sẽ
+                                    </a>
+                                    {/* <div className="emoji-state" style={{ display: 'flex', alignContent: 'center' }}>
                                                                     <div className="popover_wrapper" >
                                                                         <a className="popover_title" href="#" title><img alt src="images/smiles/thumb.png" /></a>
                                                                         <div className="popover_content">
@@ -2327,232 +2382,232 @@ export default function Home () {
                                                                         <div style={{ color: 'blue', fontSize: '15px' }}><span>{item.comment.length} bình luận</span></div>
                                                                     </div>
                                                                 </div> */}
-                                </div>
-                                <div
-                                  className="new-comment"
-                                  style={{ display: "block" }}
-                                >
-                                  <form
-                                    method="post"
-                                    onSubmit={formik2.handleSubmit}
-                                    style={{ position: "relative" }}
+                                  </div>
+                                  <div
+                                    className="new-comment"
+                                    style={{ display: "block" }}
                                   >
-                                    <div style={{ paddingBottom: "10px" }}>
+                                    <form
+                                      method="post"
+                                      onSubmit={formik2.handleSubmit}
+                                      style={{ position: "relative" }}
+                                    >
+                                      <div style={{ paddingBottom: "10px" }}>
+                                        {onID === item.activityId ? (
+                                          <div
+                                            className="commentT"
+                                            style={{
+                                              display: "flex",
+                                              alignContent: "center",
+                                            }}
+                                          >
+                                            <span style={{ paddingTop: "6px" }}>
+                                              Trả lời bình luận :{" "}
+                                            </span>
+                                            <div
+                                              style={{ marginLeft: "10px" }}
+                                              className="textcmt"
+                                            >
+                                              {" "}
+                                              @{content}
+                                              {setOnID === item.activityId ? (
+                                                <span
+                                                  style={{
+                                                    color: "red",
+                                                    fontSize: "18px",
+                                                    cursor: "pointer",
+                                                    paddingLeft: "4px",
+                                                  }}
+                                                  onClick={() => {
+                                                    setOnID("");
+                                                    setTcss("35px");
+                                                  }}
+                                                >
+                                                  x
+                                                </span>
+                                              ) : (
+                                                <span
+                                                  style={{
+                                                    color: "red",
+                                                    fontSize: "18px",
+                                                    cursor: "pointer",
+                                                    paddingLeft: "4px",
+                                                  }}
+                                                  onClick={() => {
+                                                    setOnID("");
+                                                    setTcss("10px");
+                                                  }}
+                                                >
+                                                  x
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <div
+                                            style={{
+                                              paddingTop: "6px",
+                                              paddingBottom: "10px",
+                                            }}
+                                          ></div>
+                                        )}
+                                      </div>
+                                      <input
+                                        type="text"
+                                        placeholder=""
+                                        value={formik2.values.commentContent}
+                                        name={commentI}
+                                        onChange={formik2.handleChange}
+                                        className="input-comment"
+                                      />
                                       {onID === item.activityId ? (
-                                        <div
-                                          className="commentT"
+                                        <button
                                           style={{
-                                            display: "flex",
-                                            alignContent: "center",
+                                            position: "absolute",
+                                            top: "52px",
+                                          }}
+                                          type="submit"
+                                          onClick={async () => {
+                                            // await setTextI(item.activityId)
+                                            formik2.setFieldValue(
+                                              "activityId",
+                                              item.activityId
+                                            );
                                           }}
                                         >
-                                          <span style={{ paddingTop: "6px" }}>
-                                            Trả lời bình luận :{" "}
-                                          </span>
-                                          <div
-                                            style={{ marginLeft: "10px" }}
-                                            className="textcmt"
-                                          >
-                                            {" "}
-                                            @{content}
-                                            {setOnID === item.activityId ? (
-                                              <span
-                                                style={{
-                                                  color: "red",
-                                                  fontSize: "18px",
-                                                  cursor: "pointer",
-                                                  paddingLeft: "4px",
-                                                }}
-                                                onClick={() => {
-                                                  setOnID("");
-                                                  setTcss("35px");
-                                                }}
-                                              >
-                                                x
-                                              </span>
-                                            ) : (
-                                              <span
-                                                style={{
-                                                  color: "red",
-                                                  fontSize: "18px",
-                                                  cursor: "pointer",
-                                                  paddingLeft: "4px",
-                                                }}
-                                                onClick={() => {
-                                                  setOnID("");
-                                                  setTcss("10px");
-                                                }}
-                                              >
-                                                x
-                                              </span>
-                                            )}
-                                          </div>
-                                        </div>
+                                          <i className="icofont-paper-plane" />
+                                        </button>
                                       ) : (
-                                        <div
+                                        <button
                                           style={{
-                                            paddingTop: "6px",
-                                            paddingBottom: "10px",
+                                            position: "absolute",
+                                            top: "40px",
                                           }}
-                                        ></div>
+                                          type="submit"
+                                          onClick={async () => {
+                                            // await setTextI(item.activityId)
+                                            formik2.setFieldValue(
+                                              "activityId",
+                                              item.activityId
+                                            );
+                                          }}
+                                        >
+                                          <i className="icofont-paper-plane" />
+                                        </button>
                                       )}
-                                    </div>
-                                    <input
-                                      type="text"
-                                      placeholder=""
-                                      value={formik2.values.commentContent}
-                                      name={commentI}
-                                      onChange={formik2.handleChange}
-                                      className="input-comment"
-                                    />
-                                    {onID === item.activityId ? (
-                                      <button
-                                        style={{
-                                          position: "absolute",
-                                          top: "52px",
-                                        }}
-                                        type="submit"
-                                        onClick={async () => {
-                                          // await setTextI(item.activityId)
-                                          formik2.setFieldValue(
-                                            "activityId",
-                                            item.activityId
-                                          );
-                                        }}
-                                      >
-                                        <i className="icofont-paper-plane" />
-                                      </button>
-                                    ) : (
-                                      <button
-                                        style={{
-                                          position: "absolute",
-                                          top: "40px",
-                                        }}
-                                        type="submit"
-                                        onClick={async () => {
-                                          // await setTextI(item.activityId)
-                                          formik2.setFieldValue(
-                                            "activityId",
-                                            item.activityId
-                                          );
-                                        }}
-                                      >
-                                        <i className="icofont-paper-plane" />
-                                      </button>
-                                    )}
 
-                                    {item?.commentData[0]?.isCmt ? (
-                                      <div></div>
-                                    ) : (
-                                      item.comment.map((item, index) => {
-                                        return (
-                                          <div className="comments-area">
-                                            <ul>
-                                              <li>
-                                                <figure>
-                                                  <img
-                                                    alt
-                                                    src="images/resources/user1.jpg"
-                                                  />
-                                                </figure>
-                                                <div className="commenter">
-                                                  <h5>
-                                                    <a title href="#">
-                                                      {item.user?.username}
-                                                    </a>
-                                                  </h5>
-                                                  <span>
-                                                    {DateTime(item.datetime)}
-                                                  </span>
-                                                  <p>{item.commentContent}</p>
-                                                  {/* <span>you can view the more detail via
+                                      {item?.commentData[0]?.isCmt ? (
+                                        <div></div>
+                                      ) : (
+                                        item.comment.map((item, index) => {
+                                          return (
+                                            <div className="comments-area">
+                                              <ul>
+                                                <li>
+                                                  <figure>
+                                                    <img
+                                                      alt
+                                                      src="images/resources/user1.jpg"
+                                                    />
+                                                  </figure>
+                                                  <div className="commenter">
+                                                    <h5>
+                                                      <a title href="#">
+                                                        {item.user?.username}
+                                                      </a>
+                                                    </h5>
+                                                    <span>
+                                                      {DateTime(item.datetime)}
+                                                    </span>
+                                                    <p>{item.commentContent}</p>
+                                                    {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
-                                                </div>
-                                                {/* <span title="Like" onClick={() => {
+                                                  </div>
+                                                  {/* <span title="Like" onClick={() => {
                                                                                         }}><i className="icofont-heart" /></span> */}
-                                                <a
-                                                  title="Reply"
-                                                  onClick={() => {
-                                                    formik2.setFieldValue(
-                                                      "commentIdReply",
-                                                      item.commentId
-                                                    );
-                                                    // setCommentI('commentIdReply')
-                                                    setContent(
-                                                      item.user?.username
-                                                    );
-                                                    setOnID(item.activityId);
-                                                  }}
-                                                  className="reply-coment"
-                                                >
-                                                  <i className="icofont-reply" />
-                                                </a>
-                                              </li>
-                                              <li>
-                                                {item.inverseReply?.map(
-                                                  (item, index) => {
-                                                    return (
-                                                      <div
-                                                        key={index}
-                                                        className="ml-5"
-                                                      >
-                                                        <figure>
-                                                          <img
-                                                            alt
-                                                            src="images/resources/user1.jpg"
-                                                          />
-                                                        </figure>
-                                                        <div className="commenter">
-                                                          <h5>
-                                                            <a title href="#">
+                                                  <a
+                                                    title="Reply"
+                                                    onClick={() => {
+                                                      formik2.setFieldValue(
+                                                        "commentIdReply",
+                                                        item.commentId
+                                                      );
+                                                      // setCommentI('commentIdReply')
+                                                      setContent(
+                                                        item.user?.username
+                                                      );
+                                                      setOnID(item.activityId);
+                                                    }}
+                                                    className="reply-coment"
+                                                  >
+                                                    <i className="icofont-reply" />
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  {item.inverseReply?.map(
+                                                    (item, index) => {
+                                                      return (
+                                                        <div
+                                                          key={index}
+                                                          className="ml-5"
+                                                        >
+                                                          <figure>
+                                                            <img
+                                                              alt
+                                                              src="images/resources/user1.jpg"
+                                                            />
+                                                          </figure>
+                                                          <div className="commenter">
+                                                            <h5>
+                                                              <a title href="#">
+                                                                {
+                                                                  item.user
+                                                                    ?.username
+                                                                }
+                                                              </a>
+                                                            </h5>
+                                                            <span>
+                                                              {DateTime(
+                                                                item.datetime
+                                                              )}
+                                                            </span>
+                                                            <p>
                                                               {
-                                                                item.user
-                                                                  ?.username
+                                                                item.commentContent
                                                               }
-                                                            </a>
-                                                          </h5>
-                                                          <span>
-                                                            {DateTime(
-                                                              item.datetime
-                                                            )}
-                                                          </span>
-                                                          <p>
-                                                            {
-                                                              item.commentContent
-                                                            }
-                                                          </p>
-                                                          {/* <span>you can view the more detail via
+                                                            </p>
+                                                            {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
-                                                        </div>
-                                                        {/* <span title="Like" onClick={() => {
+                                                          </div>
+                                                          {/* <span title="Like" onClick={() => {
                                                                                         }}><i className="icofont-heart" /></span> */}
-                                                        {/* <a title="Reply" onClick={() => {
+                                                          {/* <a title="Reply" onClick={() => {
                                                                                                 formik2.setFieldValue('commentIdReply', item.commentId)
                                                                                                 // setCommentI('commentIdReply')
                                                                                                 setContent(item.user?.username)
                                                                                                 setOnID(item.activityId)
 
                                                                                             }} className="reply-coment"><i className="icofont-reply" /></a> */}
-                                                      </div>
-                                                    );
-                                                  }
-                                                )}
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        );
-                                      })
-                                    )}
-                                  </form>
+                                                        </div>
+                                                      );
+                                                    }
+                                                  )}
+                                                </li>
+                                              </ul>
+                                            </div>
+                                          );
+                                        })
+                                      )}
+                                    </form>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
 
                     <div className="loadmore">
                       <div className="sp sp-bars" />
@@ -2565,7 +2620,7 @@ export default function Home () {
                   <div className="col-lg-3">
                     <aside className="sidebar static right">
                       {localStorage.getItem("userID") &&
-                        userByID?.fanpage?.status === "Active" ? (
+                      userByID?.fanpage?.status === "Active" ? (
                         <div className="widget">
                           <h4 className="widget-title">Nhóm của bạn</h4>
                           <ul className="ak-groups">
@@ -2618,82 +2673,7 @@ export default function Home () {
                       ) : (
                         <div></div>
                       )}
-                      <div className="widget">
-                        <h4 className="widget-title">Đề xuất</h4>
-                        <div className="sug-caro">
-                          <div className="friend-box">
-                            <figure>
-                              <img
-                                style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
-                                }}
-                                alt
-                                src="images/avatar/5.jpg"
-                              />
-                              <span>Theo dõi: 505k</span>
-                            </figure>
-                            <div className="frnd-meta">
-                              <img
-                                style={{
-                                  width: "70px",
-                                  height: "70px",
-                                  objectfit: "cover",
-                                  display: "block",
-                                }}
-                                className="friend-box-img"
-                                alt
-                                src="images/company/nab.png"
-                              />
-                              <div className="frnd-name">
-                                <a title href="#">
-                                  Tìm kiếm
-                                </a>
-                                <span>@biolabest</span>
-                              </div>
-                              <a className="main-btn2" href="#" title>
-                                Tham gia
-                              </a>
-                            </div>
-                          </div>
-                          <div className="friend-box">
-                            <figure>
-                              <img
-                                style={{
-                                  width: "310px",
-                                  height: "110px",
-                                  objectFit: "cover",
-                                }}
-                                alt
-                                src="images/avatar/19.jpg"
-                              />
-                              <span>Thành viên: 505K</span>
-                            </figure>
-                            <div className="frnd-meta">
-                              <img
-                                style={{
-                                  width: "70px",
-                                  height: "70px",
-                                  objectfit: "cover",
-                                  display: "block",
-                                }}
-                                alt
-                                src="images/company/amazonComany.jpg"
-                              />
-                              <div className="frnd-name">
-                                <a title href="#">
-                                  Tìm kiếm
-                                </a>
-                                <span>@biolabest</span>
-                              </div>
-                              <a className="main-btn2" href="#" title>
-                                Tham gia
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <RecommentActivity />
                       {/* suggested group */}
                       <div className="widget">
                         <h4 className="widget-title">Giải trí</h4>
@@ -2813,11 +2793,11 @@ export default function Home () {
             </div>
           </div>
         </div>
-      </section>
+     
       {/* content */}
-      <figure className="bottom-mockup">
+      < figure className="bottom-mockup" >
         <img src="images/footer.png" alt />
-      </figure>
+      </figure >
       <div className="bottombar">
         <div className="container">
           <div className="row">
@@ -3091,8 +3071,14 @@ export default function Home () {
       {create === true ? (
         <div className="post-new-popup" style={popupStyle}>
           <div
-            className="popup"
-            style={{ width: 800, marginTop: "100px", zIndex: 80 }}
+            className="popupPost"
+            style={{ 
+              width: 800,
+              zIndex: 80,
+              height: "100vh",
+              overflowY: "scroll",
+              margin: "1rem",
+            }}
           >
             <span className="popup-closed" onClick={handleClick}>
               <i className="icofont-close" />
@@ -3123,102 +3109,127 @@ export default function Home () {
             </div>
 
             <div className="">
-              <header className="header"></header>
-              <div className="form-wrap">
-                <form
-                  id="survey-form"
-                  method="post"
-                  onSubmit={formik.handleSubmit}
-                >
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Tên chiến dịch
-                        </label>
-                        <input
-                          type="text"
-                          name="title"
-                          onChange={formik.handleChange}
-                          value={formik.values.title}
-                          id="name"
-                          placeholder="Nhập Tên Sự Kiện"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="email-label" htmlFor="email">
-                          Mô tả chiến dịch
-                        </label>
-                        <input
-                          type="text"
-                          name="description"
-                          onChange={formik.handleChange}
-                          value={formik.values.description}
-                          id="email"
-                          placeholder="Nhập mô tả"
-                          className="form-control"
-                          required
-                        />
-                      </div>
+              <br />
+              <form
+                id="survey-form"
+                method="post"
+                onSubmit={formik.handleSubmit}
+              >
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Tên chiến dịch
+                      </label>
+                      <input
+                        type="text"
+                        name="title"
+                        onChange={formik.handleChange}
+                        value={formik.values.title}
+                        id="name"
+                        placeholder="Nhập Tên Sự Kiện"
+                        className="form-control"
+                        required
+                      />
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Ngày bắt đầu
-                        </label>
-                        <input
-                          type="date"
-                          name="startDate"
-                          onChange={formik.handleChange}
-                          value={formik.values.startDate}
-                          id="name"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Ngày kết thúc
-                        </label>
-                        <input
-                          type="date"
-                          name="endDate"
-                          onChange={formik.handleChange}
-                          value={formik.values.endDate}
-                          id="name"
-                          className="form-control"
-                          required
-                        />
-                      </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="email-label" htmlFor="email">
+                        Mô tả chiến dịch
+                      </label>
+                      <input
+                        type="text"
+                        name="description"
+                        onChange={formik.handleChange}
+                        value={formik.values.description}
+                        id="email"
+                        placeholder="Nhập mô tả"
+                        className="form-control"
+                        required
+                      />
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Nơi diễn ra
-                        </label>
-                        <input
-                          type="text"
-                          name="location"
-                          onChange={formik.handleChange}
-                          value={formik.values.location}
-                          id="name"
-                          placeholder="Nhập nơi diễn ra"
-                          className="form-control"
-                          required
-                        />
-                      </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Ngày bắt đầu
+                      </label>
+                      <input
+                        type="date"
+                        name="startDate"
+                        onChange={formik.handleChange}
+                        value={formik.values.startDate}
+                        id="name"
+                        className="form-control"
+                        required
+                      />
                     </div>
-                    <div className="col-md-6">
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Ngày kết thúc
+                      </label>
+                      <input
+                        type="date"
+                        name="endDate"
+                        onChange={formik.handleChange}
+                        value={formik.values.endDate}
+                        id="name"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label id="name-label" htmlFor="name">
+                        Nơi diễn ra
+                      </label>
+                      <input
+                        type="text"
+                        name="location"
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          fn(e.target.value);
+                        }}
+                        value={formik.values.location}
+                        id="name"
+                        placeholder="Nhập nơi diễn ra"
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-12">
+                    <div style={{ height: "200px", width: "100%" }}>
+                      <GoogleMapReact
+                        bootstrapURLKeys={{
+                          key: "AIzaSyBEg-cDilr_ZSqVWMdXNVm4Wn9mo-KOKOI",
+                        }}
+                        defaultCenter={coords}
+                        center={coords}
+                        defaultZoom={11}
+                      >
+                        <AnyReactComponent
+                          lat={coords.lat}
+                          lng={coords.lng}
+                          text={
+                            <i
+                              class="icofont-location-pin"
+                              style={{ fontSize: "3rem", color: "red" }}
+                            ></i>
+                          }
+                        />
+                      </GoogleMapReact>
+                    </div>
+                  </div>
+                  {/* <div className="col-md-6">
                       <div className="form-group">
                         {configActivity === "true" ? (
                           <div>
@@ -3258,152 +3269,150 @@ export default function Home () {
                           <div></div>
                         )}
                       </div>
-                    </div>
-                  </div>
+                    </div> */}
+                </div>
 
-                  <div className='row'>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        {userByID.fanpage?.status === "Active" && isFanpage ? (
-                          <div>
-                            <div
-                              className="form-group"
-                              style={{ display: "flex" }}
-                            >
-                              <label
-                                id="name-label"
-                                style={{ marginRight: "20px" }}
-                                htmlFor="name"
-                              >
-                                Chia sẽ lên nhóm của bạn
-                              </label>
-                              <input
-                                type="checkbox"
-                                onChange={toggleTextInput1}
-                              // checked={isTextInputVisible1}
-                              />
-                            </div>
-
-                          </div>
-                        ) : (
-                          <div></div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="form-group">
-                        <label>Hình ảnh</label>
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      {userByID.fanpage?.status === "Active" && isFanpage ? (
                         <div>
-                          <form>
-                            <fieldset className="upload_dropZone text-center mb-3 p-4">
-                              <legend className="visually-hidden">
-                                Tải hình ảnh
-                              </legend>
-                              <svg
-                                className="upload_svg"
-                                width={60}
-                                height={60}
-                                aria-hidden="true"
-                              >
-                                <use href="#icon-imageUpload" />
-                              </svg>
-                              <p className="small my-2">
-                                Kéo &amp; Thả (các) hình nền bên trong vùng nét
-                                đứt
-                                <br />
-                                <i>hoặc</i>
-                              </p>
-                              <input
-                                id="upload_image_background"
-                                // ref={fileInputRef}
-                                data-post-name="image_background"
-                                data-post-url="https://someplace.com/image/uploads/backgrounds/"
-                                className="position-absolute invisible"
-                                type="file"
-                                multiple
-                                onChange={handleImageChange}
-                                accept="image/jpeg, image/png, image/svg+xml"
-                              />
-                              <label
-                                className="btn btn-upload mb-3"
-                                htmlFor="upload_image_background"
-                              >
-                                Chọn hình ảnh
-                              </label>
-                              <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
-                            </fieldset>
-                          </form>
-                          <svg style={{ display: "none" }}>
-                            <defs>
-                              <symbol
-                                id="icon-imageUpload"
-                                clipRule="evenodd"
-                                viewBox="0 0 96 96"
-                              >
-                                <path d="M47 6a21 21 0 0 0-12.3 3.8c-2.7 2.1-4.4 5-4.7 7.1-5.8 1.2-10.3 5.6-10.3 10.6 0 6 5.8 11 13 11h12.6V22.7l-7.1 6.8c-.4.3-.9.5-1.4.5-1 0-2-.8-2-1.7 0-.4.3-.9.6-1.2l10.3-8.8c.3-.4.8-.6 1.3-.6.6 0 1 .2 1.4.6l10.2 8.8c.4.3.6.8.6 1.2 0 1-.9 1.7-2 1.7-.5 0-1-.2-1.3-.5l-7.2-6.8v15.6h14.4c6.1 0 11.2-4.1 11.2-9.4 0-5-4-8.8-9.5-9.4C63.8 11.8 56 5.8 47 6Zm-1.7 42.7V38.4h3.4v10.3c0 .8-.7 1.5-1.7 1.5s-1.7-.7-1.7-1.5Z M27 49c-4 0-7 2-7 6v29c0 3 3 6 6 6h42c3 0 6-3 6-6V55c0-4-3-6-7-6H28Zm41 3c1 0 3 1 3 3v19l-13-6a2 2 0 0 0-2 0L44 79l-10-5a2 2 0 0 0-2 0l-9 7V55c0-2 2-3 4-3h41Z M40 62c0 2-2 4-5 4s-5-2-5-4 2-4 5-4 5 2 5 4Z" />
-                              </symbol>
-                            </defs>
-                          </svg>
-                        </div>
-
-                        <div className="image-container image-container-flex">
-                          {images.map((image, index) => (
-                            <div
-                              className="image-item image-item-relative"
-                              key={index}
+                          <div
+                            className="form-group"
+                            style={{ display: "flex" }}
+                          >
+                            <label
+                              id="name-label"
+                              style={{ marginRight: "20px" }}
+                              htmlFor="name"
                             >
-                              <img
-                                src={image.url}
-                                alt={`Image ${index}`}
-                                className="image-preview image-item-flex"
-                              />
-                              <button
-                                className="delete-button"
-                                onClick={() => handleImageDelete(index)}
-                              >
-                                <span>&times;</span>
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-
-                        {isLoading && (
-                          <div>
-                            <div className="progress-bar-container">
-                              <div
-                                className="progress-bar"
-                                style={{ width: `${uploadProgress}%` }}
-                              ></div>
-                            </div>
-                            <div className="progress-percentage">
-                              {uploadProgress}%
-                            </div>
+                              Chia sẽ lên nhóm của bạn
+                            </label>
+                            <input
+                              type="checkbox"
+                              onChange={toggleTextInput1}
+                              // checked={isTextInputVisible1}
+                            />
                           </div>
-                        )}
-
-                        {files !== "" ? (
-                          <img src={files} style={{ height: "300px" }} />
-                        ) : (
-                          <div></div>
-                        )}
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label>Hình ảnh</label>
+                      <div>
+                        <form>
+                          <fieldset className="upload_dropZone text-center mb-3 p-4">
+                            <legend className="visually-hidden">
+                              Tải hình ảnh
+                            </legend>
+                            <svg
+                              className="upload_svg"
+                              width={60}
+                              height={60}
+                              aria-hidden="true"
+                            >
+                              <use href="#icon-imageUpload" />
+                            </svg>
+                            <p className="small my-2">
+                              Kéo &amp; Thả (các) hình nền bên trong vùng nét
+                              đứt
+                              <br />
+                              <i>hoặc</i>
+                            </p>
+                            <input
+                              id="upload_image_background"
+                              // ref={fileInputRef}
+                              data-post-name="image_background"
+                              data-post-url="https://someplace.com/image/uploads/backgrounds/"
+                              className="position-absolute invisible"
+                              type="file"
+                              multiple
+                              onChange={handleImageChange}
+                              accept="image/jpeg, image/png, image/svg+xml"
+                            />
+                            <label
+                              className="btn btn-upload mb-3"
+                              htmlFor="upload_image_background"
+                            >
+                              Chọn hình ảnh
+                            </label>
+                            <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
+                          </fieldset>
+                        </form>
+                        <svg style={{ display: "none" }}>
+                          <defs>
+                            <symbol
+                              id="icon-imageUpload"
+                              clipRule="evenodd"
+                              viewBox="0 0 96 96"
+                            >
+                              <path d="M47 6a21 21 0 0 0-12.3 3.8c-2.7 2.1-4.4 5-4.7 7.1-5.8 1.2-10.3 5.6-10.3 10.6 0 6 5.8 11 13 11h12.6V22.7l-7.1 6.8c-.4.3-.9.5-1.4.5-1 0-2-.8-2-1.7 0-.4.3-.9.6-1.2l10.3-8.8c.3-.4.8-.6 1.3-.6.6 0 1 .2 1.4.6l10.2 8.8c.4.3.6.8.6 1.2 0 1-.9 1.7-2 1.7-.5 0-1-.2-1.3-.5l-7.2-6.8v15.6h14.4c6.1 0 11.2-4.1 11.2-9.4 0-5-4-8.8-9.5-9.4C63.8 11.8 56 5.8 47 6Zm-1.7 42.7V38.4h3.4v10.3c0 .8-.7 1.5-1.7 1.5s-1.7-.7-1.7-1.5Z M27 49c-4 0-7 2-7 6v29c0 3 3 6 6 6h42c3 0 6-3 6-6V55c0-4-3-6-7-6H28Zm41 3c1 0 3 1 3 3v19l-13-6a2 2 0 0 0-2 0L44 79l-10-5a2 2 0 0 0-2 0l-9 7V55c0-2 2-3 4-3h41Z M40 62c0 2-2 4-5 4s-5-2-5-4 2-4 5-4 5 2 5 4Z" />
+                            </symbol>
+                          </defs>
+                        </svg>
                       </div>
+
+                      <div className="image-container image-container-flex">
+                        {images.map((image, index) => (
+                          <div
+                            className="image-item image-item-relative"
+                            key={index}
+                          >
+                            <img
+                              src={image.url}
+                              alt={`Image ${index}`}
+                              className="image-preview image-item-flex"
+                            />
+                            <button
+                              className="delete-button"
+                              onClick={() => handleImageDelete(index)}
+                            >
+                              <span>&times;</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {isLoading && (
+                        <div>
+                          <div className="progress-bar-container">
+                            <div
+                              className="progress-bar"
+                              style={{ width: `${uploadProgress}%` }}
+                            ></div>
+                          </div>
+                          <div className="progress-percentage">
+                            {uploadProgress}%
+                          </div>
+                        </div>
+                      )}
+
+                      {files !== "" ? (
+                        <img src={files} style={{ height: "300px" }} />
+                      ) : (
+                        <div></div>
+                      )}
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-md-4">
-                      <button
-                        type="submit"
-                        id="submit"
-                        className="btn btn-primary btn-block"
-                      >
-                        Hoàn thành
-                      </button>
-                    </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-4">
+                    <button
+                      type="submit"
+                      id="submit"
+                      className="btn btn-primary btn-block"
+                    >
+                      Hoàn thành
+                    </button>
                   </div>
-                </form>
-              </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -3540,7 +3549,7 @@ export default function Home () {
                         />
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                       <div className="form-group">
                         {configActivity === "true" ? (
                           <div>
@@ -3562,20 +3571,20 @@ export default function Home () {
                             </div>
                             {isTextInputVisible === true && (
 
-                              <div className="form-group">
+                                <div className="form-group">
 
-                                <input
-                                  type="number"
-                                  name="targetDonation"
-                                  onChange={formik9.handleChange}
-                                  value={formik9.values.targetDonation}
-                                  id="name"
-                                  placeholder="Nhập số tiền cần nhận"
-                                  className="form-control"
-                                  style={{ marginTop: '-2rem' }}
-                                  required
-                                />
-                              </div>
+                                  <input
+                                    type="number"
+                                    name="targetDonation"
+                                    onChange={formik9.handleChange}
+                                    value={formik9.values.targetDonation}
+                                    id="name"
+                                    placeholder="Nhập số tiền cần nhận"
+                                    className="form-control"
+                                    style={{ marginTop: '-2rem' }}
+                                    required
+                                  />
+                                </div>
 
                             )}
                           </div>
@@ -3583,236 +3592,232 @@ export default function Home () {
                           <div></div>
                         )}
                       </div>
-                    </div>
-                  </div>
+                    </div>*/}
+                  </div> 
 
-                  <div className="row">
-                    <div className="col-md-4">
-                      <button
-                        type="submit"
-                        id="submit"
-                        className="btn btn-primary btn-block"
-                      >
-                        Cập nhật
-                      </button>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <button
+                          type="submit"
+                          id="submit"
+                          className="btn btn-primary btn-block"
+                        >
+                          Cập nhật
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+        ) : (
+          <div></div>
+        )
+      }
 
-      {openpro ? (
-        <div className="post-new-popup1" style={popupStyle1}>
-          <div
-            className="popup"
-            style={{
-              width: 800,
-              zIndex: 80,
-              height: "800px",
-              overflowY: "scroll",
-              marginTop: "50px",
-              padding: "10px",
-            }}
-          >
-            <span className="popup-closed" onClick={handleClick1}>
-              <i className="icofont-close" />
-            </span>
-            <div className="popup-meta">
-              <div className="popup-head">
-                <h5>
-                  <i>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-plus"
-                    >
-                      <line x1={12} y1={5} x2={12} y2={19} />
-                      <line x1={5} y1={12} x2={19} y2={12} />
-                    </svg>
-                  </i>
-                  Tạo tiến trình
-                </h5>
-              </div>
-            </div>
+      {
+        tt ? (
+          <div className="popup-overlay" style={popupStyle9}>
+            <div
+              className="popup1"
+              style={{
+                width: 800,
+                zIndex: 80,
+                height: "800px",
+                overflowY: "scroll", //#uoc
+                marginTop: "50px",
+                padding: "10px",
+              }}
+            >
             <div className="multi-form">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit1}
-              >
-                <Form>
-                  <div className="form">
-                    {formData.map((form, index) => (
-                      <div
-                        key={index}
-                        className={`form-group  hidden`}
-                        style={{ display: index === 0 ? "none" : "block" }}
-                      >
-                        <h3>Form {index}</h3>
-                        <div className="form-group">
-                          <label htmlFor={`processTitle_${index}`}>
-                            Tiêu đề
-                          </label>
-                          <Field
-                            type="text"
-                            name={`forms[${index}].processTitle`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`description_${index}`}>Mô tả</label>
-                          <Field
-                            type="text"
-                            name={`forms[${index}].description`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`startDate_${index}`}>
-                            Thời gian diễn ra
-                          </label>
-                          <Field
-                            type="datetime-local"
-                            name={`forms[${index}].startDate`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`endDate_${index}`}>
-                            Thời gian kết thúc
-                          </label>
-                          <Field
-                            type="datetime-local"
-                            name={`forms[${index}].endDate`}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`processTypeId_${index}`}>
-                            Thể loại tiến trình
-                          </label>
-                          <select
-                            name={`forms[${index}].processTypeId`}
-                            value={form.processTypeId} // Bind the select value to the formData value
-                            onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
-                            className="form-control"
-                          >
-                            <option value="">Chọn </option>
-                            {processType.map((item, index) => {
-                              return (
-                                <option value={item.processTypeId} key={index}>
-                                  {item.processTypeName}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        </div>
-                        <div className="form-group">
-                          <Field
-                            type="text"
-                            hidden
-                            name={`forms[${index}].processNo`}
-                            value={index + 1}
-                            className="form-control"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor={`media_${index}`}>Hình ảnh</label>
-                          <div>
-                            <Field
-                              name={`forms[${index}].media`}
-                              id={`media_${index}`}
-                              type="file"
-                              multiple
-                              onChange={(e) => handleImageChange1(e, index)}
-                            />
-                            <div className="image-container">
-                              {form.media.map((image, imageIndex) => (
-                                <div className="image-item" key={imageIndex}>
-                                  <img
-                                    src={image.linkMedia}
-                                    alt={`Image ${imageIndex}`}
-                                    className="image-preview"
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSubmit1}
+                >
+                  <div className="container">
+                    <header className="header">
+                      {/* <h1 id="title" className="text-center">Survey Form</h1>
+                                <p id="description" className="text-center">
+                                    Thank you for taking the time to help us improve the platform
+                                </p>
+                                <button className="close-button" onClick={closePopup}>&times;</button> */}
+                    </header>
+                    <div className="form-wrap">
+                      <Form>
+
+                        <button className="close-button" onClick={closePopup}>
+                          &times;
+                        </button>
+                        <div className="form">
+                          {formData.map((form, index) => (
+                            <div
+                              key={index}
+                              className={`form-group  hidden `}
+                              style={{ display: index === 0 ? "none" : "block" }}
+                            >
+
+                              <h3 style={{ textAlign: 'center' }}>Vui lòng điền quy trình {index}</h3>
+                              <div className="form-group">
+                                <label htmlFor={`processTitle_${index}`}>
+                                  Tiêu đề
+                                </label>
+                                <Field
+                                  type="text"
+                                  name={`forms[${index}].processTitle`}
+                                  className="form-control"
+                                />
+                              </div>
+                              <div className="form-group">
+                                <label htmlFor={`description_${index}`}>Mô tả</label>
+                                <textarea
+                                  type="text"
+                                  name={`forms[${index}].description`}
+                                  className="form-control"
+                                />
+                              </div>
+                              <dv className="row">
+                                <div className="form-group col-md-6">
+                                  <label htmlFor={`startDate_${index}`}>
+                                    Thời gian diễn ra
+                                  </label>
+                                  <Field
+                                    type="datetime-local"
+                                    name={`forms[${index}].startDate`}
+                                    className="form-control"
                                   />
                                 </div>
-                              ))}
+                                <div className="form-group col-md-6">
+                                  <label htmlFor={`endDate_${index}`}>
+                                    Thời gian kết thúc
+                                  </label>
+                                  <Field
+                                    type="datetime-local"
+                                    name={`forms[${index}].endDate`}
+                                    className="form-control"
+                                  />
+                                </div>
+                              </dv>
+
+                              <div className="form-group">
+                                <label htmlFor={`processTypeId_${index}`}>
+                                  Thể loại tiến trình
+                                </label>
+                                <select
+                                  name={`forms[${index}].processTypeId`}
+                                  value={form.processTypeId} // Bind the select value to the formData value
+                                  onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
+                                  className="form-control"
+                                >
+                                  <option value="">Chọn </option>
+                                  {processType.map((item, index) => {
+                                    return (
+                                      <option value={item.processTypeId} key={index}>
+                                        {item.processTypeName}
+                                      </option>
+                                    );
+                                  })}
+                                </select>
+                              </div>
+                              <div className="form-group">
+                                <Field
+                                  type="text"
+                                  hidden
+                                  name={`forms[${index}].processNo`}
+                                  value={index + 1}
+                                  className="form-control"
+                                />
+                              </div>
+
+                              <div className="form-group">
+                                <label htmlFor={`media_${index}`}>Hình ảnh</label>
+                                <div>
+                                  <Field
+                                    name={`forms[${index}].media`}
+                                    id={`media_${index}`}
+                                    type="file"
+                                    multiple
+                                    onChange={(e) => handleImageChange1(e, index)}
+                                  />
+                                  <div className="image-container">
+                                    {form.media.map((image, imageIndex) => (
+                                      <div className="image-item" key={imageIndex}>
+                                        <img
+                                          src={image.linkMedia}
+                                          alt={`Image ${imageIndex}`}
+                                          className="image-preview"
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                              {index === currentForm && (
+                                <div className="form-buttons">
+                                  {index > 0 && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-secondary"
+                                      onClick={handlePrevious}
+                                    >
+                                      Về sau
+                                    </button>
+                                  )}
+                                  {index < formData.length - 1 && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-primary"
+                                      onClick={handleNext}
+                                    >
+                                      Tiếp tục
+                                    </button>
+                                  )}
+                                  {index > 0 && (
+                                    <button
+                                      style={{
+                                        marginLeft: "1rem",
+                                        width: "12%",
+                                      }}
+                                      type="button"
+                                      className="btn btn-danger delete"
+                                      onClick={handleDeleteForm}
+                                    >
+                                      Xóa
+                                    </button>
+                                  )}
+                                </div>
+                              )}
                             </div>
-                          </div>
+                          ))}
                         </div>
-                        {index === currentForm && (
+
+                        {currentForm === formData.length - 1 && (
                           <div className="form-buttons">
-                            {index > 0 && (
+                            <button
+                              style={{ width: "25%" }}
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={handleCreateNewForm}
+                            >
+                              Thêm quy trình
+                            </button>
+                            {currentForm >= 1 && (
                               <button
-                                type="button"
-                                className="btn btn-secondary"
-                                onClick={handlePrevious}
+                                style={{ marginLeft: "1rem" }}
+                                type="submit"
+                                className="btn btn-success"
                               >
-                                Về sau
-                              </button>
-                            )}
-                            {index < formData.length - 1 && (
-                              <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={handleNext}
-                              >
-                                Tiếp tục
-                              </button>
-                            )}
-                            {index > 0 && (
-                              <button
-                                style={{
-                                  marginLeft: "1rem",
-                                  width: "12%",
-                                }}
-                                type="button"
-                                className="btn btn-danger delete"
-                                onClick={handleDeleteForm}
-                              >
-                                Xóa
+                                Hoàn thành
                               </button>
                             )}
                           </div>
                         )}
-                      </div>
-                    ))}
-                  </div>
-                  {currentForm === formData.length - 1 && (
-                    <div className="form-buttons">
-                      <button
-                        style={{ width: "25%" }}
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={handleCreateNewForm}
-                      >
-                        Thêm quy trình khác
-                      </button>
-                      {currentForm >= 1 && (
-                        <button
-                          style={{ marginLeft: "1rem" }}
-                          type="submit"
-                          className="btn btn-success"
-                        >
-                          Hoàn thành
-                        </button>
-                      )}
+                      </Form>
                     </div>
-                  )}
-                </Form>
-              </Formik>
-            </div>
+                  </div>
+                </Formik>
+              </div>
           </div>
         </div>
       ) : (
@@ -4005,31 +4010,7 @@ export default function Home () {
           </div>
         </div>
       </div>
-      {/* ask question */}
-      {/* <div className="auto-popup">
-                    <div className="popup-innner">
-                        <div className="popup-head">
-                            <h4>We want to hear from you!</h4>
-                        </div>
-                        <div className="popup-meta">
-                            <span>What are you struggling with right now? what we can help you with?</span>
-                            <form method="post" className="inquiry-about">
-                                <input type="text" placeholder="Your Answer" />
-                                <h5>How did you hear about us?</h5>
-                                <label><input type="radio" name="hear" /> Facebook</label>
-                                <label><input type="radio" name="hear" /> instagram</label>
-                                <label><input type="radio" name="hear" /> Google Search</label>
-                                <label><input type="radio" name="hear" /> Twitter</label>
-                                <label><input type="radio" name="hear" /> Whatsapp</label>
-                                <label><input type="radio" name="hear" /> Other</label>
-                                <input type="text" placeholder="Writh Other" />
-                                <button type="submit" className="primary button">Submit</button>
-                                <button className="canceled button outline-primary" type="button">Cancel</button>
-                            </form>
-                        </div>
-                    </div>
-                </div> */}
-      {/* auto popup */}
+    
       <div className="share-wraper">
         <div className="share-options">
           <span className="close-btn">
@@ -4669,23 +4650,50 @@ export default function Home () {
               <form>
                 <div className="form-group">
                   <label htmlFor="name">Tiêu Đề:</label>
-                  <input type="text" id="name" name="title" onChange={formik1.handleChange} />
+                  <input
+                    type="text"
+                    id="name"
+                    name="title"
+                    onChange={formik1.handleChange}
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="name">Số Tiền:</label>
-                  <input type="text" id="amount" name="amount" onChange={formik1.handleChange} />
+                  <input
+                    type="text"
+                    id="amount"
+                    name="amount"
+                    onChange={formik1.handleChange}
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="name">Email:</label>
-                  <input type="text" id="email" value='email' name="email" onChange={formik1.handleChange} />
+                  <input
+                    type="text"
+                    id="email"
+                    value="email"
+                    name="email"
+                    onChange={formik1.handleChange}
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="name">Số Điện Thoại:</label>
-                  <input type="text" id="phone" name="phone" onChange={formik1.handleChange} />
+                  <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    onChange={formik1.handleChange}
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="name">Họ Tên:</label>
-                  <input type="text" id="name" value="name" name="name" onChange={formik1.handleChange} />
+                  <input
+                    type="text"
+                    id="name"
+                    value="name"
+                    name="name"
+                    onChange={formik1.handleChange}
+                  />
                 </div>
                 <button type="submit" className="">
                   Submit
@@ -4695,138 +4703,142 @@ export default function Home () {
           </form>
         </div>
       </div>
-      {isPopupOpen && (
-        <div className="popup-overlay">
-          {/* <div className="popup-container"> */}
-          {/* <h2>Popup Form</h2> */}
+      {
+        isPopupOpen && (
+          <div className="popup-overlay">
+            {/* <div className="popup-container"> */}
+            {/* <h2>Popup Form</h2> */}
 
-          <div className="container">
-            <header className="header">
-              {/* <h1 id="title" className="text-center">Survey Form</h1>
+            <div className="container">
+              <header className="header">
+                {/* <h1 id="title" className="text-center">Survey Form</h1>
                                 <p id="description" className="text-center">
                                     Thank you for taking the time to help us improve the platform
                                 </p>
                                 <button className="close-button" onClick={closePopup}>&times;</button> */}
-            </header>
-            <div className="form-wrap">
-              <form
-                id="survey-form"
-                onSubmit={formik1.handleSubmit}
-                method="post"
-              >
-                <h1 id="title" className="text-center">
-                  Vui lòng điền thông tin của bạn
-                </h1>
-                <button className="close-button" onClick={closePopup}>
-                  &times;
-                </button>
-                <div className="row ">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="name-label" htmlFor="name">
-                        Tiêu đề:
-                      </label>
-                      <input
-                        type="text"
-                        name="title"
-                        onChange={formik1.handleChange}
-                        id="name"
-                        placeholder="Nhập tiêu đề"
-                        className="form-control"
-                        required
-                      />
+              </header>
+              <div className="form-wrap">
+                <form
+                  id="survey-form"
+                  onSubmit={formik1.handleSubmit}
+                  method="post"
+                >
+                  <h1 id="title" className="text-center">
+                    Vui lòng điền thông tin của bạn
+                  </h1>
+                  <button className="close-button" onClick={closePopup}>
+                    &times;
+                  </button>
+                  <div className="row ">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Tiêu đề:
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          onChange={formik1.handleChange}
+                          id="name"
+                          placeholder="Nhập tiêu đề"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="email-label" htmlFor="email">
+                          Số tiền:
+                        </label>
+                        <input
+                          type="number"
+                          name="amount"
+                          onChange={formik1.handleChange}
+                          id="email"
+                          placeholder="Nhập số tiền"
+                          className="form-control"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="email-label" htmlFor="email">
-                        Số tiền:
-                      </label>
-                      <input
-                        type="number"
-                        name="amount"
-                        onChange={formik1.handleChange}
-                        id="email"
-                        placeholder="Nhập số tiền"
-                        className="form-control"
-                        required
-                      />
+                  <div className="row ">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Email:
+                        </label>
+                        <input
+                          type="email"
+                          value={formik1.values.email}
+                          name="email"
+                          onChange={formik1.handleChange}
+                          id="name"
+                          placeholder="Nhập email"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="email-label" htmlFor="email">
+                          Số điện thoại:
+                        </label>
+                        <input
+                          type="text"
+                          name="phone"
+                          onChange={formik1.handleChange}
+                          id="email"
+                          placeholder="Nhập số điện thoại"
+                          className="form-control"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="row ">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="name-label" htmlFor="name">
-                        Email:
-                      </label>
-                      <input
-                        type="email"
-                        value={formik1.values.email}
-                        name="email"
-                        onChange={formik1.handleChange}
-                        id="name"
-                        placeholder="Nhập email"
-                        className="form-control"
-                        required
-                      />
+                  <div className="row ">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Họ tên:
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formik1.values.name}
+                          onChange={formik1.handleChange}
+                          id="name"
+                          placeholder="Họ và tên"
+                          className="form-control"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="email-label" htmlFor="email">
-                        Số điện thoại:
-                      </label>
-                      <input
-                        type="text"
-                        name="phone"
-                        onChange={formik1.handleChange}
-                        id="email"
-                        placeholder="Nhập số điện thoại"
-                        className="form-control"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row ">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="name-label" htmlFor="name">
-                        Họ tên:
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formik1.values.name}
-                        onChange={formik1.handleChange}
-                        id="name"
-                        placeholder="Họ và tên"
-                        className="form-control"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
 
-                <div className="row">
-                  <div className="col-md-4">
-                    <button
-                      type="submit"
-                      id="submit"
-                      className="btn btn-primary btn-block"
-                    >
-                      Hoàn thành
-                    </button>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        id="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Hoàn thành
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
 
-          {/* </div> */}
-        </div>
-      )}
-    </Fragment>
+            {/* </div> */}
+          </div>
+        )
+      }
+    </Fragment >
   );
+
+
 }

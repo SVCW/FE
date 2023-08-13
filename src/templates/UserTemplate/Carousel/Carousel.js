@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom/cjs/react-router-dom";
 
-export default function Carousel() {
+export default function Carousel () {
   return (
     <section>
       <div className="white-bg">
@@ -48,8 +48,8 @@ export default function Carousel() {
                           width={24}
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                        <polyline points="9 22 9 12 15 12 15 22" />
+                          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                          <polyline points="9 22 9 12 15 12 15 22" />
                         </svg>
                       </i>
                       <p>Trang Chủ</p>
@@ -109,10 +109,9 @@ export default function Carousel() {
                     </a>
                   </div> */}
                   <div className="link-item">
-                    <a  href="http://localhost:3000/home" title>
-                      <i className>
-                        <svg
-                          className="feather feather-layout"
+                    <NavLink to="/statisticaluser">
+                      <i class="fa-solid fa-chart-simple" style={{ color: "#088dcd" }}>
+                        <svg className="feather feather-users"
                           strokeLinejoin="round"
                           strokeLinecap="round"
                           strokeWidth={2}
@@ -123,20 +122,11 @@ export default function Carousel() {
                           width={24}
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <rect
-                            ry={2}
-                            rx={2}
-                            height={18}
-                            width={18}
-                            y={3}
-                            x={3}
-                          />
-                          <line y2={9} x2={21} y1={9} x1={3} />
-                          <line y2={9} x2={9} y1={21} x1={9} />
                         </svg>
                       </i>
+
                       <p>Thống kê hoạt động</p>
-                    </a>
+                    </NavLink>
                   </div>
                   <div className="link-item">
                     <NavLink to="/groups" title>
