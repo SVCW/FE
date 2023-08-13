@@ -1132,7 +1132,7 @@ export default function Home () {
             <li>
               <div className="user-dp">
                 <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
-                  <img alt src="images/avatar/uocAvatar.jpg" />
+                  <img alt src="./images/avatar/uocAvatar.jpg" />
                   <div className="name">
                     <h4>{localStorage.getItem("username")}</h4>
                   </div>
@@ -1351,7 +1351,7 @@ export default function Home () {
                         <div
                           className="bg-image"
                           style={{
-                            backgroundImage: "url(images/avatar/12.jpg)",
+                            backgroundImage: "url(./images/avatar/12.jpg)",
                           }}
                         />
                         <div className="date-time">
@@ -1414,7 +1414,7 @@ export default function Home () {
                               <figure>
                                 <img
                                   style={{ width: "480px", height: "180px" }}
-                                  src="images/avatar/hienMau.jpg"
+                                  src="./images/avatar/hienMau.jpg"
                                   alt
                                 />
                                 <span

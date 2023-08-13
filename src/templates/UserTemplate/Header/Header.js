@@ -1,22 +1,22 @@
-import { useFormik } from "formik";
-import React, { useState } from "react";
-import { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom/cjs/react-router-dom";
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import { Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 
-export default function Header (props) {
+export default function Header(props) {
   const dispatch = useDispatch();
   const { userByID } = useSelector((root) => root.UserReducer);
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('');
   console.log(title);
   const formik = useFormik({
     initialValues: {
-      title: title
+      title: title,
     },
     onSubmit: (value) => {
       console.log(value);
-    }
-  })
+    },
+  });
   const handleInputChange = (e) => {
     const inputValue = e.target.value;
     setTitle(inputValue);
@@ -31,14 +31,18 @@ export default function Header (props) {
     <header className>
       <div className="topbar stick">
         <NavLink to="/home" className="logo">
-          <img src="images/logo.png" alt />
+          <img src="../images/logo.png" alt />
           <span>SVCW</span>
         </NavLink>
         <div className="searches">
           <form method="post" onSubmit={formik.handleSubmit}>
-            <input type="text" placeholder="Tìm Kiếm..." name="title"
+            <input
+              type="text"
+              placeholder="Tìm Kiếm..."
+              name="title"
               value={title}
-              onChange={handleInputChange} />
+              onChange={handleInputChange}
+            />
             <button type="submit">
               <i className="icofont-search" />
             </button>
@@ -52,8 +56,8 @@ export default function Header (props) {
                   <div className="searched-user">
                     <figure>
                       <img
-                        style={{ height: "2.5rem", width: "2.5rem" }}
-                        src="images/avatar/uocAvatar.jpg"
+                        style={{ height: '2.5rem', width: '2.5rem' }}
+                        src="../images/avatar/uocAvatar.jpg"
                         alt
                       />
                     </figure>
@@ -77,10 +81,10 @@ export default function Header (props) {
         <ul className="web-elements">
           <li>
             <div className="user-dp">
-              <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
-                <img alt src="images/avatar/uocAvatar.jpg" />
+              <NavLink to={`/profile/${localStorage.getItem('userID')}`} title>
+                <img alt src="../images/avatar/uocAvatar.jpg" />
                 <div className="name">
-                  <h4>{localStorage.getItem("username")}</h4>
+                  <h4>{localStorage.getItem('username')}</h4>
                 </div>
               </NavLink>
             </div>
@@ -204,7 +208,7 @@ export default function Header (props) {
             </a>
 
             <ul className="dropdown">
-              {localStorage.getItem("userID") ? (
+              {localStorage.getItem('userID') ? (
                 <li>
                   <a href="profile.html" title>
                     <i className="icofont-user-alt-3" /> Trang cá nhân
@@ -262,18 +266,18 @@ export default function Header (props) {
                 className="logout"
                 onClick={() => {
                   const action = {
-                    type: "LOGOUT",
+                    type: 'LOGOUT',
                   };
                   dispatch(action);
                   const action1 = {
-                    type: "LOGOUT1",
+                    type: 'LOGOUT1',
                   };
                   dispatch(action1);
                 }}
               >
                 <NavLink to="/" title>
-                  <i className="icofont-power" />{" "}
-                  {localStorage.getItem("userID") ? "Đăng xuất" : "Đăng nhập"}
+                  <i className="icofont-power" />{' '}
+                  {localStorage.getItem('userID') ? 'Đăng xuất' : 'Đăng nhập'}
                 </NavLink>
               </li>
             </ul>
