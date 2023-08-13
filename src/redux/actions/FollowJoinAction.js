@@ -1,5 +1,5 @@
 import { http } from "../../utils/reponse";
-import { GetListActivityAction } from "./ActivityAction";
+import { GetListActivityAction, GetRecommentActivityAction } from "./ActivityAction";
 
 export const FollowAction = (activity, user) => {
     return async (dispatch) => {
@@ -8,7 +8,8 @@ export const FollowAction = (activity, user) => {
             console.log(result.data);
             const action = GetListActivityAction();
             dispatch(action)
-
+            const action1 = GetRecommentActivityAction(user);
+            dispatch(action1)
         } catch (error) {
             console.log(error);
         }
@@ -23,12 +24,15 @@ export const UnFollowAction = (activity, user) => {
             console.log(result.data);
             const action = GetListActivityAction();
             dispatch(action)
-
+            const action1 = GetRecommentActivityAction(user);
+            dispatch(action1)
         } catch (error) {
             console.log(error);
         }
     }
 }
+
+
 
 export const JoinAction = (activity, user) => {
     return async (dispatch) => {

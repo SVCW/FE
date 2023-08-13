@@ -1,17 +1,21 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import styles from "./RecommentActivity.module.css";
+import { FollowAction, UnFollowAction } from '../redux/actions/FollowJoinAction';
+import Swal from 'sweetalert2';
 export default function RecommentActivity () {
-    const { arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
-    console.log("comment", arrActivityRecomment);
-    const settings = {
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        appendDots: `
+  const { arrActivityRecomment } = useSelector((root) => root.ActivityReducer);
+  const { userID } = useSelector((root) => root.LoginReducer);
+  const dispatch = useDispatch()
+  console.log("comment", arrActivityRecomment);
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    appendDots: `
       .slick-dots {
         bottom: 10px;
       }
@@ -25,13 +29,13 @@ export default function RecommentActivity () {
         color: #333;
       }
     `,
-        appendArrows: `
+    appendArrows: `
       .slick-prev, .slick-next {
         background-color: #ddd;
         color: #333;
       }
     `,
-        appendCss: `
+    appendCss: `
       .slick-slider {
         overflow: hidden;
       }
@@ -46,57 +50,107 @@ export default function RecommentActivity () {
     `,
 
 
-    };
-    return (
-        <div style={{ position: 'relative' }}>
-            <Slider {...settings}>
+  };
+  return (
+    <div style={{ position: 'relative' }}>
+      <Slider {...settings}>
 
-                {arrActivityRecomment.map((item, index) => {
+        {arrActivityRecomment.map((item, index) => {
 
-                    return <div className="widget">
-                        <h4 className="widget-title">Đề xuất tìm kiếm</h4>
-                        <h3 className="widget-title" style={{ color: ' #1572b8' }}>{item.title}</h3>
+          return <div className="widget">
+            <h4 className="widget-title">Đề xuất tìm kiếm</h4>
+            <h3 className="widget-title" style={{ color: ' #1572b8' }}>{item.title}</h3>
 
-                        <div className="sug-caro">
+            <div className="sug-caro">
 
-                            <div className="friend-box">
-                                <figure>
-                                    <img
-                                        style={{
-                                            width: "310px",
-                                            height: "110px",
-                                            objectFit: "cover",
-                                        }}
-                                        alt
-                                        src={item.media[0]?.linkMedia}
-                                    />
-                                    <span>Lượt thích: {item.numberJoin}</span>
-                                </figure>
-                                <div className="frnd-meta">
-                                    <img
-                                        style={{
-                                            width: "70px",
-                                            height: "70px",
-                                            objectfit: "cover",
-                                            display: "block",
-                                        }}
-                                        alt
-                                        src={item.media[0]?.linkMedia}
-                                    />
-                                    <div className="frnd-name" style={{ paddingTop: '10px' }}>
+              <div className="friend-box">
+                <figure>
+                  <img
+                    style={{
+                      width: "310px",
+                      height: "110px",
+                      objectFit: "cover",
+                    }}
+                    alt
+                    src={item.media[0]?.linkMedia}
+                  />
+                  <span>Lượt thích: {item.numberJoin}</span>
+                </figure>
+                <div className="frnd-meta">
+                  <img
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      objectfit: "cover",
+                      display: "block",
+                    }}
+                    alt
+                    src={item.media[0]?.linkMedia}
+                  />
+                  <div className="frnd-name" style={{ paddingTop: '10px' }}>
 
-                                        <span>@{item.user?.username}</span>
-                                    </div>
-                                    <a className="main-btn2" href="#" title>
-                                        Theo dõi
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                })}
+                    <span>@{item.user?.username}</span>
+                  </div>
 
-            </Slider>
-        </div>
-    )
+
+                  {item.followJoinAvtivity?.map((item1, index) => {
+                    if (item1.userId === userID) {
+                      return item1.isFollow ? <div className="btnfollow" onClick={() => {
+                        // console.log(item.activityId);
+                        const action = UnFollowAction(item.activityId, userID);
+                        dispatch(action);
+                        const Toast = Swal.mixin({
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true,
+                          didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                          },
+                        });
+
+                        Toast.fire({
+                          icon: "error",
+                          title: `Bỏ theo dõi chiến dịch ${item.title} thành công `,
+                        });
+                      }}>
+                        Đang theo dõi
+                      </div> : <div className="btnfollow" title onClick={() => {
+                        const action = FollowAction(item.activityId, userID);
+                        dispatch(action);
+                        const Toast = Swal.mixin({
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true,
+                          didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                          },
+                        });
+
+                        Toast.fire({
+                          icon: "success",
+                          title: `Theo dõi chiến dịch ${item.title} thành công `,
+                        });
+                      }}>
+                        Theo dõi
+                      </div>
+                    }
+                  })
+                  }
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        })}
+
+      </Slider>
+    </div>
+  )
 }
