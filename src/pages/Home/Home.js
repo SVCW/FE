@@ -1532,7 +1532,8 @@ export default function Home(props) {
                         </div>
                       })}
                       {/* popular courses */}
-                      <div className="widget">
+                      
+                      {/*<div className="widget">
                         <h4 className="widget-title">
                           Tổ chức{" "}
                           <a className="see-all" href="#" title>
@@ -1579,7 +1580,7 @@ export default function Home(props) {
                           </li>
                         </ul>
                       </div> */}
-                     </div>
+                     
                     </aside>
                   </div>
                   <div className="col-lg-6">
