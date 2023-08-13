@@ -13,7 +13,9 @@ i {
 .blog-post-meta>a.button {
     margin-left: 200px;
 }
-
+.swal2-cancel {
+    margin-right: 1rem;
+}
 .App-logo {
     height: 40vmin;
     pointer-events: none;

@@ -92,7 +92,7 @@ export default function Profile(props) {
 
                             <li className="nav-item">
                               <a className href="#about" data-toggle="tab">
-                                Chi tiết
+                                Thông tin cá nhân
                               </a>
                             </li>
                           </ul>
@@ -2528,59 +2528,13 @@ export default function Profile(props) {
                               <Albums />
                               <div className="tab-pane fade" id="about">
                                 <div className="row merged20">
-                                  <div className="col-lg-8">
+                                  <div className="col-lg-12">
                                     <PersonalDetail
                                       setReloadPage={setReloadPage}
                                       reloadPage={reloadPage}
                                     />
                                   </div>
-                                  <div className="col-lg-4">
-                                    <aside className="sidebar">
-                                      <div className="widget">
-                                        <h4 className="widget-title">
-                                          Complete Your Profile
-                                        </h4>
-                                        <span>
-                                          Complete your profile by filling
-                                          profile info fields, completing quests
-                                          &amp; unlocking badges
-                                        </span>
-                                        <div
-                                          data-progress="tip"
-                                          className="progress__outer"
-                                          data-value="0.67"
-                                        >
-                                          <div className="progress__inner">
-                                            82%
-                                          </div>
-                                        </div>
-                                        <ul className="prof-complete">
-                                          <li>
-                                            <i className="icofont-plus-square" />{" "}
-                                            <a href="#" title>
-                                              Upload Your Picture
-                                            </a>
-                                            <em>10%</em>
-                                          </li>
-                                          <li>
-                                            <i className="icofont-plus-square" />{" "}
-                                            <a href="#" title>
-                                              Your University?
-                                            </a>
-                                            <em>20%</em>
-                                          </li>
-                                          <li>
-                                            <i className="icofont-plus-square" />{" "}
-                                            <a href="#" title>
-                                              Invite to 10+ members
-                                            </a>
-                                            <em>20%</em>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                      {/* complete profile widget */}
-                                    </aside>
-                                  </div>
+                                  
                                 </div>
                               </div>
                             </div>
