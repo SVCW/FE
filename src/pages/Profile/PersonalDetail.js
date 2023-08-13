@@ -30,7 +30,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
   //   JSON.parse(localStorage.getItem('getuserid'))
   // );
   const notify = () =>
-    toast('Wow so easy!', {
+    toast('Cập nhật thông tin thành công', {
       theme: 'dark',
     });
   const dispatch = useDispatch();
@@ -42,7 +42,6 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
       .get(`/User/get-user-by-id?UserId=${localStorage.getItem('userID')}`)
       .then((response) => {
         setInfo({
-          ...info,
           userId: response.data.data.user.userId,
           username: response.data.data.user.username,
           fullName: response.data.data.user.fullName,
@@ -54,6 +53,8 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
           dateOfBirth: response.data.data.user.dateOfBirth,
           status: response.data.data.user.status,
           roleId: response.data.data.user.roleId,
+          numberActivityJoin: response.data.data.user.numberActivityJoin,
+          numberActivitySuccess: response.data.data.user.numberActivitySuccess,
         });
       })
       .catch((error) => {
@@ -73,6 +74,11 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
     } else {
       setFullNameError('');
     }
+
+    if (phoneError) {
+      return;
+    }
+
     if (info.phone === '' || info.phone === null || info.phone?.trim() === '') {
       setPhoneError('Vui lòng không để trống số điện thoại');
       return;
@@ -247,7 +253,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
                 type="text"
                 class="form-control-plaintext"
                 id="validationDefault02"
-                value="0"
+                value={info?.numberActivityJoin}
                 readOnly
               />
             </div>
@@ -259,7 +265,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
                 type="text"
                 class="form-control-plaintext"
                 id="validationDefault02"
-                value="0"
+                value={info?.numberActivitySuccess}
                 readOnly
               />
             </div>
@@ -340,7 +346,14 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
                 id="validationDefault05"
                 value={info?.phone}
                 onChange={(e) => {
-                  setInfo({ ...info, phone: e.target.value });
+                  const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+
+                  const phone = e.target.value;
+                  // eslint-disable-next-line no-unused-expressions
+                  phone.match(regexPhoneNumber)
+                    ? setPhoneError('')
+                    : setPhoneError('Số điện thoại không đúng định dạng');
+                  setInfo({ ...info, phone });
                 }}
                 required
               />
@@ -366,7 +379,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
                 type="text"
                 class="form-control-plaintext"
                 id="validationDefault07"
-                value="0"
+                value={info?.numberActivityJoin}
                 readOnly
               />
             </div>
@@ -378,7 +391,7 @@ const PersonalDetail = ({ setReloadPage, reloadPage }) => {
                 type="text"
                 class="form-control-plaintext"
                 id="validationDefault08"
-                value="0"
+                value={info?.numberActivitySuccess}
                 readOnly
               />
             </div>

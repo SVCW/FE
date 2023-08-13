@@ -5,6 +5,7 @@ import { GetProfileByIdAction } from '../../redux/actions/ProfileAction';
 import PersonalDetail from './PersonalDetail';
 import Albums from './Albums';
 import { http } from '../../utils/reponse';
+import moment from 'moment';
 
 export default function Profile(props) {
   const [userInfo, setUserInfo] = useState(null);
@@ -60,7 +61,7 @@ export default function Profile(props) {
                           <ul className="joined-info">
                             <li>
                               <span>Ngày tạo tài khoản:</span>{' '}
-                              {userInfo?.createAt}
+                              {moment(userInfo?.createAt).format('DD-MM-YYYY')}
                             </li>
                             <li>
                               <span>Số nhóm đã tham gia:</span>{' '}
@@ -3245,45 +3246,44 @@ export default function Profile(props) {
                                       <div className="widget">
                                         <h4 className="widget-title">
                                           Huy hiệu
-                                          <ul className="suggestd">
-                                            {userInfo?.achivementUser.map(
-                                              (item) => (
-                                                <li>
-                                                  <a
-                                                    className="sug-pic"
-                                                    href="#"
-                                                    title
-                                                  >
-                                                    <img
-                                                      src={
-                                                        item.achivement
-                                                          .achivementLogo
-                                                      }
-                                                      alt=""
-                                                    />
-                                                  </a>
-                                                  <a
-                                                    className="sug-title"
-                                                    href="#"
-                                                    title
-                                                  >
-                                                    {
-                                                      item.achivement
-                                                        .description
-                                                    }
-                                                  </a>
-                                                </li>
-                                              )
-                                            )}
-                                          </ul>
                                         </h4>
+                                        {userInfo?.achivementUser.map(
+                                          (item) => (
+                                            <li>
+                                              <b style={{ fontSize: 14 }}>
+                                                {'- '}
+                                                {item.achivement.description}
+                                              </b>
+                                            </li>
+                                          )
+                                        )}
                                       </div>
 
                                       <div className="widget stick-widget">
                                         <h4 className="widget-title">
                                           Nhóm đã tham gia
                                         </h4>
-                                        <ul className="suggestd">
+                                        {userInfo?.followFanpage.map(
+                                          (follow) => (
+                                            <div
+                                              style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                marginBottom: 10,
+                                              }}
+                                            >
+                                              <img
+                                                src={follow.fanpage.coverImage}
+                                                alt=""
+                                                width={150}
+                                              />
+                                              <b>
+                                                {follow.fanpage.fanpageName}
+                                              </b>
+                                            </div>
+                                          )
+                                        )}
+                                        {/* <ul className="suggestd">
                                           {userInfo?.followFanpage.map(
                                             (follow) => (
                                               <li>
@@ -3313,7 +3313,7 @@ export default function Profile(props) {
                                               </li>
                                             )
                                           )}
-                                        </ul>
+                                        </ul> */}
                                       </div>
                                       {/* Suggested groups */}
                                     </aside>
