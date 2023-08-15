@@ -1048,7 +1048,7 @@ export default function EndActivity() {
                         );
                     })}
                 </div>
-
+          </div>
         {isOpen === true ? (
           <div className="post-new-popup" style={popupStyle}>
             <div className="popup" style={{ width: 600, zIndex: 80 }}>
