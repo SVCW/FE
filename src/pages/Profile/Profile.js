@@ -1,45 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { GetProfileByIdAction } from '../../redux/actions/ProfileAction';
-import PersonalDetail from './PersonalDetail';
-import Albums from './Albums';
-import { http } from '../../utils/reponse';
-import moment from 'moment';
-import { useHistory } from 'react-router-dom';
-import {
-  DeleteActivityByUserAction,
-  DeleteLikeAction,
-  GetActivityAction,
-  GetActivityByIDAction,
-  PostLikeAction,
-  UpdateActivityAction,
-} from '../../redux/actions/ActivityAction';
-import { useFormik } from 'formik';
-import Swal from 'sweetalert2';
-import { CreateReportAction } from '../../redux/actions/ReportAction';
+import React, { useEffect, useState } from "react";
+import { Fragment } from "react";
+import { useDispatch } from "react-redux";
+import { GetProfileByIdAction } from "../../redux/actions/ProfileAction";
+import PersonalDetail from "./PersonalDetail";
+import Albums from "./Albums";
+import { http } from "../../utils/reponse";
+import moment from "moment";
 
 export default function Profile(props) {
   const [userInfo, setUserInfo] = useState(null);
   const [reloadPage, setReloadPage] = useState(false);
   //viết trước
   const dispatch = useDispatch();
-  const history = useHistory();
-  const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map(
-    (comment) => ({
-      id: comment.activityId,
-      isCmt: true,
-      color: '#eae9ee',
-    })
-  );
-  const { arrActivity, activityId, arrActivityRecomment } = useSelector(
-    (root) => root.ActivityReducer
-  );
-  const { userID } = useSelector((root) => root.LoginReducer);
-  const { userByID } = useSelector((root) => root.UserReducer);
-  const [report, setReport] = useState(false);
-
-  const [commentData, setCommentData] = useState(initialCommentData);
 
   useEffect(() => {
     let { id } = props.match.params;
@@ -58,154 +30,6 @@ export default function Profile(props) {
     // setUserInfo(action);
   }, [props.match.params, reloadPage]);
 
-  const handleLikeClick = (id) => {
-    const updatedComments = commentData.map((comment) => {
-      if (comment.id === id) {
-        if (comment.color === 'rgb(117, 189, 240)') {
-          return { ...comment, color: '#eae9ee' };
-        } else {
-          return { ...comment, color: 'rgb(117, 189, 240)' };
-        }
-      }
-      return comment;
-    });
-    let alreadyLiked = false;
-
-    JSON.parse(localStorage.getItem('activity'))?.map((comment) => {
-      if (comment.activityId === id && comment.like.length > 0) {
-        comment.like.map((item) => {
-          if (item.userId === userID) {
-            alreadyLiked = true;
-          }
-        });
-      }
-    });
-
-    let action = null;
-
-    if (alreadyLiked) {
-      action = DeleteLikeAction({
-        userId: userID,
-        activityId: id,
-      });
-    } else {
-      action = PostLikeAction({
-        userId: userID,
-        activityId: id,
-      });
-    }
-    dispatch(action);
-
-    setCommentData(updatedComments);
-    setReloadPage(!reloadPage);
-  };
-
-  const handleCommentClick = (id) => {
-    const updatedComments = commentData.map((comment) => {
-      if (comment.id === id) {
-        return { ...comment, isCmt: !comment.isCmt };
-      }
-      return comment;
-    });
-
-    setCommentData(updatedComments);
-    console.log(commentData);
-  };
-  const [openpro1, setOpenPro1] = useState(false);
-
-  const handleClick6 = () => {
-    setOpenPro1((prevIsOpen) => !prevIsOpen);
-    // setIsDisplay(true)
-  };
-
-  const popupStyle4 = {
-    opacity: openpro1 ? 1 : 0,
-    visibility: openpro1 ? 'visible' : 'hidden',
-    overflow: openpro1 ? 'auto' : 'hidden',
-  };
-
-  const formik9 = useFormik({
-    initialValues: {
-      activityId: activityId.activityId,
-      title: activityId.title,
-      description: activityId.description,
-      startDate: activityId.startDate,
-      endDate: activityId.endDate,
-      location: activityId.location,
-      targetDonation: activityId.targetDonation,
-    },
-    // enableReinitialize: true,
-    enableReinitialize: true,
-    onSubmit: async (value) => {
-      console.log(value);
-      const action = await UpdateActivityAction(value);
-      await dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: 'success',
-        title: `Cập nhật chiến dịch ${value.title} thành công `,
-      });
-      // formik.setFieldValue("title", "");
-      // formik.setFieldValue("description", "");
-      // formik.setFieldValue("location", "");
-      // formik.setFieldValue("targetDonation", 0);
-      // formik.setFieldValue("startDate", '');
-      // formik.setFieldValue("endactivity", '');
-      // formik.setFieldValue("isFanpageAvtivity", false);
-      // formik.setFieldValue("media", []);
-      setOpenPro1((prevIsOpen) => !prevIsOpen);
-      // setIsDisplay(false);
-
-      setReloadPage(!reloadPage);
-    },
-  });
-
-  const formik6 = useFormik({
-    initialValues: {
-      reportId: 'string',
-      title: 'string',
-      reason: '',
-      reportTypeId: 'string',
-      description: 'string',
-      status: true,
-      userId: userID,
-      activityId: '',
-    },
-    onSubmit: async (value) => {
-      // console.log(value);
-      const action = await CreateReportAction(value);
-      await dispatch(action);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer);
-          toast.addEventListener('mouseleave', Swal.resumeTimer);
-        },
-      });
-
-      Toast.fire({
-        icon: 'success',
-        title: `Báo cáo chiến dịch thành công `,
-      });
-      setReport((prevIsOpen) => !prevIsOpen);
-    },
-  });
-
   return (
     <Fragment>
       <div>
@@ -221,33 +45,33 @@ export default function Profile(props) {
                           <img src={userInfo?.coverImage} alt="" />
                           <a href="#" title>
                             {/* <i className="icofont-check-circled" /> */}
-                            Thích
+                            Thích 
                           </a>
                           <figure className="group-dp">
-                            {' '}
+                            {" "}
                             <img src={userInfo?.image} alt="" />
                           </figure>
                         </div>
                         <div className="grp-info about">
                           <h4>
-                            {userInfo?.fullName}{' '}
+                            {userInfo?.fullName}{" "}
                             <span> @{userInfo?.username}</span>
                           </h4>
                           <ul className="joined-info">
                             <li>
-                              <span>Ngày tạo tài khoản:</span>{' '}
-                              {moment(userInfo?.createAt).format('DD-MM-YYYY')}
+                              <span>Ngày tạo tài khoản:</span>{" "}
+                              {moment(userInfo?.createAt).format("DD-MM-YYYY")}
                             </li>
                             <li>
-                              <span>Số nhóm đã theo dõi:</span>{' '}
+                              <span>Số nhóm đã theo dõi:</span>{" "}
                               {userInfo?.followFanpage.length}
                             </li>
                             <li>
-                              <span>Số bài viết:</span>{' '}
+                              <span>Số bài viết:</span>{" "}
                               {userInfo?.activity.length}
                             </li>
                             <li>
-                              <span>Số người thích:</span>{' '}
+                              <span>Số người thích:</span>{" "}
                             </li>
                           </ul>
                           <ul className="nav nav-tabs about-btn">
@@ -292,451 +116,341 @@ export default function Profile(props) {
                                 <div className="row merged20">
                                   <div className="col-lg-8">
                                     {/* create new post */}
-                                    {userInfo?.activity.map((activity) => {
-                                      let isAlreadyLiked = false;
-                                      // let isAlreadyJoined = false;
-                                      // let isAlreadyFollowed = false;
-                                      userInfo?.like?.map((user) => {
-                                        if (user.userId === userByID.userId) {
-                                          //item?.like?
-                                          isAlreadyLiked = true;
-                                        }
-                                      });
-                                      return (
-                                        <div className="main-wraper">
-                                          <div className="user-post">
-                                            <div className="friend-info">
-                                              <figure>
-                                                <img
-                                                  alt=""
-                                                  src={userInfo.image}
-                                                />
-                                              </figure>
-                                              <div className="friend-name">
-                                                <div className="more">
-                                                  <div className="more-post-optns">
-                                                    <i className>
-                                                      <svg
-                                                        className="feather feather-more-horizontal"
-                                                        strokeLinejoin="round"
-                                                        strokeLinecap="round"
-                                                        strokeWidth={2}
-                                                        stroke="currentColor"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        height={24}
-                                                        width={24}
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <circle
-                                                          r={1}
-                                                          cy={12}
-                                                          cx={12}
-                                                        />
-                                                        <circle
-                                                          r={1}
-                                                          cy={12}
-                                                          cx={19}
-                                                        />
-                                                        <circle
-                                                          r={1}
-                                                          cy={12}
-                                                          cx={5}
-                                                        />
-                                                      </svg>
-                                                    </i>
-                                                    <ul>
-                                                      <li
-                                                        onClick={() => {
-                                                          console.log('okela');
-                                                          handleClick6();
-                                                          const action =
-                                                            GetActivityByIDAction(
-                                                              activity.activityId
-                                                            );
-                                                          dispatch(action);
-                                                        }}
-                                                      >
-                                                        <i className="icofont-pen-alt-1" />
-                                                        Chỉnh sửa bài viết
-                                                      </li>
-                                                      {userID !==
-                                                      userInfo.userId ? (
-                                                        <li
-                                                          onClick={() => {
-                                                            setReport(true);
-                                                            formik6.setFieldValue(
-                                                              'activityId',
-                                                              activity.activityId
-                                                            );
-                                                          }}
-                                                        >
-                                                          <i className="icofont-flag" />
-                                                          Báo cáo bài viết
-                                                        </li>
-                                                      ) : null}
-                                                      {userID ===
-                                                      userInfo.userId ? (
-                                                        <li
-                                                          onClick={() => {
-                                                            Swal.fire({
-                                                              title:
-                                                                'Bạn muốn xóa?',
-                                                              text: 'Bạn có chắc muốn xóa bài viết này!',
-                                                              icon: 'warning',
-                                                              showCancelButton: true,
-                                                              confirmButtonColor:
-                                                                '#3085d6',
-                                                              cancelButtonColor:
-                                                                '#d33',
-                                                              confirmButtonText:
-                                                                'Xóa!',
-                                                            }).then(
-                                                              (result) => {
-                                                                if (
-                                                                  result.isConfirmed
-                                                                ) {
-                                                                  Swal.fire(
-                                                                    'Xóa thành công!',
-                                                                    'Xóa thành công chiến dịch.',
-                                                                    'success'
-                                                                  );
-                                                                  const action =
-                                                                    DeleteActivityByUserAction(
-                                                                      activity.activityId
-                                                                    );
-                                                                  dispatch(
-                                                                    action
-                                                                  );
-
-                                                                  setReloadPage(
-                                                                    !reloadPage
-                                                                  );
-                                                                }
-                                                              }
-                                                            );
-                                                          }}
-                                                        >
-                                                          <i className="icofont-ui-delete" />
-                                                          Xóa bài viết
-                                                        </li>
-                                                      ) : null}
-                                                    </ul>
+                                    {userInfo?.activity.map((activity) => (
+                                      <div className="main-wraper">
+                                        <div className="user-post">
+                                          <div className="friend-info">
+                                            <figure>
+                                              <img
+                                                alt=""
+                                                src="/public/images/resources/user4.jpg"
+                                              />
+                                            </figure>
+                                            <div className="friend-name">
+                                              <div className="more">
+                                                <div className="more-post-optns">
+                                                  <i className>
+                                                    <svg
+                                                      className="feather feather-more-horizontal"
+                                                      strokeLinejoin="round"
+                                                      strokeLinecap="round"
+                                                      strokeWidth={2}
+                                                      stroke="currentColor"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      height={24}
+                                                      width={24}
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                      <circle
+                                                        r={1}
+                                                        cy={12}
+                                                        cx={12}
+                                                      />
+                                                      <circle
+                                                        r={1}
+                                                        cy={12}
+                                                        cx={19}
+                                                      />
+                                                      <circle
+                                                        r={1}
+                                                        cy={12}
+                                                        cx={5}
+                                                      />
+                                                    </svg>
+                                                  </i>
+                                                  <ul>
+                                                    <li>
+                                                      <i className="icofont-pen-alt-1" />
+                                                      Chỉnh sửa bài viết
+                                                    </li>
+                                                    <li>
+                                                      <i className="icofont-flag" />
+                                                      Báo cáo bài viết
+                                                    </li>
+                                                    <li>
+                                                      <i className="icofont-ui-delete" />
+                                                      Xóa bài viết
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                              </div>
+                                              <ins>
+                                              <a title href="time-line.html">
+                                                  {userInfo.username}
+                                                </a>{' '}
+                                                
+                                              </ins>
+                                              <span>
+                                                <i className="icofont-globe" />{" "}
+                                                Cộng đồng: {activity.createAt}
+                                              </span>
+                                            </div>
+                                            <div className="post-meta">
+                                             
+                                            <h5 className="post-title">
+                                                {activity.title}
+                                              </h5>
+                                              <p>{activity.description}</p>
+                                             
+                                              <div className="stat-tools">
+                                                <div className="box">
+                                                  <div className="Like">
+                                                    <a className="Like__link">
+                                                      <i className="icofont-like" />{" "}
+                                                      Thích
+                                                    </a>
+                                                    
                                                   </div>
                                                 </div>
-                                                <ins>
-                                                  <a
-                                                    title
-                                                    href="time-line.html"
-                                                  >
-                                                    {userInfo.username}
-                                                  </a>{' '}
-                                                </ins>
-                                                <span>
-                                                  <i className="icofont-globe" />{' '}
-                                                  Cộng đồng: {activity.createAt}
-                                                </span>
-                                              </div>
-                                              <div className="post-meta">
-                                                <h5 className="post-title">
-                                                  {activity.title}
-                                                </h5>
-                                                <p>{activity.description}</p>
-
-                                                <div className="stat-tools">
-                                                  <div className="box">
-                                                    <div
-                                                      className="Like"
-                                                      style={{
-                                                        backgroundColor: `${
-                                                          isAlreadyLiked
-                                                            ? 'rgb(117, 189, 240)'
-                                                            : '#eae9ee'
-                                                        }`,
-                                                        borderRadius: '4px',
-                                                        color: '#82828e',
-                                                        display: 'inline-block',
-                                                        fontSize: '13px',
-                                                        verticalAlign: 'middle',
-                                                        transition:
-                                                          'all 0.2s linear 0s',
-                                                        cursor: 'pointer',
-                                                      }}
-                                                      onClick={() =>
-                                                        handleLikeClick(
-                                                          activity.activityId
-                                                        )
-                                                      }
+                                                
+                                                <a
+                                                  title
+                                                  href="#"
+                                                  className="comment-to"
+                                                >
+                                                  <i className="icofont-comment" />{" "}
+                                                  Bình luận
+                                                </a>
+                                                <a
+                                                  title
+                                                  href="#"
+                                                  className="share-to"
+                                                >
+                                                  <i className="icofont-share-alt" />{" "}
+                                                  Chia sẻ
+                                                </a>
+                                                <div className="emoji-state">
+                                                  <div className="popover_wrapper">
+                                                    <a
+                                                      className="popover_title"
+                                                      href="#"
+                                                      title
                                                     >
-                                                      <a className="Like__link">
-                                                        <i className="icofont-like" />{' '}
-                                                        Thích
-                                                      </a>
-                                                    </div>
-                                                  </div>
-
-                                                  <a
-                                                    title
-                                                    href="#"
-                                                    className="comment-to"
-                                                    onClick={() => {
-                                                      handleCommentClick(
-                                                        activity.activityId
-                                                      );
-                                                    }}
-                                                  >
-                                                    <i className="icofont-comment" />{' '}
-                                                    Bình luận
-                                                  </a>
-                                                  <a
-                                                    title
-                                                    href="#"
-                                                    className="share-to"
-                                                  >
-                                                    <i className="icofont-share-alt" />{' '}
-                                                    Chia sẻ
-                                                  </a>
-                                                  <div className="emoji-state">
-                                                    <div className="popover_wrapper">
-                                                      <a
-                                                        className="popover_title"
-                                                        href="#"
-                                                        title
-                                                      >
+                                                      <img
+                                                        alt=""
+                                                        src="images/smiles/thumb.png"
+                                                      />
+                                                    </a>
+                                                    <div className="popover_content">
+                                                      <span>
                                                         <img
                                                           alt=""
                                                           src="images/smiles/thumb.png"
-                                                        />
-                                                      </a>
-                                                      <div className="popover_content">
-                                                        <span>
-                                                          <img
-                                                            alt=""
-                                                            src="images/smiles/thumb.png"
-                                                          />{' '}
-                                                          Likes
-                                                        </span>
-                                                        <ul className="namelist">
-                                                          <li>Jhon Doe</li>
-                                                          <li>Amara Sin</li>
-                                                          <li>Sarah K.</li>
-                                                          <li>
-                                                            <span>
-                                                              20+ more
-                                                            </span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                    </div>
-                                                    <div className="popover_wrapper">
-                                                      <a
-                                                        className="popover_title"
-                                                        href="#"
-                                                        title
-                                                      >
-                                                        <img
-                                                          alt=""
-                                                          src="images/smiles/heart.png"
-                                                        />
-                                                      </a>
-                                                      <div className="popover_content">
-                                                        <span>
-                                                          <img
-                                                            alt=""
-                                                            src="images/smiles/heart.png"
-                                                          />{' '}
-                                                          Love
-                                                        </span>
-                                                        <ul className="namelist">
-                                                          <li>Amara Sin</li>
-                                                          <li>Jhon Doe</li>
-                                                          <li>
-                                                            <span>
-                                                              10+ more
-                                                            </span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                    </div>
-                                                    <div className="popover_wrapper">
-                                                      <a
-                                                        className="popover_title"
-                                                        href="#"
-                                                        title
-                                                      >
-                                                        <img
-                                                          alt=""
-                                                          src="images/smiles/smile.png"
-                                                        />
-                                                      </a>
-                                                      <div className="popover_content">
-                                                        <span>
-                                                          <img
-                                                            alt=""
-                                                            src="images/smiles/smile.png"
-                                                          />{' '}
-                                                          Happy
-                                                        </span>
-                                                        <ul className="namelist">
-                                                          <li>Sarah K.</li>
-                                                          <li>Jhon Doe</li>
-                                                          <li>Amara Sin</li>
-                                                          <li>
-                                                            <span>
-                                                              100+ more
-                                                            </span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                    </div>
-                                                    <div className="popover_wrapper">
-                                                      <a
-                                                        className="popover_title"
-                                                        href="#"
-                                                        title
-                                                      >
-                                                        <img
-                                                          alt=""
-                                                          src="images/smiles/weep.png"
-                                                        />
-                                                      </a>
-                                                      <div className="popover_content">
-                                                        <span>
-                                                          <img
-                                                            alt=""
-                                                            src="images/smiles/weep.png"
-                                                          />{' '}
-                                                          Dislike
-                                                        </span>
-                                                        <ul className="namelist">
-                                                          <li>Danial Carbal</li>
-                                                          <li>Amara Sin</li>
-                                                          <li>Sarah K.</li>
-                                                          <li>
-                                                            <span>
-                                                              15+ more
-                                                            </span>
-                                                          </li>
-                                                        </ul>
-                                                      </div>
-                                                    </div>
-                                                    <p>10+</p>
-                                                  </div>
-                                                  <div
-                                                    className="new-comment"
-                                                    style={{ display: 'none' }}
-                                                  >
-                                                    <form method="post">
-                                                      <input
-                                                        type="text"
-                                                        placeholder="write comment"
-                                                      />
-                                                      <button type="submit">
-                                                        <i className="icofont-paper-plane" />
-                                                      </button>
-                                                    </form>
-                                                    <div className="comments-area">
-                                                      <ul>
+                                                        />{" "}
+                                                        Likes
+                                                      </span>
+                                                      <ul className="namelist">
+                                                        <li>Jhon Doe</li>
+                                                        <li>Amara Sin</li>
+                                                        <li>Sarah K.</li>
                                                         <li>
-                                                          <figure>
-                                                            <img
-                                                              alt=""
-                                                              src="/public/images/resources/user1.jpg"
-                                                            />
-                                                          </figure>
-                                                          <div className="commenter">
-                                                            <h5>
-                                                              <a title href="#">
-                                                                Jack Carter
-                                                              </a>
-                                                            </h5>
-                                                            <span>
-                                                              2 hours ago
-                                                            </span>
-                                                            <p>
-                                                              i think that some
-                                                              how, we learn who
-                                                              we really are and
-                                                              then live with
-                                                              that decision,
-                                                              great post!
-                                                            </p>
-                                                            <span>
-                                                              you can view the
-                                                              more detail via
-                                                              link
-                                                            </span>
-                                                            <a
-                                                              title
-                                                              href="https://www.youtube.com/watch?v=HpZgwHU1GcI"
-                                                              target="_blank"
-                                                            >
-                                                              https://www.youtube.com/watch?v=HpZgwHU1GcI
-                                                            </a>
-                                                          </div>
-                                                          <a
-                                                            title="Like"
-                                                            href="#"
-                                                          >
-                                                            <i className="icofont-heart" />
-                                                          </a>
-                                                          <a
-                                                            title="Reply"
-                                                            href="#"
-                                                            className="reply-coment"
-                                                          >
-                                                            <i className="icofont-reply" />
-                                                          </a>
-                                                        </li>
-                                                        <li>
-                                                          <figure>
-                                                            <img
-                                                              alt=""
-                                                              src="/public/images/resources/user2.jpg"
-                                                            />
-                                                          </figure>
-                                                          <div className="commenter">
-                                                            <h5>
-                                                              <a title href="#">
-                                                                Ching xang
-                                                              </a>
-                                                            </h5>
-                                                            <span>
-                                                              2 hours ago
-                                                            </span>
-                                                            <p>
-                                                              i think that some
-                                                              how, we learn who
-                                                              we really are and
-                                                              then live with
-                                                              that decision,
-                                                              great post!
-                                                            </p>
-                                                          </div>
-                                                          <a
-                                                            title="Like"
-                                                            href="#"
-                                                          >
-                                                            <i className="icofont-heart" />
-                                                          </a>
-                                                          <a
-                                                            title="Reply"
-                                                            href="#"
-                                                            className="reply-coment"
-                                                          >
-                                                            <i className="icofont-reply" />
-                                                          </a>
+                                                          <span>20+ more</span>
                                                         </li>
                                                       </ul>
                                                     </div>
+                                                  </div>
+                                                  <div className="popover_wrapper">
+                                                    <a
+                                                      className="popover_title"
+                                                      href="#"
+                                                      title
+                                                    >
+                                                      <img
+                                                        alt=""
+                                                        src="images/smiles/heart.png"
+                                                      />
+                                                    </a>
+                                                    <div className="popover_content">
+                                                      <span>
+                                                        <img
+                                                          alt=""
+                                                          src="images/smiles/heart.png"
+                                                        />{" "}
+                                                        Love
+                                                      </span>
+                                                      <ul className="namelist">
+                                                        <li>Amara Sin</li>
+                                                        <li>Jhon Doe</li>
+                                                        <li>
+                                                          <span>10+ more</span>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                  <div className="popover_wrapper">
+                                                    <a
+                                                      className="popover_title"
+                                                      href="#"
+                                                      title
+                                                    >
+                                                      <img
+                                                        alt=""
+                                                        src="images/smiles/smile.png"
+                                                      />
+                                                    </a>
+                                                    <div className="popover_content">
+                                                      <span>
+                                                        <img
+                                                          alt=""
+                                                          src="images/smiles/smile.png"
+                                                        />{" "}
+                                                        Happy
+                                                      </span>
+                                                      <ul className="namelist">
+                                                        <li>Sarah K.</li>
+                                                        <li>Jhon Doe</li>
+                                                        <li>Amara Sin</li>
+                                                        <li>
+                                                          <span>100+ more</span>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                  <div className="popover_wrapper">
+                                                    <a
+                                                      className="popover_title"
+                                                      href="#"
+                                                      title
+                                                    >
+                                                      <img
+                                                        alt=""
+                                                        src="images/smiles/weep.png"
+                                                      />
+                                                    </a>
+                                                    <div className="popover_content">
+                                                      <span>
+                                                        <img
+                                                          alt=""
+                                                          src="images/smiles/weep.png"
+                                                        />{" "}
+                                                        Dislike
+                                                      </span>
+                                                      <ul className="namelist">
+                                                        <li>Danial Carbal</li>
+                                                        <li>Amara Sin</li>
+                                                        <li>Sarah K.</li>
+                                                        <li>
+                                                          <span>15+ more</span>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                  </div>
+                                                  <p>10+</p>
+                                                </div>
+                                                <div
+                                                  className="new-comment"
+                                                  style={{ display: "none" }}
+                                                >
+                                                  <form method="post">
+                                                    <input
+                                                      type="text"
+                                                      placeholder="write comment"
+                                                    />
+                                                    <button type="submit">
+                                                      <i className="icofont-paper-plane" />
+                                                    </button>
+                                                  </form>
+                                                  <div className="comments-area">
+                                                    <ul>
+                                                      <li>
+                                                        <figure>
+                                                          <img
+                                                            alt=""
+                                                            src="/public/images/resources/user1.jpg"
+                                                          />
+                                                        </figure>
+                                                        <div className="commenter">
+                                                          <h5>
+                                                            <a title href="#">
+                                                              Jack Carter
+                                                            </a>
+                                                          </h5>
+                                                          <span>
+                                                            2 hours ago
+                                                          </span>
+                                                          <p>
+                                                            i think that some
+                                                            how, we learn who we
+                                                            really are and then
+                                                            live with that
+                                                            decision, great
+                                                            post!
+                                                          </p>
+                                                          <span>
+                                                            you can view the
+                                                            more detail via link
+                                                          </span>
+                                                          <a
+                                                            title
+                                                            href="https://www.youtube.com/watch?v=HpZgwHU1GcI"
+                                                            target="_blank"
+                                                          >
+                                                            https://www.youtube.com/watch?v=HpZgwHU1GcI
+                                                          </a>
+                                                        </div>
+                                                        <a
+                                                          title="Like"
+                                                          href="#"
+                                                        >
+                                                          <i className="icofont-heart" />
+                                                        </a>
+                                                        <a
+                                                          title="Reply"
+                                                          href="#"
+                                                          className="reply-coment"
+                                                        >
+                                                          <i className="icofont-reply" />
+                                                        </a>
+                                                      </li>
+                                                      <li>
+                                                        <figure>
+                                                          <img
+                                                            alt=""
+                                                            src="/public/images/resources/user2.jpg"
+                                                          />
+                                                        </figure>
+                                                        <div className="commenter">
+                                                          <h5>
+                                                            <a title href="#">
+                                                              Ching xang
+                                                            </a>
+                                                          </h5>
+                                                          <span>
+                                                            2 hours ago
+                                                          </span>
+                                                          <p>
+                                                            i think that some
+                                                            how, we learn who we
+                                                            really are and then
+                                                            live with that
+                                                            decision, great
+                                                            post!
+                                                          </p>
+                                                        </div>
+                                                        <a
+                                                          title="Like"
+                                                          href="#"
+                                                        >
+                                                          <i className="icofont-heart" />
+                                                        </a>
+                                                        <a
+                                                          title="Reply"
+                                                          href="#"
+                                                          className="reply-coment"
+                                                        >
+                                                          <i className="icofont-reply" />
+                                                        </a>
+                                                      </li>
+                                                    </ul>
                                                   </div>
                                                 </div>
                                               </div>
                                             </div>
                                           </div>
                                         </div>
-                                      );
-                                    })}
+                                      </div>
+                                    ))}
                                     {/* share post without image */}
                                     <div className="main-wraper">
                                       <div className="user-post">
@@ -816,7 +530,10 @@ export default function Profile(props) {
                                                 </ul>
                                               </div>
                                             </div>
+                                           
+                                          
                                           </div>
+                                         
                                         </div>
                                       </div>
                                     </div>
@@ -2716,7 +2433,7 @@ export default function Profile(props) {
                                     <aside className="sidebar static left">
                                       <div className="advertisment-box">
                                         <h4 className>
-                                          <i className="icofont-info-circle" />{' '}
+                                          <i className="icofont-info-circle" />{" "}
                                           Thông tin phụ
                                         </h4>
                                         <figure>
@@ -2734,25 +2451,12 @@ export default function Profile(props) {
                                         </h4>
                                         {userInfo?.achivementUser.map(
                                           (item) => (
-                                            <div
-                                              style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                marginBottom: '2rem',
-                                              }}
-                                            >
-                                              <img
-                                                src={
-                                                  item.achivement.achivementLogo
-                                                }
-                                                alt=""
-                                                width={150}
-                                              />
-
-                                              <b>
+                                            <li>
+                                              <b style={{ fontSize: 14 }}>
+                                                {"- "}
                                                 {item.achivement.description}
                                               </b>
-                                            </div>
+                                            </li>
                                           )
                                         )}
                                       </div>
@@ -2765,9 +2469,9 @@ export default function Profile(props) {
                                           (follow) => (
                                             <div
                                               style={{
-                                                display: 'flex',
-
-                                                flexDirection: 'row',
+                                                display: "flex",
+                                               
+                                                flexDirection: "row",
                                                 marginBottom: '2rem',
                                               }}
                                             >
@@ -2776,14 +2480,14 @@ export default function Profile(props) {
                                                 alt=""
                                                 width={150}
                                               />
-
+                                              
                                               <b>
                                                 {follow.fanpage.fanpageName}
                                               </b>
                                             </div>
                                           )
                                         )}
-
+                                        
                                         {/* <ul className="suggestd">
                                           {userInfo?.followFanpage.map(
                                             (follow) => (
@@ -2871,7 +2575,7 @@ export default function Profile(props) {
                       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                       <polyline points="22,6 12,13 2,6" />
                     </svg>
-                  </i>{' '}
+                  </i>{" "}
                   Invite Colleagues
                 </h5>
               </div>
@@ -2914,7 +2618,7 @@ export default function Profile(props) {
                     >
                       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
-                  </i>{' '}
+                  </i>{" "}
                   Send Message
                 </h5>
               </div>
@@ -2922,7 +2626,7 @@ export default function Profile(props) {
                 <form method="post" className="c-form">
                   <input type="text" placeholder="Enter Name.." />
                   <input type="text" placeholder="Subject" />
-                  <textarea placeholder="Write Message" defaultValue={''} />
+                  <textarea placeholder="Write Message" defaultValue={""} />
                   <div className="uploadimage">
                     <i className="icofont-file-jpg" />
                     <label className="fileContainer">
@@ -3098,7 +2802,7 @@ export default function Profile(props) {
           </div>
         </div>
         <div className="post-new-popup">
-          <div className="popup" style={{ width: '800px' }}>
+          <div className="popup" style={{ width: "800px" }}>
             <span className="popup-closed">
               <i className="icofont-close" />
             </span>
@@ -3173,7 +2877,7 @@ export default function Profile(props) {
                   <textarea
                     id="emojionearea1"
                     placeholder="What's On Your Mind?"
-                    defaultValue={''}
+                    defaultValue={""}
                   />
                   <div className="activity-post">
                     <div className="checkbox">
@@ -3334,14 +3038,14 @@ export default function Profile(props) {
                       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                       <line x1={12} y1={17} x2="12.01" y2={17} />
                     </svg>
-                  </i>{' '}
+                  </i>{" "}
                   Ask Question
                 </h5>
               </div>
               <div className="post-new">
                 <form method="post" className="c-form">
                   <input type="text" placeholder="Question Title" />
-                  <textarea placeholder="Write Question" defaultValue={''} />
+                  <textarea placeholder="Write Question" defaultValue={""} />
                   <select>
                     <option>Select Your Question Type</option>
                     <option>Article</option>
@@ -3401,7 +3105,7 @@ export default function Profile(props) {
               Share To!
             </h5>
             <form method="post">
-              <textarea placeholder="Write Something" defaultValue={''} />
+              <textarea placeholder="Write Something" defaultValue={""} />
             </form>
             <ul>
               <li>
@@ -3420,7 +3124,7 @@ export default function Profile(props) {
                 </a>
               </li>
             </ul>
-            <div style={{ display: 'block' }} className="social-media">
+            <div style={{ display: "block" }} className="social-media">
               <ul>
                 <li>
                   <a title href="#" className="facebook">
@@ -3459,7 +3163,7 @@ export default function Profile(props) {
                 </li>
               </ul>
             </div>
-            <div style={{ display: 'none' }} className="friends-to">
+            <div style={{ display: "none" }} className="friends-to">
               <div className="follow-men">
                 <figure>
                   <img
@@ -3788,7 +3492,7 @@ export default function Profile(props) {
                         <img src="/public/images/resources/album5.jpg" alt="" />
                       </figure>
                       <div className="caption">
-                        4.5kb{' '}
+                        4.5kb{" "}
                         <i className="icofont-download" title="Download" />
                       </div>
                     </div>
@@ -3876,7 +3580,7 @@ export default function Profile(props) {
                 </li>
               </ul>
               <form className="text-box">
-                <textarea placeholder="Write Mesage..." defaultValue={''} />
+                <textarea placeholder="Write Mesage..." defaultValue={""} />
                 <div className="add-smiles">
                   <span>
                     <img src="images/smiles/happy-3.png" alt="" />
@@ -4146,7 +3850,7 @@ export default function Profile(props) {
                               </a>
                               <div className="popover_content">
                                 <span>
-                                  <img alt="" src="images/smiles/thumb.png" />{' '}
+                                  <img alt="" src="images/smiles/thumb.png" />{" "}
                                   Likes
                                 </span>
                                 <ul className="namelist">
@@ -4165,7 +3869,7 @@ export default function Profile(props) {
                               </a>
                               <div className="popover_content">
                                 <span>
-                                  <img alt="" src="images/smiles/heart.png" />{' '}
+                                  <img alt="" src="images/smiles/heart.png" />{" "}
                                   Love
                                 </span>
                                 <ul className="namelist">
@@ -4183,7 +3887,7 @@ export default function Profile(props) {
                               </a>
                               <div className="popover_content">
                                 <span>
-                                  <img alt="" src="images/smiles/smile.png" />{' '}
+                                  <img alt="" src="images/smiles/smile.png" />{" "}
                                   Happy
                                 </span>
                                 <ul className="namelist">
@@ -4202,7 +3906,7 @@ export default function Profile(props) {
                               </a>
                               <div className="popover_content">
                                 <span>
-                                  <img alt="" src="images/smiles/weep.png" />{' '}
+                                  <img alt="" src="images/smiles/weep.png" />{" "}
                                   Dislike
                                 </span>
                                 <ul className="namelist">
@@ -4370,15 +4074,15 @@ export default function Profile(props) {
                             />
                           </a>
                           <span>
-                            <strong>You</strong>, <b>Sarah</b> and{' '}
+                            <strong>You</strong>, <b>Sarah</b> and{" "}
                             <a title href="#">
                               24+ more
-                            </a>{' '}
+                            </a>{" "}
                             liked
                           </span>
                         </div>
                       </div>
-                      <div className="new-comment" style={{ display: 'block' }}>
+                      <div className="new-comment" style={{ display: "block" }}>
                         <form method="post">
                           <input type="text" placeholder="write comment" />
                           <button type="submit">
@@ -4529,199 +4233,6 @@ export default function Profile(props) {
         </div>
         {/* The Scrolling Modal image with comment */}
       </div>
-      {openpro1 === true ? (
-        <div className="post-new-popup" style={popupStyle4}>
-          <div
-            className="popup"
-            style={{ width: 800, marginTop: '100px', zIndex: 80 }}
-          >
-            <span className="popup-closed" onClick={handleClick6}>
-              <i className="icofont-close" />
-            </span>
-            <div className="popup-meta">
-              <div className="popup-head">
-                <h5>
-                  <i>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-plus"
-                    >
-                      <line x1={12} y1={5} x2={12} y2={19} />
-                      <line x1={5} y1={12} x2={19} y2={12} />
-                    </svg>
-                  </i>
-                  Chỉnh sửa chiến dịch
-                </h5>
-              </div>
-            </div>
-
-            <div className="">
-              <header className="header"></header>
-              <div className="form-wrap">
-                <form
-                  id="survey-form"
-                  method="post"
-                  onSubmit={formik9.handleSubmit}
-                >
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Tên chiến dịch
-                        </label>
-                        <input
-                          type="text"
-                          name="title"
-                          onChange={formik9.handleChange}
-                          value={formik9.values.title}
-                          id="name"
-                          placeholder="Nhập Tên Sự Kiện"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="email-label" htmlFor="email">
-                          Mô tả chiến dịch
-                        </label>
-                        <input
-                          type="text"
-                          name="description"
-                          onChange={formik9.handleChange}
-                          value={formik9.values.description}
-                          id="email"
-                          placeholder="Nhập mô tả"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Ngày bắt đầu
-                        </label>
-                        <input
-                          type="date"
-                          name="startDate"
-                          onChange={formik9.handleChange}
-                          value={formik9.values.startDate}
-                          id="name"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Ngày kết thúc
-                        </label>
-                        <input
-                          type="date"
-                          name="endDate"
-                          onChange={formik9.handleChange}
-                          value={formik9.values.endDate}
-                          id="name"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label id="name-label" htmlFor="name">
-                          Nơi diễn ra
-                        </label>
-                        <input
-                          type="text"
-                          name="location"
-                          onChange={formik9.handleChange}
-                          value={formik9.values.location}
-                          id="name"
-                          placeholder="Nhập nơi diễn ra"
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
-                    {/* <div className="col-md-6">
-                      <div className="form-group">
-                        {configActivity === "true" ? (
-                          <div>
-                            <div
-                              className="form-group"
-                              style={{ display: "flex" }}
-                            >
-                              <label
-                                id="name-label"
-                                style={{ marginRight: "20px" }}
-                                htmlFor="name"
-                              >
-                                Nhận ủng hộ
-                              </label>
-                              <input
-                                type="checkbox"
-                                onChange={toggleTextInput}
-                              />
-                            </div>
-                            {isTextInputVisible === true && (
-
-                                <div className="form-group">
-
-                                  <input
-                                    type="number"
-                                    name="targetDonation"
-                                    onChange={formik9.handleChange}
-                                    value={formik9.values.targetDonation}
-                                    id="name"
-                                    placeholder="Nhập số tiền cần nhận"
-                                    className="form-control"
-                                    style={{ marginTop: '-2rem' }}
-                                    required
-                                  />
-                                </div>
-
-                            )}
-                          </div>
-                        ) : (
-                          <div></div>
-                        )}
-                      </div>
-                    </div>*/}
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-4">
-                      <button
-                        type="submit"
-                        id="submit"
-                        className="btn btn-primary btn-block"
-                      >
-                        Cập nhật
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
     </Fragment>
   );
 }

@@ -21,12 +21,9 @@ export default function Header(props) {
     const inputValue = e.target.value;
     setTitle(inputValue);
     localStorage.setItem('search', inputValue);
-    console.log(e.target.value);
 
     formik.setFieldValue('title', inputValue); // Gán giá trị vào trường "title" trong Formik
   };
-
-  console.log(userByID);
 
   if (!userByID) return <p>Loading...</p>;
 
@@ -60,7 +57,7 @@ export default function Header(props) {
                     <figure>
                       <img
                         style={{ height: '2.5rem', width: '2.5rem' }}
-                        src={userByID?.image}
+                        src="../images/avatar/uocAvatar.jpg"
                         alt
                       />
                     </figure>
@@ -85,7 +82,7 @@ export default function Header(props) {
           <li>
             <div className="user-dp">
               <NavLink to={`/profile/${localStorage.getItem('userID')}`} title>
-                <img alt src={userByID?.image} />
+                <img alt src="../images/avatar/uocAvatar.jpg" />
                 <div className="name">
                   <h4>{localStorage.getItem('username')}</h4>
                 </div>

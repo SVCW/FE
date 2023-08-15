@@ -20,13 +20,11 @@ export default function DetailActivity (props) {
     };
     const [like, setLike] = useState(false)
 
-  const slides = props.item.media?.map((item, index) => {
-    return (
-      <div className={styles['carousel-item']} key={index}>
-        <img src={item.linkMedia} alt="Slide 1" />
-      </div>
-    );
-  });
+    const slides = props.item.media?.map((item, index) => {
+        return <div className={styles['carousel-item']} key={index}>
+            <img src={item.linkMedia} alt="Slide 1" />
+        </div>
+    })
 
     // [
     //     <div className={styles['carousel-item']} key={1}>
@@ -81,12 +79,10 @@ export default function DetailActivity (props) {
 
                                         </div>
 
-                    {/* <div>
+                                        {/* <div>
                                             <figure><img src={props.item.media && props.item.media[0] && props.item.media[0].linkMedia} alt width={100} /></figure>
                                         </div> */}
-                    <Slider {...settings} className={styles['slick-slider']}>
-                      {slides}
-                    </Slider>
+                                        <Slider {...settings} className={styles['slick-slider']}>{slides}</Slider>
 
                                         <div className="stat-tools">
                                             <div className="box">
@@ -162,7 +158,7 @@ export default function DetailActivity (props) {
                             <div className="col-lg-3">
                                 <div className="commentbar">
                                     <div className="user">
-                                        <figure><img src={props.item.user.image} alt /></figure>
+                                        <figure><img src="images/resources/user1.jpg" alt /></figure>
                                         <div className="user-information">
                                             <h4><a href="#" title>{props.item.user?.username}</a></h4>
                                             <span>{dateTime(item.createAt)}</span>
