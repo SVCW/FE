@@ -1,57 +1,71 @@
-import React from 'react'
-import { useEffect } from 'react'
-import { CreateActivityAction, DeleteActivityByUserAction, DeleteLikeAction, GetActivityByIDAction, GetListActivityAction, GetListEndActivityAction, GetRecommentActivityAction, PostLikeAction, RecommentActivityAction, UpdateActivityAction } from '../../redux/actions/ActivityAction';
+import React from 'react';
+import { useEffect } from 'react';
+import {
+  CreateActivityAction,
+  DeleteActivityByUserAction,
+  DeleteLikeAction,
+  GetActivityByIDAction,
+  GetListActivityAction,
+  GetListEndActivityAction,
+  GetRecommentActivityAction,
+  PostLikeAction,
+  RecommentActivityAction,
+  UpdateActivityAction,
+} from '../../redux/actions/ActivityAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import moment from 'moment';
 import DetailActivity from '../../component/DetailActivity';
 import { Fragment } from 'react';
-import { NavLink } from 'react-router-dom'
-import { FilePond, registerPlugin } from 'react-filepond'
+import { NavLink } from 'react-router-dom';
+import { FilePond, registerPlugin } from 'react-filepond';
 import Swal from 'sweetalert2';
 import { Dropdown } from 'primereact/dropdown';
-import GoogleMapReact from "google-map-react";
-import { geocodeByAddress, getLatLng } from "react-google-places-autocomplete";
+import GoogleMapReact from 'google-map-react';
+import { geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
 // Import FilePond styles
-import "filepond/dist/filepond.min.css";
+import 'filepond/dist/filepond.min.css';
 
 // Import the Image EXIF Orientation and Image Preview plugins
 // Note: These need to be installed separately
 // `npm i filepond-plugin-image-preview filepond-plugin-image-exif-orientation --save`
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { storage_bucket } from "../../firebase";
-import { GetListFanpageAction } from "../../redux/actions/FanpageAction";
-import SimpleSlider from "../../component/SimpleSlider";
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import { storage_bucket } from '../../firebase';
+import { GetListFanpageAction } from '../../redux/actions/FanpageAction';
+import SimpleSlider from '../../component/SimpleSlider';
 import {
   getStorage,
   getDownloadURL,
   ref,
   uploadBytesResumable,
-} from "firebase/storage";
-import { useFormik } from "formik";
-import { DonationAction } from "../../redux/actions/DonationAction";
+} from 'firebase/storage';
+import { useFormik } from 'formik';
+import { DonationAction } from '../../redux/actions/DonationAction';
 import {
   FollowAction,
   JoinAction,
   UnFollowAction,
   UnJoinAction,
-} from "../../redux/actions/FollowJoinAction";
+} from '../../redux/actions/FollowJoinAction';
 import {
   CommentAction,
   CommentRepllyAction,
-} from "../../redux/actions/CommentAction";
-import Loading from "../../component/Loading";
-import MultiForm from "../../MultiForm";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { GetListProcessTypeAction } from "../../redux/actions/ProcessTypeAction";
+} from '../../redux/actions/CommentAction';
+import Loading from '../../component/Loading';
+import MultiForm from '../../MultiForm';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { GetListProcessTypeAction } from '../../redux/actions/ProcessTypeAction';
 import {
   CreateProcessAction,
   GetProcessByActivityAction,
-} from "../../redux/actions/ProcessAction";
-import { GetUserByIdAction, GetUserBystatisticAction } from "../../redux/actions/UserAction";
+} from '../../redux/actions/ProcessAction';
+import {
+  GetUserByIdAction,
+  GetUserBystatisticAction,
+} from '../../redux/actions/UserAction';
 import { GetListReportTypeAction } from '../../redux/actions/ReportTypeAction';
 import { Toolbar } from 'primereact/toolbar';
 import { CreateReportAction } from '../../redux/actions/ReportAction';
@@ -62,9 +76,10 @@ import Header from '../../templates/UserTemplate/Header/Header';
 import Carousel from '../../templates/UserTemplate/Carousel/Carousel';
 import SideBar from '../../templates/UserTemplate/SideBar/SideBar';
 import RecommentActivity from '../../component/RecommentActivity';
-import PostDescription from "./PostDescription";
+import PostDescription from './PostDescription';
 import { history } from '../../App';
-import { Redirect, useHistory } from 'react-router-dom/cjs/react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
+import { http } from '../../utils/reponse';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
@@ -79,7 +94,7 @@ export default function Home (props) {
   };
 
   const [coords, setCoords] = useState([]);
-  const [places, setPlaces] = useState("");
+  const [places, setPlaces] = useState('');
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -97,22 +112,23 @@ export default function Home (props) {
   };
 
   const { userByID } = useSelector((root) => root.UserReducer);
+  console.log(userByID);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState([]);
 
   console.log(images);
-  const [tcss, setTcss] = useState("css");
+  const [tcss, setTcss] = useState('css');
   const [vprocess, setVProcess] = useState(false);
   const dandleCSS = () => {
-    if (tcss === "css") {
+    if (tcss === 'css') {
     }
   };
   const { userByStatis, usertotal } = useSelector((root) => root.UserReducer);
-  const change = usertotal.replace(",", ".");
-  console.log("change" + change);
+  const change = usertotal.replace(',', '.');
+  console.log('change' + change);
   useEffect(() => {
-    const existingData = JSON.parse(localStorage.getItem("activity"));
+    const existingData = JSON.parse(localStorage.getItem('activity'));
     const action = GetListActivityAction();
     dispatch(action);
     const action1 = GetListFanpageAction();
@@ -133,10 +149,10 @@ export default function Home (props) {
     // if (existingData) {
     //     setCmt(existingData);
     //     dispatch({ type: "HIDE_LOADING" });
-    const user = localStorage.getItem("userID");
+    const user = localStorage.getItem('userID');
     if (user) {
-      console.log("có user");
-      const action = GetUserByIdAction(localStorage.getItem("userID"));
+      console.log('có user');
+      const action = GetUserByIdAction(localStorage.getItem('userID'));
       dispatch(action);
     } else {
       // console.log('không có user');
@@ -156,12 +172,12 @@ export default function Home (props) {
     forms: [
       // { name: '', email: '', selectField: '', media: [] },
       {
-        processTitle: "",
-        description: "",
-        startDate: "",
-        endDate: "",
+        processTitle: '',
+        description: '',
+        startDate: '',
+        endDate: '',
         activityId: activityProcess,
-        processTypeId: "",
+        processTypeId: '',
         isKeyProcess: true,
         processNo: 0,
         media: [],
@@ -195,12 +211,12 @@ export default function Home (props) {
     setFormData((prevData) => [
       ...prevData,
       {
-        processTitle: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        activityId: localStorage.getItem("activityProcess"),
-        processTypeId: "",
+        processTitle: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        activityId: localStorage.getItem('activityProcess'),
+        processTypeId: '',
         isKeyProcess: true,
         processNo: 0,
         media: [],
@@ -266,7 +282,7 @@ export default function Home (props) {
         const fileRef = ref(storage_bucket, file.name);
         const uploadTask = uploadBytesResumable(fileRef, file);
 
-        uploadTask.on("state_changed", (snapshot) => {
+        uploadTask.on('state_changed', (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           // setUploadProgress(progress);
@@ -274,7 +290,7 @@ export default function Home (props) {
 
         const snapshot = await uploadTask;
 
-        if (snapshot.state === "success") {
+        if (snapshot.state === 'success') {
           const downloadURL = await getDownloadURL(snapshot.ref);
           newImages[i].linkMedia = downloadURL; // Cập nhật link downloadURL vào mảng newImages
         }
@@ -301,14 +317,14 @@ export default function Home (props) {
   const { arrActivity, activityId, arrActivityRecomment } = useSelector(
     (root) => root.ActivityReducer
   );
-  console.log("comment", arrActivityRecomment);
+  console.log('comment', arrActivityRecomment);
   const { arrFanpage } = useSelector((root) => root.FanpageReducer);
   const { isLoadingM } = useSelector((root) => root.LoadingReducer);
   const [cmt, setCmt] = useState([]);
   const [time, setTime] = useState([]);
   const [detail, setDetail] = useState({});
   const [create, setCreate] = useState(true);
-  const textOptions = ["Theo Dõi", "Bỏ theo Dõi"];
+  const textOptions = ['Theo Dõi', 'Bỏ theo Dõi'];
   const [text, setText] = useState(0);
 
   const handleYesClick = (activity, title) => {
@@ -319,25 +335,25 @@ export default function Home (props) {
   const [data, setData] = useState(cmt);
   const callAPI = (text, activity, title) => {
     // Gọi API ở đây, sử dụng giá trị của `text`
-    if (text === "Theo dõi") {
+    if (text === 'Theo dõi') {
       // Gọi API Theo Dõi
 
       const action = FollowAction(activity, userID);
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "success",
+        icon: 'success',
         title: `Theo Dõi chiến dịch ${title} thành công `,
       });
       // ...
@@ -345,18 +361,18 @@ export default function Home (props) {
       // Gọi API Bỏ Theo Dõi
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "error",
+        icon: 'error',
         title: `Bỏ Theo dõi chiến dịch ${title} thành công  `,
       });
       // ...
@@ -460,19 +476,19 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
 
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "error",
+        icon: 'error',
         title: `Hủy tham gia sự kiện ${title} thành công`,
       });
     } else {
@@ -481,18 +497,18 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "success",
+        icon: 'success',
         title: `Tham Gia Thành Công Sự Kiện ${title}`,
       });
     }
@@ -560,18 +576,18 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "error",
+        icon: 'error',
         title: `Bỏ theo dõi chiến dịch ${title} thành công `,
       });
     } else {
@@ -580,18 +596,18 @@ export default function Home (props) {
       dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "success",
+        icon: 'success',
         title: `Theo dõi chiến dịch ${title} thành công `,
       });
     }
@@ -605,11 +621,11 @@ export default function Home (props) {
     });
   };
 
-  const initialCommentData = JSON.parse(localStorage.getItem("activity"))?.map(
+  const initialCommentData = JSON.parse(localStorage.getItem('activity'))?.map(
     (comment) => ({
       id: comment.activityId,
       isCmt: true,
-      color: "#eae9ee",
+      color: '#eae9ee',
     })
   );
   const [commentData, setCommentData] = useState(initialCommentData);
@@ -623,7 +639,7 @@ export default function Home (props) {
   };
   const toggleTextInput1 = () => {
     setTextInputVisible1(!isTextInputVisible1);
-    formik.setFieldValue("isFanpageAvtivity", isTextInputVisible1);
+    formik.setFieldValue('isFanpageAvtivity', isTextInputVisible1);
   };
   const openPopup = () => {
     setPopupOpen(true);
@@ -631,16 +647,16 @@ export default function Home (props) {
   const closePopup = () => {
     setPopupOpen(false);
   };
-  const [acti, setActi] = useState("");
+  const [acti, setActi] = useState('');
   const formik1 = useFormik({
     initialValues: {
-      title: "",
+      title: '',
       amount: 0,
-      email: localStorage.getItem("emailuser"),
-      phone: "",
-      name: localStorage.getItem("username"),
+      email: localStorage.getItem('emailuser'),
+      phone: '',
+      name: localStorage.getItem('username'),
       isAnonymous: true,
-      activityId: "",
+      activityId: '',
     },
     enableReinitialize: true,
     onSubmit: async (value) => {
@@ -650,40 +666,40 @@ export default function Home (props) {
     },
   });
 
-  const [commentI, setCommentI] = useState("commentContent");
-  const [content, setContent] = useState("");
-  const [onID, setOnID] = useState("");
+  const [commentI, setCommentI] = useState('commentContent');
+  const [content, setContent] = useState('');
+  const [onID, setOnID] = useState('');
   const formik2 = useFormik({
     enableReinitialize: true,
     initialValues: {
       userId: userID,
-      activityId: "",
-      commentContent: "",
+      activityId: '',
+      commentContent: '',
       status: true,
-      commentIdReply: "",
+      commentIdReply: '',
     },
     onSubmit: (value) => {
-      if (value.commentIdReply === "") {
+      if (value.commentIdReply === '') {
         const action = CommentAction(value);
         dispatch(action);
-        formik2.setFieldValue("commentContent", "");
+        formik2.setFieldValue('commentContent', '');
       } else {
         const action = CommentRepllyAction(value);
         dispatch(action);
         // formik2.setFieldValue('commentIdReply', '');
         // setCommentI('commentContent')
         // setContent(true)
-        formik2.setFieldValue("commentContent", "");
-        formik2.setFieldValue("commentIdReply", "");
+        formik2.setFieldValue('commentContent', '');
+        formik2.setFieldValue('commentIdReply', '');
       }
     },
   });
-  function calculateImageClass (imageCount) {
+  function calculateImageClass(imageCount) {
     let imageClass = "full-width";
     if (imageCount === 2) {
-      imageClass = "half-width";
+      imageClass = 'half-width';
     } else if (imageCount === 3 || imageCount === 4) {
-      imageClass = "quarter-width";
+      imageClass = 'quarter-width';
     }
     return imageClass;
   }
@@ -697,9 +713,9 @@ export default function Home (props) {
   const handleClick = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
     setIsDisplay(true);
-    formik.setFieldValue("title", "");
-    formik.setFieldValue("description", "");
-    formik.setFieldValue("location", "");
+    formik.setFieldValue('title', '');
+    formik.setFieldValue('description', '');
+    formik.setFieldValue('location', '');
   };
 
   const handleClick1 = () => {
@@ -720,36 +736,36 @@ export default function Home (props) {
   const [report, setReport] = useState(false);
   const popupStyle = {
     opacity: isOpen ? 1 : 0,
-    visibility: isOpen ? "visible" : "hidden",
-    overflow: isOpen ? "auto" : "hidden",
-    display: isDisplay ? "block" : "none",
+    visibility: isOpen ? 'visible' : 'hidden',
+    overflow: isOpen ? 'auto' : 'hidden',
+    display: isDisplay ? 'block' : 'none',
   };
   const popupStyle1 = {
     opacity: isOpen1 ? 1 : 0,
-    visibility: isOpen1 ? "visible" : "hidden",
-    overflow: isOpen1 ? "auto" : "hidden",
+    visibility: isOpen1 ? 'visible' : 'hidden',
+    overflow: isOpen1 ? 'auto' : 'hidden',
   };
-  const [tt, setTT] = useState(false)
+  const [tt, setTT] = useState(false);
   const popupStyle9 = {
     opacity: tt ? 1 : 0,
-    visibility: tt ? "visible" : "hidden",
-    overflow: tt ? "auto" : "hidden",
+    visibility: tt ? 'visible' : 'hidden',
+    overflow: tt ? 'auto' : 'hidden',
   };
   const popupStyle2 = {
     opacity: isOpen2 ? 1 : 0,
-    visibility: isOpen2 ? "visible" : "hidden",
-    overflow: isOpen2 ? "auto" : "hidden",
+    visibility: isOpen2 ? 'visible' : 'hidden',
+    overflow: isOpen2 ? 'auto' : 'hidden',
   };
   const popupStyle3 = {
     opacity: report ? 1 : 0,
-    visibility: report ? "visible" : "hidden",
-    overflow: report ? "auto" : "hidden",
+    visibility: report ? 'visible' : 'hidden',
+    overflow: report ? 'auto' : 'hidden',
   };
   const [openpro1, setOpenPro1] = useState(false);
   const popupStyle4 = {
     opacity: openpro1 ? 1 : 0,
-    visibility: openpro1 ? "visible" : "hidden",
-    overflow: openpro1 ? "auto" : "hidden",
+    visibility: openpro1 ? 'visible' : 'hidden',
+    overflow: openpro1 ? 'auto' : 'hidden',
   };
   const handleClick6 = () => {
     setOpenPro1((prevIsOpen) => !prevIsOpen);
@@ -769,14 +785,14 @@ export default function Home (props) {
 
   const formik6 = useFormik({
     initialValues: {
-      reportId: "string",
-      title: "string",
-      reason: "",
-      reportTypeId: "string",
-      description: "string",
+      reportId: 'string',
+      title: 'string',
+      reason: '',
+      reportTypeId: 'string',
+      description: 'string',
       status: true,
       userId: userID,
-      activityId: "",
+      activityId: '',
     },
     onSubmit: async (value) => {
       // console.log(value);
@@ -784,18 +800,18 @@ export default function Home (props) {
       await dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "success",
+        icon: 'success',
         title: `Báo cáo chiến dịch thành công `,
       });
       setReport((prevIsOpen) => !prevIsOpen);
@@ -803,11 +819,11 @@ export default function Home (props) {
   });
   const onInputDropdown = (e, field) => {
     // console.log(e.target.value)
-    formik6.setFieldValue("reportTypeId", e.target.value);
+    formik6.setFieldValue('reportTypeId', e.target.value);
   };
 
+  const history1 = useHistory();
 
-  const history = useHistory();
   useEffect(() => {
     const userID = localStorage.getItem('userID');
 
@@ -818,24 +834,24 @@ export default function Home (props) {
       history.push('/');
     }
   }, [arrDelete, reportType, history]);
-  const [files, setFiles] = useState("");
+  const [files, setFiles] = useState('');
 
   useEffect(() => {
     const arrMedia = images.map((image) => ({
       linkMedia: image.url,
-      type: "image",
+      type: 'image',
     }));
-    formik.setFieldValue("media", arrMedia);
+    formik.setFieldValue('media', arrMedia);
   }, [images]);
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      description: "",
-      startDate: "",
-      endDate: "",
+      title: '',
+      description: '',
+      startDate: '',
+      endDate: '',
       // endDate: currentTime.format('YYYY-MM-DD HH:mm:ss'),
-      location: "",
+      location: '',
       targetDonation: 0,
       userId: userID,
       isFanpageAvtivity: false,
@@ -847,15 +863,15 @@ export default function Home (props) {
       console.log(value);
       const action = await CreateActivityAction(value);
       await dispatch(action);
-      formik.setFieldValue("title", "");
-      formik.setFieldValue("description", "");
-      formik.setFieldValue("location", "");
-      formik.setFieldValue("targetDonation", 0);
-      formik.setFieldValue("startDate", "");
-      formik.setFieldValue("endDate", '');
-      formik.setFieldValue("endactivity", "");
-      formik.setFieldValue("isFanpageAvtivity", false);
-      formik.setFieldValue("media", []);
+      formik.setFieldValue('title', '');
+      formik.setFieldValue('description', '');
+      formik.setFieldValue('location', '');
+      formik.setFieldValue('targetDonation', 0);
+      formik.setFieldValue('startDate', '');
+      formik.setFieldValue('endDate', '');
+      formik.setFieldValue('endactivity', '');
+      formik.setFieldValue('isFanpageAvtivity', false);
+      formik.setFieldValue('media', []);
       setIsOpen((prevIsOpen) => !prevIsOpen);
       setIsDisplay(false);
       // setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -878,20 +894,20 @@ export default function Home (props) {
 
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-danger",
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger',
         },
         buttonsStyling: false,
       });
 
       swalWithBootstrapButtons
         .fire({
-          title: "Tạo mới chiến dịch thành công",
-          text: "Bạn muốn thêm chi tiết tiến trình cho chiến dịch",
-          icon: "success",
+          title: 'Tạo mới chiến dịch thành công',
+          text: 'Bạn muốn thêm chi tiết tiến trình cho chiến dịch',
+          icon: 'success',
           showCancelButton: true,
-          confirmButtonText: "Thêm tiến trình",
-          cancelButtonText: "Hoàn thành",
+          confirmButtonText: 'Thêm tiến trình',
+          cancelButtonText: 'Hoàn thành',
           reverseButtons: true,
         })
         .then((result) => {
@@ -904,32 +920,32 @@ export default function Home (props) {
             //   "Thêm tiến trình thành công.",
             //   "success"
             // );
-            formik.setFieldValue("title", "");
-            formik.setFieldValue("description", "");
-            formik.setFieldValue("location", "");
-            formik.setFieldValue("targetDonation", 0);
-            formik.setFieldValue("media", []);
+            formik.setFieldValue('title', '');
+            formik.setFieldValue('description', '');
+            formik.setFieldValue('location', '');
+            formik.setFieldValue('targetDonation', 0);
+            formik.setFieldValue('media', []);
           } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
           ) {
             swalWithBootstrapButtons.fire(
-              "Thành công",
-              "Thêm tiến trình thành  công",
-              "success"
+              'Thành công',
+              'Thêm tiến trình thành  công',
+              'success'
             );
-            formik.setFieldValue("title", "");
-            formik.setFieldValue("description", "");
-            formik.setFieldValue("location", "");
-            formik.setFieldValue("targetDonation", 0);
-            formik.setFieldValue("media", []);
+            formik.setFieldValue('title', '');
+            formik.setFieldValue('description', '');
+            formik.setFieldValue('location', '');
+            formik.setFieldValue('targetDonation', 0);
+            formik.setFieldValue('media', []);
             setImages([]);
           }
         });
     },
   });
   console.log(activityId.title);
-  console.log(moment(activityId.startDate).format("MM/DD/YYYY"));
+  console.log(moment(activityId.startDate).format('MM/DD/YYYY'));
   const formik9 = useFormik({
     initialValues: {
       activityId: activityId.activityId,
@@ -948,18 +964,18 @@ export default function Home (props) {
       await dispatch(action);
       const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: 'top-end',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.addEventListener('mouseenter', Swal.stopTimer);
+          toast.addEventListener('mouseleave', Swal.resumeTimer);
         },
       });
 
       Toast.fire({
-        icon: "success",
+        icon: 'success',
         title: `Cập nhật chiến dịch ${value.title} thành công `,
       });
       // formik.setFieldValue("title", "");
@@ -991,7 +1007,7 @@ export default function Home (props) {
         const fileRef = ref(storage_bucket, file.name);
         const uploadTask = uploadBytesResumable(fileRef, file);
 
-        uploadTask.on("state_changed", (snapshot) => {
+        uploadTask.on('state_changed', (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setUploadProgress(progress);
@@ -999,7 +1015,7 @@ export default function Home (props) {
 
         const snapshot = await uploadTask;
 
-        if (snapshot.state === "success") {
+        if (snapshot.state === 'success') {
           const downloadURL = await getDownloadURL(snapshot.ref);
           const updatedImages = [...newImages];
           updatedImages[i].url = downloadURL;
@@ -1021,17 +1037,17 @@ export default function Home (props) {
   const handleLikeClick = (id) => {
     const updatedComments = commentData.map((comment) => {
       if (comment.id === id) {
-        if (comment.color === "rgb(117, 189, 240)") {
-          return { ...comment, color: "#eae9ee" };
+        if (comment.color === 'rgb(117, 189, 240)') {
+          return { ...comment, color: '#eae9ee' };
         } else {
-          return { ...comment, color: "rgb(117, 189, 240)" };
+          return { ...comment, color: 'rgb(117, 189, 240)' };
         }
       }
       return comment;
     });
     let alreadyLiked = false;
 
-    JSON.parse(localStorage.getItem("activity"))?.map((comment) => {
+    JSON.parse(localStorage.getItem('activity'))?.map((comment) => {
       if (comment.activityId === id && comment.like.length > 0) {
         comment.like.map((item) => {
           if (item.userId === userID) {
@@ -1093,7 +1109,7 @@ export default function Home (props) {
     const inputTime = moment(item);
     const duration = moment.duration(currentTime.diff(inputTime));
     const hoursAgo = duration.asHours();
-    let timeAgoString = "";
+    let timeAgoString = '';
     if (hoursAgo < 1) {
       const daysAgo = Math.floor(duration.asMinutes());
       timeAgoString = `${daysAgo} phút trước`;
@@ -1106,7 +1122,9 @@ export default function Home (props) {
     }
     return timeAgoString;
   };
-  const [titlen, setTitlen] = useState("");
+  const [titlen, setTitlen] = useState('');
+  const [listActivity, setListActivity] = useState([]);
+
   console.log(titlen);
   const formik7 = useFormik({
     initialValues: {
@@ -1123,13 +1141,12 @@ export default function Home (props) {
     const inputValue = e.target.value;
     setTitlen(inputValue);
 
-    formik7.setFieldValue("searchContent", inputValue); // Gán giá trị vào trường "title" trong Formik
+    formik7.setFieldValue('searchContent', inputValue); // Gán giá trị vào trường "title" trong Formik
   };
-
 
   return (
     <Fragment>
-
+     
       <Config />
       <ResponsiveHeader />
       <header className>
@@ -1147,7 +1164,12 @@ export default function Home (props) {
                 value={titlen}
                 onChange={handleInputChange}
               />
-              <button type="submit">
+              <button
+                type="submit"
+                onClick={() => {
+                  history1.push(`/endactivity?title=${titlen}`);
+                }}
+              >
                 <i className="icofont-search" />
               </button>
               <span className="cancel-search">
@@ -1170,7 +1192,7 @@ export default function Home (props) {
                           <span className="long-text">-{item.title}</span>
                         </div>
                       })}
-
+                     
                     </div>
                     {/* <span className="trash">
                       <i className="icofont-close-circled" />
@@ -1190,10 +1212,13 @@ export default function Home (props) {
           <ul className="web-elements">
             <li>
               <div className="user-dp">
-                <NavLink to={`/profile/${localStorage.getItem("userID")}`} title>
-                  <img alt src="images/avatar/uocAvatar.jpg" />
+                <NavLink
+                  to={`/profile/${localStorage.getItem('userID')}`}
+                  title
+                >
+                  <img alt src={userByID?.image} />
                   <div className="name">
-                    <h4>{localStorage.getItem("username")}</h4>
+                    <h4>{localStorage.getItem('username')}</h4>
                   </div>
                 </NavLink>
               </div>
@@ -1317,7 +1342,7 @@ export default function Home (props) {
               </a>
 
               <ul className="dropdown">
-                {localStorage.getItem("userID") ? (
+                {localStorage.getItem('userID') ? (
                   <li>
                     <a href="profile.html" title>
                       <i className="icofont-user-alt-3" /> Trang cá nhân
@@ -1380,18 +1405,18 @@ export default function Home (props) {
                   className="logout"
                   onClick={() => {
                     const action = {
-                      type: "LOGOUT",
+                      type: 'LOGOUT',
                     };
                     dispatch(action);
                     const action1 = {
-                      type: "LOGOUT1",
+                      type: 'LOGOUT1',
                     };
                     dispatch(action1);
                   }}
                 >
                   <NavLink to="/" title>
-                    <i className="icofont-power" />{" "}
-                    {localStorage.getItem("userID") ? "Đăng xuất" : "Đăng nhập"}
+                    <i className="icofont-power" />{' '}
+                    {localStorage.getItem('userID') ? 'Đăng xuất' : 'Đăng nhập'}
                   </NavLink>
                 </li>
               </ul>
@@ -1401,8 +1426,6 @@ export default function Home (props) {
       </header>
       <Carousel />
 
-      
-     
         <div className="gap">
           <div className="container">
             <div className="row">
@@ -1438,38 +1461,54 @@ export default function Home (props) {
                           <div className="progress__inner">{(parseFloat(change) * 100).toFixed(1)}%</div>
                         </div>
                         <ul className="prof-complete">
-                          {userByStatis.phone === null ? <li>
+                          {userByStatis.phone === null ? (
+                          <li>
                             <i className="icofont-plus-square" />{" "}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật số điện thoại
                             </NavLink>
                             <em>10%</em>
-                          </li> : <div></div>}
-                          {userByStatis.fullName === 'none' ? <li>
-                            <i className="icofont-plus-square" />{" "}
+                          </li>
+                        ) : (
+                          <div></div>
+                        )}
+                        {userByStatis.fullName === 'none' ? (
+                          <li>
+                            <i className="icofont-plus-square" />{' '}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật họ tên
                             </NavLink>
                             <em>10%</em>
-                          </li> : <div></div>}
-                          {userByStatis.image === 'none' ? <li>
-                            <i className="icofont-plus-square" />{" "}
+                          </li>
+                        ) : (
+                          <div></div>
+                        )}
+                        {userByStatis.image === 'none' ? (
+                          <li>
+                            <i className="icofont-plus-square" />{' '}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật avartar
                             </NavLink>
                             <em>10%</em>
-                          </li> : <div></div>}
-                          {userByStatis.coverImage === 'none' ? <li>
-                            <i className="icofont-plus-square" />{" "}
+                          </li>
+                        ) : (
+                          <div></div>
+                        )}
+                        {userByStatis.coverImage === 'none' ? (
+                          <li>
+                            <i className="icofont-plus-square" />{' '}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật ảnh bìa
                             </NavLink>
                             <em>10%</em>
-                          </li> : <div></div>}
-                        </ul>
-                      </div>
-                      {/* complete profile widget */}
-                      {/* <div className="advertisment-box">
+                          </li>
+                        ) : (
+                          <div></div>
+                        )}
+                      </ul>
+                    </div>
+                    {/* complete profile widget */}
+                    {/* <div className="advertisment-box">
                                                 <h4 className><i className="icofont-info-circle" /> advertisment</h4>
                                                 <figure>
                                                     <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
@@ -1484,12 +1523,12 @@ export default function Home (props) {
                             <li>
                               <figure>
                                 <img
-                                  style={{ width: "480px", height: "180px" }}
+                                  style={{ width: '480px', height: '180px' }}
                                   src="images/avatar/hienMau.jpg"
                                   alt
                                 />
                                 <span
-                                  style={{ background: "#1dd1a1" }}
+                                  style={{ background: '#1dd1a1' }}
                                   className="tag"
                                 >
                                   Đang diễn ra
@@ -1497,8 +1536,8 @@ export default function Home (props) {
                               </figure>
                               <div
                                 style={{
-                                  display: "flex",
-                                  justifyContent: "space-around",
+                                  display: 'flex',
+                                  justifyContent: 'space-around',
                                 }}
                                 className=""
                               >
@@ -1506,9 +1545,9 @@ export default function Home (props) {
                                   <button
                                     className="main-btn"
                                     style={{
-                                      backgroundColor: "#2e86de",
-                                      width: "100px",
-                                      padding: "5px 4px",
+                                      backgroundColor: '#2e86de',
+                                      width: '100px',
+                                      padding: '5px 4px',
                                     }}
                                   >
                                     Chi tiết
@@ -1518,9 +1557,9 @@ export default function Home (props) {
                                   <button
                                     className="main-btn"
                                     style={{
-                                      backgroundColor: "#2e86de",
-                                      width: "100px",
-                                      padding: "5px 2px",
+                                      backgroundColor: '#2e86de',
+                                      width: '100px',
+                                      padding: '5px 2px',
                                     }}
                                   >
                                     Tham gia ngay
@@ -1580,166 +1619,165 @@ export default function Home (props) {
                           </li>
                         </ul>
                       </div> */}
-                     
-                    </aside>
-                  </div>
-                  <div className="col-lg-6">
-                    <ul class="filtr-tabs">
-                      <li>
-                        <NavLink to="/home">Trang chủ</NavLink>
-                      </li>
-                      <li>
-                        <NavLink to="/endactivity">
-                          Chiến dịch đã kết thúc
-                        </NavLink>
-                      </li>
-                    </ul>
-                    {/* <ul className="filtr-tabs">
+                  </aside>
+                </div>
+                <div className="col-lg-6">
+                  <ul class="filtr-tabs">
+                    <li>
+                      <NavLink to="/home">Trang chủ</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/endactivity">
+                        Chiến dịch đã kết thúc
+                      </NavLink>
+                    </li>
+                  </ul>
+                  {/* <ul className="filtr-tabs">
                                             <li><a className="active" href="#" title>Home</a></li>
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>tab buttons */}
-                  {isValidCreate === "true" ? (
-                    <div
-                      className="main-wraper"
-                      onClick={handleClick}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <span className="new-title">
-                        Bạn muốn tạo chiến dịch mới
-                      </span>
-                      <div className="new-post">
-                        <form method="post" onClick={handleClick}>
-                          <i className="icofont-pen-alt-1" />
-                          <input
-                            onClick={handleClick}
-                            type="text"
-                            placeholder="Tạo chiến dịch"
-                          />
-                        </form>
-                      </div>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  <div className="main-wraper">
-                    <div className="user-post">
-                      <div className="friend-info">
-                        <figure>
-                          <i className="icofont-learn" />
-                        </figure>
-                        <div className="friend-name">
-                          <ins>
-                            <a title href="time-line.html">
-                              Đề xuất
-                            </a>
-                          </ins>
-                          <span>
-                            <i className="icofont-runner-alt-1" /> Theo dõi
-                            fanpage tương tự
-                          </span>
+                    {isValidCreate === "true" ? (
+                      <div
+                        className="main-wraper"
+                        onClick={handleClick}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <span className="new-title">
+                          Bạn muốn tạo chiến dịch mới
+                        </span>
+                        <div className="new-post">
+                          <form method="post" onClick={handleClick}>
+                            <i className="icofont-pen-alt-1" />
+                            <input
+                              onClick={handleClick}
+                              type="text"
+                              placeholder="Tạo chiến dịch"
+                            />
+                          </form>
                         </div>
-                        <SimpleSlider arrFanpage={arrFanpage} />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <div className="main-wraper">
+                      <div className="user-post">
+                        <div className="friend-info">
+                          <figure>
+                            <i className="icofont-learn" />
+                          </figure>
+                          <div className="friend-name">
+                            <ins>
+                              <a title href="time-line.html">
+                                Đề xuất
+                              </a>
+                            </ins>
+                            <span>
+                              <i className="icofont-runner-alt-1" /> Theo dõi
+                              fanpage tương tự
+                            </span>
+                          </div>
+                          <SimpleSlider arrFanpage={arrFanpage} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {/* suggested friends */}
-                  {cmt
-                    .filter(
-                      (item) =>
-                        item.status === "Active" &&
-                        item.title.toLowerCase().includes(titlen)
-                    )
-                    .map((item, index) => {
-                      const detailItem = item;
-                      let isAlreadyLiked = false;
-                      let isAlreadyJoined = false;
-                      let isAlreadyFollowed = false;
-                      item?.like?.map((user) => {
-                        if (user.userId === userByID.userId) {
-                          console.log(user.userId === userByID.userId);
-                          //item?.like?
-                          isAlreadyLiked = true;
-                        }
-                      });
+                    {/* suggested friends */}
+                    {cmt
+                      .filter(
+                        (item) =>
+                          item.status === "Active" &&
+                          item.title.toLowerCase().includes(titlen)
+                      )
+                      .map((item, index) => {
+                        const detailItem = item;
+                        let isAlreadyLiked = false;
+                        let isAlreadyJoined = false;
+                        let isAlreadyFollowed = false;
+                        item?.like?.map((user) => {
+                          if (user.userId === userByID.userId) {
+                            console.log(user.userId === userByID.userId);
+                            //item?.like?
+                            isAlreadyLiked = true;
+                          }
+                        });
 
-                      item?.followJoinAvtivity?.map((user) => {
-                        if (user.userId === userByID.userId) {
-                          isAlreadyFollowed = user.isFollow;
-                          isAlreadyJoined = user.isJoin;
-                        }
-                      });
-                      //TODO
-                      return (
-                        <div className="main-wraper">
-                          <div className="user-post">
-                            <div className="friend-info">
-                              <figure>
-                                <em>
-                                  <svg
-                                    style={{ verticalAlign: "middle" }}
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width={15}
-                                    height={15}
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      fill="#7fba00"
-                                      stroke="#7fba00"
-                                      d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
-                                    ></path>
-                                  </svg>
-                                </em>
-                                <img
-                                  style={{ height: "3rem", width: "3.5rem" }}
-                                  alt
-                                  src="images/avatar/uocAvatar.jpg"
-                                />
-                              </figure>
-                              <div className="friend-name">
-                                <div className="more">
-                                  <div className="more-post-optns">
-                                    <i className>
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width={24}
-                                        height={24}
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth={2}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className="feather feather-more-horizontal"
-                                      >
-                                        <circle cx={12} cy={12} r={1} />
-                                        <circle cx={19} cy={12} r={1} />
-                                        <circle cx={5} cy={12} r={1} />
-                                      </svg>
-                                    </i>
-                                    <ul>
-                                      {userID === item.userId ? (
-                                        <li
-                                          onClick={() => {
-                                            handleClick6();
-                                            const action =
-                                              GetActivityByIDAction(
-                                                item.activityId
-                                              );
-                                            dispatch(action);
-                                          }}
+                        item?.followJoinAvtivity?.map((user) => {
+                          if (user.userId === userByID.userId) {
+                            isAlreadyFollowed = user.isFollow;
+                            isAlreadyJoined = user.isJoin;
+                          }
+                        });
+                        //TODO
+                        return (
+                          <div className="main-wraper">
+                            <div className="user-post">
+                              <div className="friend-info">
+                                <figure>
+                                  <em>
+                                    <svg
+                                      style={{ verticalAlign: "middle" }}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width={15}
+                                      height={15}
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        fill="#7fba00"
+                                        stroke="#7fba00"
+                                        d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
+                                      ></path>
+                                    </svg>
+                                  </em>
+                                  <img
+                                    style={{ height: "3rem", width: "3.5rem" }}
+                                    alt
+                                    src={item.user.image}
+                                  />
+                                </figure>
+                                <div className="friend-name">
+                                  <div className="more">
+                                    <div className="more-post-optns">
+                                      <i className>
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width={24}
+                                          height={24}
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          strokeWidth={2}
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          className="feather feather-more-horizontal"
                                         >
-                                          <i className="icofont-pen-alt-1" />
-                                          Sửa bài đăng
-                                          <span>
-                                            Chỉnh sửa và cập nhật chi tiết bài
-                                            đăng
-                                          </span>
-                                        </li>
-                                      ) : (
-                                        <div></div>
-                                      )}
-                                      {/* <li>
+                                          <circle cx={12} cy={12} r={1} />
+                                          <circle cx={19} cy={12} r={1} />
+                                          <circle cx={5} cy={12} r={1} />
+                                        </svg>
+                                      </i>
+                                      <ul>
+                                        {userID === item.userId ? (
+                                          <li
+                                            onClick={() => {
+                                              handleClick6();
+                                              const action =
+                                                GetActivityByIDAction(
+                                                  item.activityId
+                                                );
+                                              dispatch(action);
+                                            }}
+                                          >
+                                            <i className="icofont-pen-alt-1" />
+                                            Sửa bài đăng
+                                            <span>
+                                              Chỉnh sửa và cập nhật chi tiết bài
+                                              đăng
+                                            </span>
+                                          </li>
+                                        ) : (
+                                          <div></div>
+                                        )}
+                                        {/* <li>
                                         <i className="icofont-ban" />
                                         Ẩn bài đăng
                                         <span>
@@ -1747,79 +1785,84 @@ export default function Home (props) {
                                           có vấn đề
                                         </span>
                                       </li> */}
-                                      {userID === item.userId ? (
-                                        <li
-                                          onClick={() => {
-                                            Swal.fire({
-                                              title: "Bạn muốn xóa?",
-                                              text: "Bạn có chắc muốn xóa bài viết này!",
-                                              icon: "warning",
-                                              showCancelButton: true,
-                                              confirmButtonColor: "#3085d6",
-                                              cancelButtonColor: "#d33",
-                                              confirmButtonText: "Xóa!",
-                                            }).then((result) => {
-                                              if (result.isConfirmed) {
-                                                Swal.fire(
-                                                  "Xóa thành công!",
-                                                  "Xóa thành công chiến dịch.",
-                                                  "success"
-                                                );
-                                                const action =
-                                                  DeleteActivityByUserAction(
-                                                    item.activityId
+                                        {userID === item.userId ? (
+                                          <li
+                                            onClick={() => {
+                                              Swal.fire({
+                                                title: "Bạn muốn xóa?",
+                                                text: "Bạn có chắc muốn xóa bài viết này!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#3085d6",
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Xóa!",
+                                              }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                  Swal.fire(
+                                                    "Xóa thành công!",
+                                                    "Xóa thành công chiến dịch.",
+                                                    "success"
                                                   );
-                                                dispatch(action);
-                                              }
-                                            });
-                                          }}
-                                        >
-                                          <i className="icofont-ui-delete" />
-                                          Xóa bài đăng
-                                          <span>
-                                            Xóa những bài đăng khi bạn cảm
-                                            thấy có vấn đề không ổn
-                                          </span>
-                                        </li>
-                                      ) : (
-                                        <div></div>
-                                      )}
-                                      {userID !== item.userId ? (
-                                        <li
-                                          onClick={() => {
-                                            setReport(true);
-                                            formik6.setFieldValue(
-                                              "activityId",
-                                              item.activityId
-                                            );
-                                          }}
-                                        >
-                                          <i className="icofont-flag" />
-                                          Báo cáo bài đăng
-                                          <span>
-                                            Nhầm báo cáo những vấn đề bất
-                                            thường đến cho người quản lý
-                                          </span>
-                                        </li>
-                                      ) : (
-                                        <div></div>
-                                      )}
-                                    </ul>
+                                                  const action =
+                                                    DeleteActivityByUserAction(
+                                                      item.activityId
+                                                    );
+                                                  dispatch(action);
+                                                }
+                                              });
+                                            }}
+                                          >
+                                            <i className="icofont-ui-delete" />
+                                            Xóa bài đăng
+                                            <span>
+                                              Xóa những bài đăng khi bạn cảm
+                                              thấy có vấn đề không ổn
+                                            </span>
+                                          </li>
+                                        ) : (
+                                          <div></div>
+                                        )}
+                                        {userID !== item.userId ? (
+                                          <li
+                                            onClick={() => {
+                                              setReport(true);
+                                              formik6.setFieldValue(
+                                                "activityId",
+                                                item.activityId
+                                              );
+                                            }}
+                                          >
+                                            <i className="icofont-flag" />
+                                            Báo cáo bài đăng
+                                            <span>
+                                              nhầm báo cáo những vấn đề bất
+                                              thường đến cho người quản lý
+                                            </span>
+                                          </li>
+                                        ) : (
+                                          <div></div>
+                                        )}
+                                      </ul>
+                                    </div>
                                   </div>
+                                  <ins>
+                                  <NavLink
+                                    to={`/profile/${localStorage.getItem(
+                                      'userID'
+                                    )}`}
+                                    title
+                                  >
+                                    <h4>{item.user?.username}</h4>
+                                  </NavLink>
+                                  </ins>
+                                  <span>
+                                    {" "}
+                                    {DateTime(item.createAt)}{" "}
+                                    <i className="icofont-globe" />
+                                  </span>
                                 </div>
-                                <ins>
-                                  <a title href="">
-                                    {item.user?.username}
-                                  </a>{" "}
-                                </ins>
-                                <span>
-                                  {" "}
-                                  {DateTime(item.createAt)}{" "}
-                                  <i className="icofont-globe" />
-                                </span>
-                              </div>
-                              <div className="post-meta">
-                                {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
+                                <div className="post-meta">
+                                  {/* <em><a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" title target="_blank">https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538</a></em> */}
 
                                 {/* <a href="https://themeforest.net/item/winku-social-network-toolkit-responsive-template/22363538" className="post-title" target="_blank">{item.title}</a> */}
                                 {/* <p>
@@ -1906,15 +1949,15 @@ export default function Home (props) {
                                   </div>
                                 </div>
 
-                                {/* chi tiết chiến dịch */}
-                                <p className="mt-3 mt-detail">
-                                  <span className="mt-detail">
-
-                                  </span>{" "}
-                                  <PostDescription
-                                    description={item.description}
-                                  />
-                                </p>
+                                  {/* chi tiết chiến dịch */}
+                                  <p className="mt-3 mt-detail">
+                                    <span className="mt-detail">
+                                      
+                                    </span>{" "}
+                                    <PostDescription
+                                      description={item.description}
+                                    />
+                                  </p>
 
                                 {/* <p className="mt-3 mt-detail">
                                     <span className="mt-detail">Dia chi :</span>{" "}
@@ -1924,78 +1967,78 @@ export default function Home (props) {
                                 <figure style={{}}>
                                   {/* <p style={{ width: '100%' }}>fetched-image</p> */}
 
-                                  <div className="image-gallery-flex">
-                                    {item?.media?.length <= 3
-                                      ? item.media.map((image, index) => {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className={`image-container-post`}
-                                          >
-                                            <a
-                                              data-toggle="modal"
-                                              data-target="#img-comt"
-                                              href="images/resources/album1.jpg"
-                                              onClick={() => {
-                                                setDetail(detailItem);
-                                              }}
-                                            >
-                                              <img
-                                                src={image.linkMedia}
-                                                alt={`Image ${image.id}`}
-                                              />
-                                            </a>
-                                          </div>
-                                        );
-                                      })
-                                      : item.media
-                                        ?.slice(0, 4)
-                                        .map((image, index) => {
-                                          return index !== 3 ? (
-                                            <div
-                                              key={index}
-                                              className={`image-container-post`}
-                                            >
-                                              <a
-                                                data-toggle="modal"
-                                                data-target="#img-comt"
-                                                href="images/resources/album1.jpg"
-                                                onClick={() => {
-                                                  setDetail(detailItem);
-                                                }}
+                                    <div className="image-gallery-flex">
+                                      {item?.media?.length <= 3
+                                        ? item.media.map((image, index) => {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className={`image-container-post`}
                                               >
-                                                <img
-                                                  src={image.linkMedia}
-                                                  alt={`Image ${image.id}`}
-                                                />
-                                              </a>
-                                            </div>
-                                          ) : (
-                                            <div
-                                              key={index}
-                                              className={`image-container-post-last`}
-                                            >
-                                              <a
-                                                data-toggle="modal"
-                                                data-target="#img-comt"
-                                                href="images/resources/album1.jpg"
-                                                onClick={() => {
-                                                  setDetail(detailItem);
-                                                }}
-                                              >
-                                                <div className="overlay">
-                                                  +{item.media.length - 4}
+                                                <a
+                                                  data-toggle="modal"
+                                                  data-target="#img-comt"
+                                                  href="images/resources/album1.jpg"
+                                                  onClick={() => {
+                                                    setDetail(detailItem);
+                                                  }}
+                                                >
+                                                  <img
+                                                    src={image.linkMedia}
+                                                    alt={`Image ${image.id}`}
+                                                  />
+                                                </a>
+                                              </div>
+                                            );
+                                          })
+                                        : item.media
+                                            ?.slice(0, 4)
+                                            .map((image, index) => {
+                                              return index !== 3 ? (
+                                                <div
+                                                  key={index}
+                                                  className={`image-container-post`}
+                                                >
+                                                  <a
+                                                    data-toggle="modal"
+                                                    data-target="#img-comt"
+                                                    href="images/resources/album1.jpg"
+                                                    onClick={() => {
+                                                      setDetail(detailItem);
+                                                    }}
+                                                  >
+                                                    <img
+                                                      src={image.linkMedia}
+                                                      alt={`Image ${image.id}`}
+                                                    />
+                                                  </a>
                                                 </div>
-                                                <img
-                                                  src={image.linkMedia}
-                                                  alt={`Image ${image.id}`}
-                                                />
-                                              </a>
-                                            </div>
-                                          );
-                                        })}
-                                  </div>
-                                </figure>
+                                              ) : (
+                                                <div
+                                                  key={index}
+                                                  className={`image-container-post-last`}
+                                                >
+                                                  <a
+                                                    data-toggle="modal"
+                                                    data-target="#img-comt"
+                                                    href="images/resources/album1.jpg"
+                                                    onClick={() => {
+                                                      setDetail(detailItem);
+                                                    }}
+                                                  >
+                                                    <div className="overlay">
+                                                      +{item.media.length - 4}
+                                                    </div>
+                                                    <img
+                                                      src={image.linkMedia}
+                                                      alt={`Image ${image.id}`}
+                                                    />
+                                                  </a>
+                                                </div>
+                                              );
+                                            })}
+                                    </div>
+                                  </figure>
 
                                 {/* <p className="mt-3">
                                   <span
@@ -2018,33 +2061,33 @@ export default function Home (props) {
 
                                 {item.targetDonation !== 0 ? (
                                   <div className="mb-4">
-                                    <p style={{
-                                      color: 'blue',
-                                      fontWeight: '400',
-                                      fontSize: "15px",
-                                    }} >Đã quyên góp được <br />
+                                  <p style={{
+                                    color:'blue',
+                                    fontWeight:'400',
+                                    fontSize:"15px",
+                                  }} >Đã quyên góp được <br/>
+                                      <span
+                                        style={{
+                                          color: 'blue',
+                                          fontSize: '15px',
+                                        }}
+                                      >
+                                         <span
+                                        style={{
+                                          color: "blue",
+                                          fontSize: "15px",
+                                        }}
+                                      >
+                                        {item.realDonation.toLocaleString()}
+                                      </span>{" "} đ /
                                       <span
                                         style={{
                                           color: "blue",
                                           fontSize: "15px",
                                         }}
                                       >
-                                        <span
-                                          style={{
-                                            color: "blue",
-                                            fontSize: "15px",
-                                          }}
-                                        >
-                                          {item.realDonation.toLocaleString()}
-                                        </span>{" "} đ /
-                                        <span
-                                          style={{
-                                            color: "blue",
-                                            fontSize: "15px",
-                                          }}
-                                        >
-                                          {item.targetDonation.toLocaleString()}{" "} đ
-                                        </span>{" "}
+                                         {item.targetDonation.toLocaleString()}{" "} đ
+                                      </span>{" "}
                                       </span>
                                     </p>
 
@@ -2088,71 +2131,74 @@ export default function Home (props) {
                                         {item.realDonation.toLocaleString()} vnđ
                                       </span>{" "}
                                     </div> */}
-                                    <input
-                                      type="range"
-                                      min="0"
-                                      max={item.targetDonation}
-                                      value={item.realDonation}
-                                      // onChange={handleChange}
-                                      className="range-slider"
-                                      style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${(item.realDonation /
-                                          item.targetDonation) *
-                                          100
-                                          }%, #ddd ${(item.realDonation /
-                                            item.targetDonation) *
-                                          100
+                                      <input
+                                        type="range"
+                                        min="0"
+                                        max={item.targetDonation}
+                                        value={item.realDonation}
+                                        // onChange={handleChange}
+                                        className="range-slider"
+                                        style={{
+                                          background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
+                                            (item.realDonation /
+                                              item.targetDonation) *
+                                            100
+                                          }%, #ddd ${
+                                            (item.realDonation /
+                                              item.targetDonation) *
+                                            100
                                           }%, #ddd 100%)`,
-                                      }}
-                                    />
-                                    {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
-                                    {item.realDonation !== 0 ? (
-                                      <div></div>
-                                    ) : (
-                                      <div
-                                        className="range-value"
-                                        style={{ position: "absolute" }}
-                                      >
-                                        0
-                                      </div>
-                                    )}
-                                    {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
-                                    {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
-                                    {item.realDonation === 0 ? (
-                                      <div></div>
-                                    ) : (
+                                        }}
+                                      />
+                                      {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
+                                      {item.realDonation !== 0 ? (
+                                        <div></div>
+                                      ) : (
+                                        <div
+                                          className="range-value"
+                                          style={{ position: "absolute" }}
+                                        >
+                                          0
+                                        </div>
+                                      )}
+                                      {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
+                                      {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
+                                      {item.realDonation === 0 ? (
+                                        <div></div>
+                                      ) : (
+                                        <div
+                                          className="range-value"
+                                          style={{
+                                            position: "absolute",
+                                            left: `${
+                                              (item.realDonation /
+                                                item.targetDonation) *
+                                              100
+                                            }%`,
+                                          }}
+                                        >
+                                          {" "}
+                                          {(item.realDonation /
+                                            item.targetDonation) *
+                                            100}
+                                          %
+                                        </div>
+                                      )}
                                       <div
                                         className="range-value"
                                         style={{
+                                          color: "blue",
                                           position: "absolute",
-                                          left: `${(item.realDonation /
-                                            item.targetDonation) *
-                                            100
-                                            }%`,
+                                          right: "10px",
                                         }}
                                       >
-                                        {" "}
-                                        {(item.realDonation /
-                                          item.targetDonation) *
-                                          100}
-                                        %
+                                        {item.targetDonation.toLocaleString()}{" "}
+                                        vnđ
                                       </div>
-                                    )}
-                                    <div
-                                      className="range-value"
-                                      style={{
-                                        color: "blue",
-                                        position: "absolute",
-                                        right: "10px",
-                                      }}
-                                    >
-                                      {item.targetDonation.toLocaleString()}{" "}
-                                      vnđ
                                     </div>
-                                  </div>
-                                ) : (
-                                  <div></div>
-                                )}
+                                  ) : (
+                                    <div></div>
+                                  )}
 
                                 <div
                                   style={{
@@ -2243,63 +2289,63 @@ export default function Home (props) {
                                   )}
                                 </div>
 
-                                <div className="we-video-info">
-                                  <div
-                                    className="emoji-state"
-                                    style={{
-                                      display: "flex",
-                                      alignContent: "center",
-                                      paddingTop: "20px",
-                                    }}
-                                  >
-                                    <div className="popover_wrapper">
-                                      <a
-                                        className="popover_title"
-                                        href="#"
-                                        title
-                                      >
-                                        <img
-                                          alt
-                                          src="images/smiles/thumb.png"
-                                        />
-                                      </a>
-                                      <div className="popover_content">
-                                        <span>
+                                  <div className="we-video-info">
+                                    <div
+                                      className="emoji-state"
+                                      style={{
+                                        display: "flex",
+                                        alignContent: "center",
+                                        paddingTop: "20px",
+                                      }}
+                                    >
+                                      <div className="popover_wrapper">
+                                        <a
+                                          className="popover_title"
+                                          href="#"
+                                          title
+                                        >
                                           <img
                                             alt
                                             src="images/smiles/thumb.png"
                                           />
-                                          Đã thích
-                                        </span>
-                                        <ul className="namelist">
-                                          {item?.like?.length <= 4
-                                            ? item?.like.map((userItem) => {
-                                              return (
-                                                <li>
-                                                  {userItem.user.username}
-                                                </li>
-                                              );
-                                            })
-                                            : item?.like
-                                              ?.slice(0, 4)
-                                              .map((userItem, index) => {
-                                                index < 4 ? (
-                                                  <li>
-                                                    {userItem.user.username}
-                                                  </li>
-                                                ) : (
-                                                  <li>
-                                                    <span>
-                                                      +
-                                                      {item?.like.length -
-                                                        5}
-                                                    </span>
-                                                  </li>
-                                                );
-                                              })}
-                                        </ul>
+                                        </a>
+                                        <div className="popover_content">
+                                          <span>
+                                            <img
+                                              alt
+                                              src="images/smiles/thumb.png"
+                                            />
+                                            Đã thích
+                                          </span>
+                                          <ul className="namelist">
+                                            {item?.like?.length <= 4
+                                              ? item?.like.map((userItem) => {
+                                                  return (
+                                                    <li>
+                                                      {userItem.user.username}
+                                                    </li>
+                                                  );
+                                                })
+                                              : item?.like
+                                                  ?.slice(0, 4)
+                                                  .map((userItem, index) => {
+                                                    index < 4 ? (
+                                                      <li>
+                                                        {userItem.user.username}
+                                                      </li>
+                                                    ) : (
+                                                      <li>
+                                                        <span>
+                                                          +
+                                                          {item?.like.length -
+                                                            5}
+                                                        </span>
+                                                      </li>
+                                                    );
+                                                  })}
+                                          </ul>
+                                        </div>
                                       </div>
-                                    </div>
 
                                     <p>{item.like.length || 0}</p>
                                     <div style={{ marginLeft: "20px" }}>
@@ -2401,202 +2447,204 @@ export default function Home (props) {
                                                                         <div style={{ color: 'blue', fontSize: '15px' }}><span>{item.comment.length} bình luận</span></div>
                                                                     </div>
                                                                 </div> */}
-                                </div>
-                                <div
-                                  className="new-comment"
-                                  style={{ display: "block" }}
-                                >
-                                  <form
-                                    method="post"
-                                    onSubmit={formik2.handleSubmit}
-                                    style={{ position: "relative" }}
+                                  </div>
+                                  <div
+                                    className="new-comment"
+                                    style={{ display: "block" }}
                                   >
-                                    <div style={{ paddingBottom: "10px" }}>
+                                    <form
+                                      method="post"
+                                      onSubmit={formik2.handleSubmit}
+                                      style={{ position: "relative" }}
+                                    >
+                                      <div style={{ paddingBottom: "10px" }}>
+                                        {onID === item.activityId ? (
+                                          <div
+                                            className="commentT"
+                                            style={{
+                                              display: "flex",
+                                              alignContent: "center",
+                                            }}
+                                          >
+                                            <span style={{ paddingTop: "6px" }}>
+                                              Trả lời bình luận :{" "}
+                                            </span>
+                                            <div
+                                              style={{ marginLeft: "10px" }}
+                                              className="textcmt"
+                                            >
+                                              {" "}
+                                              @{content}
+                                              {setOnID === item.activityId ? (
+                                                <span
+                                                  style={{
+                                                    color: "red",
+                                                    fontSize: "18px",
+                                                    cursor: "pointer",
+                                                    paddingLeft: "4px",
+                                                  }}
+                                                  onClick={() => {
+                                                    setOnID("");
+                                                    setTcss("35px");
+                                                  }}
+                                                >
+                                                  x
+                                                </span>
+                                              ) : (
+                                                <span
+                                                  style={{
+                                                    color: "red",
+                                                    fontSize: "18px",
+                                                    cursor: "pointer",
+                                                    paddingLeft: "4px",
+                                                  }}
+                                                  onClick={() => {
+                                                    setOnID("");
+                                                    setTcss("10px");
+                                                  }}
+                                                >
+                                                  x
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <div
+                                            style={{
+                                              paddingTop: "6px",
+                                              paddingBottom: "10px",
+                                            }}
+                                          ></div>
+                                        )}
+                                      </div>
+                                      <input
+                                        type="text"
+                                        placeholder=""
+                                        value={formik2.values.commentContent}
+                                        name={commentI}
+                                        onChange={formik2.handleChange}
+                                        className="input-comment"
+                                      />
                                       {onID === item.activityId ? (
-                                        <div
-                                          className="commentT"
+                                        <button
                                           style={{
-                                            display: "flex",
-                                            alignContent: "center",
+                                            position: "absolute",
+                                            top: "52px",
+                                          }}
+                                          type="submit"
+                                          onClick={async () => {
+                                            // await setTextI(item.activityId)
+                                            formik2.setFieldValue(
+                                              "activityId",
+                                              item.activityId
+                                            );
                                           }}
                                         >
-                                          <span style={{ paddingTop: "6px" }}>
-                                            Trả lời bình luận :{" "}
-                                          </span>
-                                          <div
-                                            style={{ marginLeft: "10px" }}
-                                            className="textcmt"
-                                          >
-                                            {" "}
-                                            @{content}
-                                            {setOnID === item.activityId ? (
-                                              <span
-                                                style={{
-                                                  color: "red",
-                                                  fontSize: "18px",
-                                                  cursor: "pointer",
-                                                  paddingLeft: "4px",
-                                                }}
-                                                onClick={() => {
-                                                  setOnID("");
-                                                  setTcss("35px");
-                                                }}
-                                              >
-                                                x
-                                              </span>
-                                            ) : (
-                                              <span
-                                                style={{
-                                                  color: "red",
-                                                  fontSize: "18px",
-                                                  cursor: "pointer",
-                                                  paddingLeft: "4px",
-                                                }}
-                                                onClick={() => {
-                                                  setOnID("");
-                                                  setTcss("10px");
-                                                }}
-                                              >
-                                                x
-                                              </span>
-                                            )}
-                                          </div>
-                                        </div>
+                                          <i className="icofont-paper-plane" />
+                                        </button>
                                       ) : (
-                                        <div
+                                        <button
                                           style={{
-                                            paddingTop: "6px",
-                                            paddingBottom: "10px",
+                                            position: "absolute",
+                                            top: "40px",
                                           }}
-                                        ></div>
+                                          type="submit"
+                                          onClick={async () => {
+                                            // await setTextI(item.activityId)
+                                            formik2.setFieldValue(
+                                              "activityId",
+                                              item.activityId
+                                            );
+                                          }}
+                                        >
+                                          <i className="icofont-paper-plane" />
+                                        </button>
                                       )}
-                                    </div>
-                                    <input
-                                      type="text"
-                                      placeholder=""
-                                      value={formik2.values.commentContent}
-                                      name={commentI}
-                                      onChange={formik2.handleChange}
-                                      className="input-comment"
-                                    />
-                                    {onID === item.activityId ? (
-                                      <button
-                                        style={{
-                                          position: "absolute",
-                                          top: "52px",
-                                        }}
-                                        type="submit"
-                                        onClick={async () => {
-                                          // await setTextI(item.activityId)
-                                          formik2.setFieldValue(
-                                            "activityId",
-                                            item.activityId
-                                          );
-                                        }}
-                                      >
-                                        <i className="icofont-paper-plane" />
-                                      </button>
-                                    ) : (
-                                      <button
-                                        style={{
-                                          position: "absolute",
-                                          top: "40px",
-                                        }}
-                                        type="submit"
-                                        onClick={async () => {
-                                          // await setTextI(item.activityId)
-                                          formik2.setFieldValue(
-                                            "activityId",
-                                            item.activityId
-                                          );
-                                        }}
-                                      >
-                                        <i className="icofont-paper-plane" />
-                                      </button>
-                                    )}
 
-                                    {item?.commentData[0]?.isCmt ? (
-                                      <div></div>
-                                    ) : (
-                                      item.comment.map((item, index) => {
-                                        return (
-                                          <div className="comments-area">
-                                            <ul>
-                                              <li>
-                                                <figure>
-                                                  <img
-                                                    alt
-                                                    src="images/resources/user1.jpg"
-                                                  />
-                                                </figure>
-                                                <div className="commenter">
-                                                  <h5>
-                                                    <a title href="#">
-                                                      {item.user?.username}
-                                                    </a>
-                                                  </h5>
-                                                  <span>
-                                                    {DateTime(item.datetime)}
-                                                  </span>
-                                                  <p>{item.commentContent}</p>
-                                                  {/* <span>you can view the more detail via
+                                      {item?.commentData[0]?.isCmt ? (
+                                        <div></div>
+                                      ) : (
+                                        item.comment.map((item, index) => {
+                                          return (
+                                            <div className="comments-area">
+                                              <ul>
+                                                <li>
+                                                  <figure>
+                                                    <img
+                                                      alt
+                                                      src="images/resources/user1.jpg"
+                                                    />
+                                                  </figure>
+                                                  <div className="commenter">
+                                                    <h5>
+                                                      <a title href="#">
+                                                        {item.user?.username}
+                                                      </a>
+                                                    </h5>
+                                                    <span>
+                                                      {DateTime(item.datetime)}
+                                                    </span>
+                                                    <p>{item.commentContent}</p>
+                                                    {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
                                                 </div>
                                                 {/* <span title="Like" onClick={() => {
                                                                                         }}><i className="icofont-heart" /></span> */}
-                                                <a
-                                                  title="Reply"
-                                                  onClick={() => {
-                                                    formik2.setFieldValue(
-                                                      "commentIdReply",
-                                                      item.commentId
-                                                    );
-                                                    // setCommentI('commentIdReply')
-                                                    setContent(
-                                                      item.user?.username
-                                                    );
-                                                    setOnID(item.activityId);
-                                                  }}
-                                                  className="reply-coment"
-                                                >
-                                                  <i className="icofont-reply" />
-                                                </a>
-                                              </li>
-                                              <li>
-                                                {item.inverseReply?.map(
-                                                  (item, index) => {
-                                                    return (
-                                                      <div
-                                                        key={index}
-                                                        className="ml-5"
-                                                      >
-                                                        <figure>
-                                                          <img
-                                                            alt
-                                                            src="images/resources/user1.jpg"
-                                                          />
-                                                        </figure>
-                                                        <div className="commenter">
-                                                          <h5>
-                                                            <a title href="#">
-                                                              {
-                                                                item.user
-                                                                  ?.username
+                                                  <a
+                                                    title="Reply"
+                                                    onClick={() => {
+                                                      formik2.setFieldValue(
+                                                        "commentIdReply",
+                                                        item.commentId
+                                                      );
+                                                      // setCommentI('commentIdReply')
+                                                      setContent(
+                                                        item.user?.username
+                                                      );
+                                                      setOnID(item.activityId);
+                                                    }}
+                                                    className="reply-coment"
+                                                  >
+                                                    <i className="icofont-reply" />
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  {item.inverseReply?.map(
+                                                    (item, index) => {
+                                                      return (
+                                                        <div
+                                                          key={index}
+                                                          className="ml-5"
+                                                        >
+                                                          <figure>
+                                                            <img
+                                                              alt
+                                                              src={
+                                                                item.user.image
                                                               }
-                                                            </a>
-                                                          </h5>
-                                                          <span>
-                                                            {DateTime(
-                                                              item.datetime
-                                                            )}
-                                                          </span>
-                                                          <p>
-                                                            {
-                                                              item.commentContent
-                                                            }
-                                                          </p>
-                                                          {/* <span>you can view the more detail via
+                                                            />
+                                                          </figure>
+                                                          <div className="commenter">
+                                                            <h5>
+                                                              <a title href="#">
+                                                                {
+                                                                  item.user
+                                                                    ?.username
+                                                                }
+                                                              </a>
+                                                            </h5>
+                                                            <span>
+                                                              {DateTime(
+                                                                item.datetime
+                                                              )}
+                                                            </span>
+                                                            <p>
+                                                              {
+                                                                item.commentContent
+                                                              }
+                                                            </p>
+                                                            {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
                                                         </div>
@@ -2628,89 +2676,89 @@ export default function Home (props) {
                       );
                     })}
 
-                  <div className="loadmore">
-                    <div className="sp sp-bars" />
-                    <a href="#" title data-ripple>
-                      Load More..
-                    </a>
-                  </div>
-                  {/* loadmore buttons */}
-                </div>
-                <div className="col-lg-3">
-                  <aside className="sidebar static right">
-                    {localStorage.getItem("userID") &&
-                      userByID?.fanpage?.status === "Active" ? (
-                      <div className="widget">
-                        <h4 className="widget-title">Nhóm của bạn</h4>
-                        <ul className="ak-groups">
-                          <li>
-                            <figure>
-                              <img
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  objectfit: "cover",
-                                }}
-                                src={userByID?.fanpage?.avatar}
-                                alt
-                              />
-                            </figure>
-                            <div className="your-grp">
-                              <h5>
-                                <NavLink
-                                  to={`/fanpage/${localStorage.getItem(
-                                    "userID"
-                                  )}`}
-                                  title
-                                  style={{
-                                    fontSize: "20px",
-                                    width: "200px",
-                                    wordWrap: "break-word",
-                                  }}
-                                >
-                                  {userByID?.fanpage?.fanpageName}
-                                </NavLink>
-                              </h5>
-                              <NavLink to="/" title>
-                                <i className="icofont-bell-alt" />
-                                Thông báo
-                                <span>13</span>
-                              </NavLink>
-                              <NavLink
-                                to=""
-                                href="group-feed.html"
-                                title
-                                className="promote"
-                                onClick={() => { }}
-                              >
-                                Chi tiết
-                              </NavLink>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    <RecommentActivity />
-                    {/* suggested group */}
-                    <div className="widget">
-                      <h4 className="widget-title">Giải trí</h4>
-                      <div className="ask-question">
-                        <div className="rec-events bg-purple">
-                          <i className="icofont-gift" />
-                          <h6>
-                            <a title href>
-                              Game xúc xắc
-                            </a>
-                          </h6>
-                          <img alt src="images/clock.png" />
-                        </div>
-                        <NavLink to="/game">Chơi game</NavLink>
-                      </div>
+                    <div className="loadmore">
+                      <div className="sp sp-bars" />
+                      <a href="#" title data-ripple>
+                        Load More..
+                      </a>
                     </div>
-                    {/* ask question widget */}
-                    {/* <div className="widget">
+                    {/* loadmore buttons */}
+                  </div>
+                  <div className="col-lg-3">
+                    <aside className="sidebar static right">
+                      {localStorage.getItem("userID") &&
+                      userByID?.fanpage?.status === "Active" ? (
+                        <div className="widget">
+                          <h4 className="widget-title">Nhóm của bạn</h4>
+                          <ul className="ak-groups">
+                            <li>
+                              <figure>
+                                <img
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    objectfit: "cover",
+                                  }}
+                                  src={userByID?.fanpage?.avatar}
+                                  alt
+                                />
+                              </figure>
+                              <div className="your-grp">
+                                <h5>
+                                  <NavLink
+                                    to={`/fanpage/${localStorage.getItem(
+                                      "userID"
+                                    )}`}
+                                    title
+                                    style={{
+                                      fontSize: "20px",
+                                      width: "200px",
+                                      wordWrap: "break-word",
+                                    }}
+                                  >
+                                    {userByID?.fanpage?.fanpageName}
+                                  </NavLink>
+                                </h5>
+                                <NavLink to="/" title>
+                                  <i className="icofont-bell-alt" />
+                                  Thông báo
+                                  <span>13</span>
+                                </NavLink>
+                                <NavLink
+                                  to=""
+                                  href="group-feed.html"
+                                  title
+                                  className="promote"
+                                  onClick={() => {}}
+                                >
+                                  Chi tiết
+                                </NavLink>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                      <RecommentActivity />
+                      {/* suggested group */}
+                      <div className="widget">
+                        <h4 className="widget-title">Giải trí</h4>
+                        <div className="ask-question">
+                          <div className="rec-events bg-purple">
+                            <i className="icofont-gift" />
+                            <h6>
+                              <a title href>
+                                Game xúc xắc
+                              </a>
+                            </h6>
+                            <img alt src="images/clock.png" />
+                          </div>
+                          <NavLink to="/game">Chơi game</NavLink>
+                        </div>
+                      </div>
+                      {/* ask question widget */}
+                      {/* <div className="widget">
                                                 <h4 className="widget-title">Explor Events <a className="see-all" href="#" title>Xem Tất Cả</a></h4>
                                                 <div className="rec-events bg-purple">
                                                     <i className="icofont-gift" />
@@ -2814,9 +2862,9 @@ export default function Home (props) {
       </div>
 
       {/* content */}
-      < figure className="bottom-mockup" >
+      <figure className="bottom-mockup">
         <img src="images/footer.png" alt />
-      </figure >
+      </figure>
       <div className="bottombar">
         <div className="container">
           <div className="row">
@@ -2853,7 +2901,7 @@ export default function Home (props) {
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6" />
                   </svg>
-                </i>{" "}
+                </i>{' '}
                 Invite Colleagues
               </h5>
             </div>
@@ -2897,7 +2945,7 @@ export default function Home (props) {
                   >
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
-                </i>{" "}
+                </i>{' '}
                 Send Message
               </h5>
             </div>
@@ -2905,7 +2953,7 @@ export default function Home (props) {
               <form method="post" className="c-form">
                 <input type="text" placeholder="Enter Name.." />
                 <input type="text" placeholder="Subject" />
-                <textarea placeholder="Write Message" defaultValue={""} />
+                <textarea placeholder="Write Message" defaultValue={''} />
                 <div className="uploadimage">
                   <i className="icofont-file-jpg" />
                   <label className="fileContainer">
@@ -3094,9 +3142,9 @@ export default function Home (props) {
             style={{
               width: 800,
               zIndex: 80,
-              height: "100vh",
-              overflowY: "scroll",
-              margin: "1rem",
+              height: '100vh',
+              overflowY: 'scroll',
+              margin: '1rem',
             }}
           >
             <span className="popup-closed" onClick={handleClick}>
@@ -3314,15 +3362,15 @@ export default function Home (props) {
                 <div className="row">
                   <div className="col-md-6">
                     <div className="form-group">
-                      {userByID.fanpage?.status === "Active" && isFanpage ? (
+                      {userByID.fanpage?.status === 'Active' && isFanpage ? (
                         <div>
                           <div
                             className="form-group"
-                            style={{ display: "flex" }}
+                            style={{ display: 'flex' }}
                           >
                             <label
                               id="name-label"
-                              style={{ marginRight: "20px" }}
+                              style={{ marginRight: '20px' }}
                               htmlFor="name"
                             >
                               Chia sẻ lên nhóm của bạn
@@ -3384,7 +3432,7 @@ export default function Home (props) {
                             <div className="upload_gallery d-flex flex-wrap justify-content-center gap-3 mb-0" />
                           </fieldset>
                         </form>
-                        <svg style={{ display: "none" }}>
+                        <svg style={{ display: 'none' }}>
                           <defs>
                             <symbol
                               id="icon-imageUpload"
@@ -3432,8 +3480,8 @@ export default function Home (props) {
                         </div>
                       )}
 
-                      {files !== "" ? (
-                        <img src={files} style={{ height: "300px" }} />
+                      {files !== '' ? (
+                        <img src={files} style={{ height: '300px' }} />
                       ) : (
                         <div></div>
                       )}
@@ -3462,7 +3510,7 @@ export default function Home (props) {
         <div className="post-new-popup" style={popupStyle4}>
           <div
             className="popup"
-            style={{ width: 800, marginTop: "100px", zIndex: 80 }}
+            style={{ width: 800, marginTop: '100px', zIndex: 80 }}
           >
             <span className="popup-closed" onClick={handleClick6}>
               <i className="icofont-close" />
@@ -3549,7 +3597,6 @@ export default function Home (props) {
                           value={formik9.values.startDate}
                           id="name"
                           className="form-control"
-
                         />
                       </div>
                     </div>
@@ -3565,7 +3612,6 @@ export default function Home (props) {
                           value={formik9.values.endDate}
                           id="name"
                           className="form-control"
-
                         />
                       </div>
                     </div>
@@ -3634,25 +3680,25 @@ export default function Home (props) {
                     </div>*/}
                   </div>
 
-                  <div className="row">
-                    <div className="col-md-4">
-                      <button
-                        type="submit"
-                        id="submit"
-                        className="btn btn-primary btn-block"
-                      >
-                        Cập nhật
-                      </button>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <button
+                          type="submit"
+                          id="submit"
+                          className="btn btn-primary btn-block"
+                        >
+                          Cập nhật
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div></div>
-      )
+        ) : (
+          <div></div>
+        )
       }
 
       {
@@ -3669,7 +3715,7 @@ export default function Home (props) {
                 padding: "10px",
               }}
             >
-              <div className="multi-form">
+            <div className="multi-form">
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -3682,154 +3728,162 @@ export default function Home (props) {
                                     Thank you for taking the time to help us improve the platform
                                 </p>
                                 <button className="close-button" onClick={closePopup}>&times;</button> */}
-                    </header>
-                    <div className="form-wrap">
-                      <Form>
-
-                        <button className="close-button" onClick={closePopup}>
-                          &times;
-                        </button>
-                        <div className="form">
-                          {formData.map((form, index) => (
-                            <div
-                              key={index}
-                              className={`form-group  hidden `}
-                              style={{ display: index === 0 ? "none" : "block" }}
-                            >
-
-                              <h3 style={{ textAlign: 'center' }}>Vui lòng điền quy trình {index}</h3>
-                              <div className="form-group">
-                                <label htmlFor={`processTitle_${index}`}>
-                                  Tiêu đề
-                                </label>
-                                <Field
-                                  type="text"
-                                  name={`forms[${index}].processTitle`}
-                                  className="form-control"
-                                />
-                              </div>
-                              <div className="form-group">
-                                <label htmlFor={`description_${index}`}>Mô tả</label>
-                                <textarea
-                                  type="text"
-                                  name={`forms[${index}].description`}
-                                  className="form-control"
-                                />
-                              </div>
-                              <dv className="row">
-                                <div className="form-group col-md-6">
-                                  <label htmlFor={`startDate_${index}`}>
-                                    Thời gian diễn ra
-                                  </label>
-                                  <Field
-                                    type="datetime-local"
-                                    name={`forms[${index}].startDate`}
-                                    className="form-control"
-                                  />
-                                </div>
-                                <div className="form-group col-md-6">
-                                  <label htmlFor={`endDate_${index}`}>
-                                    Thời gian kết thúc
-                                  </label>
-                                  <Field
-                                    type="datetime-local"
-                                    name={`forms[${index}].endDate`}
-                                    className="form-control"
-                                  />
-                                </div>
-                              </dv>
-
-                              <div className="form-group">
-                                <label htmlFor={`processTypeId_${index}`}>
-                                  Thể loại tiến trình
-                                </label>
-                                <select
-                                  name={`forms[${index}].processTypeId`}
-                                  value={form.processTypeId} // Bind the select value to the formData value
-                                  onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
-                                  className="form-control"
-                                >
-                                  <option value="">Chọn </option>
-                                  {processType.map((item, index) => {
-                                    return (
-                                      <option value={item.processTypeId} key={index}>
-                                        {item.processTypeName}
-                                      </option>
-                                    );
-                                  })}
-                                </select>
-                              </div>
-                              <div className="form-group">
-                                <Field
-                                  type="text"
-                                  hidden
-                                  name={`forms[${index}].processNo`}
-                                  value={index + 1}
-                                  className="form-control"
-                                />
-                              </div>
-
-                              <div className="form-group">
-                                <label htmlFor={`media_${index}`}>Hình ảnh</label>
-                                <div>
-                                  <Field
-                                    name={`forms[${index}].media`}
-                                    id={`media_${index}`}
-                                    type="file"
-                                    multiple
-                                    onChange={(e) => handleImageChange1(e, index)}
-                                  />
-                                  <div className="image-container">
-                                    {form.media.map((image, imageIndex) => (
-                                      <div className="image-item" key={imageIndex}>
-                                        <img
-                                          src={image.linkMedia}
-                                          alt={`Image ${imageIndex}`}
-                                          className="image-preview"
-                                        />
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                              {index === currentForm && (
-                                <div className="form-buttons">
-                                  {index > 0 && (
-                                    <button
-                                      type="button"
-                                      className="btn btn-secondary"
-                                      onClick={handlePrevious}
-                                    >
-                                      Về sau
-                                    </button>
-                                  )}
-                                  {index < formData.length - 1 && (
-                                    <button
-                                      type="button"
-                                      className="btn btn-primary"
-                                      onClick={handleNext}
-                                    >
-                                      Tiếp tục
-                                    </button>
-                                  )}
-                                  {index > 0 && (
-                                    <button
-                                      style={{
-                                        marginLeft: "1rem",
-                                        width: "12%",
-                                      }}
-                                      type="button"
-                                      className="btn btn-danger delete"
-                                      onClick={handleDeleteForm}
-                                    >
-                                      Xóa
-                                    </button>
-                                  )}
-                                </div>
-                              )}
+                  </header>
+                  <div className="form-wrap">
+                    <Form>
+                      <button className="close-button" onClick={closePopup}>
+                        &times;
+                      </button>
+                      <div className="form">
+                        {formData.map((form, index) => (
+                          <div
+                            key={index}
+                            className={`form-group  hidden `}
+                            style={{ display: index === 0 ? 'none' : 'block' }}
+                          >
+                            <h3 style={{ textAlign: 'center' }}>
+                              Vui lòng điền quy trình {index}
+                            </h3>
+                            <div className="form-group">
+                              <label htmlFor={`processTitle_${index}`}>
+                                Tiêu đề
+                              </label>
+                              <Field
+                                type="text"
+                                name={`forms[${index}].processTitle`}
+                                className="form-control"
+                              />
                             </div>
-                          ))}
-                        </div>
+                            <div className="form-group">
+                              <label htmlFor={`description_${index}`}>
+                                Mô tả
+                              </label>
+                              <textarea
+                                type="text"
+                                name={`forms[${index}].description`}
+                                className="form-control"
+                              />
+                            </div>
+                            <dv className="row">
+                              <div className="form-group col-md-6">
+                                <label htmlFor={`startDate_${index}`}>
+                                  Thời gian diễn ra
+                                </label>
+                                <Field
+                                  type="datetime-local"
+                                  name={`forms[${index}].startDate`}
+                                  className="form-control"
+                                />
+                              </div>
+                              <div className="form-group col-md-6">
+                                <label htmlFor={`endDate_${index}`}>
+                                  Thời gian kết thúc
+                                </label>
+                                <Field
+                                  type="datetime-local"
+                                  name={`forms[${index}].endDate`}
+                                  className="form-control"
+                                />
+                              </div>
+                            </dv>
+
+                            <div className="form-group">
+                              <label htmlFor={`processTypeId_${index}`}>
+                                Thể loại tiến trình
+                              </label>
+                              <select
+                                name={`forms[${index}].processTypeId`}
+                                value={form.processTypeId} // Bind the select value to the formData value
+                                onChange={(e) => handleSelectChange(e, index)} // Pass the formIndex to handleSelectChange
+                                className="form-control"
+                              >
+                                <option value="">Chọn </option>
+                                {processType.map((item, index) => {
+                                  return (
+                                    <option
+                                      value={item.processTypeId}
+                                      key={index}
+                                    >
+                                      {item.processTypeName}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                            <div className="form-group">
+                              <Field
+                                type="text"
+                                hidden
+                                name={`forms[${index}].processNo`}
+                                value={index + 1}
+                                className="form-control"
+                              />
+                            </div>
+
+                            <div className="form-group">
+                              <label htmlFor={`media_${index}`}>Hình ảnh</label>
+                              <div>
+                                <Field
+                                  name={`forms[${index}].media`}
+                                  id={`media_${index}`}
+                                  type="file"
+                                  multiple
+                                  onChange={(e) => handleImageChange1(e, index)}
+                                />
+                                <div className="image-container">
+                                  {form.media.map((image, imageIndex) => (
+                                    <div
+                                      className="image-item"
+                                      key={imageIndex}
+                                    >
+                                      <img
+                                        src={image.linkMedia}
+                                        alt={`Image ${imageIndex}`}
+                                        className="image-preview"
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            {index === currentForm && (
+                              <div className="form-buttons">
+                                {index > 0 && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    onClick={handlePrevious}
+                                  >
+                                    Về sau
+                                  </button>
+                                )}
+                                {index < formData.length - 1 && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={handleNext}
+                                  >
+                                    Tiếp tục
+                                  </button>
+                                )}
+                                {index > 0 && (
+                                  <button
+                                    style={{
+                                      marginLeft: '1rem',
+                                      width: '12%',
+                                    }}
+                                    type="button"
+                                    className="btn btn-danger delete"
+                                    onClick={handleDeleteForm}
+                                  >
+                                    Xóa
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
 
                         {currentForm === formData.length - 1 && (
                           <div className="form-buttons">
@@ -3857,11 +3911,11 @@ export default function Home (props) {
                   </div>
                 </Formik>
               </div>
-            </div>
           </div>
-        ) : (
-          <div></div>
-        )}
+        </div>
+      ) : (
+        <div></div>
+      )}
       {report ? (
         <div className="post-new-popup1" style={popupStyle3}>
           <div
@@ -3871,8 +3925,8 @@ export default function Home (props) {
               zIndex: 80,
               height: 450,
               // overflowY: "scroll",
-              padding: "10px",
-              marginTop: '-100px'
+              padding: '10px',
+              marginTop: '-100px',
             }}
           >
             <span className="popup-closed" onClick={handleClick3}>
@@ -3906,16 +3960,14 @@ export default function Home (props) {
               <form onSubmit={formik6.handleSubmit}>
                 <div className="form row mt-3">
                   <div className="form-group">
-                    <label >
-                      Thể loại tiến trình
-                    </label>
+                    <label>Thể loại tiến trình</label>
                     <select
                       value="" // Bind the select value to the formData value
                       onChange={(e) => onInputDropdown(e)} // Pass the formIndex to handleSelectChange
                       className="form-control"
-                      placeholder='Chọn loại báo cáo'
+                      placeholder="Chọn loại báo cáo"
                     >
-                      <option value=''>Chọn loại báo cáo</option>
+                      <option value="">Chọn loại báo cáo</option>
                       {arrReportType.map((item, index) => {
                         return (
                           <option value={item.value} key={index}>
@@ -3926,10 +3978,15 @@ export default function Home (props) {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label >
-                      Lý do
-                    </label>
-                    <textarea id="message" className="form-control" rows="2" cols="50" name='reason' onChange={formik6.handleChange}></textarea>
+                    <label>Lý do</label>
+                    <textarea
+                      id="message"
+                      className="form-control"
+                      rows="2"
+                      cols="50"
+                      name="reason"
+                      onChange={formik6.handleChange}
+                    ></textarea>
                   </div>
                   <div className="row">
                     <div className="col-md-4">
@@ -3942,9 +3999,7 @@ export default function Home (props) {
                     </div>
                   </div>
                 </div>
-
               </form>
-
             </div>
           </div>
         </div>
@@ -4009,14 +4064,14 @@ export default function Home (props) {
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                     <line x1={12} y1={17} x2="12.01" y2={17} />
                   </svg>
-                </i>{" "}
+                </i>{' '}
                 Ask Question
               </h5>
             </div>
             <div className="post-new">
               <form method="post" className="c-form">
                 <input type="text" placeholder="Question Title" />
-                <textarea placeholder="Write Question" defaultValue={""} />
+                <textarea placeholder="Write Question" defaultValue={''} />
                 <select>
                   <option>Select Your Question Type</option>
                   <option>Article</option>
@@ -4077,7 +4132,7 @@ export default function Home (props) {
             Share To!
           </h5>
           <form method="post">
-            <textarea placeholder="Write Something" defaultValue={""} />
+            <textarea placeholder="Write Something" defaultValue={''} />
           </form>
           <ul>
             <li>
@@ -4096,7 +4151,7 @@ export default function Home (props) {
               </a>
             </li>
           </ul>
-          <div style={{ display: "block" }} className="social-media">
+          <div style={{ display: 'block' }} className="social-media">
             <ul>
               <li>
                 <a title href="#" className="facebook">
@@ -4135,7 +4190,7 @@ export default function Home (props) {
               </li>
             </ul>
           </div>
-          <div style={{ display: "none" }} className="friends-to">
+          <div style={{ display: 'none' }} className="friends-to">
             <div className="follow-men">
               <figure>
                 <img
@@ -4532,7 +4587,7 @@ export default function Home (props) {
               </li>
             </ul>
             <form className="text-box">
-              <textarea placeholder="Write Mesage..." defaultValue={""} />
+              <textarea placeholder="Write Mesage..." defaultValue={''} />
               <div className="add-smiles">
                 <span>
                   <img src="images/smiles/happy-3.png" alt />
@@ -4736,15 +4791,14 @@ export default function Home (props) {
           </form>
         </div>
       </div>
-      {
-        isPopupOpen && (
-          <div className="popup-overlay">
-            {/* <div className="popup-container"> */}
-            {/* <h2>Popup Form</h2> */}
+      {isPopupOpen && (
+        <div className="popup-overlay">
+          {/* <div className="popup-container"> */}
+          {/* <h2>Popup Form</h2> */}
 
-            <div className="container">
-              <header className="header">
-                {/* <h1 id="title" className="text-center">Survey Form</h1>
+          <div className="container">
+            <header className="header">
+              {/* <h1 id="title" className="text-center">Survey Form</h1>
                                 <p id="description" className="text-center">
                                     Thank you for taking the time to help us improve the platform
                                 </p>
@@ -4854,27 +4908,24 @@ export default function Home (props) {
                     </div>
                   </div>
 
-                  <div className="row">
-                    <div className="col-md-4">
-                      <button
-                        type="submit"
-                        id="submit"
-                        className="btn btn-primary btn-block"
-                      >
-                        Hoàn thành
-                      </button>
-                    </div>
+                <div className="row">
+                  <div className="col-md-4">
+                    <button
+                      type="submit"
+                      id="submit"
+                      className="btn btn-primary btn-block"
+                    >
+                      Hoàn thành
+                    </button>
                   </div>
-                </form>
-              </div>
+                </div>
+              </form>
             </div>
-
-            {/* </div> */}
           </div>
-        )
-      }
-    </Fragment >
+
+          {/* </div> */}
+        </div>
+      )}
+    </Fragment>
   );
-
-
 }
