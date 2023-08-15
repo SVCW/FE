@@ -312,7 +312,7 @@ export default function EndActivity() {
                                                 <img
                                                     style={{ height: "3rem", width: "3.5rem" }}
                                                     alt
-                                                    src={item.user?.image}
+                                                    src="images/avatar/uocAvatar.jpg"
                                                 />
                                             </figure>
                                             <div className="friend-name">
@@ -1047,7 +1047,6 @@ export default function EndActivity() {
                             </div>
                         );
                     })}
-                </div>
                 </div>
 
         {isOpen === true ? (

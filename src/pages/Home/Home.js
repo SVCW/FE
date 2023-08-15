@@ -2572,7 +2572,7 @@ export default function Home (props) {
                                                   <figure>
                                                     <img
                                                       alt
-                                                      src={item.user?.image}
+                                                      src="images/resources/user1.jpg"
                                                     />
                                                   </figure>
                                                   <div className="commenter">
