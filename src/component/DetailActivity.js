@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import styles from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeleteLikeAction, PostLikeAction } from '../redux/actions/ActivityAction';
 import { FollowAction, UnFollowAction } from '../redux/actions/FollowJoinAction';
-export default function DetailActivity (props) {
+export default function DetailActivity(props) {
     const { userID } = useSelector((root) => root.LoginReducer);
-    const { item, dateTime } = props;
+  const { item, dateTime } = props;
     console.log(item);
-    console.log(props.item.like?.length === 0 ? true : false);
-    console.log(props.item);
+  console.log(props.item.like?.length === 0 ? true : false);
+  console.log(props.item);
     const dispatch = useDispatch()
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1
-    };
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
     const [like, setLike] = useState(false)
 
   const slides = props.item.media?.map((item, index) => {
