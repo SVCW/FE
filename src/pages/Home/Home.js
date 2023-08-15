@@ -1234,7 +1234,7 @@ export default function Home (props) {
             <li>
               <a
                 href="http://localhost:3000/home"
-                title="Trang Chủ"
+                title="Trang chủ"
                 data-toggle="tooltip"
               >
                 <i>
@@ -1260,7 +1260,7 @@ export default function Home (props) {
               <a
                 className="mesg-notif"
                 href="#"
-                title="Tin Nhắn"
+                title="Tin nhắn"
                 data-toggle="tooltip"
               >
                 <i>
@@ -1286,7 +1286,7 @@ export default function Home (props) {
               <a
                 className="mesg-notif"
                 href="#"
-                title="Thông Báo"
+                title="Thông báo"
                 data-toggle="tooltip"
               >
                 <i>
@@ -1426,48 +1426,44 @@ export default function Home (props) {
       </header>
       <Carousel />
 
-      <SideBar />
-
-      <div className="gap">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div id="page-contents" className="row merged20">
-                <div className="col-lg-3">
-                  <aside className="sidebar static left">
-                    <div className="widget whitish low-opacity">
-                      {/* <img src="images/time-clock.png" alt /> */}
-                      <div
-                        className="bg-image"
-                        style={{
-                          backgroundImage: 'url(./images/avatar/12.jpg)',
-                        }}
-                      />
-                      <div className="date-time">
-                        <div className="realtime">
-                          <span id="hours">00</span>
-                          <span id="point">:</span>
-                          <span id="min">00</span>
-                        </div>
-                        <span id="date" />
-                      </div>
-                    </div>
-                    <div className="widget">
-                      <h4 className="widget-title">Thông tin cá nhân bạn</h4>
-                      <span>Tiến trình hoàn thiện thông tin cá nhân</span>
-                      <div
-                        data-progress="tip"
-                        className="progress__outer"
-                        data-value={change.toString()}
-                      >
-                        <div className="progress__inner">
-                          {(parseFloat(change) * 100).toFixed(1)}%
+        <div className="gap">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-12">
+                <div id="page-contents" className="row merged20">
+                  <div className="col-lg-3">
+                    <aside className="sidebar static left">
+                      <div className="widget whitish low-opacity">
+                        {/* <img src="images/time-clock.png" alt /> */}
+                        <div
+                          className="bg-image"
+                          style={{
+                            backgroundImage: "url(./images/avatar/12.jpg)",
+                          }}
+                        />
+                        <div className="date-time">
+                          <div className="realtime">
+                            <span id="hours">00</span>
+                            <span id="point">:</span>
+                            <span id="min">00</span>
+                          </div>
+                          <span id="date" />
                         </div>
                       </div>
-                      <ul className="prof-complete">
-                        {userByStatis.phone === null ? (
+                      <div className="widget">
+                        <h4 className="widget-title">Thông tin cá nhân bạn</h4>
+                        <span>Tiến trình hoàn thiện thông tin cá nhân</span>
+                        <div
+                          data-progress="tip"
+                          className="progress__outer"
+                          data-value={change.toString()}
+                        >
+                          <div className="progress__inner">{(parseFloat(change) * 100).toFixed(1)}%</div>
+                        </div>
+                        <ul className="prof-complete">
+                          {userByStatis.phone === null ? (
                           <li>
-                            <i className="icofont-plus-square" />{' '}
+                            <i className="icofont-plus-square" />{" "}
                             <NavLink to={`/profile/${userID}`}>
                               Cập nhật số điện thoại
                             </NavLink>
@@ -1518,9 +1514,8 @@ export default function Home (props) {
                                                     <a href="#" title="Advertisment"><img src="images/resources/ad-widget2.gif" alt /></a>
                                                 </figure>
                                             </div>adversment widget */}
-                    {arrActivityRecomment.map((item, index) => {
-                      return (
-                        <div className="widget">
+                      {/* {arrActivityRecomment.map((item, index) => {
+                        return <div className="widget">
                           <h4 className="widget-title">
                             <i className="icofont-flame-torch" /> {item.title}
                           </h4>
@@ -1574,11 +1569,10 @@ export default function Home (props) {
                             </li>
                           </ul>
                         </div>
-                      );
-                    })}
-                    {/* popular courses */}
-
-                    {/*<div className="widget">
+                      })} */}
+                      {/* popular courses */}
+                      
+                      {/*<div className="widget">
                         <h4 className="widget-title">
                           Tổ chức{" "}
                           <a className="see-all" href="#" title>
@@ -2578,7 +2572,7 @@ export default function Home (props) {
                                                   <figure>
                                                     <img
                                                       alt
-                                                      src={item.user?.image}
+                                                      src="images/resources/user1.jpg"
                                                     />
                                                   </figure>
                                                   <div className="commenter">
@@ -3200,7 +3194,7 @@ export default function Home (props) {
                         onChange={formik.handleChange}
                         value={formik.values.title}
                         id="name"
-                        placeholder="Nhập Tên Sự Kiện"
+                        placeholder="Nhập tên chiến dịch"
                         className="form-control"
                         required
                       />
@@ -3279,7 +3273,48 @@ export default function Home (props) {
                       />
                     </div>
                   </div>
-                  <div className="col-md-12">
+                  <div className="col-md-6">
+                        <div className="form-group">
+                          {configActivity === "true" ? (
+                            <div>
+                              <div
+                                className="form-group"
+                                style={{ display: "flex" }}
+                              >
+                                <label
+                                  id="name-label"
+                                  style={{ marginRight: "20px" }}
+                                  htmlFor="name"
+                                >
+                                  Nhận ủng hộ
+                                </label>
+                                <input
+                                  type="checkbox"
+                                  onChange={toggleTextInput}
+                                />
+                              </div>
+                              {isTextInputVisible === true && (
+                                <div className="form-group">
+                                  <input
+                                    type="number"
+                                    name="targetDonation"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.targetDonation}
+                                    id="name"
+                                    placeholder="Nhập số tiền cần nhận"
+                                    className="form-control"
+                                    style={{ marginTop: "-2rem" }}
+                                    required
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div></div>
+                          )}
+                        </div>
+                      </div>
+                  {/* <div className="col-md-12">
                     <div className="form-group">
                       <label id="name-label" htmlFor="name">
                         Lựa chọn
@@ -3295,15 +3330,14 @@ export default function Home (props) {
                       >
                         <option>Không nhận donation</option>
                         <option>Có nhận donation</option>
-                        <option>Chỉ donation</option>
                       </select>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-md-12">
                     <div style={{ height: "200px", width: "100%" }}>
                       <GoogleMapReact
                         bootstrapURLKeys={{
-                          key: 'AIzaSyBEg-cDilr_ZSqVWMdXNVm4Wn9mo-KOKOI',
+                          key: "AIzaSyBEg-cDilr_ZSqVWMdXNVm4Wn9mo-KOKOI",
                         }}
                         defaultCenter={coords}
                         center={coords}
@@ -3315,54 +3349,14 @@ export default function Home (props) {
                           text={
                             <i
                               class="icofont-location-pin"
-                              style={{ fontSize: '3rem', color: 'red' }}
+                              style={{ fontSize: "3rem", color: "red" }}
                             ></i>
                           }
                         />
                       </GoogleMapReact>
                     </div>
+                    
                   </div>
-                  {/* <div className="col-md-6">
-                      <div className="form-group">
-                        {configActivity === "true" ? (
-                          <div>
-                            <div
-                              className="form-group"
-                              style={{ display: "flex" }}
-                            >
-                              <label
-                                id="name-label"
-                                style={{ marginRight: "20px" }}
-                                htmlFor="name"
-                              >
-                                Nhận ủng hộ
-                              </label>
-                              <input
-                                type="checkbox"
-                                onChange={toggleTextInput}
-                              />
-                            </div>
-                            {isTextInputVisible === true && (
-                              <div className="form-group">
-                                <input
-                                  type="number"
-                                  name="targetDonation"
-                                  onChange={formik.handleChange}
-                                  value={formik.values.targetDonation}
-                                  id="name"
-                                  placeholder="Nhập số tiền cần nhận"
-                                  className="form-control"
-                                  style={{ marginTop: "-2rem" }}
-                                  required
-                                />
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <div></div>
-                        )}
-                      </div>
-                    </div> */}
                 </div>
 
                 <div className="row">
@@ -3566,7 +3560,7 @@ export default function Home (props) {
                           onChange={formik9.handleChange}
                           value={formik9.values.title}
                           id="name"
-                          placeholder="Nhập Tên Sự Kiện"
+                          placeholder="Nhập tên chiến dịch"
                           className="form-control"
                           required
                         />
@@ -3716,7 +3710,7 @@ export default function Home (props) {
                 width: 800,
                 zIndex: 80,
                 height: "800px",
-                overflowY: "scroll", //#uoc
+              //  overflowY: "scroll", //#uoc
                 marginTop: "50px",
                 padding: "10px",
               }}
@@ -4263,13 +4257,7 @@ export default function Home (props) {
           </button>
         </div>
       </div>
-      {/* share post */}
-      <div className="cart-product">
-        <a href="product-cart.html" title="View Cart" data-toggle="tooltip">
-          <i className="icofont-cart-alt" />
-        </a>
-        <span>03</span>
-      </div>
+      
       {/* view cart button */}
       <div className="chat-live">
         <a
@@ -4815,107 +4803,110 @@ export default function Home (props) {
                                     Thank you for taking the time to help us improve the platform
                                 </p>
                                 <button className="close-button" onClick={closePopup}>&times;</button> */}
-            </header>
-            <div className="form-wrap">
-              <form
-                id="survey-form"
-                onSubmit={formik1.handleSubmit}
-                method="post"
-              >
-                <h1 id="title" className="text-center">
-                  Vui lòng điền thông tin của bạn
-                </h1>
-                <button className="close-button" onClick={closePopup}>
-                  &times;
-                </button>
-                <div className="row ">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="name-label" htmlFor="name">
-                        Tiêu đề:
-                      </label>
-                      <input
-                        type="text"
-                        name="title"
-                        onChange={formik1.handleChange}
-                        id="name"
-                        placeholder="Nhập tiêu đề"
-                        className="form-control"
-                        required
-                      />
+              </header>
+              <div className="form-wrap">
+                <form
+                  id="survey-form"
+                  onSubmit={formik1.handleSubmit}
+                  method="post"
+                >
+                  <h1 id="title" className="text-center">
+                    Vui lòng điền thông tin của bạn
+                  </h1>
+                  <button className="close-button" onClick={closePopup}>
+                    &times;
+                  </button>
+                  <div className="row ">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Nội dung:
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          onChange={formik1.handleChange}
+                          id="name"
+                          placeholder="Nhập nội dung"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="email-label" htmlFor="email">
+                          Số tiền:
+                        </label>
+                        <input
+                          type="number"
+                          name="amount"
+                          onChange={formik1.handleChange}
+                          id="email"
+                          placeholder="Nhập số tiền"
+                          className="form-control"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="email-label" htmlFor="email">
-                        Số tiền:
-                      </label>
-                      <input
-                        type="number"
-                        name="amount"
-                        onChange={formik1.handleChange}
-                        id="email"
-                        placeholder="Nhập số tiền"
-                        className="form-control"
-                        required
-                      />
+                  <div className="row ">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Email:
+                        </label>
+                        <input
+                        disabled
+                          type="email"
+                          value={formik1.values.email}
+                          name="email"
+                          onChange={formik1.handleChange}
+                          id="validationDefault01"
+                          placeholder="Nhập email"
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="email-label" htmlFor="email">
+                          Số điện thoại:
+                        </label>
+                        <input
+                          type="text"
+                          name="phone"
+                          onChange={formik1.handleChange}
+                          id="email"
+                          placeholder="Nhập số điện thoại"
+                          className="form-control"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="row ">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="name-label" htmlFor="name">
-                        Email:
-                      </label>
-                      <input
-                        type="email"
-                        value={formik1.values.email}
-                        name="email"
-                        onChange={formik1.handleChange}
-                        id="name"
-                        placeholder="Nhập email"
-                        className="form-control"
-                        required
-                      />
+                  <div className="row ">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label id="name-label" htmlFor="name">
+                          Họ tên:
+                        </label>
+                        <input
+                        // disable: không cho chỉnh sửa
+                        disabled
+                          type="text"
+                          name="name"
+                          value={formik1.values.name}
+                          onChange={formik1.handleChange}
+                          id="name"
+                          placeholder="Họ và tên"
+                          className="form-control"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="email-label" htmlFor="email">
-                        Số điện thoại:
-                      </label>
-                      <input
-                        type="text"
-                        name="phone"
-                        onChange={formik1.handleChange}
-                        id="email"
-                        placeholder="Nhập số điện thoại"
-                        className="form-control"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row ">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label id="name-label" htmlFor="name">
-                        Họ tên:
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formik1.values.name}
-                        onChange={formik1.handleChange}
-                        id="name"
-                        placeholder="Họ và tên"
-                        className="form-control"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
 
                 <div className="row">
                   <div className="col-md-4">
