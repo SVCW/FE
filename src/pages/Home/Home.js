@@ -695,7 +695,7 @@ export default function Home (props) {
     },
   });
   function calculateImageClass(imageCount) {
-    let imageClass = "full-width";
+    let imageClass = 'full-width';
     if (imageCount === 2) {
       imageClass = 'half-width';
     } else if (imageCount === 3 || imageCount === 4) {
@@ -1146,7 +1146,6 @@ export default function Home (props) {
 
   return (
     <Fragment>
-     
       <Config />
       <ResponsiveHeader />
       <header className>
@@ -1192,7 +1191,6 @@ export default function Home (props) {
                           <span className="long-text">-{item.title}</span>
                         </div>
                       })}
-                     
                     </div>
                     {/* <span className="trash">
                       <i className="icofont-close-circled" />
@@ -1637,69 +1635,70 @@ export default function Home (props) {
                                             <li><a href="#" title>Recent</a></li>
                                             <li><a href="#" title>Favourit</a></li>
                                         </ul>tab buttons */}
-                    {isValidCreate === "true" ? (
-                      <div
-                        className="main-wraper"
-                        onClick={handleClick}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <span className="new-title">
-                          Bạn muốn tạo chiến dịch mới
-                        </span>
-                        <div className="new-post">
-                          <form method="post" onClick={handleClick}>
-                            <i className="icofont-pen-alt-1" />
-                            <input
-                              onClick={handleClick}
-                              type="text"
-                              placeholder="Tạo chiến dịch"
-                            />
-                          </form>
-                        </div>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )}
-                    <div className="main-wraper">
-                      <div className="user-post">
-                        <div className="friend-info">
-                          <figure>
-                            <i className="icofont-learn" />
-                          </figure>
-                          <div className="friend-name">
-                            <ins>
-                              <a title href="time-line.html">
-                                Đề xuất
-                              </a>
-                            </ins>
-                            <span>
-                              <i className="icofont-runner-alt-1" /> Theo dõi
-                              fanpage tương tự
-                            </span>
-                          </div>
-                          <SimpleSlider arrFanpage={arrFanpage} />
-                        </div>
+                  {isValidCreate === 'true' ? (
+                    <div
+                      className="main-wraper"
+                      onClick={handleClick}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <span className="new-title">
+                        Bạn muốn tạo chiến dịch mới
+                      </span>
+                      <div className="new-post">
+                        <form method="post" onClick={handleClick}>
+                          <i className="icofont-pen-alt-1" />
+                          <input
+                            onClick={handleClick}
+                            type="text"
+                            placeholder="Tạo chiến dịch"
+                          />
+                        </form>
                       </div>
                     </div>
-                    {/* suggested friends */}
-                    {cmt
-                      .filter(
-                        (item) =>
-                          item.status === "Active" &&
-                          item.title.toLowerCase().includes(titlen)
-                      )
-                      .map((item, index) => {
-                        const detailItem = item;
-                        let isAlreadyLiked = false;
-                        let isAlreadyJoined = false;
-                        let isAlreadyFollowed = false;
-                        item?.like?.map((user) => {
-                          if (user.userId === userByID.userId) {
-                            console.log(user.userId === userByID.userId);
-                            //item?.like?
-                            isAlreadyLiked = true;
-                          }
-                        });
+                  ) : (
+                    <div></div>
+                  )}
+                  <div className="main-wraper">
+                    <div className="user-post">
+                      <div className="friend-info">
+                        <figure>
+                          <i className="icofont-learn" />
+                        </figure>
+                        <div className="friend-name">
+                          <ins>
+                            <a title href="time-line.html">
+                              Đề xuất
+                            </a>
+                          </ins>
+                          <span>
+                            <i className="icofont-runner-alt-1" /> Theo dõi
+                            fanpage tương tự
+                          </span>
+                        </div>
+                        <SimpleSlider arrFanpage={arrFanpage} />
+                      </div>
+                    </div>
+                  </div>
+                  {/* suggested friends */}
+                  {cmt
+                    .filter(
+                      (item) =>
+                        item.status === 'Active' &&
+                        item.title.toLowerCase().includes(titlen)
+                    )
+                    .map((item, index) => {
+                      console.log(item);
+                      const detailItem = item;
+                      let isAlreadyLiked = false;
+                      let isAlreadyJoined = false;
+                      let isAlreadyFollowed = false;
+                      item?.like?.map((user) => {
+                        if (user.userId === userByID.userId) {
+                          console.log(user.userId === userByID.userId);
+                          //item?.like?
+                          isAlreadyLiked = true;
+                        }
+                      });
 
                         item?.followJoinAvtivity?.map((user) => {
                           if (user.userId === userByID.userId) {
@@ -1870,23 +1869,43 @@ export default function Home (props) {
                                                             </p> */}
 
                                 {/* hình ảnh */}
-
+                                {item.process.length !== 0 ? (
+                                  <NavLink
+                                    to={`/detailprocess/${item.activityId}`}
+                                    style={{
+                                      fontSize: '20px',
+                                      fontWeight: 'bold',
+                                      color: '#3f6ad8',
+                                      marginBottom: '20px',
+                                      cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                      // handleClick2()
+                                      // const action = GetProcessByActivityAction(item.activityId);
+                                      // dispatch(action)
+                                    }}
+                                  >
+                                    Xem tiến trình
+                                  </NavLink>
+                                ) : (
+                                  <div></div>
+                                )}
                                 <div className="row">
                                   <div
                                     style={{
-                                      padding: "0",
-                                      display: "flex",
-                                      alignContent: "center",
+                                      padding: '0',
+                                      display: 'flex',
+                                      alignContent: 'center',
                                     }}
                                     className="col-lg-12"
                                   >
                                     <h3
                                       style={{
-                                        fontSize: "25px",
-                                        fontWeight: "bold",
-                                        width: "450px",
-                                        wordWrap: "break-word",
-                                        color: "#2d3436",
+                                        fontSize: '25px',
+                                        fontWeight: 'bold',
+                                        width: '450px',
+                                        wordWrap: 'break-word',
+                                        color: '#2d3436',
                                       }}
                                       className="col-lg-12"
                                     >
@@ -1949,15 +1968,13 @@ export default function Home (props) {
                                   </div>
                                 </div>
 
-                                  {/* chi tiết chiến dịch */}
-                                  <p className="mt-3 mt-detail">
-                                    <span className="mt-detail">
-                                      
-                                    </span>{" "}
-                                    <PostDescription
-                                      description={item.description}
-                                    />
-                                  </p>
+                                {/* chi tiết chiến dịch */}
+                                <p className="mt-3 mt-detail">
+                                  <span className="mt-detail"></span>{' '}
+                                  <PostDescription
+                                    description={item.description}
+                                  />
+                                </p>
 
                                 {/* <p className="mt-3 mt-detail">
                                     <span className="mt-detail">Dia chi :</span>{" "}
@@ -1967,10 +1984,34 @@ export default function Home (props) {
                                 <figure style={{}}>
                                   {/* <p style={{ width: '100%' }}>fetched-image</p> */}
 
-                                    <div className="image-gallery-flex">
-                                      {item?.media?.length <= 3
-                                        ? item.media.map((image, index) => {
-                                            return (
+                                  <div className="image-gallery-flex">
+                                    {item?.media?.length <= 3
+                                      ? item.media.map((image, index) => {
+                                          return (
+                                            <div
+                                              key={index}
+                                              className={`image-container-post`}
+                                            >
+                                              <a
+                                                data-toggle="modal"
+                                                data-target="#img-comt"
+                                                href="images/resources/album1.jpg"
+                                                onClick={() => {
+                                                  setDetail(detailItem);
+                                                }}
+                                              >
+                                                <img
+                                                  src={image.linkMedia}
+                                                  alt={`Image ${image.id}`}
+                                                />
+                                              </a>
+                                            </div>
+                                          );
+                                        })
+                                      : item.media
+                                          ?.slice(0, 4)
+                                          .map((image, index) => {
+                                            return index !== 3 ? (
                                               <div
                                                 key={index}
                                                 className={`image-container-post`}
@@ -1989,56 +2030,32 @@ export default function Home (props) {
                                                   />
                                                 </a>
                                               </div>
+                                            ) : (
+                                              <div
+                                                key={index}
+                                                className={`image-container-post-last`}
+                                              >
+                                                <a
+                                                  data-toggle="modal"
+                                                  data-target="#img-comt"
+                                                  href="images/resources/album1.jpg"
+                                                  onClick={() => {
+                                                    setDetail(detailItem);
+                                                  }}
+                                                >
+                                                  <div className="overlay">
+                                                    +{item.media.length - 4}
+                                                  </div>
+                                                  <img
+                                                    src={image.linkMedia}
+                                                    alt={`Image ${image.id}`}
+                                                  />
+                                                </a>
+                                              </div>
                                             );
-                                          })
-                                        : item.media
-                                            ?.slice(0, 4)
-                                            .map((image, index) => {
-                                              return index !== 3 ? (
-                                                <div
-                                                  key={index}
-                                                  className={`image-container-post`}
-                                                >
-                                                  <a
-                                                    data-toggle="modal"
-                                                    data-target="#img-comt"
-                                                    href="images/resources/album1.jpg"
-                                                    onClick={() => {
-                                                      setDetail(detailItem);
-                                                    }}
-                                                  >
-                                                    <img
-                                                      src={image.linkMedia}
-                                                      alt={`Image ${image.id}`}
-                                                    />
-                                                  </a>
-                                                </div>
-                                              ) : (
-                                                <div
-                                                  key={index}
-                                                  className={`image-container-post-last`}
-                                                >
-                                                  <a
-                                                    data-toggle="modal"
-                                                    data-target="#img-comt"
-                                                    href="images/resources/album1.jpg"
-                                                    onClick={() => {
-                                                      setDetail(detailItem);
-                                                    }}
-                                                  >
-                                                    <div className="overlay">
-                                                      +{item.media.length - 4}
-                                                    </div>
-                                                    <img
-                                                      src={image.linkMedia}
-                                                      alt={`Image ${image.id}`}
-                                                    />
-                                                  </a>
-                                                </div>
-                                              );
-                                            })}
-                                    </div>
-                                  </figure>
+                                          })}
+                                  </div>
+                                </figure>
 
                                 {/* <p className="mt-3">
                                   <span
@@ -2061,33 +2078,38 @@ export default function Home (props) {
 
                                 {item.targetDonation !== 0 ? (
                                   <div className="mb-4">
-                                  <p style={{
-                                    color:'blue',
-                                    fontWeight:'400',
-                                    fontSize:"15px",
-                                  }} >Đã quyên góp được <br/>
+                                    <p
+                                      style={{
+                                        color: 'blue',
+                                        fontWeight: '400',
+                                        fontSize: '15px',
+                                      }}
+                                    >
+                                      Đã quyên góp được <br />
                                       <span
                                         style={{
                                           color: 'blue',
                                           fontSize: '15px',
                                         }}
                                       >
-                                         <span
-                                        style={{
-                                          color: "blue",
-                                          fontSize: "15px",
-                                        }}
-                                      >
-                                        {item.realDonation.toLocaleString()}
-                                      </span>{" "} đ /
-                                      <span
-                                        style={{
-                                          color: "blue",
-                                          fontSize: "15px",
-                                        }}
-                                      >
-                                         {item.targetDonation.toLocaleString()}{" "} đ
-                                      </span>{" "}
+                                        <span
+                                          style={{
+                                            color: 'blue',
+                                            fontSize: '15px',
+                                          }}
+                                        >
+                                          {item.realDonation.toLocaleString()}
+                                        </span>{' '}
+                                        đ /
+                                        <span
+                                          style={{
+                                            color: 'blue',
+                                            fontSize: '15px',
+                                          }}
+                                        >
+                                          {item.targetDonation.toLocaleString()}{' '}
+                                          đ
+                                        </span>{' '}
                                       </span>
                                     </p>
 
@@ -2131,74 +2153,73 @@ export default function Home (props) {
                                         {item.realDonation.toLocaleString()} vnđ
                                       </span>{" "}
                                     </div> */}
-                                      <input
-                                        type="range"
-                                        min="0"
-                                        max={item.targetDonation}
-                                        value={item.realDonation}
-                                        // onChange={handleChange}
-                                        className="range-slider"
-                                        style={{
-                                          background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
-                                            (item.realDonation /
-                                              item.targetDonation) *
-                                            100
-                                          }%, #ddd ${
-                                            (item.realDonation /
-                                              item.targetDonation) *
-                                            100
-                                          }%, #ddd 100%)`,
-                                        }}
-                                      />
-                                      {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
-                                      {item.realDonation !== 0 ? (
-                                        <div></div>
-                                      ) : (
-                                        <div
-                                          className="range-value"
-                                          style={{ position: "absolute" }}
-                                        >
-                                          0
-                                        </div>
-                                      )}
-                                      {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
-                                      {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
-                                      {item.realDonation === 0 ? (
-                                        <div></div>
-                                      ) : (
-                                        <div
-                                          className="range-value"
-                                          style={{
-                                            position: "absolute",
-                                            left: `${
-                                              (item.realDonation /
-                                                item.targetDonation) *
-                                              100
-                                            }%`,
-                                          }}
-                                        >
-                                          {" "}
-                                          {(item.realDonation /
+                                    <input
+                                      type="range"
+                                      min="0"
+                                      max={item.targetDonation}
+                                      value={item.realDonation}
+                                      // onChange={handleChange}
+                                      className="range-slider"
+                                      style={{
+                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
+                                          (item.realDonation /
                                             item.targetDonation) *
-                                            100}
-                                          %
-                                        </div>
-                                      )}
+                                          100
+                                        }%, #ddd ${
+                                          (item.realDonation /
+                                            item.targetDonation) *
+                                          100
+                                        }%, #ddd 100%)`,
+                                      }}
+                                    />
+                                    {/* <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{item.realDonation}%</div> */}
+                                    {item.realDonation !== 0 ? (
+                                      <div></div>
+                                    ) : (
+                                      <div
+                                        className="range-value"
+                                        style={{ position: 'absolute' }}
+                                      >
+                                        0
+                                      </div>
+                                    )}
+                                    {/* <div className="range-value" style={{ position: 'absolute' }}>0</div> */}
+                                    {/* {item.realDonation !== 0 ? <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 5) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div> : <div className="range-value" style={{ position: 'absolute', left: `${((item.realDonation - 0) * 100) / (100 - 0)}%` }}>{((item.realDonation / item.targetDonation) * 100).toString().split('.')[0]}%</div>} */}
+                                    {item.realDonation === 0 ? (
+                                      <div></div>
+                                    ) : (
                                       <div
                                         className="range-value"
                                         style={{
-                                          color: "blue",
-                                          position: "absolute",
-                                          right: "10px",
+                                          position: 'absolute',
+                                          left: `${
+                                            (item.realDonation /
+                                              item.targetDonation) *
+                                            100
+                                          }%`,
                                         }}
                                       >
-                                        {item.targetDonation.toLocaleString()}{" "}
-                                        vnđ
+                                        {' '}
+                                        {(item.realDonation /
+                                          item.targetDonation) *
+                                          100}
+                                        %
                                       </div>
+                                    )}
+                                    <div
+                                      className="range-value"
+                                      style={{
+                                        color: 'blue',
+                                        position: 'absolute',
+                                        right: '10px',
+                                      }}
+                                    >
+                                      {item.targetDonation.toLocaleString()} vnđ
                                     </div>
-                                  ) : (
-                                    <div></div>
-                                  )}
+                                  </div>
+                                ) : (
+                                  <div></div>
+                                )}
 
                                 <div
                                   style={{
@@ -2289,63 +2310,61 @@ export default function Home (props) {
                                   )}
                                 </div>
 
-                                  <div className="we-video-info">
-                                    <div
-                                      className="emoji-state"
-                                      style={{
-                                        display: "flex",
-                                        alignContent: "center",
-                                        paddingTop: "20px",
-                                      }}
-                                    >
-                                      <div className="popover_wrapper">
-                                        <a
-                                          className="popover_title"
-                                          href="#"
-                                          title
-                                        >
+                                <div className="we-video-info">
+                                  <div
+                                    className="emoji-state"
+                                    style={{
+                                      display: 'flex',
+                                      alignContent: 'center',
+                                      paddingTop: '20px',
+                                    }}
+                                  >
+                                    <div className="popover_wrapper">
+                                      <a
+                                        className="popover_title"
+                                        href="#"
+                                        title
+                                      >
+                                        <img
+                                          alt
+                                          src="images/smiles/thumb.png"
+                                        />
+                                      </a>
+                                      <div className="popover_content">
+                                        <span>
                                           <img
                                             alt
                                             src="images/smiles/thumb.png"
                                           />
-                                        </a>
-                                        <div className="popover_content">
-                                          <span>
-                                            <img
-                                              alt
-                                              src="images/smiles/thumb.png"
-                                            />
-                                            Đã thích
-                                          </span>
-                                          <ul className="namelist">
-                                            {item?.like?.length <= 4
-                                              ? item?.like.map((userItem) => {
-                                                  return (
+                                          Đã thích
+                                        </span>
+                                        <ul className="namelist">
+                                          {item?.like?.length <= 4
+                                            ? item?.like.map((userItem) => {
+                                                return (
+                                                  <li>
+                                                    {userItem.user.username}
+                                                  </li>
+                                                );
+                                              })
+                                            : item?.like
+                                                ?.slice(0, 4)
+                                                .map((userItem, index) => {
+                                                  index < 4 ? (
                                                     <li>
                                                       {userItem.user.username}
                                                     </li>
+                                                  ) : (
+                                                    <li>
+                                                      <span>
+                                                        +{item?.like.length - 5}
+                                                      </span>
+                                                    </li>
                                                   );
-                                                })
-                                              : item?.like
-                                                  ?.slice(0, 4)
-                                                  .map((userItem, index) => {
-                                                    index < 4 ? (
-                                                      <li>
-                                                        {userItem.user.username}
-                                                      </li>
-                                                    ) : (
-                                                      <li>
-                                                        <span>
-                                                          +
-                                                          {item?.like.length -
-                                                            5}
-                                                        </span>
-                                                      </li>
-                                                    );
-                                                  })}
-                                          </ul>
-                                        </div>
+                                                })}
+                                        </ul>
                                       </div>
+                                    </div>
 
                                     <p>{item.like.length || 0}</p>
                                     <div style={{ marginLeft: "20px" }}>
@@ -2447,145 +2466,145 @@ export default function Home (props) {
                                                                         <div style={{ color: 'blue', fontSize: '15px' }}><span>{item.comment.length} bình luận</span></div>
                                                                     </div>
                                                                 </div> */}
-                                  </div>
-                                  <div
-                                    className="new-comment"
-                                    style={{ display: "block" }}
+                                </div>
+                                <div
+                                  className="new-comment"
+                                  style={{ display: 'block' }}
+                                >
+                                  <form
+                                    method="post"
+                                    onSubmit={formik2.handleSubmit}
+                                    style={{ position: 'relative' }}
                                   >
-                                    <form
-                                      method="post"
-                                      onSubmit={formik2.handleSubmit}
-                                      style={{ position: "relative" }}
-                                    >
-                                      <div style={{ paddingBottom: "10px" }}>
-                                        {onID === item.activityId ? (
-                                          <div
-                                            className="commentT"
-                                            style={{
-                                              display: "flex",
-                                              alignContent: "center",
-                                            }}
-                                          >
-                                            <span style={{ paddingTop: "6px" }}>
-                                              Trả lời bình luận :{" "}
-                                            </span>
-                                            <div
-                                              style={{ marginLeft: "10px" }}
-                                              className="textcmt"
-                                            >
-                                              {" "}
-                                              @{content}
-                                              {setOnID === item.activityId ? (
-                                                <span
-                                                  style={{
-                                                    color: "red",
-                                                    fontSize: "18px",
-                                                    cursor: "pointer",
-                                                    paddingLeft: "4px",
-                                                  }}
-                                                  onClick={() => {
-                                                    setOnID("");
-                                                    setTcss("35px");
-                                                  }}
-                                                >
-                                                  x
-                                                </span>
-                                              ) : (
-                                                <span
-                                                  style={{
-                                                    color: "red",
-                                                    fontSize: "18px",
-                                                    cursor: "pointer",
-                                                    paddingLeft: "4px",
-                                                  }}
-                                                  onClick={() => {
-                                                    setOnID("");
-                                                    setTcss("10px");
-                                                  }}
-                                                >
-                                                  x
-                                                </span>
-                                              )}
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <div
-                                            style={{
-                                              paddingTop: "6px",
-                                              paddingBottom: "10px",
-                                            }}
-                                          ></div>
-                                        )}
-                                      </div>
-                                      <input
-                                        type="text"
-                                        placeholder=""
-                                        value={formik2.values.commentContent}
-                                        name={commentI}
-                                        onChange={formik2.handleChange}
-                                        className="input-comment"
-                                      />
+                                    <div style={{ paddingBottom: '10px' }}>
                                       {onID === item.activityId ? (
-                                        <button
+                                        <div
+                                          className="commentT"
                                           style={{
-                                            position: "absolute",
-                                            top: "52px",
-                                          }}
-                                          type="submit"
-                                          onClick={async () => {
-                                            // await setTextI(item.activityId)
-                                            formik2.setFieldValue(
-                                              "activityId",
-                                              item.activityId
-                                            );
+                                            display: 'flex',
+                                            alignContent: 'center',
                                           }}
                                         >
-                                          <i className="icofont-paper-plane" />
-                                        </button>
+                                          <span style={{ paddingTop: '6px' }}>
+                                            Trả lời bình luận :{' '}
+                                          </span>
+                                          <div
+                                            style={{ marginLeft: '10px' }}
+                                            className="textcmt"
+                                          >
+                                            {' '}
+                                            @{content}
+                                            {setOnID === item.activityId ? (
+                                              <span
+                                                style={{
+                                                  color: 'red',
+                                                  fontSize: '18px',
+                                                  cursor: 'pointer',
+                                                  paddingLeft: '4px',
+                                                }}
+                                                onClick={() => {
+                                                  setOnID('');
+                                                  setTcss('35px');
+                                                }}
+                                              >
+                                                x
+                                              </span>
+                                            ) : (
+                                              <span
+                                                style={{
+                                                  color: 'red',
+                                                  fontSize: '18px',
+                                                  cursor: 'pointer',
+                                                  paddingLeft: '4px',
+                                                }}
+                                                onClick={() => {
+                                                  setOnID('');
+                                                  setTcss('10px');
+                                                }}
+                                              >
+                                                x
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
                                       ) : (
-                                        <button
+                                        <div
                                           style={{
-                                            position: "absolute",
-                                            top: "40px",
+                                            paddingTop: '6px',
+                                            paddingBottom: '10px',
                                           }}
-                                          type="submit"
-                                          onClick={async () => {
-                                            // await setTextI(item.activityId)
-                                            formik2.setFieldValue(
-                                              "activityId",
-                                              item.activityId
-                                            );
-                                          }}
-                                        >
-                                          <i className="icofont-paper-plane" />
-                                        </button>
+                                        ></div>
                                       )}
+                                    </div>
+                                    <input
+                                      type="text"
+                                      placeholder=""
+                                      value={formik2.values.commentContent}
+                                      name={commentI}
+                                      onChange={formik2.handleChange}
+                                      className="input-comment"
+                                    />
+                                    {onID === item.activityId ? (
+                                      <button
+                                        style={{
+                                          position: 'absolute',
+                                          top: '52px',
+                                        }}
+                                        type="submit"
+                                        onClick={async () => {
+                                          // await setTextI(item.activityId)
+                                          formik2.setFieldValue(
+                                            'activityId',
+                                            item.activityId
+                                          );
+                                        }}
+                                      >
+                                        <i className="icofont-paper-plane" />
+                                      </button>
+                                    ) : (
+                                      <button
+                                        style={{
+                                          position: 'absolute',
+                                          top: '40px',
+                                        }}
+                                        type="submit"
+                                        onClick={async () => {
+                                          // await setTextI(item.activityId)
+                                          formik2.setFieldValue(
+                                            'activityId',
+                                            item.activityId
+                                          );
+                                        }}
+                                      >
+                                        <i className="icofont-paper-plane" />
+                                      </button>
+                                    )}
 
-                                      {item?.commentData[0]?.isCmt ? (
-                                        <div></div>
-                                      ) : (
-                                        item.comment.map((item, index) => {
-                                          return (
-                                            <div className="comments-area">
-                                              <ul>
-                                                <li>
-                                                  <figure>
-                                                    <img
-                                                      alt
-                                                      src="images/resources/user1.jpg"
-                                                    />
-                                                  </figure>
-                                                  <div className="commenter">
-                                                    <h5>
-                                                      <a title href="#">
-                                                        {item.user?.username}
-                                                      </a>
-                                                    </h5>
-                                                    <span>
-                                                      {DateTime(item.datetime)}
-                                                    </span>
-                                                    <p>{item.commentContent}</p>
-                                                    {/* <span>you can view the more detail via
+                                    {item?.commentData[0]?.isCmt ? (
+                                      <div></div>
+                                    ) : (
+                                      item.comment.map((item, index) => {
+                                        return (
+                                          <div className="comments-area">
+                                            <ul>
+                                              <li>
+                                                <figure>
+                                                  <img
+                                                    alt
+                                                    src={item.user.image}
+                                                  />
+                                                </figure>
+                                                <div className="commenter">
+                                                  <h5>
+                                                    <a title href="#">
+                                                      {item.user?.username}
+                                                    </a>
+                                                  </h5>
+                                                  <span>
+                                                    {DateTime(item.datetime)}
+                                                  </span>
+                                                  <p>{item.commentContent}</p>
+                                                  {/* <span>you can view the more detail via
                                                                                                 link</span>
                                                                                             <a title href="#">https://www.youtube.com/watch?v=HpZgwHU1GcI</a> */}
                                                 </div>
@@ -2676,89 +2695,89 @@ export default function Home (props) {
                       );
                     })}
 
-                    <div className="loadmore">
-                      <div className="sp sp-bars" />
-                      <a href="#" title data-ripple>
-                        Load More..
-                      </a>
-                    </div>
-                    {/* loadmore buttons */}
+                  <div className="loadmore">
+                    <div className="sp sp-bars" />
+                    <a href="#" title data-ripple>
+                      Load More..
+                    </a>
                   </div>
-                  <div className="col-lg-3">
-                    <aside className="sidebar static right">
-                      {localStorage.getItem("userID") &&
-                      userByID?.fanpage?.status === "Active" ? (
-                        <div className="widget">
-                          <h4 className="widget-title">Nhóm của bạn</h4>
-                          <ul className="ak-groups">
-                            <li>
-                              <figure>
-                                <img
-                                  style={{
-                                    width: "50px",
-                                    height: "50px",
-                                    objectfit: "cover",
-                                  }}
-                                  src={userByID?.fanpage?.avatar}
-                                  alt
-                                />
-                              </figure>
-                              <div className="your-grp">
-                                <h5>
-                                  <NavLink
-                                    to={`/fanpage/${localStorage.getItem(
-                                      "userID"
-                                    )}`}
-                                    title
-                                    style={{
-                                      fontSize: "20px",
-                                      width: "200px",
-                                      wordWrap: "break-word",
-                                    }}
-                                  >
-                                    {userByID?.fanpage?.fanpageName}
-                                  </NavLink>
-                                </h5>
-                                <NavLink to="/" title>
-                                  <i className="icofont-bell-alt" />
-                                  Thông báo
-                                  <span>13</span>
-                                </NavLink>
-                                <NavLink
-                                  to=""
-                                  href="group-feed.html"
-                                  title
-                                  className="promote"
-                                  onClick={() => {}}
-                                >
-                                  Chi tiết
-                                </NavLink>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      ) : (
-                        <div></div>
-                      )}
-                      <RecommentActivity />
-                      {/* suggested group */}
+                  {/* loadmore buttons */}
+                </div>
+                <div className="col-lg-3">
+                  <aside className="sidebar static right">
+                    {localStorage.getItem('userID') &&
+                    userByID?.fanpage?.status === 'Active' ? (
                       <div className="widget">
-                        <h4 className="widget-title">Giải trí</h4>
-                        <div className="ask-question">
-                          <div className="rec-events bg-purple">
-                            <i className="icofont-gift" />
-                            <h6>
-                              <a title href>
-                                Game xúc xắc
-                              </a>
-                            </h6>
-                            <img alt src="images/clock.png" />
-                          </div>
-                          <NavLink to="/game">Chơi game</NavLink>
-                        </div>
+                        <h4 className="widget-title">Nhóm của bạn</h4>
+                        <ul className="ak-groups">
+                          <li>
+                            <figure>
+                              <img
+                                style={{
+                                  width: '50px',
+                                  height: '50px',
+                                  objectfit: 'cover',
+                                }}
+                                src={userByID?.fanpage?.avatar}
+                                alt
+                              />
+                            </figure>
+                            <div className="your-grp">
+                              <h5>
+                                <NavLink
+                                  to={`/fanpage/${localStorage.getItem(
+                                    'userID'
+                                  )}`}
+                                  title
+                                  style={{
+                                    fontSize: '20px',
+                                    width: '200px',
+                                    wordWrap: 'break-word',
+                                  }}
+                                >
+                                  {userByID?.fanpage?.fanpageName}
+                                </NavLink>
+                              </h5>
+                              <NavLink to="/" title>
+                                <i className="icofont-bell-alt" />
+                                Thông báo
+                                <span>13</span>
+                              </NavLink>
+                              <NavLink
+                                to=""
+                                href="group-feed.html"
+                                title
+                                className="promote"
+                                onClick={() => {}}
+                              >
+                                Chi tiết
+                              </NavLink>
+                            </div>
+                          </li>
+                        </ul>
                       </div>
-                      {/* ask question widget */}
-                      {/* <div className="widget">
+                    ) : (
+                      <div></div>
+                    )}
+                    <RecommentActivity />
+                    {/* suggested group */}
+                    <div className="widget">
+                      <h4 className="widget-title">Giải trí</h4>
+                      <div className="ask-question">
+                        <div className="rec-events bg-purple">
+                          <i className="icofont-gift" />
+                          <h6>
+                            <a title href>
+                              Game xúc xắc
+                            </a>
+                          </h6>
+                          <img alt src="images/clock.png" />
+                        </div>
+                        <NavLink to="/game">Chơi game</NavLink>
+                      </div>
+                    </div>
+                    {/* ask question widget */}
+                    {/* <div className="widget">
                                                 <h4 className="widget-title">Explor Events <a className="see-all" href="#" title>Xem Tất Cả</a></h4>
                                                 <div className="rec-events bg-purple">
                                                     <i className="icofont-gift" />
@@ -3680,26 +3699,25 @@ export default function Home (props) {
                     </div>*/}
                   </div>
 
-                    <div className="row">
-                      <div className="col-md-4">
-                        <button
-                          type="submit"
-                          id="submit"
-                          className="btn btn-primary btn-block"
-                        >
-                          Cập nhật
-                        </button>
-                      </div>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <button
+                        type="submit"
+                        id="submit"
+                        className="btn btn-primary btn-block"
+                      >
+                        Cập nhật
+                      </button>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        ) : (
-          <div></div>
-        )
-      }
+        </div>
+      ) : (
+        <div></div>
+      )}
 
       {
         tt ? (
@@ -3716,14 +3734,14 @@ export default function Home (props) {
               }}
             >
             <div className="multi-form">
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={handleSubmit1}
-                >
-                  <div className="container">
-                    <header className="header">
-                      {/* <h1 id="title" className="text-center">Survey Form</h1>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit1}
+              >
+                <div className="container">
+                  <header className="header">
+                    {/* <h1 id="title" className="text-center">Survey Form</h1>
                                 <p id="description" className="text-center">
                                     Thank you for taking the time to help us improve the platform
                                 </p>
@@ -3885,32 +3903,32 @@ export default function Home (props) {
                         ))}
                       </div>
 
-                        {currentForm === formData.length - 1 && (
-                          <div className="form-buttons">
+                      {currentForm === formData.length - 1 && (
+                        <div className="form-buttons">
+                          <button
+                            style={{ width: '25%' }}
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={handleCreateNewForm}
+                          >
+                            Thêm quy trình
+                          </button>
+                          {currentForm >= 1 && (
                             <button
-                              style={{ width: "25%" }}
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={handleCreateNewForm}
+                              style={{ marginLeft: '1rem' }}
+                              type="submit"
+                              className="btn btn-success"
                             >
-                              Thêm quy trình
+                              Hoàn thành
                             </button>
-                            {currentForm >= 1 && (
-                              <button
-                                style={{ marginLeft: "1rem" }}
-                                type="submit"
-                                className="btn btn-success"
-                              >
-                                Hoàn thành
-                              </button>
-                            )}
-                          </div>
-                        )}
-                      </Form>
-                    </div>
+                          )}
+                        </div>
+                      )}
+                    </Form>
                   </div>
-                </Formik>
-              </div>
+                </div>
+              </Formik>
+            </div>
           </div>
         </div>
       ) : (

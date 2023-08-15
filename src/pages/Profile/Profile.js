@@ -271,6 +271,30 @@ export default function Profile(props) {
                                 Thông tin cá nhân
                               </a>
                             </li>
+                            <li className="nav-item">
+                              <a
+                                href="#"
+                                className
+                                data-toggle="tab"
+                                onClick={() => {
+                                  history.push(`/endactivity?userId=${userID}`);
+                                }}
+                              >
+                                Danh sách kết thúc chiến dịch
+                              </a>
+                            </li>
+                            <li className="nav-item">
+                              <a
+                                href="#"
+                                className
+                                data-toggle="tab"
+                                onClick={() => {
+                                  history.push(`/endactivity?userId=${userID}`);
+                                }}
+                              >
+                                Danh sách kết thúc chiến dịch
+                              </a>
+                            </li>
                           </ul>
                           <ul className="more-grp-info">
                             <li>
