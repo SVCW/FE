@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { storage_bucket } from './../../firebase';
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { GetListFanpageAction, UpdateStatusFanpageAction } from '../../redux/actions/FanpageAction';
-
+import { useFormik } from "formik";
 export default function AdminFanpage () {
     const dispatch = useDispatch()
     const { arrFanpage } = useSelector(root => root.FanpageReducer)
@@ -95,7 +95,14 @@ export default function AdminFanpage () {
     // const formatCurrency = (value) => {
     //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     // };
-
+    const formik = useFormik({
+        initialValues: {
+          description: "",
+          email: "",
+          password: "",
+          confirm_password: ""
+        }
+      });
     const openNew = () => {
         setProduct(emptyProduct);
         setSubmitted(false);
@@ -368,7 +375,7 @@ export default function AdminFanpage () {
                         <br />
                         <div>
                             <label htmlFor="img" className="input-preview">
-                                <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} />
+                                {/* <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
                                 {product?.achivementLogo === '' ? <div></div> : <img src={product.achivementLogo} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
                             </label>
                             {submitted && !product.achivementLogo && <small className="p-error">Hình ảnh huy hiệu không được để trống.</small>}
@@ -381,7 +388,7 @@ export default function AdminFanpage () {
                         <label htmlFor="description" className="font-bold" style={{ fontWeight: 'bold' }}>
                             Miêu tả
                         </label>
-                        <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
+                        <InputTextarea  id="description" value={formik.values.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
                         {submitted && !product.description && <small className="p-error">Miêu tả huy hiệu không được để trống.</small>}
                     </div>
 

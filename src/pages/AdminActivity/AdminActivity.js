@@ -368,7 +368,7 @@ export default function AdminActivity () {
                         <br />
                         <div>
                             <label htmlFor="img" className="input-preview">
-                                <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} />
+                                {/* <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
                                 {product?.achivementLogo === '' ? <div></div> : <img src={product.achivementLogo} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
                             </label>
                             {submitted && !product.achivementLogo && <small className="p-error">Hình ảnh huy hiệu không được để trống.</small>}

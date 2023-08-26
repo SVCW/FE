@@ -85,6 +85,7 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 export default function Home (props) {
+  const [isMatch, setIsMatch] = useState(false);
   const defaultProps = {
     center: {
       lat: 10.99835602,
@@ -102,6 +103,28 @@ export default function Home (props) {
         setCoords({ lat: latitude, lng: longitude });
       }
     );
+    const stringToCompare = 'success';
+
+        // Get the current URL
+        const currentUrl = window.location.href;
+
+        // Check if the current URL contains the given string
+        const match = currentUrl.includes(stringToCompare);
+
+        // Set the state based on the result
+        setIsMatch(match);
+        if (match) {
+            Swal.fire({
+                title: 'Thành Công!',
+                text: 'Bạn đã quyên góp' + "" + "thành công",
+                icon: 'success',
+            }).then((result) => {
+                props.history.push('/home')
+
+                // Reset isMatch to false
+                setIsMatch(false);
+            });
+        }
   }, []);
 
   const fn = async (value) => {

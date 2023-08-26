@@ -333,7 +333,27 @@ export default function Achivement () {
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
                         <Column field="achivementId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
                         <Column field="achivementLogo" header="Hình ảnh" body={imageBodyTemplate}></Column>
-                        <Column field="description" header="Tên huy hiệu" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column
+  field="description"
+  header="Tên huy hiệu"
+  sortable
+  style={{ minWidth: '12rem' }}
+  body={(rowData) => {
+    const maxLength = 20;
+    const description = rowData.description;
+
+    if (description.length > maxLength) {
+      return (
+        <span title={description}>
+          {description.substring(0, maxLength)}...
+        </span>
+      );
+    }
+
+    return description;
+  }}
+></Column>
+
                         <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Ngày tạo" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
@@ -352,8 +372,8 @@ export default function Achivement () {
                         <br />
                         <div>
                             <label htmlFor="img" className="input-preview">
-                                <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} />
-                                {product?.achivementLogo === '' ? <div></div> : <img src={product.achivementLogo} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
+                                <input name="img" id="img" className="input-s" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} />
+                                {product?.achivementLogo === '' ? <div></div> : <img src={product.achivementLogo} style={{ width: '30000px', height: '195px', borderRadius: '5px' }} />}
                             </label>
                             {submitted && !product.achivementLogo && <small className="p-error">Hình ảnh huy hiệu không được để trống.</small>}
                         </div>
