@@ -328,7 +328,26 @@ export default function Role () {
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
                         <Column field="roleId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
                         <Column field="roleName" header="Tên vai trò" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="description" header="Miêu tả" sortable style={{ minWidth: '12rem' }}></Column>
+                        {/* <Column field="description" header="Miêu tả" sortable style={{ minWidth: '12rem' }}></Column> */}
+                        <Column
+                field="description"
+                header="Miêu tả"
+                sortable
+                style={{ minWidth: "12rem" }}
+                body={(rowData) => {
+                  const maxLength = 30;
+                  const description = rowData.description;
+                  if (description.length > maxLength) {
+                    return (
+                      <span title={description}>
+                        {description.substring(0, maxLength)}...
+                      </span>
+                    );
+                  }
+
+                  return description;
+                }}
+              ></Column>
                         {/* <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Day" sortable style={{ minWidth: '12rem' }}></Column> */}
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>

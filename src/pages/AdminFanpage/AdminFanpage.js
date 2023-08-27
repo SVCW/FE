@@ -343,80 +343,199 @@ export default function AdminFanpage () {
     );
     console.log(product);
     return (
-        <div className="app-main__outer" style={{ margin: '20px 30px' }}>
-            <div>
-                <Toast ref={toast} />
-                <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+      <div className="app-main__outer" style={{ margin: "20px 30px" }}>
+        <div>
+          <Toast ref={toast} />
+          <div className="card">
+            <Toolbar
+              className="mb-4"
+              left={leftToolbarTemplate}
+              right={rightToolbarTemplate}
+            ></Toolbar>
 
-                    <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm" globalFilter={globalFilter} header={header}>
-                        {/* <Column selectionMode="multiple" exportable={false}></Column> */}
-                        <Column field="fanpageId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="avatar" header="Hình ảnh" body={imageBodyTemplate}></Column>
-                        <Column field="fanpageName" header="Fanpage" sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Ngày tạo" sortable style={{ minWidth: '12rem' }}></Column>
-                        {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
+            <DataTable
+              ref={dt}
+              value={products}
+              selection={selectedProducts}
+              onSelectionChange={(e) => setSelectedProducts(e.value)}
+              dataKey="id"
+              paginator
+              rows={10}
+              rowsPerPageOptions={[5, 10, 25]}
+              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+              currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+              globalFilter={globalFilter}
+              header={header}
+            >
+              {/* <Column selectionMode="multiple" exportable={false}></Column> */}
+              <Column
+                field="fanpageId"
+                header="Mã"
+                sortable
+                style={{ minWidth: "11rem" }}
+              ></Column>
+              <Column
+                field="avatar"
+                header="Hình ảnh"
+                body={imageBodyTemplate}
+              ></Column>
+              {/* <Column field="fanpageName" header="Fanpage" sortable style={{ minWidth: '12rem' }}></Column> */}
+              <Column
+                field="fanpageName"
+                header="Fanpage"
+                sortable
+                style={{ minWidth: "12rem" }}
+                body={(rowData) => {
+                  const maxLength = 35;
+                  const fanpageName = rowData.fanpageName;
+                  if (fanpageName.length > maxLength) {
+                    return (
+                      <span title={fanpageName}>
+                        {fanpageName.substring(0, maxLength)}...
+                      </span>
+                    );
+                  }
+
+                  return fanpageName;
+                }}
+              ></Column>
+              <Column
+                field={(createAt) =>
+                  moment(createAt.createAt).format("DD-MM-YYYY")
+                }
+                header="Ngày tạo"
+                sortable
+                style={{ minWidth: "12rem" }}
+              ></Column>
+              {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
                         <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column> */}
-                        <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem', marginRight: '100px' }}></Column>
-                    </DataTable>
-                </div>
+              <Column
+                body={actionBodyTemplate}
+                exportable={false}
+                style={{ minWidth: "12rem", marginRight: "100px" }}
+              ></Column>
+            </DataTable>
+          </div>
 
-                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} onClick={() => { setText('Thêm Mới huy hiệu') }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+          <Dialog
+            visible={productDialog}
+            style={{ width: "32rem" }}
+            breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+            onClick={() => {
+              setText("Thêm Mới huy hiệu");
+            }}
+            header={text}
+            modal
+            className="p-fluid"
+            footer={productDialogFooter}
+            onHide={hideDialog}
+          >
+            <div className="field">
+              <label
+                htmlFor="name"
+                className="font-bold"
+                style={{ fontWeight: "bold" }}
+              >
+                Hình ảnh
+              </label>
+              <br />
+              <div>
+                <label htmlFor="img" className="input-preview">
+                  {/* <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
+                  {product?.achivementLogo === "" ? (
+                    <div></div>
+                  ) : (
+                    <img
+                      src={product.achivementLogo}
+                      style={{
+                        width: "900px",
+                        height: "195px",
+                        borderRadius: "5px",
+                      }}
+                    />
+                  )}
+                </label>
+                {submitted && !product.achivementLogo && (
+                  <small className="p-error">
+                    Hình ảnh huy hiệu không được để trống.
+                  </small>
+                )}
+              </div>
 
-                    <div className="field">
-                        <label htmlFor="name" className="font-bold" style={{ fontWeight: 'bold' }}>
-                            Hình ảnh
-                        </label>
-                        <br />
-                        <div>
-                            <label htmlFor="img" className="input-preview">
-                                {/* <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
-                                {product?.achivementLogo === '' ? <div></div> : <img src={product.achivementLogo} style={{ width: '900px', height: '195px', borderRadius: '5px' }} />}
-                            </label>
-                            {submitted && !product.achivementLogo && <small className="p-error">Hình ảnh huy hiệu không được để trống.</small>}
-                        </div>
-
-                        <br />
-                        {/* <input type='file' id="achivementLogo" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
-                    </div>
-                    <div className="field">
-                        <label htmlFor="description" className="font-bold" style={{ fontWeight: 'bold' }}>
-                            Miêu tả
-                        </label>
-                        <InputTextarea  id="description" value={formik.values.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
-                        {submitted && !product.description && <small className="p-error">Miêu tả huy hiệu không được để trống.</small>}
-                    </div>
-
-
-
-
-                </Dialog>
-
-                <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Thông Báo" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        {product && (
-                            <span style={{ fontSize: '18px' }}>
-                                Bạn muốn cập nhật trạng thái hoạt động fanpage <b>{product.fanpageName}</b>?
-                            </span>
-                        )}
-                    </div>
-                </Dialog>
-
-                <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        {product && <span>Are you sure you want to delete the selected products?</span>}
-                    </div>
-                </Dialog>
+              <br />
+              {/* <input type='file' id="achivementLogo" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
             </div>
+            <div className="field">
+              <label
+                htmlFor="description"
+                className="font-bold"
+                style={{ fontWeight: "bold" }}
+              >
+                Miêu tả
+              </label>
+              <InputTextarea
+                id="description"
+                value={formik.values.description}
+                onChange={(e) => onInputChange(e, "description")}
+                required
+                rows={3}
+                cols={20}
+              />
+              {submitted && !product.description && (
+                <small className="p-error">
+                  Miêu tả huy hiệu không được để trống.
+                </small>
+              )}
+            </div>
+          </Dialog>
 
+          <Dialog
+            visible={deleteProductDialog}
+            style={{ width: "32rem" }}
+            breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+            header="Thông Báo"
+            modal
+            footer={deleteProductDialogFooter}
+            onHide={hideDeleteProductDialog}
+          >
+            <div className="confirmation-content">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: "2rem" }}
+              />
+              {product && (
+                <span style={{ fontSize: "18px" }}>
+                  Bạn muốn cập nhật trạng thái hoạt động fanpage{" "}
+                  <b>{product.fanpageName}</b>?
+                </span>
+              )}
+            </div>
+          </Dialog>
+
+          <Dialog
+            visible={deleteProductsDialog}
+            style={{ width: "32rem" }}
+            breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+            header="Confirm"
+            modal
+            footer={deleteProductsDialogFooter}
+            onHide={hideDeleteProductsDialog}
+          >
+            <div className="confirmation-content">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: "2rem" }}
+              />
+              {product && (
+                <span>
+                  Are you sure you want to delete the selected products?
+                </span>
+              )}
+            </div>
+          </Dialog>
         </div>
-
-    )
+      </div>
+    );
 }

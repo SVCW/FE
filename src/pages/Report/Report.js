@@ -359,7 +359,26 @@ export default function Report () {
                         currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm" globalFilter={globalFilter} header={header}>
                         {/* <Column selectionMode="multiple" exportable={false}></Column> */}
                         <Column field="reportId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="reason" header="Lý do" sortable style={{ minWidth: '11rem' }}></Column>
+                        {/* <Column field="reason" header="Lý do" sortable style={{ minWidth: '11rem' }}></Column> */}
+                        <Column
+                field="reason"
+                header="Lý do"
+                sortable
+                style={{ minWidth: "12rem" }}
+                body={(rowData) => {
+                  const maxLength = 50;
+                  const reason = rowData.reason;
+                  if (reason.length > maxLength) {
+                    return (
+                      <span title={reason}>
+                        {reason.substring(0, maxLength)}...
+                      </span>
+                    );
+                  }
+
+                  return reason;
+                }}
+              ></Column>
                         <Column field="activity.title" header="Bài viết bị báo cáo" sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field={datetime => moment(datetime.datetime).format('DD-MM-YYYY')} header="Ngày báo cáo" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
