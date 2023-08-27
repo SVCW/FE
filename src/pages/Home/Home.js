@@ -84,7 +84,7 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-export default function Home(props) {
+export default function Home (props) {
   const [isMatch, setIsMatch] = useState(false);
   const defaultProps = {
     center: {
@@ -116,7 +116,7 @@ export default function Home(props) {
     if (match) {
       Swal.fire({
         title: "Thành Công!",
-        text: "Bạn đã quyên góp" + "" + "thành công",
+        text: "Bạn đã quyên góp thành công",
         icon: "success",
       }).then((result) => {
         props.history.push("/home");

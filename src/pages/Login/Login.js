@@ -26,18 +26,18 @@ export default function Login (props) {
 
         const action2 = GetActivityLoginAction();
         dispatch(action2)
-        const stringToCompare = 'host';
+        //const stringToCompare = 'success';
 
         // Get the current URL
         const currentUrl = window.location.href;
 
         // Check if the current URL contains the given string
-        const match = currentUrl.includes(stringToCompare);
+        // const match = currentUrl.includes(stringToCompare);
 
-        // Set the state based on the result
-        setIsMatch(match);
+        // // Set the state based on the result
+        // setIsMatch(match);
         // if (match) {
-        //     Swal.fire({
+        //     Swal.fire({  
         //         title: 'Good job!',
         //         text: 'You matched the string!',
         //         icon: 'success',
