@@ -76,7 +76,7 @@ export default function Report () {
             });
     };
 
-    const [text, setText] = useState('Thêm mới huy hiệu')
+    const [text, setText] = useState('Gửi báo cáo')
     const [products, setProducts] = useState([]);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -131,42 +131,15 @@ export default function Report () {
 
     const saveProduct = async () => {
         setSubmitted(true);
-
-        if (product.description.trim()) {
-            let _products = [...products];
-            let _product = { ...product };
-
-            if (product.achivementId !== '0') {
-                const index = findIndexById(product.id);
-
-                _products[index] = _product;
-                console.log(product.achivementId);
-                const action = await UpdateAchivementAction(product)
-                await dispatch(action)
-                setProductDialog(false);
-                counter++;
-                toast.current.show({ severity: 'success', summary: 'Thành công', detail: `Cập nhật thành công huy hiệu ${product.achivementId}`, life: 3000, });
-                setText('')
-
-            } else {
-                const action = await CreateAchivementAction(product)
-                await dispatch(action)
-                counter++;
-                toast.current.show({ severity: 'success', summary: 'Thành công', detail: 'Tạo mới huy hiệu thành công', life: 3000 });
-
-
-            }
-
-            setProducts(_products);
-            setProductDialog(false);
-            setProduct(emptyProduct)
-
-
-        }
+        let _product = { ...product };
+        let productItem = { ...product };
+        console.log(productItem.user?.email);
+        console.log(productItem.user?.fullName);
+        console.log(productItem?.title);
     };
 
     const editProduct = (product) => {
-        setText('Chỉnh sửa huy hiệu')
+        setText('Gửi báo cáo')
         setProduct({ ...product });
         setProductDialog(true);
     };
@@ -298,7 +271,7 @@ export default function Report () {
         return (
             <React.Fragment>
                 <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editProduct(rowData)} />
-                <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} />
+                {/* <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} /> */}
             </React.Fragment>
         );
     };
@@ -331,7 +304,7 @@ export default function Report () {
     const productDialogFooter = (
         <React.Fragment>
             <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
-            <Button label="Hoàn thành" icon="pi pi-check" onClick={saveProduct} />
+            <Button label="Gửi" icon="pi pi-check" onClick={saveProduct} />
         </React.Fragment>
     );
     const deleteProductDialogFooter = (
@@ -361,35 +334,36 @@ export default function Report () {
                         <Column field="reportId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
                         {/* <Column field="reason" header="Lý do" sortable style={{ minWidth: '11rem' }}></Column> */}
                         <Column
-                field="reason"
-                header="Lý do"
-                sortable
-                style={{ minWidth: "12rem" }}
-                body={(rowData) => {
-                  const maxLength = 50;
-                  const reason = rowData.reason;
-                  if (reason.length > maxLength) {
-                    return (
-                      <span title={reason}>
-                        {reason.substring(0, maxLength)}...
-                      </span>
-                    );
-                  }
+                            field="reason"
+                            header="Lý do"
+                            sortable
+                            style={{ minWidth: "12rem" }}
+                            body={(rowData) => {
+                                const maxLength = 50;
+                                const reason = rowData.reason;
+                                if (reason.length > maxLength) {
+                                    return (
+                                        <span title={reason}>
+                                            {reason.substring(0, maxLength)}...
+                                        </span>
+                                    );
+                                }
 
-                  return reason;
-                }}
-              ></Column>
+                                return reason;
+                            }}
+                        ></Column>
                         <Column field="activity.title" header="Bài viết bị báo cáo" sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field="user.fullName" header="Người báo cáo" sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field={datetime => moment(datetime.datetime).format('DD-MM-YYYY')} header="Ngày báo cáo" sortable style={{ minWidth: '12rem' }}></Column>
                         {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
                         <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column> */}
-                        {/* <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem', marginRight: '100px' }}></Column> */}
+                        <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem', marginRight: '100px' }}></Column>
                     </DataTable>
                 </div>
 
-                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} onClick={() => { setText('Thêm Mới huy hiệu') }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} onClick={() => { setText('Gửi báo cáo') }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
 
                     <div className="field">
                         <label htmlFor="name" className="font-bold" style={{ fontWeight: 'bold' }}>
