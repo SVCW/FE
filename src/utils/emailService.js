@@ -1,11 +1,8 @@
-const axios = require('axios');
+import React from 'react';
+import axios from 'axios';
 
-async function sendEmail(to, subject, text) {
-    // const to = 'anbui.dev@gmail.com';
-    //   const subject = 'Test email';
-    //   const text = 'This is a test email';
-     // Call the sendEmail function with the parameters
-    //   await sendEmail(to, subject, text);
+
+export const SendEmail = async (to, subject, text) => {
   const apiUrl = 'https://mail-sms-service.vercel.app/mail/send-email';
   const emailData = {
     to,
@@ -25,4 +22,8 @@ async function sendEmail(to, subject, text) {
   }
 }
 
-module.exports = sendEmail;
+
+
+
+
+

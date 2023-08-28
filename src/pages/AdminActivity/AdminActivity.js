@@ -26,8 +26,10 @@ import {
   DeleteActivityAction,
   GetListActivityAction,
 } from "../../redux/actions/ActivityAction";
+import Swal from "sweetalert2";
+import { SendEmail } from "../../utils/emailService";
 
-export default function AdminActivity() {
+export default function AdminActivity () {
   const dispatch = useDispatch();
   const { arrActivity } = useSelector((root) => root.ActivityReducer);
   console.log(arrActivity);
@@ -68,7 +70,7 @@ export default function AdminActivity() {
     );
   };
 
-  const [text, setText] = useState("Thêm mới huy hiệu");
+  const [text, setText] = useState("Gửi cảnh báo");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -125,48 +127,18 @@ export default function AdminActivity() {
   };
 
   const saveProduct = async () => {
+    let productItem = { ...product };
+    console.log(productItem.user?.email);
+    console.log(productItem.user?.fullName);
+    console.log(productItem?.title);
     setSubmitted(true);
 
-    if (product.description.trim()) {
-      let _products = [...products];
-      let _product = { ...product };
-
-      if (product.achivementId !== "0") {
-        const index = findIndexById(product.id);
-
-        _products[index] = _product;
-        console.log(product.achivementId);
-        const action = await UpdateAchivementAction(product);
-        await dispatch(action);
-        setProductDialog(false);
-        counter++;
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: `Cập nhật thành công  ${product.title}`,
-          life: 3000,
-        });
-        setText("");
-      } else {
-        const action = await CreateAchivementAction(product);
-        await dispatch(action);
-        counter++;
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: "Tạo mới huy hiệu thành công",
-          life: 3000,
-        });
-      }
-
-      setProducts(_products);
-      setProductDialog(false);
-      setProduct(emptyProduct);
-    }
+    SendEmail(productItem.user?.email, 'Cảnh báo bài viết', `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thư cảnh báo</title><style>body{font-family:Arial,sans-serif}.container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ccc;border-radius:5px}.header{background-color:#ff1827;color:#fff;text-align:center;padding:10px}.content{padding:20px}</style></head><body><div class="container"><div class="header"><h1>Thư cảnh báo từ SVCW</h1></div><div class="content"><p>Xin chào ${productItem.user?.fullName},</p><p>Chúng tôi thấy bài viết <span style="font-weight:bold;">${productItem?.title}</span> bạn có nội dung không phù hợp với cộng đồng trên SVCW!</p><p>Bạn nên chỉnh sửa lại nội dung bài viết cho phù hợp, nếu không bài viết của bạn sẽ bị xóa.</p><p>Chúc bạn có những trải nghiệm của mình trên SVCW!</p><p>Trân trọng,<br>SVCW</p></div></div></body></html>`)
+    setProductDialog(false);
   };
 
   const editProduct = (product) => {
-    setText("Chỉnh sửa huy hiệu");
+    setText("Gửi cảnh báo");
     setProduct({ ...product });
     setProductDialog(true);
   };
@@ -197,7 +169,7 @@ export default function AdminActivity() {
   const findIndexById = (id) => {
     let index = -1;
 
-    for (let i = 0; i < products.length; i++) {
+    for (let i = 0;i < products.length;i++) {
       if (products[i].id === id) {
         index = i;
         break;
@@ -212,7 +184,7 @@ export default function AdminActivity() {
     let chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0;i < 5;i++) {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
 
@@ -333,6 +305,18 @@ export default function AdminActivity() {
     return (
       <React.Fragment>
         <Button
+          icon="pi pi-pencil"
+          rounded
+          outlined
+          className="mr-2"
+          onClick={() => {
+            editProduct(rowData)
+          }
+
+
+          }
+        />
+        <Button
           icon="pi pi-trash"
           rounded
           outlined
@@ -375,7 +359,7 @@ export default function AdminActivity() {
   const productDialogFooter = (
     <React.Fragment>
       <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Hoàn thành" icon="pi pi-check" onClick={saveProduct} />
+      <Button label="Gửi" icon="pi pi-check" onClick={saveProduct} />
     </React.Fragment>
   );
   const deleteProductDialogFooter = (
@@ -519,7 +503,7 @@ export default function AdminActivity() {
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
           onClick={() => {
-            setText("Thêm Mới huy hiệu");
+            setText("Gửi cảnh báo");
           }}
           header={text}
           modal
@@ -527,63 +511,10 @@ export default function AdminActivity() {
           footer={productDialogFooter}
           onHide={hideDialog}
         >
-          <div className="field">
-            <label
-              htmlFor="name"
-              className="font-bold"
-              style={{ fontWeight: "bold" }}
-            >
-              Hình ảnh
-            </label>
-            <br />
-            <div>
-              <label htmlFor="img" className="input-preview">
-                {/* <input name="img" id="img" className="input-preview__src" style={{ opacity: 0 }} type="file" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
-                {product?.achivementLogo === "" ? (
-                  <div></div>
-                ) : (
-                  <img
-                    src={product.achivementLogo}
-                    style={{
-                      width: "900px",
-                      height: "195px",
-                      borderRadius: "5px",
-                    }}
-                  />
-                )}
-              </label>
-              {submitted && !product.achivementLogo && (
-                <small className="p-error">
-                  Hình ảnh huy hiệu không được để trống.
-                </small>
-              )}
-            </div>
+          <span>
+            Bạn có muốn gửi cảnh báo đến người tạo bài viết <b>{product.title}</b>?
 
-            <br />
-            {/* <input type='file' id="achivementLogo" onChange={(e) => onInputChange(e, 'achivementLogo')} /> */}
-          </div>
-          <div className="field">
-            <label
-              htmlFor="description"
-              className="font-bold"
-              style={{ fontWeight: "bold" }}
-            >
-              Miêu tả
-            </label>
-            <InputTextarea
-              id="description"
-              value={product.description}
-              onChange={(e) => onInputChange(e, "description")}
-              required
-              rows={3}
-              cols={20}
-            />
-            {submitted && !product.description && (
-              <small className="p-error">
-                Miêu tả huy hiệu không được để trống.
-              </small>
-            )}
-          </div>
+          </span>
         </Dialog>
 
         <Dialog
@@ -602,7 +533,7 @@ export default function AdminActivity() {
             />
             {product && (
               <span>
-                Bạn có cập nhật trạng thái <b>{product.title}</b>?
+                Bạn có muốn xóa bài viết <b>{product.title}</b>?
               </span>
             )}
           </div>
