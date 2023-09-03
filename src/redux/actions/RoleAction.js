@@ -30,3 +30,26 @@ export const CreateRoleAction = (value) => {
         }
     }
 }
+export const UpdateRoleAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.put('/Role/update-role', value);
+            const action = GetListRoleAction();
+            dispatch(action)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+export const DeleteRoleAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.delete(`/Role/delete-role?dto=${value}`);
+            const action = GetListRoleAction();
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}

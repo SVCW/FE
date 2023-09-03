@@ -70,6 +70,7 @@ export default function Achivement() {
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [product, setProduct] = useState(emptyProduct);
+  const [tempProduct, setTempProduct] = useState({...emptyProduct});
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
@@ -116,7 +117,6 @@ export default function Achivement() {
 
       if (product.achivementId !== "0") {
         const index = findIndexById(product.id);
-
         _products[index] = _product;
         console.log(product.achivementId);
         const action = await UpdateAchivementAction(product);
@@ -126,11 +126,13 @@ export default function Achivement() {
         toast.current.show({
           severity: "success",
           summary: "Thành công",
-          detail: `Cập nhật thành công huy hiệu ${product.achivementId}`,
+          detail: `Cập nhật thành công huy hiệu ${product.achivementId} thành công`,
           life: 3000,
         });
         setText("");
-      } else {
+      } 
+      else
+      {
         const action = await CreateAchivementAction(product);
         await dispatch(action);
         counter++;
@@ -152,6 +154,7 @@ export default function Achivement() {
     setText("Chỉnh sửa huy hiệu");
     setProduct({ ...product });
     setProductDialog(true);
+    setTempProduct({...product});
   };
 
   const confirmDeleteProduct = (product) => {
@@ -364,22 +367,23 @@ export default function Achivement() {
   const productDialogFooter = (
     <React.Fragment>
       <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Hoàn thành" icon="pi pi-check" onClick={saveProduct} />
+      <Button disabled={(tempProduct.description === product.description || product.description === "") && (tempProduct.achivementLogo === product.achivementLogo)} label="Hoàn thành" icon="pi pi-check" onClick={saveProduct} />
     </React.Fragment>
   );
   const deleteProductDialogFooter = (
     <React.Fragment>
-      <Button
-        label="Hủy bỏ"
-        icon="pi pi-times"
-        outlined
-        onClick={hideDeleteProductDialog}
-      />
+      
       <Button
         label="Đồng ý"
         icon="pi pi-check"
         severity="danger"
         onClick={deleteProduct}
+      />
+      <Button
+        label="Hủy bỏ"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteProductDialog}
       />
     </React.Fragment>
   );
@@ -452,11 +456,9 @@ export default function Achivement() {
                     </span>
                   );
                 }
-
                 return description;
               }}
             ></Column>
-
             <Column
               field={(createAt) =>
                 moment(createAt.createAt).format("DD-MM-YYYY")
@@ -476,7 +478,6 @@ export default function Achivement() {
             ></Column>
           </DataTable>
         </div>
-
         <Dialog
           visible={productDialog}
           style={{ width: "32rem" }}
@@ -538,7 +539,7 @@ export default function Achivement() {
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-              Miêu tả
+              Tên huy hiệu
             </label>
             <InputTextarea
               id="description"
@@ -550,7 +551,7 @@ export default function Achivement() {
             />
             {submitted && !product.description && (
               <small className="p-error">
-                Miêu tả huy hiệu không được để trống.
+              Tên huy hiệu không được để trống.
               </small>
             )}
           </div>
@@ -572,8 +573,8 @@ export default function Achivement() {
             />
             {product && (
               <span>
-                Bạn có chắc chắn muốn xóa huy hiệu <b>{product.achivementId}</b>
-                ?
+                Bạn muốn xóa huy hiệu <b>{product.achivementId}</b> chứ?
+                
               </span>
             )}
           </div>

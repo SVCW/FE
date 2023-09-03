@@ -2220,7 +2220,7 @@ export default function Home (props) {
                                       // onChange={handleChange}
                                       className="range-slider"
                                       style={{
-                                        background: `linear-gradient(to right,  #4287f5 0%, #4287f5  ${
+                                        background: `linear-gradient(to right,  #4287f5 0%, red 50%, pink 75%  ${
                                           (item.realDonation /
                                             item.targetDonation) *
                                           100

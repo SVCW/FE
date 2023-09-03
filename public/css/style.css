@@ -190,6 +190,19 @@ section {
   width: 100%;
 }
 
+
+.card .p-datatable th,
+.card .p-datatable td {
+  font-size: 14px; /* Tăng kích thước font chữ */
+}
+.card .p-datatable {
+  background-color: #f5f5f5; /* Thay đổi màu nền */
+}
+.card .p-datatable tr:hover {
+  background-color: #f0f0f0; /* Thay đổi màu nền khi hover */
+}
+
+
 .gap2 {
   padding: 40px 0;
 }

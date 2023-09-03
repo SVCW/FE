@@ -56,12 +56,13 @@ export default function ProcessType() {
   };
 
   const [inputValue, setInputValue] = useState("");
-  const [text, setText] = useState("Thêm Mới Loại Tiến Trình");
+  const [text, setText] = useState("Thêm mới loại tiến trình");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
   const [product, setProduct] = useState(emptyProduct);
+  const [tempProduct, setTempProduct] = useState({...emptyProduct});
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
@@ -117,8 +118,8 @@ export default function ProcessType() {
         setProductDialog(false);
         toast.current.show({
           severity: "success",
-          summary: "Thành Công",
-          detail: `Cập Nhật Loại Tiến Trình ${product.processTypeId} Thành Công`,
+          summary: "Thành công",
+          detail: `Cập nhật loại tiến trình ${product.processTypeId} thành công`,
           life: 3000,
         });
       } else {
@@ -126,8 +127,8 @@ export default function ProcessType() {
         await dispatch(action);
         toast.current.show({
           severity: "success",
-          summary: "Thành Công",
-          detail: "Tạo  Mới Loại Tiến Trình Thành Công",
+          summary: "Thành công",
+          detail: "Tạo  mới loại tiến trình thành công",
           life: 3000,
         });
       }
@@ -139,9 +140,10 @@ export default function ProcessType() {
   };
 
   const editProduct = (product) => {
-    setText("Chỉnh Sửa Loại Tiến Trình");
+    setText("Chỉnh sửa loại tiến trình");
     setProduct({ ...product });
     setProductDialog(true);
+    setTempProduct({...product});
   };
 
   const confirmDeleteProduct = (product) => {
@@ -156,8 +158,8 @@ export default function ProcessType() {
     setProduct(emptyProduct);
     toast.current.show({
       severity: "error",
-      summary: "Thành Công",
-      detail: `Xóa Loại Tiến Trình ${product.processTypeId} Thành Công`,
+      summary: "Thành công",
+      detail: `Xóa loại tiến trình ${product.processTypeId} thành công`,
       life: 3000,
       options: {
         style: {
@@ -232,6 +234,16 @@ export default function ProcessType() {
     _product[`${name}`] = val;
 
     setProduct(_product);
+
+    const newValue = e.target.value;
+
+    // Kiểm tra xem newValue có chứa các ký tự đặc biệt không mong muốn
+    const forbiddenCharacters = /[@!#$%^&*]/g;
+
+    if (!forbiddenCharacters.test(newValue)) {
+      setInputValue(newValue);
+      // Thực hiện các xử lý khác tại đây
+    }
   };
   const onInputChange1 = (e, field) => {
     const newValue = e.target.value;
@@ -261,7 +273,7 @@ export default function ProcessType() {
     return (
       <div className="flex flex-wrap gap-2">
         <Button
-          label="Thêm Mới"
+          label="Thêm mới"
           icon="pi pi-plus"
           severity="success"
           onClick={openNew}
@@ -274,7 +286,7 @@ export default function ProcessType() {
   const rightToolbarTemplate = () => {
     return (
       <Button
-        label="Tải Xuống"
+        label="Tải xuống"
         icon="pi pi-upload"
         style={{ marginRight: "50px" }}
         className="p-button-help"
@@ -351,37 +363,38 @@ export default function ProcessType() {
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0 mb-4">Quản Lý Loại Tiến Trình</h4>
+      <h4 className="m-0 mb-4">Quản lý loại tiến trình</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
           type="search"
           onInput={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Tìm Kiếm..."
+          placeholder="Tìm kiếm..."
         />
       </span>
     </div>
   );
   const productDialogFooter = (
     <React.Fragment>
-      <Button label="Hủy Bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
-      <Button label="Hoàn Thành" icon="pi pi-check" onClick={saveProduct} />
+      <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
+      <Button label="Hoàn thành" disabled={(tempProduct.processTypeName === product.processTypeName || product.processTypeName === "") && (tempProduct.description === product.description || product.description === "")} icon="pi pi-check" onClick={saveProduct} />
     </React.Fragment>
   );
   const deleteProductDialogFooter = (
     <React.Fragment>
-      <Button
-        label="Hủy Bỏ"
-        icon="pi pi-times"
-        outlined
-        onClick={hideDeleteProductDialog}
-      />
-      <Button
-        label="Đồng Ý"
+    <Button
+        label="Đồng ý"
         icon="pi pi-check"
         severity="danger"
         onClick={deleteProduct}
       />
+      <Button
+        label="Hủy bỏ"
+        icon="pi pi-times"
+        outlined
+        onClick={hideDeleteProductDialog}
+      />
+      
     </React.Fragment>
   );
   const deleteProductsDialogFooter = (
@@ -434,18 +447,56 @@ export default function ProcessType() {
               sortable
               style={{ minWidth: "11rem" }}
             ></Column>
-            <Column
+            {/* <Column
               field="processTypeName"
               header="Tên Loại Tiến Trình"
               sortable
               style={{ minWidth: "11rem" }}
-            ></Column>
+            ></Column> */}
             <Column
+                field="processTypeName"
+                header="Tên loại tiến trình"
+                sortable
+                style={{ minWidth: "12rem" }}
+                body={(rowData) => {
+                  const maxLength = 20;
+                  const processTypeName = rowData.processTypeName;
+                  if (processTypeName.length > maxLength) {
+                    return (
+                      <span title={processTypeName}>
+                        {processTypeName.substring(0, maxLength)}...
+                      </span>
+                    );
+                  }
+
+                  return processTypeName;
+                }}
+              ></Column>
+            {/* <Column
               field="description"
               header="Miêu Tả"
               sortable
               style={{ minWidth: "12rem" }}
-            ></Column>
+            ></Column> */}
+            <Column
+                field="description"
+                header="Miếu tả"
+                sortable
+                style={{ minWidth: "12rem" }}
+                body={(rowData) => {
+                  const maxLength = 20;
+                  const description = rowData.description;
+                  if (description.length > maxLength) {
+                    return (
+                      <span title={description}>
+                        {description.substring(0, maxLength)}...
+                      </span>
+                    );
+                  }
+
+                  return description;
+                }}
+              ></Column>
             {/* <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Day" sortable style={{ minWidth: '12rem' }}></Column> */}
             {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
@@ -464,7 +515,7 @@ export default function ProcessType() {
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
           onClick={() => {
-            setText("Thêm Mới Loại Tiến Trình");
+            setText("Thêm mới toại tiến trình");
           }}
           header={text}
           modal
@@ -474,17 +525,17 @@ export default function ProcessType() {
         >
           <div className="field">
             <label
-              htmlFor="name"
+              htmlFor="processTypeName"
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-              Tên Loại Tiến Trình
+              Tên loại tiến trình
             </label>
             <br />
             <InputText
               id="processTypeName"
-              value={inputValue}
-              onChange={(e) => onInputChange1(e, "processTypeName")}
+              value={product.processTypeName}
+              onChange={(e) => onInputChange(e, "processTypeName")}
               required
               autoFocus
               className={classNames({
@@ -493,7 +544,7 @@ export default function ProcessType() {
             />
             {submitted && !product.processTypeName && (
               <small className="p-error">
-                Tên Loại Tiến Trình Không Được Để Trống.
+                Tên loại tiến trình không được để trống.
               </small>
             )}
           </div>
@@ -503,7 +554,7 @@ export default function ProcessType() {
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-              Miêu Tả
+              Miêu tả
             </label>
             <InputTextarea
               id="description"
@@ -514,7 +565,7 @@ export default function ProcessType() {
               cols={20}
             />
             {submitted && !product.description && (
-              <small className="p-error">Miêu Tả Không Được Để Trống.</small>
+              <small className="p-error">Miêu tả không được để trống.</small>
             )}
           </div>
         </Dialog>

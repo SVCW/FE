@@ -34,7 +34,8 @@ export default function ReportType () {
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [product, setProduct] = useState(emptyProduct);
+    const [product, setProduct] = useState({...emptyProduct});
+    const [tempProduct, setTempProduct] = useState({...emptyProduct});
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -84,31 +85,34 @@ export default function ReportType () {
 
             if (product.reportTypeId !== '0') {
                 const index = findIndexById(product.id);
-
                 _products[index] = _product;
                 console.log(product.reportTypeId);
                 const action = await UpdateReportTypeAction(product)
                 await dispatch(action)
                 setProductDialog(false);
-                toast.current.show({ severity: 'success', summary: 'Thành Công', detail: `Chỉnh Sửa Loại Báo Cáo ${product.reportTypeName} Thành Công`, life: 3000, });
-
-            } else {
-                const action = await CreateReportTypeAction(product)
-                await dispatch(action)
-                toast.current.show({ severity: 'success', summary: 'Thành Công', detail: 'Thêm Mới Loại Báo Cáo Thành Công', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Thành Công', detail: `Chỉnh sửa loại báo cáo ${product.reportTypeName} thành công`, life: 3000, });
 
             }
+            else 
+            {
+                const action = await CreateReportTypeAction(product)
+                await dispatch(action)
+                toast.current.show({ severity: 'success', summary: 'Thành Công', detail: 'Thêm mới loại báo cáo thành công', life: 3000 });
 
+            }
+            
             setProducts(_products);
             setProductDialog(false);
             setProduct(emptyProduct)
         }
+        
     };
 
     const editProduct = (product) => {
-        setText('Chỉnh Sửa Loại Báo Cáo')
+        setText('Chỉnh sửa loại báo cáo')
         setProduct({ ...product });
         setProductDialog(true);
+        setTempProduct({...product});
     };
 
     const confirmDeleteProduct = (product) => {
@@ -117,13 +121,12 @@ export default function ReportType () {
     };
 
     const deleteProduct = async () => {
-
         const action = await DeleteReportTypeAction(product.reportTypeId)
         await dispatch(action)
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
         toast.current.show({
-            severity: 'error', summary: 'Thành Công', detail: `Xóa Loại Báo Cáo ${product.reportTypeName} Thành Công`, life: 3000, options: {
+            severity: 'error', summary: 'Thành Công', detail: `Xóa loại báo cáo ${product.reportTypeName} thành công`, life: 3000, options: {
                 style: {
                     zIndex: 100
                 }
@@ -205,14 +208,14 @@ export default function ReportType () {
     const leftToolbarTemplate = () => {
         return (
             <div className="flex flex-wrap gap-2">
-                <Button label="Thêm Mới" icon="pi pi-plus" severity="success" onClick={openNew} />
+                <Button label="Thêm mới" icon="pi pi-plus" severity="success" onClick={openNew} />
                 {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
             </div>
         );
     };
 
     const rightToolbarTemplate = () => {
-        return <Button label="Tải Xuống" icon="pi pi-upload" style={{ marginRight: '50px' }} className="p-button-help" onClick={exportCSV} />;
+        return <Button label="Tải xuống" icon="pi pi-upload" style={{ marginRight: '50px' }} className="p-button-help" onClick={exportCSV} />;
     };
 
     const imageBodyTemplate = (rowData) => {
@@ -259,7 +262,7 @@ export default function ReportType () {
 
     const header = (
         <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0 mb-4">Quản Lý Loại Báo Cáo</h4>
+            <h4 className="m-0 mb-4">Quản lý loại báo cáo</h4>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Tìm Kiếm..." />
@@ -268,14 +271,15 @@ export default function ReportType () {
     );
     const productDialogFooter = (
         <React.Fragment>
-            <Button label="Hủy Bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
-            <Button label="Hoàn Thành" icon="pi pi-check" onClick={saveProduct} />
+            <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDialog} />
+            <Button disabled={tempProduct.reportTypeName === product.reportTypeName || product.reportTypeName === ""} label="Hoàn thành"  icon="pi pi-check" onClick={saveProduct} />
         </React.Fragment>
     );
     const deleteProductDialogFooter = (
         <React.Fragment>
-            <Button label="Hủy Bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
-            <Button label="Đồng Ý" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
+        <Button label="Đồng ý" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
+            <Button label="Hủy bỏ" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
+            
         </React.Fragment>
     );
     const deleteProductsDialogFooter = (
@@ -286,66 +290,153 @@ export default function ReportType () {
     );
     console.log(product);
     return (
-        <div className="app-main__outer" style={{ margin: '20px 30px' }}>
-            <div>
-                <Toast ref={toast} />
-                <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+      <div className="app-main__outer" style={{ margin: "20px 30px" }}>
+        <div>
+          <Toast ref={toast} />
+          <div className="card">
+            <Toolbar
+              className="mb-4"
+              left={leftToolbarTemplate}
+              right={rightToolbarTemplate}
+            ></Toolbar>
 
-                    <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
-                        {/* <Column selectionMode="multiple" exportable={false}></Column> */}
-                        <Column field="reportTypeId" header="Mã" sortable style={{ minWidth: '11rem' }}></Column>
-                        <Column field="reportTypeName" header="Tên Loại Báo Cáo" sortable style={{ minWidth: '11rem' }}></Column>
-                        {/* <Column field="description" header="Description" sortable style={{ minWidth: '12rem' }}></Column> */}
-                        {/* <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Day" sortable style={{ minWidth: '12rem' }}></Column> */}
-                        {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
+            <DataTable
+              ref={dt}
+              value={products}
+              selection={selectedProducts}
+              onSelectionChange={(e) => setSelectedProducts(e.value)}
+              dataKey="id"
+              paginator
+              rows={10}
+              rowsPerPageOptions={[5, 10, 25]}
+              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+              globalFilter={globalFilter}
+              header={header}
+            >
+              {/* <Column selectionMode="multiple" exportable={false}></Column> */}
+              <Column
+                field="reportTypeId"
+                header="Mã"
+                sortable
+                style={{ minWidth: "11rem" }}
+              ></Column>
+              {/* <Column field="reportTypeName" header="Tên Loại Báo Cáo" sortable style={{ minWidth: '11rem' }}></Column> */}
+              <Column
+                field="reportTypeName"
+                header="Tên loại báo cáo"
+                sortable
+                style={{ minWidth: "12rem" }}
+                body={(rowData) => {
+                  const maxLength = 20;
+                  const reportTypeName = rowData.reportTypeName;
+                  if (reportTypeName.length > maxLength) {
+                    return (
+                      <span title={reportTypeName}>
+                        {reportTypeName.substring(0, maxLength)}...
+                      </span>
+                    );
+                  }
+
+                  return reportTypeName;
+                }}
+              ></Column>
+              {/* <Column field="description" header="Description" sortable style={{ minWidth: '12rem' }}></Column> */}
+              {/* <Column field={createAt => moment(createAt.createAt).format('DD-MM-YYYY')} header="Day" sortable style={{ minWidth: '12rem' }}></Column> */}
+              {/* <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
                         <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
                         <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column> */}
-                        <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem', marginRight: '100px' }}></Column>
-                    </DataTable>
-                </div>
+              <Column
+                body={actionBodyTemplate}
+                exportable={false}
+                style={{ minWidth: "12rem", marginRight: "100px" }}
+              ></Column>
+            </DataTable>
+          </div>
 
-                <Dialog visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} onClick={() => { setText('Thêm Mới Loại Báo Cáo') }} header={text} modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-
-                    <div className="field">
-                        <label htmlFor="name" className="font-bold" style={{ fontWeight: 'bold' }}>
-                            Tên loại báo cáo
-                        </label>
-                        <br />
-                        <InputText id="reportTypeName" value={product.reportTypeName} onChange={(e) => onInputChange(e, 'reportTypeName')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                        {submitted && !product.reportTypeName && <small className="p-error">Tên Loại báo cáo không được để trống.</small>}
-                    </div>
-
-
-
-
-
-                </Dialog>
-
-                <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Thông Báo" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        {product && (
-                            <span>
-                                Bạn có chắc chắn muốn xóa loại báo cáo? <b>{product.reportTypeName}</b>?
-                            </span>
-                        )}
-                    </div>
-                </Dialog>
-
-                <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        {product && <span>Bạn có muốn xóa những sản phẩm trên?</span>}
-                    </div>
-                </Dialog>
+          <Dialog
+            visible={productDialog}
+            style={{ width: "32rem" }}
+            breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+            onClick={() => {
+              setText("Thêm Mới Loại Báo Cáo");
+            }}
+            header={text}
+            modal
+            className="p-fluid"
+            footer={productDialogFooter}
+            onHide={hideDialog}
+          >
+            <div className="field">
+              <label
+                htmlFor="name"
+                className="font-bold"
+                style={{ fontWeight: "bold" }}
+              >
+                Tên loại báo cáo
+              </label>
+              <br />
+              <InputText
+                id="reportTypeName"
+                value={product.reportTypeName}
+                onChange={(e) => onInputChange(e, "reportTypeName")}
+                required
+                autoFocus
+                className={classNames({
+                  "p-invalid": submitted && !product.reportTypeName
+                })}
+              />
+              {submitted && !product.reportTypeName && (
+                <small className="p-error">
+                  Tên loại báo cáo không được để trống!
+                </small>
+              )}
             </div>
-        </div>
+          </Dialog>
 
-    )
+          <Dialog
+            visible={deleteProductDialog}
+            style={{ width: "32rem" }}
+            breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+            header="Thông báo"
+            modal
+            footer={deleteProductDialogFooter}
+            onHide={hideDeleteProductDialog}
+          >
+            <div className="confirmation-content">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: "2rem" }}
+              />
+              {product && (
+                <span>
+                   Bạn muốn xóa loại báo cáo {" "}
+                  <b>{product.reportTypeName}</b> không?
+                </span>
+              )}
+            </div>
+          </Dialog>
+
+          <Dialog
+            visible={deleteProductsDialog}
+            style={{ width: "32rem" }}
+            breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+            header="Confirm"
+            modal
+            footer={deleteProductsDialogFooter}
+            onHide={hideDeleteProductsDialog}
+          >
+            <div className="confirmation-content">
+              <i
+                className="pi pi-exclamation-triangle mr-3"
+                style={{ fontSize: "2rem" }}
+              />
+              {product && <span>Bạn có muốn xóa những sản phẩm trên?</span>}
+            </div>
+          </Dialog>
+        </div>
+      </div>
+    );
 }
 
